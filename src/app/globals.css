@@ -1,0 +1,285 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-destructive-soft: var(--destructive-soft);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-success-soft: var(--success-soft);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-info-soft: var(--info-soft);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-warning-soft: var(--warning-soft);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-overlay: var(--overlay);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+  --radius-control: var(--radius-md);
+  --radius-panel: var(--radius-lg);
+  --radius-surface: var(--radius-xl);
+  --shadow-resting: 0 1px 2px oklch(0% 0 0 / 0.035);
+  --shadow-raised: 0 6px 18px oklch(0% 0 0 / 0.065), 0 1px 3px oklch(0% 0 0 / 0.035);
+  --shadow-floating: 0 20px 48px oklch(0% 0 0 / 0.105), 0 3px 10px oklch(0% 0 0 / 0.045);
+  --ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-exit: cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --duration-instant: 120ms;
+  --duration-fast: 160ms;
+  --duration-exit: 180ms;
+  --duration-standard: 240ms;
+  --duration-considered: 480ms;
+}
+
+:root {
+  --background: oklch(0.985 0.001 286.376);
+  --foreground: oklch(0.247 0.006 258.361);
+  --font-body: var(--font-sans);
+  --font-display: var(--font-sans);
+  --tracking-body: 0;
+  --tracking-display: 0;
+  --leading-body: 1.5;
+  --leading-display: 1;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.25rem;
+  --text-xs: 0.75rem;
+  --text-sm: 0.8125rem;
+  --text-base: 1rem;
+  --text-3xl: 1.875rem;
+  --text-secondary: var(--muted-foreground);
+  --text-muted: color-mix(in oklch, var(--muted-foreground) 82%, var(--background));
+  --surface-muted: var(--muted);
+  --surface-raised: var(--popover);
+  --radius-pill: 999px;
+  --duration-spring: 420ms;
+  --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+  --surface: var(--card);
+  --border-strong: oklch(0.912 0.005 258.326);
+  --accent-strong: var(--primary);
+  --danger: var(--destructive);
+  --overlay: oklch(0 0 0 / 0.12);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.247 0.006 258.361);
+  --popover: oklch(0.985 0.001 286.376);
+  --popover-foreground: oklch(0.247 0.006 258.361);
+  --primary: oklch(0.626 0.205 254.947);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.979 0.002 247.839);
+  --secondary-foreground: oklch(0.247 0.006 258.361);
+  --muted: oklch(0.961 0.002 247.84);
+  --muted-foreground: oklch(0.506 0.01 264.477);
+  --accent: oklch(0.975 0.002 264.542);
+  --accent-foreground: oklch(0.247 0.006 258.361);
+  --destructive: oklch(0.621 0.192 23.042);
+  --destructive-foreground: oklch(0.985 0 0);
+  --destructive-soft: color-mix(in oklch, var(--destructive) 15%, transparent);
+  --success: var(--chart-2);
+  --success-foreground: oklch(0.24 0.06 151);
+  --success-soft: color-mix(in oklch, var(--success) 12%, transparent);
+  --info: var(--chart-1);
+  --info-foreground: oklch(0.12 0.02 260);
+  --info-soft: color-mix(in oklch, var(--info) 12%, transparent);
+  --warning: var(--chart-3);
+  --warning-foreground: oklch(0.3 0.06 50);
+  --warning-soft: color-mix(in oklch, var(--warning) 12%, transparent);
+  --border: oklch(0.946 0.003 264.542);
+  --input: oklch(0.961 0.001 286.375);
+  --ring: var(--border-strong);
+  --chart-1: oklch(0.626 0.205 254.947);
+  --chart-2: oklch(0.64 0.17 151);
+  --chart-3: oklch(0.73 0.18 78);
+  --chart-4: oklch(0.64 0.21 25);
+  --chart-5: oklch(0.65 0.2 305);
+  --series-1: var(--chart-1);
+  --series-2: var(--chart-2);
+  --series-3: var(--chart-3);
+  --series-4: var(--chart-4);
+  --sidebar: oklch(1 0 0);
+  --sidebar-foreground: oklch(0.247 0.006 258.361);
+  --sidebar-primary: oklch(0.626 0.205 254.947);
+  --sidebar-primary-foreground: oklch(0.985 0.001 286.376);
+  --sidebar-accent: var(--accent);
+  --sidebar-accent-foreground: var(--accent-foreground);
+  --sidebar-border: oklch(0.946 0.003 264.542);
+  --sidebar-ring: var(--border-strong);
+}
+
+.dark {
+  --background: oklch(0.209 0.004 264.477);
+  --foreground: oklch(0.964 0.002 247.839);
+  --text-secondary: var(--muted-foreground);
+  --text-muted: color-mix(in oklch, var(--muted-foreground) 82%, var(--background));
+  --surface-muted: var(--muted);
+  --surface-raised: var(--popover);
+  --surface: var(--card);
+  --border-strong: oklch(0.356 0.007 264.474);
+  --accent-strong: var(--primary);
+  --danger: var(--destructive);
+  --overlay: oklch(0 0 0 / 0.42);
+  --card: oklch(0.26 0.006 271.191);
+  --card-foreground: oklch(0.964 0.002 247.839);
+  --popover: oklch(0.209 0.004 264.477);
+  --popover-foreground: oklch(0.964 0.002 247.839);
+  --primary: oklch(0.68 0.173 253.301);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.243 0.004 264.492);
+  --secondary-foreground: oklch(0.964 0.002 247.839);
+  --muted: oklch(0.231 0.004 264.487);
+  --muted-foreground: oklch(0.731 0.008 260.731);
+  --accent: oklch(0.289 0.006 271.22);
+  --accent-foreground: oklch(0.964 0.002 247.839);
+  --destructive: oklch(0.666 0.18 21.433);
+  --destructive-foreground: oklch(0.985 0 0);
+  --destructive-soft: color-mix(in oklch, var(--destructive) 15%, transparent);
+  --success: var(--chart-2);
+  --success-foreground: oklch(0.86 0.08 153);
+  --success-soft: color-mix(in oklch, var(--success) 14%, transparent);
+  --info: var(--chart-1);
+  --info-foreground: oklch(0.18 0.03 255);
+  --info-soft: color-mix(in oklch, var(--info) 14%, transparent);
+  --warning: var(--chart-3);
+  --warning-foreground: oklch(0.9 0.08 65);
+  --warning-soft: color-mix(in oklch, var(--warning) 14%, transparent);
+  --border: oklch(0.308 0.006 258.354);
+  --input: oklch(0.293 0.006 271.223);
+  --ring: var(--border-strong);
+  --chart-1: oklch(0.68 0.173 253.301);
+  --chart-2: oklch(0.74 0.16 153);
+  --chart-3: oklch(0.8 0.16 78);
+  --chart-4: oklch(0.73 0.18 25);
+  --chart-5: oklch(0.76 0.17 305);
+  --series-1: var(--chart-1);
+  --series-2: var(--chart-2);
+  --series-3: var(--chart-3);
+  --series-4: var(--chart-4);
+  --sidebar: oklch(0.231 0.004 264.487);
+  --sidebar-foreground: oklch(0.964 0.002 247.839);
+  --sidebar-primary: oklch(0.68 0.173 253.301);
+  --sidebar-primary-foreground: oklch(0.964 0.002 247.839);
+  --sidebar-accent: var(--accent);
+  --sidebar-accent-foreground: var(--accent-foreground);
+  --sidebar-border: oklch(0.308 0.006 258.354);
+  --sidebar-ring: var(--border-strong);
+  --shadow-resting: 0 1px 2px oklch(0% 0 0 / 0.18);
+  --shadow-raised: 0 8px 22px oklch(0% 0 0 / 0.22);
+  --shadow-floating: 0 22px 55px oklch(0% 0 0 / 0.34);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+}
+
+/* Keep a visible fallback for focusable elements without an explicit ring. */
+:focus-visible:not([class*="focus-visible:ring"]):not([class*="focus-visible:outline"]) {
+  outline: 2px solid var(--ring) !important;
+  outline-offset: 2px;
+}
+
+:where(
+  [data-slot="button"][data-variant="ghost"],
+  [data-slot="button"][data-variant="outline"],
+  [role="tab"],
+  [role="menuitem"],
+  [role="option"]
+):focus-visible {
+  background-color: var(--accent);
+}
+
+/* Theme customizer: centered content layout */
+:root[data-content="centered"] .app-main > * {
+  margin-inline: auto;
+  max-width: 80rem;
+}
+
+/* Subtle, theme-aware scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: color-mix(in oklch, var(--muted-foreground) 30%, transparent);
+  border-radius: 9999px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background-color: color-mix(in oklch, var(--muted-foreground) 50%, transparent);
+}
+
+/* Horizontal scrollers (tab bars, filter rows) with no visible scrollbar */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* iOS Safari (and other touch browsers) auto-zoom the page whenever a form
+   field with font-size < 16px receives focus. Pin every text-entry control to
+   16px on touch devices so tapping an input never zooms. Desktop (fine pointer)
+   keeps the design's smaller md: sizes. This never disables pinch-zoom, so
+   accessibility is preserved. */
+@media (hover: none) and (pointer: coarse) {
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="file"]),
+  textarea,
+  select,
+  [contenteditable]:not([contenteditable="false"]) {
+    font-size: 16px !important;
+  }
+}
