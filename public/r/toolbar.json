@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "toolbar",
+  "title": "toolbar",
+  "description": "RoseUI toolbar component.",
+  "dependencies": [
+    "radix-ui"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/toolbar.tsx",
+      "content": "\"use client\";\n\nimport type { ComponentProps } from \"react\";\nimport { Toolbar as ToolbarPrimitive } from \"radix-ui\";\nimport { cn } from \"@/lib/utils\";\n\ntype ToolbarLabel =\n  | { \"aria-label\": string; \"aria-labelledby\"?: never }\n  | { \"aria-label\"?: never; \"aria-labelledby\": string };\n\nexport function Toolbar({\n  className,\n  orientation = \"horizontal\",\n  isAttached = false,\n  ...props\n}: Omit<\n  ComponentProps<typeof ToolbarPrimitive.Root>,\n  \"aria-label\" | \"aria-labelledby\" | \"className\"\n> &\n  ToolbarLabel & {\n    className?: string;\n    isAttached?: boolean;\n  }) {\n  return (\n    <ToolbarPrimitive.Root\n      {...props}\n      orientation={orientation}\n      data-slot=\"toolbar\"\n      data-orientation={orientation}\n      data-attached={isAttached ? \"true\" : undefined}\n      className={cn(\n        \"flex w-fit items-center gap-1\",\n        orientation === \"vertical\" && \"flex-col\",\n        isAttached && \"rounded-lg border border-border bg-muted/40 p-1.5 shadow-xs\",\n        className,\n      )}\n    />\n  );\n}\n",
+      "type": "registry:ui",
+      "target": "src/components/ui/toolbar.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

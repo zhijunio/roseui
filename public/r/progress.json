@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "progress",
+  "title": "progress",
+  "description": "RoseUI progress component.",
+  "dependencies": [
+    "radix-ui"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/progress.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { Progress as ProgressPrimitive } from \"radix-ui\"\n\nimport { cn } from \"@/lib/utils\"\n\ntype ProgressSize = \"sm\" | \"md\" | \"lg\"\ntype ProgressTone = \"neutral\" | \"accent\" | \"success\" | \"warning\" | \"error\"\n\nconst sizeClasses: Record<ProgressSize, string> = {\n  sm: \"h-1 rounded-sm\",\n  md: \"h-2 rounded-full\",\n  lg: \"h-3 rounded-md\",\n}\n\nconst toneClasses: Record<ProgressTone, string> = {\n  neutral: \"bg-foreground\",\n  accent: \"bg-primary\",\n  success: \"bg-success\",\n  warning: \"bg-warning\",\n  error: \"bg-destructive\",\n}\n\nfunction Progress({\n  className,\n  value,\n  minValue = 0,\n  maxValue,\n  max = 100,\n  size = \"md\",\n  tone = \"accent\",\n  ...props\n}: React.ComponentProps<typeof ProgressPrimitive.Root> & {\n  minValue?: number\n  maxValue?: number\n  size?: ProgressSize\n  tone?: ProgressTone\n}) {\n  const minimum = Number.isFinite(minValue) ? minValue : 0\n  const requestedMaximum = maxValue ?? max\n  const maximum = Number.isFinite(requestedMaximum) && requestedMaximum > minimum\n    ? requestedMaximum\n    : minimum + 100\n  const currentValue = typeof value === \"number\" && Number.isFinite(value)\n    ? Math.min(maximum, Math.max(minimum, value))\n    : null\n  const isIndeterminate = currentValue === null\n  const percentage = isIndeterminate\n    ? 0\n    : ((currentValue - minimum) / (maximum - minimum)) * 100\n\n  return (\n    <ProgressPrimitive.Root\n      {...props}\n      data-slot=\"progress\"\n      data-size={size}\n      data-tone={tone}\n      data-indeterminate={isIndeterminate || undefined}\n      value={currentValue}\n      max={maximum}\n      aria-valuemin={minimum}\n      aria-valuemax={maximum}\n      aria-valuenow={isIndeterminate ? undefined : currentValue}\n      className={cn(\n        \"relative flex w-full items-center overflow-hidden bg-muted\",\n        sizeClasses[size],\n        className\n      )}\n    >\n      <ProgressPrimitive.Indicator\n        data-slot=\"progress-indicator\"\n        className={cn(\n          \"absolute inset-y-0 left-0 rounded-[inherit] motion-safe:transition-[width] motion-safe:duration-300 motion-safe:ease-out motion-reduce:!transition-none\",\n          toneClasses[tone],\n          isIndeterminate && \"w-2/5 motion-safe:animate-progress-bar-indeterminate\"\n        )}\n        style={isIndeterminate ? undefined : { width: `${percentage}%` }}\n      />\n    </ProgressPrimitive.Root>\n  )\n}\n\nexport { Progress }\n",
+      "type": "registry:ui",
+      "target": "src/components/ui/progress.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "toggle",
+  "title": "toggle",
+  "description": "RoseUI toggle component.",
+  "dependencies": [
+    "class-variance-authority",
+    "radix-ui"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/toggle.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { cva, type VariantProps } from \"class-variance-authority\"\nimport { Toggle as TogglePrimitive } from \"radix-ui\"\nimport { cn } from \"@/lib/utils\"\n\nconst toggleVariants = cva(\n  \"group/toggle inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 aria-pressed:bg-accent aria-pressed:text-secondary-foreground [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0\",\n  {\n    variants: {\n      variant: {\n        default: \"bg-transparent hover:bg-muted\",\n        outline: \"border border-input bg-transparent hover:bg-accent hover:text-secondary-foreground\",\n      },\n      size: {\n        sm: \"h-8 min-w-8 px-2\",\n        default: \"h-9 min-w-9 px-2.5\",\n        lg: \"h-10 min-w-10 px-3\",\n      },\n    },\n    defaultVariants: { variant: \"default\", size: \"default\" },\n  }\n)\n\nexport type ToggleVariant = NonNullable<VariantProps<typeof toggleVariants>[\"variant\"]>\nexport type ToggleSize = NonNullable<VariantProps<typeof toggleVariants>[\"size\"]>\nexport function Toggle({\n  className,\n  variant = \"default\",\n  size = \"default\",\n  isIconOnly = false,\n  ...props\n}: React.ComponentProps<typeof TogglePrimitive.Root> & VariantProps<typeof toggleVariants> & { isIconOnly?: boolean }) {\n  return <TogglePrimitive.Root\n    data-slot=\"toggle\"\n    data-variant={variant}\n    data-size={size}\n    data-icon-only={isIconOnly || undefined}\n    className={cn(\n      toggleVariants({ variant, size }),\n      isIconOnly && (size === \"sm\" ? \"w-8 px-0\" : size === \"lg\" ? \"w-10 px-0\" : \"w-9 px-0\"),\n      className,\n    )}\n    {...props}\n  />\n}\n",
+      "type": "registry:ui",
+      "target": "src/components/ui/toggle.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

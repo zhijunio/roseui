@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "separator",
+  "title": "separator",
+  "description": "RoseUI separator component.",
+  "dependencies": [
+    "radix-ui"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/separator.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { Separator as SeparatorPrimitive } from \"radix-ui\"\n\nimport { cn } from \"@/lib/utils\"\nimport type { ReactNode } from \"react\"\n\nfunction Separator({\n  className,\n  orientation = \"horizontal\",\n  decorative = true,\n  variant = \"default\",\n  ...props\n}: React.ComponentProps<typeof SeparatorPrimitive.Root> & {\n  variant?: \"default\" | \"secondary\" | \"tertiary\"\n}) {\n  return (\n    <SeparatorPrimitive.Root\n      data-slot=\"separator\"\n      decorative={decorative}\n      orientation={orientation}\n      className={cn(\n        \"shrink-0 data-horizontal:h-px data-horizontal:w-full data-vertical:w-px data-vertical:self-stretch\",\n        variant === \"default\" && \"bg-border\",\n        variant === \"secondary\" && \"bg-muted/50\",\n        variant === \"tertiary\" && \"bg-muted/25\",\n        className\n      )}\n      {...props}\n    />\n  )\n}\n\nfunction ContentDivider({ children, align = \"center\", variant = \"single\", className }: {\n  children: ReactNode\n  align?: \"start\" | \"center\" | \"end\"\n  variant?: \"single\" | \"double\" | \"fill\"\n  className?: string\n}) {\n  return <div className={cn(\"flex w-full items-center gap-3 text-xs text-muted-foreground\", align === \"start\" && \"justify-start\", align === \"center\" && \"justify-center\", align === \"end\" && \"justify-end\", variant === \"fill\" && \"rounded-md bg-muted px-3 py-2\", className)}>\n    {align !== \"start\" && <Separator aria-hidden=\"true\" className={cn(\"flex-1\", variant === \"double\" && \"h-0 border-y border-border bg-transparent\")} />}\n    <span className=\"shrink-0\">{children}</span>\n    {align !== \"end\" && <Separator aria-hidden=\"true\" className={cn(\"flex-1\", variant === \"double\" && \"h-0 border-y border-border bg-transparent\")} />}\n  </div>\n}\n\nexport { Separator, ContentDivider }\n",
+      "type": "registry:ui",
+      "target": "src/components/ui/separator.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

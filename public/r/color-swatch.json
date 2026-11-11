@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "color-swatch",
+  "title": "color-swatch",
+  "description": "RoseUI color-swatch component.",
+  "dependencies": [
+    "react-aria-components"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/color-swatch.tsx",
+      "content": "\"use client\";\n\nimport type { ComponentProps } from \"react\";\nimport { ColorSwatch as AriaColorSwatch } from \"react-aria-components\";\n\nimport { cn } from \"@/lib/utils\";\n\nconst sizeClasses = {\n  xs: \"size-4\",\n  sm: \"size-6\",\n  md: \"size-8\",\n  lg: \"size-9\",\n  xl: \"size-10\",\n} as const;\n\nexport function ColorSwatch({ className, size = \"md\", shape = \"circle\", ...props }: Omit<ComponentProps<typeof AriaColorSwatch>, \"className\"> & {\n  className?: string;\n  size?: keyof typeof sizeClasses;\n  shape?: \"circle\" | \"square\";\n}) {\n  return <AriaColorSwatch data-slot=\"color-swatch\" className={cn(\"shrink-0 border border-foreground/15 shadow-xs\", sizeClasses[size], shape === \"circle\" ? \"rounded-full\" : \"rounded-md\", className)} {...props} />;\n}\n",
+      "type": "registry:ui",
+      "target": "src/components/ui/color-swatch.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

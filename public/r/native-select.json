@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "native-select",
+  "title": "native-select",
+  "description": "RoseUI native-select component.",
+  "dependencies": [
+    "@tabler/icons-react"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/native-select.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { IconChevronDown } from \"@tabler/icons-react\"\n\nimport { cn } from \"@/lib/utils\"\n\nfunction NativeSelect({\n  className,\n  fullWidth = false,\n  size = \"default\",\n  multiple = false,\n  ...props\n}: Omit<React.ComponentProps<\"select\">, \"size\"> & {\n  fullWidth?: boolean;\n  size?: \"sm\" | \"default\"\n}) {\n  return (\n    <span className={cn(\"relative inline-flex max-w-full items-center\", fullWidth ? \"w-full\" : \"w-fit\")}>\n      <select\n        {...props}\n        multiple={multiple}\n        data-slot=\"native-select\"\n        data-size={size}\n        className={cn(\n          \"h-9 w-full min-w-40 appearance-none rounded-lg border border-input bg-background py-2 pr-9 pl-3 text-sm text-foreground shadow-xs outline-none transition-colors focus-visible:ring-3 focus-visible:ring-ring/30 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 data-[size=sm]:h-7 data-[size=sm]:min-w-32 data-[size=sm]:py-1\",\n          fullWidth && \"min-w-0\",\n          multiple && \"h-auto min-h-36 appearance-auto py-2 pr-3\",\n          className,\n        )}\n      />\n      {!multiple && (\n        <IconChevronDown\n          aria-hidden=\"true\"\n          className=\"pointer-events-none absolute right-3 size-4 text-muted-foreground\"\n        />\n      )}\n    </span>\n  );\n}\n\nfunction NativeSelectOption(props: React.ComponentProps<\"option\">) { return <option {...props} /> }\nfunction NativeSelectOptGroup(props: React.ComponentProps<\"optgroup\">) { return <optgroup {...props} /> }\n\nexport { NativeSelect, NativeSelectOption, NativeSelectOptGroup }\n",
+      "type": "registry:ui",
+      "target": "src/components/ui/native-select.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

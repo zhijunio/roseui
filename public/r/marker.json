@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "marker",
+  "title": "marker",
+  "description": "RoseUI marker component.",
+  "dependencies": [
+    "radix-ui"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/marker.tsx",
+      "content": "import { Slot } from \"radix-ui\";\n\nimport { cn } from \"@/lib/utils\";\n\nexport type MarkerVariant = \"default\" | \"separator\" | \"border\";\n\nfunction Marker({\n  className,\n  variant = \"default\",\n  asChild = false,\n  ...props\n}: React.ComponentProps<\"div\"> & {\n  variant?: MarkerVariant\n  asChild?: boolean\n}) {\n  const Component = asChild ? Slot.Root : \"div\";\n\n  return (\n    <Component\n      data-slot=\"marker\"\n      data-variant={variant}\n      className={cn(\n        \"group/marker relative flex min-h-4 w-full items-center gap-2 text-left text-sm text-muted-foreground [&_svg:not([class*=size-])]:size-4\",\n        variant === \"separator\" && \"before:mr-1 before:h-px before:min-w-0 before:flex-1 before:bg-border after:ml-1 after:h-px after:min-w-0 after:flex-1 after:bg-border\",\n        variant === \"border\" && \"border-b border-border pb-2\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nfunction MarkerIcon({ className, ...props }: React.ComponentProps<\"span\">) {\n  return <span data-slot=\"marker-icon\" aria-hidden=\"true\" className={cn(\"inline-flex size-4 shrink-0 items-center justify-center [&_svg:not([class*=size-])]:size-4\", className)} {...props} />;\n}\n\nfunction MarkerContent({ className, ...props }: React.ComponentProps<\"span\">) {\n  return <span data-slot=\"marker-content\" className={cn(\"min-w-0 wrap-break-word group-data-[variant=separator]/marker:flex-none group-data-[variant=separator]/marker:text-center\", className)} {...props} />;\n}\n\nexport { Marker, MarkerContent, MarkerIcon };\n",
+      "type": "registry:ui",
+      "target": "src/components/ui/marker.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "pie-chart",
+  "title": "pie-chart",
+  "description": "RoseUI pie-chart component.",
+  "dependencies": [
+    "recharts"
+  ],
+  "registryDependencies": [
+    "chart"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/pie-chart.tsx",
+      "content": "\"use client\"\n\nimport { useId } from \"react\"\nimport { Cell, Pie, PieChart as RechartsPieChart, Tooltip } from \"recharts\"\nimport { ChartContainer, ChartLegend, ChartLegendContent, ChartTooltipContent, type ChartConfig } from \"@/components/ui/chart\"\n\nexport type PieChartDatum = { key: string; label: string; value: number; color?: string }\nexport type PieChartProps = { data: readonly [PieChartDatum, ...PieChartDatum[]]; label: string; centerLabel?: string; showLegend?: boolean; height?: number }\n\nfunction colorFor(index: number) { return `var(--chart-${(index % 5) + 1})` }\n\nexport function PieChart({ data, label, centerLabel, showLegend = true, height = 240 }: PieChartProps) {\n  const id = useId()\n  const config: ChartConfig = Object.fromEntries(data.map((item, index) => [item.key, { label: item.label, color: item.color ?? colorFor(index) }]))\n  const total = data.reduce((sum, item) => sum + item.value, 0)\n\n  return (\n    <figure className=\"grid w-full gap-3\" aria-labelledby={`${id}-title`}>\n      <figcaption className=\"sr-only\" id={`${id}-title`}>{label}</figcaption>\n      <ChartContainer config={config} className=\"w-full aspect-auto\" style={{ height }} aria-label={label}>\n        <RechartsPieChart accessibilityLayer>\n          <Tooltip content={<ChartTooltipContent nameKey=\"key\" hideLabel />} />\n          <Pie data={data} dataKey=\"value\" nameKey=\"key\" innerRadius={0} outerRadius={88} paddingAngle={2} isAnimationActive={false}>\n            {data.map((item, index) => <Cell key={item.key} fill={item.color ?? colorFor(index)} />)}\n          </Pie>\n          {showLegend && <ChartLegend content={<ChartLegendContent />} />}\n        </RechartsPieChart>\n      </ChartContainer>\n      <p className=\"text-center text-xs text-muted-foreground\">{centerLabel ?? `${formatPercentage(data[0].value, total)} of total`}</p>\n    </figure>\n  )\n}\n\nfunction formatPercentage(value: number, total: number) {\n  return `${Math.round(value / Math.max(total, 1) * 100)}%`\n}\n",
+      "type": "registry:ui",
+      "target": "src/components/ui/pie-chart.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

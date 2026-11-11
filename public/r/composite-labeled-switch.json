@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "composite-labeled-switch",
+  "title": "composite-labeled-switch",
+  "description": "RoseUI composite-labeled-switch component.",
+  "registryDependencies": [
+    "switch",
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/composite/labeled-switch.tsx",
+      "content": "\"use client\";\n\nimport { type ComponentProps, type ReactNode, useId } from \"react\";\n\nimport { Switch } from \"@/components/ui/switch\";\nimport { cn } from \"@/lib/utils\";\n\nexport function LabeledSwitch({\n  label,\n  description,\n  id,\n  className,\n  containerClassName,\n  ...props\n}: Omit<ComponentProps<typeof Switch>, \"id\" | \"aria-label\" | \"aria-labelledby\"> & {\n  label: ReactNode;\n  description?: ReactNode;\n  id?: string;\n  containerClassName?: string;\n}) {\n  const generatedId = useId();\n  const controlId = id ?? generatedId;\n  const labelId = `${controlId}-label`;\n  const descriptionId = description ? `${controlId}-description` : undefined;\n\n  return (\n    <label\n      className={cn(\n        \"flex cursor-pointer items-start justify-between gap-4 rounded-xl border bg-card p-4 transition-colors has-[[data-state=checked]]:bg-primary/[0.04] has-[[data-disabled]]:cursor-not-allowed has-[[data-disabled]]:opacity-60\",\n        containerClassName,\n      )}\n    >\n      <div className=\"grid min-w-0 gap-1\">\n        <span id={labelId} className=\"text-sm font-medium leading-5\">\n          {label}\n        </span>\n        {description && (\n          <span id={descriptionId} className=\"text-xs leading-5 text-muted-foreground\">\n            {description}\n          </span>\n        )}\n      </div>\n      <Switch\n        {...props}\n        id={controlId}\n        aria-labelledby={labelId}\n        aria-describedby={descriptionId}\n        className={cn(\"mt-0.5\", className)}\n      />\n    </label>\n  );\n}\n",
+      "type": "registry:component",
+      "target": "src/components/composite/labeled-switch.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "surface",
+  "title": "surface",
+  "description": "RoseUI surface component.",
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/surface.tsx",
+      "content": "import * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\ntype SurfaceVariant = \"default\" | \"secondary\" | \"tertiary\" | \"transparent\"\n\nfunction Surface({\n  className,\n  variant = \"default\",\n  ...props\n}: React.ComponentProps<\"div\"> & { variant?: SurfaceVariant }) {\n  return (\n    <div\n      data-slot=\"surface\"\n      data-variant={variant}\n      className={cn(\n        \"rounded-xl border border-border text-card-foreground\",\n        variant === \"default\" && \"bg-card\",\n        variant === \"secondary\" && \"bg-muted/50\",\n        variant === \"tertiary\" && \"bg-muted\",\n        variant === \"transparent\" && \"bg-transparent\",\n        className,\n      )}\n      {...props}\n    />\n  )\n}\n\nexport { Surface }\nexport type { SurfaceVariant }\n",
+      "type": "registry:ui",
+      "target": "src/components/ui/surface.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

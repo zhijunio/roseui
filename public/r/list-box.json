@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "list-box",
+  "title": "list-box",
+  "description": "RoseUI list-box component.",
+  "dependencies": [
+    "@tabler/icons-react",
+    "react-aria-components"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/list-box.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport {\n  Header as AriaHeader,\n  ListBox as AriaListBox,\n  ListBoxItem as AriaListBoxItem,\n  ListBoxSection as AriaListBoxSection,\n  type ListBoxItemProps as AriaListBoxItemProps,\n  type ListBoxProps as AriaListBoxProps,\n  type ListBoxSectionProps as AriaListBoxSectionProps,\n} from \"react-aria-components\"\nimport { IconCheck } from \"@tabler/icons-react\"\n\nimport { cn } from \"@/lib/utils\"\n\ntype ListBoxProps<T extends object> = Omit<AriaListBoxProps<T>, \"className\"> & {\n  className?: string\n}\n\nfunction ListBox<T extends object>({ className, ...props }: ListBoxProps<T>) {\n  return (\n    <AriaListBox<T>\n      data-slot=\"list-box\"\n      className={cn(\n        \"flex max-h-80 w-full min-w-48 flex-col gap-0.5 overflow-auto rounded-lg border bg-card p-1.5 outline-none focus-visible:ring-2 focus-visible:ring-ring/50\",\n        className,\n      )}\n      {...props}\n    />\n  )\n}\n\ntype ListBoxItemProps<T extends object> = Omit<\n  AriaListBoxItemProps<T>,\n  \"children\" | \"className\"\n> & {\n  children: React.ReactNode\n  className?: string\n  indicator?: React.ReactNode\n  variant?: \"default\" | \"danger\"\n}\n\nfunction ListBoxItem<T extends object>({\n  children,\n  className,\n  indicator = <IconCheck aria-hidden=\"true\" className=\"size-4\" />,\n  variant = \"default\",\n  ...props\n}: ListBoxItemProps<T>) {\n  return (\n    <AriaListBoxItem<T>\n      data-slot=\"list-box-item\"\n      data-variant={variant}\n      className={cn(\n        \"group/list-box-item relative flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm outline-none motion-safe:transition-colors hover:bg-accent hover:text-secondary-foreground focus-visible:bg-accent focus-visible:text-secondary-foreground data-[selected=true]:bg-accent data-[selected=true]:text-secondary-foreground data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50\",\n        variant === \"danger\" && \"text-destructive hover:bg-destructive/10 hover:text-destructive focus-visible:bg-destructive/10 focus-visible:text-destructive data-[selected=true]:bg-destructive/10 data-[selected=true]:text-destructive\",\n        className,\n      )}\n      {...props}\n    >\n      {children}\n      <span\n        aria-hidden=\"true\"\n        data-slot=\"list-box-item-indicator\"\n        className=\"ml-auto inline-flex shrink-0 opacity-0 group-data-[selected=true]/list-box-item:opacity-100\"\n      >\n        {indicator}\n      </span>\n    </AriaListBoxItem>\n  )\n}\n\ntype ListBoxSectionProps<T extends object> = Omit<\n  AriaListBoxSectionProps<T>,\n  \"className\"\n> & {\n  className?: string\n}\n\nfunction ListBoxSection<T extends object>({ className, ...props }: ListBoxSectionProps<T>) {\n  return (\n    <AriaListBoxSection\n      data-slot=\"list-box-section\"\n      className={cn(\"not-first:mt-1 not-first:border-t not-first:border-border\", className)}\n      {...props}\n    />\n  )\n}\n\nfunction ListBoxHeader({ className, ...props }: React.ComponentProps<typeof AriaHeader>) {\n  return (\n    <AriaHeader\n      data-slot=\"list-box-header\"\n      className={cn(\"px-3 pb-1 pt-2 text-xs font-medium text-muted-foreground\", className)}\n      {...props}\n    />\n  )\n}\n\nexport { ListBox, ListBoxHeader, ListBoxItem, ListBoxSection }\n",
+      "type": "registry:ui",
+      "target": "src/components/ui/list-box.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

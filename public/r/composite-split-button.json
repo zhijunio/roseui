@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "composite-split-button",
+  "title": "composite-split-button",
+  "description": "RoseUI composite-split-button component.",
+  "dependencies": [
+    "@tabler/icons-react"
+  ],
+  "registryDependencies": [
+    "button",
+    "composite-button-group",
+    "dropdown-menu"
+  ],
+  "files": [
+    {
+      "path": "src/components/composite/split-button.tsx",
+      "content": "\"use client\";\n\nimport { IconChevronDown } from \"@tabler/icons-react\";\n\nimport { ButtonGroup } from \"@/components/composite/button-group\";\nimport { Button } from \"@/components/ui/button\";\nimport {\n  DropdownMenu,\n  DropdownMenuContent,\n  DropdownMenuItem,\n  DropdownMenuTrigger,\n} from \"@/components/ui/dropdown-menu\";\n\nexport type SplitButtonOption = {\n  id: string;\n  label: string;\n  disabled?: boolean;\n};\n\nexport function SplitButton({\n  label,\n  options,\n  onAction,\n  onOptionSelect,\n  disabled = false,\n}: {\n  label: string;\n  options: readonly SplitButtonOption[];\n  onAction: () => void;\n  onOptionSelect: (option: SplitButtonOption) => void;\n  disabled?: boolean;\n}) {\n  return (\n    <ButtonGroup aria-label={`${label} actions`}>\n      <Button onClick={onAction} disabled={disabled}>\n        {label}\n      </Button>\n      <DropdownMenu>\n        <DropdownMenuTrigger asChild>\n          <Button\n            variant=\"default\"\n            size=\"icon\"\n            aria-label={`${label} options`}\n            aria-haspopup=\"menu\"\n            disabled={disabled}\n          >\n            <IconChevronDown aria-hidden=\"true\" />\n          </Button>\n        </DropdownMenuTrigger>\n        <DropdownMenuContent align=\"end\">\n          {options.map((option) => (\n            <DropdownMenuItem key={option.id} disabled={option.disabled} onSelect={() => onOptionSelect(option)}>\n              {option.label}\n            </DropdownMenuItem>\n          ))}\n        </DropdownMenuContent>\n      </DropdownMenu>\n    </ButtonGroup>\n  );\n}\n",
+      "type": "registry:component",
+      "target": "src/components/composite/split-button.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

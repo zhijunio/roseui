@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "radar-chart",
+  "title": "radar-chart",
+  "description": "RoseUI radar-chart component.",
+  "dependencies": [
+    "recharts"
+  ],
+  "registryDependencies": [
+    "chart"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/radar-chart.tsx",
+      "content": "\"use client\"\n\nimport { useId, useState } from \"react\"\nimport { PolarAngleAxis, PolarGrid, Radar, RadarChart as RechartsRadarChart, Tooltip } from \"recharts\"\nimport { ChartContainer, ChartLegend, ChartLegendContent, ChartTooltipContent, type ChartConfig } from \"@/components/ui/chart\"\n\nexport type RadarChartDatum = { key: string; label: string; values: Readonly<Record<string, number>> }\nexport type RadarChartSeries = { key: string; label: string; color?: string }\nexport type RadarChartProps = { data: readonly RadarChartDatum[]; series: readonly RadarChartSeries[]; label: string; max?: number; height?: number }\n\nfunction colorFor(index: number) { return `var(--chart-${(index % 5) + 1})` }\n\nexport function RadarChart({ data, series, label, max, height = 280 }: RadarChartProps) {\n  const id = useId()\n  const [activeAxis, setActiveAxis] = useState(0)\n  const [activeSeries, setActiveSeries] = useState<string | null>(null)\n  const config: ChartConfig = Object.fromEntries(series.map((item, index) => [item.key, { label: item.label, color: item.color ?? colorFor(index) }]))\n  const plotData = data.map((item) => ({ ...item.values, category: item.label }))\n  return (\n    <figure className=\"grid w-full gap-3\" aria-labelledby={`${id}-title`}>\n      <figcaption className=\"sr-only\" id={`${id}-title`}>{label}</figcaption>\n      <ChartContainer config={config} className=\"w-full aspect-auto\" style={{ height }} aria-label={label} tabIndex={0} onKeyDown={(event) => { if (event.key === \"ArrowRight\" || event.key === \"ArrowDown\") { event.preventDefault(); setActiveAxis((current) => (current + 1) % data.length); } if (event.key === \"ArrowLeft\" || event.key === \"ArrowUp\") { event.preventDefault(); setActiveAxis((current) => (current - 1 + data.length) % data.length); } }}>\n        <RechartsRadarChart accessibilityLayer data={plotData}>\n          <PolarGrid />\n          <PolarAngleAxis dataKey=\"category\" tick={({ payload, x, y, textAnchor }) => <text x={x} y={y} textAnchor={textAnchor} fill={payload.index === activeAxis ? \"var(--foreground)\" : \"var(--muted-foreground)\"} fontSize={14} fontWeight={payload.index === activeAxis ? 600 : 400}>{payload.value}</text>} />\n          {series.map((item, index) => <Radar key={item.key} dataKey={item.key} stroke={item.color ?? colorFor(index)} fill={item.color ?? colorFor(index)} fillOpacity={activeSeries === null || activeSeries === item.key ? 0.2 : 0.04} strokeWidth={activeSeries === item.key ? 3 : 2} isAnimationActive animationDuration={520} animationEasing=\"ease-out\" {...(max === undefined ? {} : { dot: false })} />)}\n          <Tooltip content={<ChartTooltipContent />} />\n          {series.length > 1 && <ChartLegend content={<ChartLegendContent />} onMouseEnter={(entry) => { if (entry && \"dataKey\" in entry && typeof entry.dataKey === \"string\") setActiveSeries(entry.dataKey); }} onMouseLeave={() => setActiveSeries(null)} />}\n        </RechartsRadarChart>\n      </ChartContainer>\n      <div className=\"overflow-x-auto rounded-md border border-border\"><table className=\"w-full min-w-[30rem] text-left text-xs\"><caption className=\"sr-only\">{label} data</caption><thead><tr className=\"border-b bg-muted/40 text-muted-foreground\"><th className=\"px-3 py-2 font-medium\">Axis</th>{series.map((item) => <th key={item.key} className=\"px-3 py-2 text-right font-medium\">{item.label}</th>)}</tr></thead><tbody>{data.map((datum, index) => <tr key={datum.key} className={index === activeAxis ? \"bg-primary/5\" : undefined}><th className=\"px-3 py-2 font-medium\">{datum.label}</th>{series.map((item) => <td key={item.key} className=\"px-3 py-2 text-right tabular-nums\">{datum.values[item.key] ?? 0}</td>)}</tr>)}</tbody></table></div>\n    </figure>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "src/components/ui/radar-chart.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

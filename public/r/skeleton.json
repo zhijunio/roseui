@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "skeleton",
+  "title": "skeleton",
+  "description": "RoseUI skeleton component.",
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/skeleton.tsx",
+      "content": "import { cn } from \"@/lib/utils\"\n\nfunction Skeleton({ className, animationType = \"pulse\", ...props }: React.ComponentProps<\"div\"> & {\n  animationType?: \"pulse\" | \"shimmer\" | \"none\"\n}) {\n  return (\n    <div\n      data-slot=\"skeleton\"\n      data-animation={animationType}\n      className={cn(\n        \"rounded-md bg-muted\",\n        animationType === \"pulse\" && \"motion-safe:animate-pulse\",\n        animationType === \"shimmer\" && \"bg-[linear-gradient(90deg,var(--muted)_25%,color-mix(in_oklch,var(--muted),var(--foreground)_12%)_50%,var(--muted)_75%)] bg-[length:200%_100%] motion-safe:animate-skeleton-shimmer\",\n        className\n      )}\n      {...props}\n    />\n  )\n}\n\nexport { Skeleton }\n",
+      "type": "registry:ui",
+      "target": "src/components/ui/skeleton.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

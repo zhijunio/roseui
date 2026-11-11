@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "use-controlled-state",
+  "title": "use-controlled-state",
+  "description": "RoseUI use-controlled-state hook.",
+  "files": [
+    {
+      "path": "src/hooks/use-controlled-state.ts",
+      "content": "\"use client\";\n\nimport { useState } from \"react\";\n\ntype UseControlledStateOptions<T> = {\n  value: T | undefined;\n  defaultValue: T;\n  onChange?: (value: T) => void;\n};\n\nexport function useControlledState<T>({ value, defaultValue, onChange }: UseControlledStateOptions<T>) {\n  const [internalValue, setInternalValue] = useState(defaultValue);\n  const isControlled = value !== undefined;\n  const currentValue = value !== undefined ? value : internalValue;\n\n  function setValue(nextValue: T) {\n    if (!isControlled) setInternalValue(nextValue);\n    onChange?.(nextValue);\n  }\n\n  return [currentValue, setValue] as const;\n}\n",
+      "type": "registry:hook",
+      "target": "src/hooks/use-controlled-state.ts"
+    }
+  ],
+  "type": "registry:hook"
+}

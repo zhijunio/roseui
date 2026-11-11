@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "composite-avatar-group",
+  "title": "composite-avatar-group",
+  "description": "RoseUI composite-avatar-group component.",
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/composite/avatar-group.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\n\nimport { cn } from \"@/lib/utils\";\n\nfunction flattenChildren(children: React.ReactNode): React.ReactNode[] {\n  return React.Children.toArray(children).flatMap((child) => {\n    if (React.isValidElement<{ children?: React.ReactNode }>(child) && child.type === React.Fragment) {\n      return flattenChildren(child.props.children);\n    }\n    return [child];\n  });\n}\n\nfunction AvatarGroup({\n  className,\n  children,\n  max,\n  layout = \"stack\",\n  overlap = \"ring\",\n  role = \"group\",\n  ...props\n}: React.ComponentProps<\"div\"> & {\n  max?: number;\n  layout?: \"stack\" | \"grid\";\n  overlap?: \"ring\" | \"none\";\n}) {\n  const childArray = flattenChildren(children);\n  const countChild = childArray.find((child) => React.isValidElement(child) && child.type === AvatarGroupCount);\n  const avatarChildren = countChild ? childArray.filter((child) => child !== countChild) : childArray;\n  const visibleLimit = max === undefined ? avatarChildren.length : Math.max(0, Math.floor(max));\n  const visibleChildren = avatarChildren.slice(0, visibleLimit);\n  const overflowCount = Math.max(0, avatarChildren.length - visibleLimit);\n\n  return (\n    <div\n      data-slot=\"avatar-group\"\n      data-layout={layout}\n      data-overlap={overlap}\n      role={role}\n      className={cn(\n        \"group/avatar-group flex\",\n        overlap === \"ring\" && \"*:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-background\",\n        layout === \"stack\" && \"-space-x-2\",\n        layout === \"grid\" && \"flex-wrap gap-2\",\n        className,\n      )}\n      {...props}\n    >\n      {visibleChildren}\n      {countChild ??\n        (overflowCount > 0 ? <AvatarGroupCount aria-hidden=\"true\">+{overflowCount}</AvatarGroupCount> : null)}\n    </div>\n  );\n}\n\nfunction AvatarGroupCount({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"avatar-group-count\"\n      className={cn(\n        \"relative flex size-8 shrink-0 items-center justify-center rounded-full bg-muted text-sm text-muted-foreground ring-2 ring-background group-has-data-[size=lg]/avatar-group:size-10 group-has-data-[size=sm]/avatar-group:size-6 [&>svg]:size-4 group-has-data-[size=lg]/avatar-group:[&>svg]:size-5 group-has-data-[size=sm]/avatar-group:[&>svg]:size-3\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nexport { AvatarGroup, AvatarGroupCount };\n",
+      "type": "registry:component",
+      "target": "src/components/composite/avatar-group.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,21 @@
+.figure { display: grid; min-width: 0; gap: 0.75rem; margin: 0; color: var(--foreground); font-family: var(--font-sans); letter-spacing: 0; }
+.head { display: flex; min-width: 0; align-items: start; justify-content: space-between; gap: 1rem; }
+.now { display: flex; align-items: baseline; min-width: 0; margin: 0; color: var(--foreground); font-family: var(--font-sans); font-size: 1.875rem; font-weight: 500; letter-spacing: 0; line-height: 1; font-variant-numeric: tabular-nums; }
+.unit { margin-left: 6px; color: var(--muted-foreground); font-family: var(--font-sans); font-size: 1rem; font-weight: 400; letter-spacing: 0; }
+.status { display: inline-flex; min-height: 36px; align-items: center; gap: 8px; padding: 0 12px; border: 1px solid var(--border); border-radius: 9999px; background: var(--card); color: var(--muted-foreground); cursor: pointer; font: inherit; font-size: 0.875rem; line-height: 1.5; transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1), color 150ms cubic-bezier(0.4, 0, 0.2, 1), transform 100ms cubic-bezier(0.4, 0, 0.2, 1); }
+.status:hover { background: var(--muted); color: var(--foreground); }
+.status:active { transform: scale(.97); }
+.statusDot { width: 7px; height: 7px; flex: none; border-radius: 50%; background: var(--success); }
+.status[aria-pressed="true"] .statusDot { background: var(--muted-foreground); }
+.plot { position: relative; min-width: 0; height: 200px; outline: none; touch-action: pan-y; }
+.canvas { display: block; width: 100%; height: 100%; }
+.tooltip { position: absolute; z-index: 1; min-width: 112px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 14px; background: var(--popover); box-shadow: var(--shadow-lg); pointer-events: none; transform: translate(-50%, calc(-100% - 12px)); }
+.tipValue, .tipMeta { margin: 0; font-variant-numeric: tabular-nums; }
+.tipValue { color: var(--foreground); font-size: 1rem; font-weight: 500; line-height: 1.5; white-space: nowrap; }
+.tipMeta { margin-top: 2px; color: var(--muted-foreground); font-size: 0.75rem; line-height: 1.5; white-space: nowrap; }
+.srOnly { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+@media (max-width: 520px) {
+  .head { align-items: start; }
+  .status { min-height: 32px; padding-inline: 10px; }
+  .plot { height: 180px; }
+}

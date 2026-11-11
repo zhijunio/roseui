@@ -1,0 +1,3205 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "roseui",
+  "homepage": "https://github.com/zhijunio/roseui",
+  "items": [
+    {
+      "name": "accordion",
+      "type": "registry:ui",
+      "title": "accordion",
+      "description": "RoseUI accordion component.",
+      "dependencies": ["@tabler/icons-react", "radix-ui"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/accordion.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/accordion.tsx"
+        }
+      ]
+    },
+    {
+      "name": "activity-heatmap",
+      "type": "registry:ui",
+      "title": "activity-heatmap",
+      "description": "RoseUI activity-heatmap component.",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "src/components/ui/activity-heatmap.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/activity-heatmap.tsx"
+        },
+        {
+          "path": "src/components/ui/activity-heatmap.module.css",
+          "type": "registry:file",
+          "target": "src/components/ui/activity-heatmap.module.css"
+        }
+      ]
+    },
+    {
+      "name": "alert-dialog",
+      "type": "registry:ui",
+      "title": "alert-dialog",
+      "description": "RoseUI alert-dialog component.",
+      "dependencies": ["radix-ui"],
+      "registryDependencies": ["button", "utils"],
+      "files": [
+        {
+          "path": "src/components/ui/alert-dialog.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/alert-dialog.tsx"
+        }
+      ]
+    },
+    {
+      "name": "alert",
+      "type": "registry:ui",
+      "title": "alert",
+      "description": "RoseUI alert component.",
+      "dependencies": ["class-variance-authority"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/alert.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/alert.tsx"
+        }
+      ]
+    },
+    {
+      "name": "animated-counter",
+      "type": "registry:ui",
+      "title": "animated-counter",
+      "description": "RoseUI animated-counter component.",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "src/components/ui/animated-counter.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/animated-counter.tsx"
+        },
+        {
+          "path": "src/components/ui/animated-counter.module.css",
+          "type": "registry:file",
+          "target": "src/components/ui/animated-counter.module.css"
+        }
+      ]
+    },
+    {
+      "name": "announcement",
+      "type": "registry:ui",
+      "title": "announcement",
+      "description": "RoseUI announcement component.",
+      "dependencies": ["@tabler/icons-react", "motion"],
+      "registryDependencies": ["button", "close-button", "utils"],
+      "files": [
+        {
+          "path": "src/components/ui/announcement.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/announcement.tsx"
+        }
+      ]
+    },
+    {
+      "name": "area-chart",
+      "type": "registry:ui",
+      "title": "area-chart",
+      "description": "RoseUI area-chart component.",
+      "dependencies": ["recharts"],
+      "registryDependencies": ["chart"],
+      "files": [
+        {
+          "path": "src/components/ui/area-chart.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/area-chart.tsx"
+        }
+      ]
+    },
+    {
+      "name": "aspect-ratio",
+      "type": "registry:ui",
+      "title": "aspect-ratio",
+      "description": "RoseUI aspect-ratio component.",
+      "dependencies": ["radix-ui"],
+      "files": [
+        {
+          "path": "src/components/ui/aspect-ratio.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/aspect-ratio.tsx"
+        }
+      ]
+    },
+    {
+      "name": "attachment",
+      "type": "registry:ui",
+      "title": "attachment",
+      "description": "RoseUI attachment component.",
+      "dependencies": ["class-variance-authority", "radix-ui"],
+      "registryDependencies": ["button", "utils"],
+      "files": [
+        {
+          "path": "src/components/ui/attachment.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/attachment.tsx"
+        }
+      ]
+    },
+    {
+      "name": "avatar",
+      "type": "registry:ui",
+      "title": "avatar",
+      "description": "RoseUI avatar component.",
+      "dependencies": ["radix-ui"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/avatar.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/avatar.tsx"
+        }
+      ]
+    },
+    {
+      "name": "badge",
+      "type": "registry:ui",
+      "title": "badge",
+      "description": "RoseUI badge component.",
+      "dependencies": ["class-variance-authority", "radix-ui"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/badge.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/badge.tsx"
+        }
+      ]
+    },
+    {
+      "name": "bar-chart",
+      "type": "registry:ui",
+      "title": "bar-chart",
+      "description": "RoseUI bar-chart component.",
+      "dependencies": ["recharts"],
+      "registryDependencies": ["chart"],
+      "files": [
+        {
+          "path": "src/components/ui/bar-chart.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/bar-chart.tsx"
+        }
+      ]
+    },
+    {
+      "name": "breadcrumb",
+      "type": "registry:ui",
+      "title": "breadcrumb",
+      "description": "RoseUI breadcrumb component.",
+      "dependencies": ["@tabler/icons-react", "radix-ui"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/breadcrumb.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/breadcrumb.tsx"
+        }
+      ]
+    },
+    {
+      "name": "brush-chart",
+      "type": "registry:ui",
+      "title": "brush-chart",
+      "description": "RoseUI brush-chart component.",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "src/components/ui/brush-chart.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/brush-chart.tsx"
+        },
+        {
+          "path": "src/components/ui/brush-chart.module.css",
+          "type": "registry:file",
+          "target": "src/components/ui/brush-chart.module.css"
+        }
+      ]
+    },
+    {
+      "name": "bubble",
+      "type": "registry:ui",
+      "title": "bubble",
+      "description": "RoseUI bubble component.",
+      "dependencies": ["class-variance-authority"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/bubble.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/bubble.tsx"
+        }
+      ]
+    },
+    {
+      "name": "button-group",
+      "type": "registry:ui",
+      "title": "button-group",
+      "description": "RoseUI button-group component.",
+      "dependencies": ["class-variance-authority", "radix-ui"],
+      "registryDependencies": ["separator", "utils"],
+      "files": [
+        {
+          "path": "src/components/ui/button-group.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/button-group.tsx"
+        }
+      ]
+    },
+    {
+      "name": "button",
+      "type": "registry:ui",
+      "title": "button",
+      "description": "RoseUI button component.",
+      "dependencies": ["class-variance-authority", "radix-ui"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/button.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/button.tsx"
+        }
+      ]
+    },
+    {
+      "name": "calendar",
+      "type": "registry:ui",
+      "title": "calendar",
+      "description": "RoseUI calendar component.",
+      "dependencies": ["@tabler/icons-react", "react-day-picker"],
+      "registryDependencies": ["button", "utils"],
+      "files": [
+        {
+          "path": "src/components/ui/calendar.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/calendar.tsx"
+        }
+      ]
+    },
+    {
+      "name": "card",
+      "type": "registry:ui",
+      "title": "card",
+      "description": "RoseUI card component.",
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/card.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/card.tsx"
+        }
+      ]
+    },
+    {
+      "name": "carousel",
+      "type": "registry:ui",
+      "title": "carousel",
+      "description": "RoseUI carousel component.",
+      "dependencies": ["embla-carousel-react", "lucide-react"],
+      "registryDependencies": ["button", "utils"],
+      "files": [
+        {
+          "path": "src/components/ui/carousel.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/carousel.tsx"
+        }
+      ]
+    },
+    {
+      "name": "chart",
+      "type": "registry:ui",
+      "title": "chart",
+      "description": "RoseUI chart component.",
+      "dependencies": ["recharts"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/chart.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/chart.tsx"
+        }
+      ]
+    },
+    {
+      "name": "checkbox",
+      "type": "registry:ui",
+      "title": "checkbox",
+      "description": "RoseUI checkbox component.",
+      "dependencies": ["@tabler/icons-react", "radix-ui"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/checkbox.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/checkbox.tsx"
+        }
+      ]
+    },
+    {
+      "name": "chip",
+      "type": "registry:ui",
+      "title": "chip",
+      "description": "RoseUI chip component.",
+      "dependencies": ["class-variance-authority"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/chip.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/chip.tsx"
+        }
+      ]
+    },
+    {
+      "name": "close-button",
+      "type": "registry:ui",
+      "title": "close-button",
+      "description": "RoseUI close-button component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/close-button.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/close-button.tsx"
+        }
+      ]
+    },
+    {
+      "name": "code-block",
+      "type": "registry:ui",
+      "title": "code-block",
+      "description": "RoseUI code-block component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["button", "utils"],
+      "files": [
+        {
+          "path": "src/components/ui/code-block.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/code-block.tsx"
+        }
+      ]
+    },
+    {
+      "name": "collapsible",
+      "type": "registry:ui",
+      "title": "collapsible",
+      "description": "RoseUI collapsible component.",
+      "dependencies": ["radix-ui"],
+      "files": [
+        {
+          "path": "src/components/ui/collapsible.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/collapsible.tsx"
+        }
+      ]
+    },
+    {
+      "name": "color-area",
+      "type": "registry:ui",
+      "title": "color-area",
+      "description": "RoseUI color-area component.",
+      "dependencies": ["react-aria-components"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/color-area.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/color-area.tsx"
+        }
+      ]
+    },
+    {
+      "name": "color-field",
+      "type": "registry:ui",
+      "title": "color-field",
+      "description": "RoseUI color-field component.",
+      "dependencies": ["react-aria-components"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/color-field.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/color-field.tsx"
+        }
+      ]
+    },
+    {
+      "name": "color-slider",
+      "type": "registry:ui",
+      "title": "color-slider",
+      "description": "RoseUI color-slider component.",
+      "dependencies": ["react-aria-components"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/color-slider.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/color-slider.tsx"
+        }
+      ]
+    },
+    {
+      "name": "color-swatch-picker",
+      "type": "registry:ui",
+      "title": "color-swatch-picker",
+      "description": "RoseUI color-swatch-picker component.",
+      "dependencies": ["react-aria-components"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/color-swatch-picker.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/color-swatch-picker.tsx"
+        }
+      ]
+    },
+    {
+      "name": "color-swatch",
+      "type": "registry:ui",
+      "title": "color-swatch",
+      "description": "RoseUI color-swatch component.",
+      "dependencies": ["react-aria-components"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/color-swatch.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/color-swatch.tsx"
+        }
+      ]
+    },
+    {
+      "name": "combobox",
+      "type": "registry:ui",
+      "title": "combobox",
+      "description": "RoseUI combobox component.",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["button", "command", "input", "popover", "utils"],
+      "files": [
+        {
+          "path": "src/components/ui/combobox.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/combobox.tsx"
+        }
+      ]
+    },
+    {
+      "name": "command",
+      "type": "registry:ui",
+      "title": "command",
+      "description": "RoseUI command component.",
+      "dependencies": ["cmdk", "lucide-react"],
+      "registryDependencies": ["dialog", "input-group", "utils"],
+      "files": [
+        {
+          "path": "src/components/ui/command.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/command.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composed-chart",
+      "type": "registry:ui",
+      "title": "composed-chart",
+      "description": "RoseUI composed-chart component.",
+      "dependencies": ["recharts"],
+      "registryDependencies": ["chart"],
+      "files": [
+        {
+          "path": "src/components/ui/composed-chart.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/composed-chart.tsx"
+        }
+      ]
+    },
+    {
+      "name": "context-menu",
+      "type": "registry:ui",
+      "title": "context-menu",
+      "description": "RoseUI context-menu component.",
+      "dependencies": ["@tabler/icons-react", "radix-ui"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/context-menu.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/context-menu.tsx"
+        }
+      ]
+    },
+    {
+      "name": "date-field",
+      "type": "registry:ui",
+      "title": "date-field",
+      "description": "RoseUI date-field component.",
+      "dependencies": ["@internationalized/date", "react-aria-components"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/date-field.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/date-field.tsx"
+        }
+      ]
+    },
+    {
+      "name": "dialog",
+      "type": "registry:ui",
+      "title": "dialog",
+      "description": "RoseUI dialog component.",
+      "dependencies": ["@tabler/icons-react", "radix-ui"],
+      "registryDependencies": ["button", "utils"],
+      "files": [
+        {
+          "path": "src/components/ui/dialog.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/dialog.tsx"
+        }
+      ]
+    },
+    {
+      "name": "direction",
+      "type": "registry:ui",
+      "title": "direction",
+      "description": "RoseUI direction component.",
+      "dependencies": ["radix-ui"],
+      "files": [
+        {
+          "path": "src/components/ui/direction.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/direction.tsx"
+        }
+      ]
+    },
+    {
+      "name": "donut-chart",
+      "type": "registry:ui",
+      "title": "donut-chart",
+      "description": "RoseUI donut-chart component.",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "src/components/ui/donut-chart.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/donut-chart.tsx"
+        },
+        {
+          "path": "src/components/ui/donut-chart.module.css",
+          "type": "registry:file",
+          "target": "src/components/ui/donut-chart.module.css"
+        }
+      ]
+    },
+    {
+      "name": "drawer",
+      "type": "registry:ui",
+      "title": "drawer",
+      "description": "RoseUI drawer component.",
+      "dependencies": ["vaul"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/drawer.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/drawer.tsx"
+        }
+      ]
+    },
+    {
+      "name": "dropdown-menu",
+      "type": "registry:ui",
+      "title": "dropdown-menu",
+      "description": "RoseUI dropdown-menu component.",
+      "dependencies": ["@tabler/icons-react", "radix-ui"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/dropdown-menu.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/dropdown-menu.tsx"
+        }
+      ]
+    },
+    {
+      "name": "elastic-slider",
+      "type": "registry:ui",
+      "title": "elastic-slider",
+      "description": "RoseUI elastic-slider component.",
+      "dependencies": ["motion", "radix-ui"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/elastic-slider.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/elastic-slider.tsx"
+        }
+      ]
+    },
+    {
+      "name": "empty",
+      "type": "registry:ui",
+      "title": "empty",
+      "description": "RoseUI empty component.",
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/empty.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/empty.tsx"
+        }
+      ]
+    },
+    {
+      "name": "error-message",
+      "type": "registry:ui",
+      "title": "error-message",
+      "description": "RoseUI error-message component.",
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/error-message.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/error-message.tsx"
+        }
+      ]
+    },
+    {
+      "name": "field",
+      "type": "registry:ui",
+      "title": "field",
+      "description": "RoseUI field component.",
+      "dependencies": ["class-variance-authority"],
+      "registryDependencies": ["label", "separator", "utils"],
+      "files": [
+        {
+          "path": "src/components/ui/field.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/field.tsx"
+        }
+      ]
+    },
+    {
+      "name": "file-type",
+      "type": "registry:ui",
+      "title": "file-type",
+      "description": "RoseUI file-type component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/file-type.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/file-type.tsx"
+        }
+      ]
+    },
+    {
+      "name": "form",
+      "type": "registry:ui",
+      "title": "form",
+      "description": "RoseUI form component.",
+      "dependencies": ["radix-ui"],
+      "files": [
+        {
+          "path": "src/components/ui/form.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/form.tsx"
+        }
+      ]
+    },
+    {
+      "name": "frame",
+      "type": "registry:ui",
+      "title": "frame",
+      "description": "RoseUI frame component.",
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/frame.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/frame.tsx"
+        }
+      ]
+    },
+    {
+      "name": "funnel-chart",
+      "type": "registry:ui",
+      "title": "funnel-chart",
+      "description": "RoseUI funnel-chart component.",
+      "files": [
+        {
+          "path": "src/components/ui/funnel-chart.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/funnel-chart.tsx"
+        }
+      ]
+    },
+    {
+      "name": "gauge",
+      "type": "registry:ui",
+      "title": "gauge",
+      "description": "RoseUI gauge component.",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "src/components/ui/gauge.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/gauge.tsx"
+        },
+        {
+          "path": "src/components/ui/gauge.module.css",
+          "type": "registry:file",
+          "target": "src/components/ui/gauge.module.css"
+        }
+      ]
+    },
+    {
+      "name": "heatmap-chart",
+      "type": "registry:ui",
+      "title": "heatmap-chart",
+      "description": "RoseUI heatmap-chart component.",
+      "files": [
+        {
+          "path": "src/components/ui/heatmap-chart.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/heatmap-chart.tsx"
+        }
+      ]
+    },
+    {
+      "name": "hint-text",
+      "type": "registry:ui",
+      "title": "hint-text",
+      "description": "RoseUI hint-text component.",
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/hint-text.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/hint-text.tsx"
+        }
+      ]
+    },
+    {
+      "name": "hover-card",
+      "type": "registry:ui",
+      "title": "hover-card",
+      "description": "RoseUI hover-card component.",
+      "dependencies": ["radix-ui"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/hover-card.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/hover-card.tsx"
+        }
+      ]
+    },
+    {
+      "name": "icon-stack",
+      "type": "registry:ui",
+      "title": "icon-stack",
+      "description": "RoseUI icon-stack component.",
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/icon-stack.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/icon-stack.tsx"
+        }
+      ]
+    },
+    {
+      "name": "icon-tile",
+      "type": "registry:ui",
+      "title": "icon-tile",
+      "description": "RoseUI icon-tile component.",
+      "dependencies": ["class-variance-authority", "radix-ui"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/icon-tile.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/icon-tile.tsx"
+        }
+      ]
+    },
+    {
+      "name": "input-group",
+      "type": "registry:ui",
+      "title": "input-group",
+      "description": "RoseUI input-group component.",
+      "dependencies": ["class-variance-authority"],
+      "registryDependencies": ["button", "input", "textarea", "utils"],
+      "files": [
+        {
+          "path": "src/components/ui/input-group.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/input-group.tsx"
+        }
+      ]
+    },
+    {
+      "name": "input-otp",
+      "type": "registry:ui",
+      "title": "input-otp",
+      "description": "RoseUI input-otp component.",
+      "dependencies": ["input-otp", "lucide-react"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/input-otp.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/input-otp.tsx"
+        }
+      ]
+    },
+    {
+      "name": "input",
+      "type": "registry:ui",
+      "title": "input",
+      "description": "RoseUI input component.",
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/input.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/input.tsx"
+        }
+      ]
+    },
+    {
+      "name": "item",
+      "type": "registry:ui",
+      "title": "item",
+      "description": "RoseUI item component.",
+      "registryDependencies": ["separator", "utils"],
+      "files": [
+        {
+          "path": "src/components/ui/item.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/item.tsx"
+        }
+      ]
+    },
+    {
+      "name": "json-viewer",
+      "type": "registry:ui",
+      "title": "json-viewer",
+      "description": "RoseUI json-viewer component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["button", "input"],
+      "files": [
+        {
+          "path": "src/components/ui/json-viewer.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/json-viewer.tsx"
+        }
+      ]
+    },
+    {
+      "name": "kbd",
+      "type": "registry:ui",
+      "title": "kbd",
+      "description": "RoseUI kbd component.",
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/kbd.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/kbd.tsx"
+        }
+      ]
+    },
+    {
+      "name": "label",
+      "type": "registry:ui",
+      "title": "label",
+      "description": "RoseUI label component.",
+      "dependencies": ["radix-ui"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/label.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/label.tsx"
+        }
+      ]
+    },
+    {
+      "name": "line-chart",
+      "type": "registry:ui",
+      "title": "line-chart",
+      "description": "RoseUI line-chart component.",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "src/components/ui/line-chart.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/line-chart.tsx"
+        },
+        {
+          "path": "src/components/ui/line-chart.module.css",
+          "type": "registry:file",
+          "target": "src/components/ui/line-chart.module.css"
+        }
+      ]
+    },
+    {
+      "name": "link-button",
+      "type": "registry:ui",
+      "title": "link-button",
+      "description": "RoseUI link-button component.",
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/link-button.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/link-button.tsx"
+        }
+      ]
+    },
+    {
+      "name": "link",
+      "type": "registry:ui",
+      "title": "link",
+      "description": "RoseUI link component.",
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/link.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/link.tsx"
+        }
+      ]
+    },
+    {
+      "name": "list-box",
+      "type": "registry:ui",
+      "title": "list-box",
+      "description": "RoseUI list-box component.",
+      "dependencies": ["@tabler/icons-react", "react-aria-components"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/list-box.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/list-box.tsx"
+        }
+      ]
+    },
+    {
+      "name": "logo-mark",
+      "type": "registry:ui",
+      "title": "logo-mark",
+      "description": "RoseUI logo-mark component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/logo-mark.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/logo-mark.tsx"
+        }
+      ]
+    },
+    {
+      "name": "map-chart",
+      "type": "registry:ui",
+      "title": "map-chart",
+      "description": "RoseUI map-chart component.",
+      "files": [
+        {
+          "path": "src/components/ui/map-chart.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/map-chart.tsx"
+        }
+      ]
+    },
+    {
+      "name": "marker",
+      "type": "registry:ui",
+      "title": "marker",
+      "description": "RoseUI marker component.",
+      "dependencies": ["radix-ui"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/marker.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/marker.tsx"
+        }
+      ]
+    },
+    {
+      "name": "mask-input",
+      "type": "registry:ui",
+      "title": "mask-input",
+      "description": "RoseUI mask-input component.",
+      "dependencies": ["use-mask-input"],
+      "registryDependencies": ["input"],
+      "files": [
+        {
+          "path": "src/components/ui/mask-input.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/mask-input.tsx"
+        }
+      ]
+    },
+    {
+      "name": "menubar",
+      "type": "registry:ui",
+      "title": "menubar",
+      "description": "RoseUI menubar component.",
+      "dependencies": ["@tabler/icons-react", "radix-ui"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/menubar.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/menubar.tsx"
+        }
+      ]
+    },
+    {
+      "name": "message-scroller",
+      "type": "registry:ui",
+      "title": "message-scroller",
+      "description": "RoseUI message-scroller component.",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["button", "utils"],
+      "files": [
+        {
+          "path": "src/components/ui/message-scroller.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/message-scroller.tsx"
+        }
+      ]
+    },
+    {
+      "name": "message",
+      "type": "registry:ui",
+      "title": "message",
+      "description": "RoseUI message component.",
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/message.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/message.tsx"
+        }
+      ]
+    },
+    {
+      "name": "meter",
+      "type": "registry:ui",
+      "title": "meter",
+      "description": "RoseUI meter component.",
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/meter.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/meter.tsx"
+        }
+      ]
+    },
+    {
+      "name": "metric-ticker",
+      "type": "registry:ui",
+      "title": "metric-ticker",
+      "description": "RoseUI metric-ticker component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["button", "utils"],
+      "files": [
+        {
+          "path": "src/components/ui/metric-ticker.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/metric-ticker.tsx"
+        }
+      ]
+    },
+    {
+      "name": "native-select",
+      "type": "registry:ui",
+      "title": "native-select",
+      "description": "RoseUI native-select component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/native-select.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/native-select.tsx"
+        }
+      ]
+    },
+    {
+      "name": "navbar",
+      "type": "registry:ui",
+      "title": "navbar",
+      "description": "RoseUI navbar component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["button", "utils"],
+      "files": [
+        {
+          "path": "src/components/ui/navbar.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/navbar.tsx"
+        }
+      ]
+    },
+    {
+      "name": "navigation-menu",
+      "type": "registry:ui",
+      "title": "navigation-menu",
+      "description": "RoseUI navigation-menu component.",
+      "dependencies": ["@tabler/icons-react", "radix-ui"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/navigation-menu.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/navigation-menu.tsx"
+        }
+      ]
+    },
+    {
+      "name": "number-value",
+      "type": "registry:ui",
+      "title": "number-value",
+      "description": "RoseUI number-value component.",
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/number-value.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/number-value.tsx"
+        }
+      ]
+    },
+    {
+      "name": "pagination",
+      "type": "registry:ui",
+      "title": "pagination",
+      "description": "RoseUI pagination component.",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["button", "utils"],
+      "files": [
+        {
+          "path": "src/components/ui/pagination.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/pagination.tsx"
+        }
+      ]
+    },
+    {
+      "name": "pie-chart",
+      "type": "registry:ui",
+      "title": "pie-chart",
+      "description": "RoseUI pie-chart component.",
+      "dependencies": ["recharts"],
+      "registryDependencies": ["chart"],
+      "files": [
+        {
+          "path": "src/components/ui/pie-chart.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/pie-chart.tsx"
+        }
+      ]
+    },
+    {
+      "name": "popover",
+      "type": "registry:ui",
+      "title": "popover",
+      "description": "RoseUI popover component.",
+      "dependencies": ["radix-ui"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/popover.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/popover.tsx"
+        }
+      ]
+    },
+    {
+      "name": "progress-circle",
+      "type": "registry:ui",
+      "title": "progress-circle",
+      "description": "RoseUI progress-circle component.",
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/progress-circle.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/progress-circle.tsx"
+        }
+      ]
+    },
+    {
+      "name": "progress",
+      "type": "registry:ui",
+      "title": "progress",
+      "description": "RoseUI progress component.",
+      "dependencies": ["radix-ui"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/progress.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/progress.tsx"
+        }
+      ]
+    },
+    {
+      "name": "questionnaire",
+      "type": "registry:ui",
+      "title": "questionnaire",
+      "description": "RoseUI questionnaire component.",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["button", "input", "utils"],
+      "files": [
+        {
+          "path": "src/components/ui/questionnaire.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/questionnaire.tsx"
+        }
+      ]
+    },
+    {
+      "name": "race-bar-chart",
+      "type": "registry:ui",
+      "title": "race-bar-chart",
+      "description": "RoseUI race-bar-chart component.",
+      "dependencies": ["@tabler/icons-react", "motion"],
+      "registryDependencies": ["button"],
+      "files": [
+        {
+          "path": "src/components/ui/race-bar-chart.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/race-bar-chart.tsx"
+        }
+      ]
+    },
+    {
+      "name": "radar-chart",
+      "type": "registry:ui",
+      "title": "radar-chart",
+      "description": "RoseUI radar-chart component.",
+      "dependencies": ["recharts"],
+      "registryDependencies": ["chart"],
+      "files": [
+        {
+          "path": "src/components/ui/radar-chart.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/radar-chart.tsx"
+        }
+      ]
+    },
+    {
+      "name": "radial-chart",
+      "type": "registry:ui",
+      "title": "radial-chart",
+      "description": "RoseUI radial-chart component.",
+      "files": [
+        {
+          "path": "src/components/ui/radial-chart.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/radial-chart.tsx"
+        }
+      ]
+    },
+    {
+      "name": "radio-group",
+      "type": "registry:ui",
+      "title": "radio-group",
+      "description": "RoseUI radio-group component.",
+      "dependencies": ["radix-ui"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/radio-group.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/radio-group.tsx"
+        }
+      ]
+    },
+    {
+      "name": "range-histogram-slider",
+      "type": "registry:ui",
+      "title": "range-histogram-slider",
+      "description": "RoseUI range-histogram-slider component.",
+      "registryDependencies": ["slider", "utils"],
+      "files": [
+        {
+          "path": "src/components/ui/range-histogram-slider.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/range-histogram-slider.tsx"
+        }
+      ]
+    },
+    {
+      "name": "realtime-stream",
+      "type": "registry:ui",
+      "title": "realtime-stream",
+      "description": "RoseUI realtime-stream component.",
+      "files": [
+        {
+          "path": "src/components/ui/realtime-stream.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/realtime-stream.tsx"
+        },
+        {
+          "path": "src/components/ui/realtime-stream.module.css",
+          "type": "registry:file",
+          "target": "src/components/ui/realtime-stream.module.css"
+        }
+      ]
+    },
+    {
+      "name": "resizable",
+      "type": "registry:ui",
+      "title": "resizable",
+      "description": "RoseUI resizable component.",
+      "dependencies": ["react-resizable-panels"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/resizable.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/resizable.tsx"
+        }
+      ]
+    },
+    {
+      "name": "ridgeline-chart",
+      "type": "registry:ui",
+      "title": "ridgeline-chart",
+      "description": "RoseUI ridgeline-chart component.",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "src/components/ui/ridgeline-chart.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/ridgeline-chart.tsx"
+        }
+      ]
+    },
+    {
+      "name": "ruler-slider",
+      "type": "registry:ui",
+      "title": "ruler-slider",
+      "description": "RoseUI ruler-slider component.",
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/ruler-slider.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/ruler-slider.tsx"
+        }
+      ]
+    },
+    {
+      "name": "sankey-chart",
+      "type": "registry:ui",
+      "title": "sankey-chart",
+      "description": "RoseUI sankey-chart component.",
+      "dependencies": ["@tabler/icons-react"],
+      "files": [
+        {
+          "path": "src/components/ui/sankey-chart.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/sankey-chart.tsx"
+        }
+      ]
+    },
+    {
+      "name": "scatter-chart",
+      "type": "registry:ui",
+      "title": "scatter-chart",
+      "description": "RoseUI scatter-chart component.",
+      "dependencies": ["recharts"],
+      "registryDependencies": ["chart"],
+      "files": [
+        {
+          "path": "src/components/ui/scatter-chart.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/scatter-chart.tsx"
+        }
+      ]
+    },
+    {
+      "name": "scroll-area",
+      "type": "registry:ui",
+      "title": "scroll-area",
+      "description": "RoseUI scroll-area component.",
+      "dependencies": ["radix-ui"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/scroll-area.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/scroll-area.tsx"
+        }
+      ]
+    },
+    {
+      "name": "select",
+      "type": "registry:ui",
+      "title": "select",
+      "description": "RoseUI select component.",
+      "dependencies": ["@tabler/icons-react", "radix-ui"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/select.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/select.tsx"
+        }
+      ]
+    },
+    {
+      "name": "separator",
+      "type": "registry:ui",
+      "title": "separator",
+      "description": "RoseUI separator component.",
+      "dependencies": ["radix-ui"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/separator.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/separator.tsx"
+        }
+      ]
+    },
+    {
+      "name": "sheet",
+      "type": "registry:ui",
+      "title": "sheet",
+      "description": "RoseUI sheet component.",
+      "dependencies": ["@tabler/icons-react", "radix-ui"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/sheet.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/sheet.tsx"
+        }
+      ]
+    },
+    {
+      "name": "sidebar",
+      "type": "registry:ui",
+      "title": "sidebar",
+      "description": "RoseUI sidebar component.",
+      "dependencies": ["@tabler/icons-react", "class-variance-authority", "radix-ui"],
+      "registryDependencies": ["button", "input", "separator", "sheet", "skeleton", "tooltip", "use-mobile", "utils"],
+      "files": [
+        {
+          "path": "src/components/ui/sidebar.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/sidebar.tsx"
+        }
+      ]
+    },
+    {
+      "name": "skeleton",
+      "type": "registry:ui",
+      "title": "skeleton",
+      "description": "RoseUI skeleton component.",
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/skeleton.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/skeleton.tsx"
+        }
+      ]
+    },
+    {
+      "name": "slider",
+      "type": "registry:ui",
+      "title": "slider",
+      "description": "RoseUI slider component.",
+      "dependencies": ["radix-ui"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/slider.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/slider.tsx"
+        }
+      ]
+    },
+    {
+      "name": "slope-chart",
+      "type": "registry:ui",
+      "title": "slope-chart",
+      "description": "RoseUI slope-chart component.",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "src/components/ui/slope-chart.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/slope-chart.tsx"
+        },
+        {
+          "path": "src/components/ui/slope-chart.module.css",
+          "type": "registry:file",
+          "target": "src/components/ui/slope-chart.module.css"
+        }
+      ]
+    },
+    {
+      "name": "sonner",
+      "type": "registry:ui",
+      "title": "sonner",
+      "description": "RoseUI sonner component.",
+      "dependencies": ["@tabler/icons-react", "next-themes", "sonner"],
+      "files": [
+        {
+          "path": "src/components/ui/sonner.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/sonner.tsx"
+        }
+      ]
+    },
+    {
+      "name": "sparkline",
+      "type": "registry:ui",
+      "title": "sparkline",
+      "description": "RoseUI sparkline component.",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "src/components/ui/sparkline.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/sparkline.tsx"
+        },
+        {
+          "path": "src/components/ui/sparkline.module.css",
+          "type": "registry:file",
+          "target": "src/components/ui/sparkline.module.css"
+        }
+      ]
+    },
+    {
+      "name": "spinner",
+      "type": "registry:ui",
+      "title": "spinner",
+      "description": "RoseUI spinner component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/spinner.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/spinner.tsx"
+        }
+      ]
+    },
+    {
+      "name": "split-bar-chart",
+      "type": "registry:ui",
+      "title": "split-bar-chart",
+      "description": "RoseUI split-bar-chart component.",
+      "files": [
+        {
+          "path": "src/components/ui/split-bar-chart.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/split-bar-chart.tsx"
+        }
+      ]
+    },
+    {
+      "name": "stat-card",
+      "type": "registry:ui",
+      "title": "stat-card",
+      "description": "RoseUI stat-card component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["card", "utils"],
+      "files": [
+        {
+          "path": "src/components/ui/stat-card.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/stat-card.tsx"
+        }
+      ]
+    },
+    {
+      "name": "status-dot",
+      "type": "registry:ui",
+      "title": "status-dot",
+      "description": "RoseUI status-dot component.",
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/status-dot.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/status-dot.tsx"
+        }
+      ]
+    },
+    {
+      "name": "streamgraph",
+      "type": "registry:ui",
+      "title": "streamgraph",
+      "description": "RoseUI streamgraph component.",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "src/components/ui/streamgraph.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/streamgraph.tsx"
+        },
+        {
+          "path": "src/components/ui/streamgraph.module.css",
+          "type": "registry:file",
+          "target": "src/components/ui/streamgraph.module.css"
+        }
+      ]
+    },
+    {
+      "name": "sunburst-chart",
+      "type": "registry:ui",
+      "title": "sunburst-chart",
+      "description": "RoseUI sunburst-chart component.",
+      "dependencies": ["recharts"],
+      "registryDependencies": ["chart"],
+      "files": [
+        {
+          "path": "src/components/ui/sunburst-chart.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/sunburst-chart.tsx"
+        }
+      ]
+    },
+    {
+      "name": "surface",
+      "type": "registry:ui",
+      "title": "surface",
+      "description": "RoseUI surface component.",
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/surface.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/surface.tsx"
+        }
+      ]
+    },
+    {
+      "name": "switch",
+      "type": "registry:ui",
+      "title": "switch",
+      "description": "RoseUI switch component.",
+      "dependencies": ["radix-ui"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/switch.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/switch.tsx"
+        }
+      ]
+    },
+    {
+      "name": "table",
+      "type": "registry:ui",
+      "title": "table",
+      "description": "RoseUI table component.",
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/table.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/table.tsx"
+        }
+      ]
+    },
+    {
+      "name": "tabs",
+      "type": "registry:ui",
+      "title": "tabs",
+      "description": "RoseUI tabs component.",
+      "dependencies": ["class-variance-authority", "radix-ui"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/tabs.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/tabs.tsx"
+        }
+      ]
+    },
+    {
+      "name": "textarea",
+      "type": "registry:ui",
+      "title": "textarea",
+      "description": "RoseUI textarea component.",
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/textarea.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/textarea.tsx"
+        }
+      ]
+    },
+    {
+      "name": "time-field",
+      "type": "registry:ui",
+      "title": "time-field",
+      "description": "RoseUI time-field component.",
+      "dependencies": ["@internationalized/date", "react-aria-components"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/time-field.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/time-field.tsx"
+        }
+      ]
+    },
+    {
+      "name": "toggle-group",
+      "type": "registry:ui",
+      "title": "toggle-group",
+      "description": "RoseUI toggle-group component.",
+      "dependencies": ["radix-ui"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/toggle-group.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/toggle-group.tsx"
+        }
+      ]
+    },
+    {
+      "name": "toggle",
+      "type": "registry:ui",
+      "title": "toggle",
+      "description": "RoseUI toggle component.",
+      "dependencies": ["class-variance-authority", "radix-ui"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/toggle.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/toggle.tsx"
+        }
+      ]
+    },
+    {
+      "name": "toolbar",
+      "type": "registry:ui",
+      "title": "toolbar",
+      "description": "RoseUI toolbar component.",
+      "dependencies": ["radix-ui"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/toolbar.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/toolbar.tsx"
+        }
+      ]
+    },
+    {
+      "name": "tooltip",
+      "type": "registry:ui",
+      "title": "tooltip",
+      "description": "RoseUI tooltip component.",
+      "dependencies": ["radix-ui"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/tooltip.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/tooltip.tsx"
+        }
+      ]
+    },
+    {
+      "name": "trace",
+      "type": "registry:ui",
+      "title": "trace",
+      "description": "RoseUI trace component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["collapsible", "utils"],
+      "files": [
+        {
+          "path": "src/components/ui/trace.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/trace.tsx"
+        }
+      ]
+    },
+    {
+      "name": "treemap",
+      "type": "registry:ui",
+      "title": "treemap",
+      "description": "RoseUI treemap component.",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "src/components/ui/treemap.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/treemap.tsx"
+        },
+        {
+          "path": "src/components/ui/treemap.module.css",
+          "type": "registry:file",
+          "target": "src/components/ui/treemap.module.css"
+        }
+      ]
+    },
+    {
+      "name": "trend-chip",
+      "type": "registry:ui",
+      "title": "trend-chip",
+      "description": "RoseUI trend-chip component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["chip"],
+      "files": [
+        {
+          "path": "src/components/ui/trend-chip.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/trend-chip.tsx"
+        }
+      ]
+    },
+    {
+      "name": "waffle-chart",
+      "type": "registry:ui",
+      "title": "waffle-chart",
+      "description": "RoseUI waffle-chart component.",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "src/components/ui/waffle-chart.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/waffle-chart.tsx"
+        },
+        {
+          "path": "src/components/ui/waffle-chart.module.css",
+          "type": "registry:file",
+          "target": "src/components/ui/waffle-chart.module.css"
+        }
+      ]
+    },
+    {
+      "name": "widget",
+      "type": "registry:ui",
+      "title": "widget",
+      "description": "RoseUI widget component.",
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/ui/widget.tsx",
+          "type": "registry:ui",
+          "target": "src/components/ui/widget.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-action-bar",
+      "type": "registry:component",
+      "title": "composite-action-bar",
+      "description": "RoseUI composite-action-bar component.",
+      "registryDependencies": ["toolbar", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/action-bar.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/action-bar.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-action-button",
+      "type": "registry:component",
+      "title": "composite-action-button",
+      "description": "RoseUI composite-action-button component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["button"],
+      "files": [
+        {
+          "path": "src/components/composite/action-button.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/action-button.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-arrow-link-button",
+      "type": "registry:component",
+      "title": "composite-arrow-link-button",
+      "description": "RoseUI composite-arrow-link-button component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["button", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/arrow-link-button.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/arrow-link-button.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-attachment",
+      "type": "registry:component",
+      "title": "composite-attachment",
+      "description": "RoseUI composite-attachment component.",
+      "dependencies": ["radix-ui"],
+      "registryDependencies": ["button", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/attachment.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/attachment.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-autocomplete",
+      "type": "registry:component",
+      "title": "composite-autocomplete",
+      "description": "RoseUI composite-autocomplete component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["input", "popover", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/autocomplete.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/autocomplete.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-avatar-button",
+      "type": "registry:component",
+      "title": "composite-avatar-button",
+      "description": "RoseUI composite-avatar-button component.",
+      "registryDependencies": ["avatar", "button"],
+      "files": [
+        {
+          "path": "src/components/composite/avatar-button.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/avatar-button.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-avatar-group",
+      "type": "registry:component",
+      "title": "composite-avatar-group",
+      "description": "RoseUI composite-avatar-group component.",
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/composite/avatar-group.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/avatar-group.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-avatar-upload",
+      "type": "registry:component",
+      "title": "composite-avatar-upload",
+      "description": "RoseUI composite-avatar-upload component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["avatar", "button", "progress", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/avatar-upload.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/avatar-upload.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-billing-toggle",
+      "type": "registry:component",
+      "title": "composite-billing-toggle",
+      "description": "RoseUI composite-billing-toggle component.",
+      "dependencies": ["motion"],
+      "registryDependencies": ["radio-group", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/billing-toggle.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/billing-toggle.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-button-group",
+      "type": "registry:component",
+      "title": "composite-button-group",
+      "description": "RoseUI composite-button-group component.",
+      "registryDependencies": ["button", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/button-group.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/button-group.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-carousel",
+      "type": "registry:component",
+      "title": "composite-carousel",
+      "description": "RoseUI composite-carousel component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["button", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/carousel.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/carousel.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-cascader",
+      "type": "registry:component",
+      "title": "composite-cascader",
+      "description": "RoseUI composite-cascader component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["popover", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/cascader.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/cascader.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-chat-thread",
+      "type": "registry:component",
+      "title": "composite-chat-thread",
+      "description": "RoseUI composite-chat-thread component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": [
+        "avatar",
+        "bubble",
+        "button",
+        "composite-attachment",
+        "composite-avatar-group",
+        "composite-input-mention",
+        "composite-message",
+        "composite-message-scroller",
+        "composite-reactions",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/composite/chat-thread.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/chat-thread.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-checkbox-group",
+      "type": "registry:component",
+      "title": "composite-checkbox-group",
+      "description": "RoseUI composite-checkbox-group component.",
+      "registryDependencies": ["checkbox", "use-controlled-state", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/checkbox-group.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/checkbox-group.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-color-picker",
+      "type": "registry:component",
+      "title": "composite-color-picker",
+      "description": "RoseUI composite-color-picker component.",
+      "dependencies": ["react-aria-components"],
+      "registryDependencies": ["input", "popover", "use-controlled-state", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/color-picker.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/color-picker.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-combobox",
+      "type": "registry:component",
+      "title": "composite-combobox",
+      "description": "RoseUI composite-combobox component.",
+      "dependencies": ["@tabler/icons-react", "react-aria-components"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/composite/combobox.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/combobox.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-command",
+      "type": "registry:component",
+      "title": "composite-command",
+      "description": "RoseUI composite-command component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["composite-input-group", "dialog", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/command.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/command.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-comment-thread",
+      "type": "registry:component",
+      "title": "composite-comment-thread",
+      "description": "RoseUI composite-comment-thread component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["avatar", "badge", "button", "composite-input-mention", "composite-reactions", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/comment-thread.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/comment-thread.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-copy-button",
+      "type": "registry:component",
+      "title": "composite-copy-button",
+      "description": "RoseUI composite-copy-button component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["button", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/copy-button.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/copy-button.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-countdown",
+      "type": "registry:component",
+      "title": "composite-countdown",
+      "description": "RoseUI composite-countdown component.",
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/composite/countdown.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/countdown.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-data-table",
+      "type": "registry:component",
+      "title": "composite-data-table",
+      "description": "RoseUI composite-data-table component.",
+      "dependencies": ["@tabler/icons-react", "@tanstack/react-table"],
+      "registryDependencies": ["button", "dropdown-menu", "input", "select", "table"],
+      "files": [
+        {
+          "path": "src/components/composite/data-table.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/data-table.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-date-picker",
+      "type": "registry:component",
+      "title": "composite-date-picker",
+      "description": "RoseUI composite-date-picker component.",
+      "dependencies": ["@internationalized/date", "@tabler/icons-react"],
+      "registryDependencies": ["button", "calendar", "popover", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/date-picker.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/date-picker.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-date-range-picker",
+      "type": "registry:component",
+      "title": "composite-date-range-picker",
+      "description": "RoseUI composite-date-range-picker component.",
+      "dependencies": ["@internationalized/date", "@tabler/icons-react", "react-aria-components"],
+      "registryDependencies": ["button", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/date-range-picker.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/date-range-picker.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-date-selector",
+      "type": "registry:component",
+      "title": "composite-date-selector",
+      "description": "RoseUI composite-date-selector component.",
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/composite/date-selector.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/date-selector.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-emoji-picker",
+      "type": "registry:component",
+      "title": "composite-emoji-picker",
+      "description": "RoseUI composite-emoji-picker component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["button", "popover", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/emoji-picker.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/emoji-picker.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-emoji-reaction-button",
+      "type": "registry:component",
+      "title": "composite-emoji-reaction-button",
+      "description": "RoseUI composite-emoji-reaction-button component.",
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/composite/emoji-reaction-button.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/emoji-reaction-button.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-error-state",
+      "type": "registry:component",
+      "title": "composite-error-state",
+      "description": "RoseUI composite-error-state component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["button", "logo-mark"],
+      "files": [
+        {
+          "path": "src/components/composite/error-state.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/error-state.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-event-calendar",
+      "type": "registry:component",
+      "title": "composite-event-calendar",
+      "description": "RoseUI composite-event-calendar component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["button", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/event-calendar.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/event-calendar.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-expandable-button",
+      "type": "registry:component",
+      "title": "composite-expandable-button",
+      "description": "RoseUI composite-expandable-button component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["button", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/expandable-button.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/expandable-button.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-field",
+      "type": "registry:component",
+      "title": "composite-field",
+      "description": "RoseUI composite-field component.",
+      "registryDependencies": ["label", "separator", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/field.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/field.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-file-upload",
+      "type": "registry:component",
+      "title": "composite-file-upload",
+      "description": "RoseUI composite-file-upload component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["button", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/file-upload.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/file-upload.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-filters",
+      "type": "registry:component",
+      "title": "composite-filters",
+      "description": "RoseUI composite-filters component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": [
+        "avatar",
+        "badge",
+        "button",
+        "checkbox",
+        "composite-filters-query",
+        "input",
+        "native-select",
+        "popover",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/composite/filters.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/filters.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-floating-toc",
+      "type": "registry:component",
+      "title": "composite-floating-toc",
+      "description": "RoseUI composite-floating-toc component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["composite-scrollspy", "popover", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/floating-toc.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/floating-toc.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-hold-to-confirm",
+      "type": "registry:component",
+      "title": "composite-hold-to-confirm",
+      "description": "RoseUI composite-hold-to-confirm component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["button", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/hold-to-confirm.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/hold-to-confirm.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-inline-edit",
+      "type": "registry:component",
+      "title": "composite-inline-edit",
+      "description": "RoseUI composite-inline-edit component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["button", "input", "textarea", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/inline-edit.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/inline-edit.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-input-group",
+      "type": "registry:component",
+      "title": "composite-input-group",
+      "description": "RoseUI composite-input-group component.",
+      "dependencies": ["class-variance-authority"],
+      "registryDependencies": ["button", "input", "textarea", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/input-group.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/input-group.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-input-mention",
+      "type": "registry:component",
+      "title": "composite-input-mention",
+      "description": "RoseUI composite-input-mention component.",
+      "registryDependencies": ["label", "textarea", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/input-mention.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/input-mention.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-input-money",
+      "type": "registry:component",
+      "title": "composite-input-money",
+      "description": "RoseUI composite-input-money component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["button", "input", "label", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/input-money.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/input-money.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-input-otp",
+      "type": "registry:component",
+      "title": "composite-input-otp",
+      "description": "RoseUI composite-input-otp component.",
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/composite/input-otp.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/input-otp.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-input-phone",
+      "type": "registry:component",
+      "title": "composite-input-phone",
+      "description": "RoseUI composite-input-phone component.",
+      "dependencies": ["@tabler/icons-react", "react-phone-number-input"],
+      "registryDependencies": ["composite-search-select", "input", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/input-phone.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/input-phone.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-input-tag",
+      "type": "registry:component",
+      "title": "composite-input-tag",
+      "description": "RoseUI composite-input-tag component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["button", "input", "label", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/input-tag.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/input-tag.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-labeled-checkbox",
+      "type": "registry:component",
+      "title": "composite-labeled-checkbox",
+      "description": "RoseUI composite-labeled-checkbox component.",
+      "registryDependencies": ["checkbox", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/labeled-checkbox.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/labeled-checkbox.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-labeled-radio",
+      "type": "registry:component",
+      "title": "composite-labeled-radio",
+      "description": "RoseUI composite-labeled-radio component.",
+      "registryDependencies": ["radio-group", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/labeled-radio.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/labeled-radio.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-labeled-switch",
+      "type": "registry:component",
+      "title": "composite-labeled-switch",
+      "description": "RoseUI composite-labeled-switch component.",
+      "registryDependencies": ["switch", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/labeled-switch.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/labeled-switch.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-list-view",
+      "type": "registry:component",
+      "title": "composite-list-view",
+      "description": "RoseUI composite-list-view component.",
+      "dependencies": ["@tabler/icons-react", "react-aria-components"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/composite/list-view.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/list-view.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-message-scroller",
+      "type": "registry:component",
+      "title": "composite-message-scroller",
+      "description": "RoseUI composite-message-scroller component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["button", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/message-scroller.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/message-scroller.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-message",
+      "type": "registry:component",
+      "title": "composite-message",
+      "description": "RoseUI composite-message component.",
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/composite/message.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/message.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-multi-select",
+      "type": "registry:component",
+      "title": "composite-multi-select",
+      "description": "RoseUI composite-multi-select component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["button", "label", "list-box", "popover", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/multi-select.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/multi-select.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-nav-user",
+      "type": "registry:component",
+      "title": "composite-nav-user",
+      "description": "RoseUI composite-nav-user component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["avatar", "composite-user-menu", "sidebar", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/nav-user.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/nav-user.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-notification",
+      "type": "registry:component",
+      "title": "composite-notification",
+      "description": "RoseUI composite-notification component.",
+      "dependencies": ["@tabler/icons-react", "motion"],
+      "registryDependencies": ["avatar", "button", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/notification.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/notification.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-number-field",
+      "type": "registry:component",
+      "title": "composite-number-field",
+      "description": "RoseUI composite-number-field component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["button", "input", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/number-field.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/number-field.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-number-stepper",
+      "type": "registry:component",
+      "title": "composite-number-stepper",
+      "description": "RoseUI composite-number-stepper component.",
+      "dependencies": ["@tabler/icons-react", "react-aria-components"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/composite/number-stepper.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/number-stepper.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-pagination",
+      "type": "registry:component",
+      "title": "composite-pagination",
+      "description": "RoseUI composite-pagination component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["button", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/pagination.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/pagination.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-password-field",
+      "type": "registry:component",
+      "title": "composite-password-field",
+      "description": "RoseUI composite-password-field component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["button", "input", "label", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/password-field.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/password-field.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-password-strength",
+      "type": "registry:component",
+      "title": "composite-password-strength",
+      "description": "RoseUI composite-password-strength component.",
+      "registryDependencies": ["composite-password-field", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/password-strength.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/password-strength.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-payment-button",
+      "type": "registry:component",
+      "title": "composite-payment-button",
+      "description": "RoseUI composite-payment-button component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["button", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/payment-button.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/payment-button.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-payment-card-field",
+      "type": "registry:component",
+      "title": "composite-payment-card-field",
+      "description": "RoseUI composite-payment-card-field component.",
+      "dependencies": ["@tabler/icons-react", "react-payment-inputs"],
+      "registryDependencies": ["composite-field", "input"],
+      "files": [
+        {
+          "path": "src/components/composite/payment-card-field.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/payment-card-field.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-questionnaire",
+      "type": "registry:component",
+      "title": "composite-questionnaire",
+      "description": "RoseUI composite-questionnaire component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["button", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/questionnaire.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/questionnaire.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-radio-cards",
+      "type": "registry:component",
+      "title": "composite-radio-cards",
+      "description": "RoseUI composite-radio-cards component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["radio-group", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/radio-cards.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/radio-cards.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-rating",
+      "type": "registry:component",
+      "title": "composite-rating",
+      "description": "RoseUI composite-rating component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/composite/rating.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/rating.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-reaction-button",
+      "type": "registry:component",
+      "title": "composite-reaction-button",
+      "description": "RoseUI composite-reaction-button component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["button"],
+      "files": [
+        {
+          "path": "src/components/composite/reaction-button.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/reaction-button.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-reactions",
+      "type": "registry:component",
+      "title": "composite-reactions",
+      "description": "RoseUI composite-reactions component.",
+      "registryDependencies": ["composite-emoji-picker", "composite-emoji-reaction-button", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/reactions.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/reactions.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-resizable",
+      "type": "registry:component",
+      "title": "composite-resizable",
+      "description": "RoseUI composite-resizable component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/composite/resizable.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/resizable.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-rich-text-editor",
+      "type": "registry:component",
+      "title": "composite-rich-text-editor",
+      "description": "RoseUI composite-rich-text-editor component.",
+      "dependencies": ["@tabler/icons-react", "@tiptap/react", "@tiptap/starter-kit"],
+      "registryDependencies": ["button", "separator", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/rich-text-editor.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/rich-text-editor.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-scrollspy",
+      "type": "registry:component",
+      "title": "composite-scrollspy",
+      "description": "RoseUI composite-scrollspy component.",
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/composite/scrollspy.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/scrollspy.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-search-field",
+      "type": "registry:component",
+      "title": "composite-search-field",
+      "description": "RoseUI composite-search-field component.",
+      "dependencies": ["@tabler/icons-react", "motion"],
+      "registryDependencies": ["button", "close-button", "input", "label", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/search-field.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/search-field.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-search-select",
+      "type": "registry:component",
+      "title": "composite-search-select",
+      "description": "RoseUI composite-search-select component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["popover", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/search-select.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/search-select.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-segmented-control",
+      "type": "registry:component",
+      "title": "composite-segmented-control",
+      "description": "RoseUI composite-segmented-control component.",
+      "dependencies": ["class-variance-authority", "radix-ui"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/composite/segmented-control.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/segmented-control.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-signature-pad",
+      "type": "registry:component",
+      "title": "composite-signature-pad",
+      "description": "RoseUI composite-signature-pad component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["button", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/signature-pad.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/signature-pad.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-social-button",
+      "type": "registry:component",
+      "title": "composite-social-button",
+      "description": "RoseUI composite-social-button component.",
+      "registryDependencies": ["social-color-logos", "social-providers", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/social-button.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/social-button.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-sortable",
+      "type": "registry:component",
+      "title": "composite-sortable",
+      "description": "RoseUI composite-sortable component.",
+      "dependencies": ["@dnd-kit/core", "@dnd-kit/sortable", "@dnd-kit/utilities", "@tabler/icons-react"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/composite/sortable.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/sortable.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-split-button",
+      "type": "registry:component",
+      "title": "composite-split-button",
+      "description": "RoseUI composite-split-button component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["button", "composite-button-group", "dropdown-menu"],
+      "files": [
+        {
+          "path": "src/components/composite/split-button.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/split-button.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-stepper",
+      "type": "registry:component",
+      "title": "composite-stepper",
+      "description": "RoseUI composite-stepper component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/composite/stepper.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/stepper.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-swipe-actions",
+      "type": "registry:component",
+      "title": "composite-swipe-actions",
+      "description": "RoseUI composite-swipe-actions component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["button", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/swipe-actions.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/swipe-actions.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-tag-group",
+      "type": "registry:component",
+      "title": "composite-tag-group",
+      "description": "RoseUI composite-tag-group component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["chip", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/tag-group.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/tag-group.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-team-switcher",
+      "type": "registry:component",
+      "title": "composite-team-switcher",
+      "description": "RoseUI composite-team-switcher component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["dropdown-menu", "sidebar"],
+      "files": [
+        {
+          "path": "src/components/composite/team-switcher.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/team-switcher.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-time-picker",
+      "type": "registry:component",
+      "title": "composite-time-picker",
+      "description": "RoseUI composite-time-picker component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["button", "popover", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/time-picker.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/time-picker.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-timeline",
+      "type": "registry:component",
+      "title": "composite-timeline",
+      "description": "RoseUI composite-timeline component.",
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/composite/timeline.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/timeline.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-tree-table",
+      "type": "registry:component",
+      "title": "composite-tree-table",
+      "description": "RoseUI composite-tree-table component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["button", "checkbox", "table"],
+      "files": [
+        {
+          "path": "src/components/composite/tree-table.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/tree-table.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-tree",
+      "type": "registry:component",
+      "title": "composite-tree",
+      "description": "RoseUI composite-tree component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/components/composite/tree.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/tree.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-undo-toast",
+      "type": "registry:component",
+      "title": "composite-undo-toast",
+      "description": "RoseUI composite-undo-toast component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["button", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/undo-toast.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/undo-toast.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-user-menu",
+      "type": "registry:component",
+      "title": "composite-user-menu",
+      "description": "RoseUI composite-user-menu component.",
+      "dependencies": ["@tabler/icons-react", "next-themes"],
+      "registryDependencies": ["avatar", "dropdown-menu", "sheet", "spinner", "use-mobile", "utils"],
+      "files": [
+        {
+          "path": "src/components/composite/user-menu.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/user-menu.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composite-verification-code-form",
+      "type": "registry:component",
+      "title": "composite-verification-code-form",
+      "description": "RoseUI composite-verification-code-form component.",
+      "dependencies": ["@tabler/icons-react"],
+      "registryDependencies": ["button", "composite-input-group", "composite-input-otp", "hint-text", "label"],
+      "files": [
+        {
+          "path": "src/components/composite/verification-code-form.tsx",
+          "type": "registry:component",
+          "target": "src/components/composite/verification-code-form.tsx"
+        }
+      ]
+    },
+    {
+      "name": "utils",
+      "type": "registry:lib",
+      "title": "utils",
+      "description": "RoseUI class name and example data helpers.",
+      "dependencies": ["clsx", "tailwind-merge"],
+      "files": [
+        {
+          "path": "src/lib/utils.ts",
+          "type": "registry:lib",
+          "target": "src/lib/utils.ts"
+        }
+      ]
+    },
+    {
+      "name": "use-controlled-state",
+      "type": "registry:hook",
+      "title": "use-controlled-state",
+      "description": "RoseUI use-controlled-state hook.",
+      "files": [
+        {
+          "path": "src/hooks/use-controlled-state.ts",
+          "type": "registry:hook",
+          "target": "src/hooks/use-controlled-state.ts"
+        }
+      ]
+    },
+    {
+      "name": "use-platform",
+      "type": "registry:hook",
+      "title": "use-platform",
+      "description": "RoseUI use-platform hook.",
+      "files": [
+        {
+          "path": "src/hooks/use-platform.ts",
+          "type": "registry:hook",
+          "target": "src/hooks/use-platform.ts"
+        }
+      ]
+    }
+  ]
+}

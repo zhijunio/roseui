@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "color-slider",
+  "title": "color-slider",
+  "description": "RoseUI color-slider component.",
+  "dependencies": [
+    "react-aria-components"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/color-slider.tsx",
+      "content": "\"use client\";\n\nimport type { ComponentProps } from \"react\";\nimport { ColorSlider as AriaColorSlider, ColorThumb, SliderTrack } from \"react-aria-components\";\n\nimport { cn } from \"@/lib/utils\";\n\nexport function ColorSlider({ className, ...props }: ComponentProps<typeof AriaColorSlider>) {\n  return <AriaColorSlider data-slot=\"color-slider\" className={cn(\"relative flex w-full touch-none flex-col gap-2\", className)} {...props} />;\n}\n\nexport function ColorSliderTrack({ className, ...props }: ComponentProps<typeof SliderTrack>) {\n  return <SliderTrack data-slot=\"color-slider-track\" className={cn(\"relative h-3 w-full rounded-full\", className)} {...props} />;\n}\n\nexport function ColorSliderThumb({ className, ...props }: ComponentProps<typeof ColorThumb>) {\n  return <ColorThumb data-slot=\"color-slider-thumb\" className={cn(\"size-4 rounded-full border-2 border-white shadow-md outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 data-[disabled]:opacity-50\", className)} {...props} />;\n}\n",
+      "type": "registry:ui",
+      "target": "src/components/ui/color-slider.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "link",
+  "title": "link",
+  "description": "RoseUI link component.",
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/link.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport NextLink from \"next/link\"\n\nimport { cn } from \"@/lib/utils\"\n\ntype LinkProps = Omit<React.ComponentProps<typeof NextLink>, \"onClick\"> & {\n  icon?: React.ReactNode\n  iconPlacement?: \"start\" | \"end\"\n  isDisabled?: boolean\n  onClick?: React.MouseEventHandler<HTMLAnchorElement>\n}\n\nfunction Link({\n  className,\n  children,\n  icon,\n  iconPlacement = \"end\",\n  isDisabled = false,\n  onClick,\n  ...props\n}: LinkProps) {\n  function handleClick(event: React.MouseEvent<HTMLAnchorElement>) {\n    if (isDisabled) {\n      event.preventDefault()\n      event.stopPropagation()\n      return\n    }\n\n    onClick?.(event)\n  }\n\n  const iconElement = icon ? (\n    <span aria-hidden=\"true\" data-slot=\"link-icon\" className=\"inline-flex shrink-0 [&_svg]:size-4\">\n      {icon}\n    </span>\n  ) : null\n\n  return (\n    <NextLink\n      data-slot=\"link\"\n      data-disabled={isDisabled || undefined}\n      aria-disabled={isDisabled || undefined}\n      onClick={handleClick}\n      className={cn(\n        \"inline-flex items-center gap-1.5 text-primary underline-offset-4 outline-none motion-safe:transition-colors hover:underline focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2\",\n        isDisabled && \"pointer-events-none cursor-not-allowed opacity-50\",\n        className,\n      )}\n      {...props}\n    >\n      {iconPlacement === \"start\" && iconElement}\n      {children}\n      {iconPlacement === \"end\" && iconElement}\n    </NextLink>\n  )\n}\n\nexport { Link }\n",
+      "type": "registry:ui",
+      "target": "src/components/ui/link.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

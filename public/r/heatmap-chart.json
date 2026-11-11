@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "heatmap-chart",
+  "title": "heatmap-chart",
+  "description": "RoseUI heatmap-chart component.",
+  "files": [
+    {
+      "path": "src/components/ui/heatmap-chart.tsx",
+      "content": "\"use client\"\n\nimport { useId } from \"react\"\n\nexport type HeatmapCell = { key: string; row: string; column: string; value: number; status?: \"normal\" | \"goal\" | \"warning\" }\nexport type HeatmapChartProps = { data: readonly HeatmapCell[]; rows: readonly string[]; columns: readonly string[]; label: string }\n\nexport function HeatmapChart({ data, rows, columns, label }: HeatmapChartProps) {\n  const id = useId()\n  const maximum = Math.max(1, ...data.map((cell) => cell.value))\n  const cellFor = (row: string, column: string) => data.find((cell) => cell.row === row && cell.column === column)\n  return <figure className=\"grid w-full gap-3\" aria-labelledby={`${id}-title`}>\n    <figcaption className=\"sr-only\" id={`${id}-title`}>{label}</figcaption>\n    <div role=\"grid\" aria-label={label} className=\"grid gap-1\" style={{ gridTemplateColumns: `5rem repeat(${columns.length}, minmax(0, 1fr))` }}>\n      <span />\n      {columns.map((column) => <span key={column} className=\"text-center text-[10px] text-muted-foreground\">{column}</span>)}\n      {rows.map((row) => <div key={row} className=\"contents\">\n        <span className=\"self-center text-xs text-muted-foreground\">{row}</span>\n        {columns.map((column) => {\n          const cell = cellFor(row, column)\n          const intensity = (cell?.value ?? 0) / maximum\n          return <span key={`${row}-${column}`} role=\"gridcell\" title={`${row} ${column}: ${cell?.value ?? 0}`} className={`h-6 rounded-sm border border-background ${cell?.status === \"goal\" ? \"bg-success\" : cell?.status === \"warning\" ? \"bg-warning\" : \"bg-primary\"}`} style={{ opacity: 0.15 + intensity * 0.85 }} />\n        })}\n      </div>)}\n    </div>\n    <p className=\"text-xs text-muted-foreground\">{label}. Darker cells indicate higher values.</p>\n  </figure>\n}\n",
+      "type": "registry:ui",
+      "target": "src/components/ui/heatmap-chart.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

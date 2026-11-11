@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "composite-labeled-radio",
+  "title": "composite-labeled-radio",
+  "description": "RoseUI composite-labeled-radio component.",
+  "registryDependencies": [
+    "radio-group",
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/composite/labeled-radio.tsx",
+      "content": "\"use client\";\n\nimport { type ComponentProps, type ReactNode, useId } from \"react\";\n\nimport { RadioGroup, RadioGroupItem } from \"@/components/ui/radio-group\";\nimport { cn } from \"@/lib/utils\";\n\nexport function LabeledRadioGroup({ className, ...props }: ComponentProps<typeof RadioGroup>) {\n  return <RadioGroup {...props} className={cn(\"gap-3\", className)} />;\n}\n\nexport function LabeledRadio({\n  label,\n  description,\n  id,\n  className,\n  containerClassName,\n  ...props\n}: Omit<ComponentProps<typeof RadioGroupItem>, \"id\"> & {\n  label: ReactNode;\n  description?: ReactNode;\n  id?: string;\n  containerClassName?: string;\n}) {\n  const generatedId = useId();\n  const controlId = id ?? generatedId;\n\n  return (\n    <label\n      htmlFor={controlId}\n      className={cn(\n        \"group flex cursor-pointer items-start gap-3 rounded-xl border bg-card p-4 transition-colors hover:bg-muted/40 has-[[data-state=checked]]:bg-primary/[0.04] has-[[data-disabled]]:cursor-not-allowed has-[[data-disabled]]:opacity-60\",\n        containerClassName,\n      )}\n    >\n      <RadioGroupItem {...props} id={controlId} className={cn(\"mt-0.5\", className)} />\n      <span className=\"grid min-w-0 gap-1\">\n        <span className=\"text-sm font-medium leading-5\">{label}</span>\n        {description && <span className=\"text-xs leading-5 text-muted-foreground\">{description}</span>}\n      </span>\n    </label>\n  );\n}\n",
+      "type": "registry:component",
+      "target": "src/components/composite/labeled-radio.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

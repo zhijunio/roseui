@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "composite-list-view",
+  "title": "composite-list-view",
+  "description": "RoseUI composite-list-view component.",
+  "dependencies": [
+    "@tabler/icons-react",
+    "react-aria-components"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/composite/list-view.tsx",
+      "content": "\"use client\";\n\nimport type { ReactNode } from \"react\";\n\nimport { IconCheck } from \"@tabler/icons-react\";\nimport {\n  GridList as AriaGridList,\n  GridListItem as AriaGridListItem,\n  type GridListItemProps,\n  type GridListProps,\n} from \"react-aria-components\";\n\nimport { cn } from \"@/lib/utils\";\n\ntype ListViewProps<T extends object> = Omit<GridListProps<T>, \"className\" | \"children\"> & {\n  children?: GridListProps<T>[\"children\"];\n  className?: string;\n  variant?: \"primary\" | \"secondary\";\n};\n\nexport function ListView<T extends object>({ className, variant = \"primary\", ...props }: ListViewProps<T>) {\n  return (\n    <AriaGridList\n      data-slot=\"list-view\"\n      data-variant={variant}\n      data-selection-mode={props.selectionMode ?? \"none\"}\n      className={cn(\n        \"group/list-view min-h-0 w-full outline-none focus-visible:ring-2 focus-visible:ring-ring/50\",\n        variant === \"primary\" && \"space-y-1 rounded-xl bg-muted/50 p-2\",\n        variant === \"secondary\" && \"divide-y divide-border\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\ntype ListViewItemProps<T extends object> = Omit<GridListItemProps<T>, \"className\" | \"children\"> & {\n  children: ReactNode;\n  className?: string;\n};\n\nexport function ListViewItem<T extends object>({ className, children, ...props }: ListViewItemProps<T>) {\n  return (\n    <AriaGridListItem\n      data-slot=\"list-view-item\"\n      className={cn(\n        \"group/list-view-item flex min-w-0 items-center gap-3 rounded-lg px-3 py-2.5 text-sm outline-none transition-colors\",\n        \"hover:bg-accent/60 focus-visible:ring-2 focus-visible:ring-ring/50 data-[selected=true]:bg-accent/70\",\n        \"data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50\",\n        className,\n      )}\n      {...props}\n    >\n      <span\n        aria-hidden=\"true\"\n        data-slot=\"list-view-selection-cell\"\n        className=\"hidden size-5 shrink-0 items-center justify-center rounded border border-input text-primary group-data-[selection-mode=multiple]/list-view:inline-flex group-data-[selection-mode=single]/list-view:rounded-full group-data-[selected=true]/list-view-item:border-primary group-data-[selected=true]/list-view-item:bg-primary/10\"\n      >\n        <IconCheck className=\"size-3 opacity-0 group-data-[selected=true]/list-view-item:opacity-100\" />\n      </span>\n      {children}\n    </AriaGridListItem>\n  );\n}\n\nexport function ListViewItemContent({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"list-view-item-content\"\n      className={cn(\"flex min-w-0 flex-1 items-center gap-3\", className)}\n      {...props}\n    />\n  );\n}\n\nexport function ListViewTitle({ className, ...props }: React.ComponentProps<\"span\">) {\n  return (\n    <span data-slot=\"list-view-title\" className={cn(\"block truncate text-sm font-medium\", className)} {...props} />\n  );\n}\n\nexport function ListViewDescription({ className, ...props }: React.ComponentProps<\"span\">) {\n  return (\n    <span\n      data-slot=\"list-view-description\"\n      className={cn(\"mt-0.5 block truncate text-xs text-muted-foreground\", className)}\n      {...props}\n    />\n  );\n}\n\nexport function ListViewItemAction({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"list-view-item-action\"\n      className={cn(\"ml-auto flex shrink-0 items-center gap-1\", className)}\n      {...props}\n    />\n  );\n}\n",
+      "type": "registry:component",
+      "target": "src/components/composite/list-view.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

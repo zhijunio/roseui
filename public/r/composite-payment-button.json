@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "composite-payment-button",
+  "title": "composite-payment-button",
+  "description": "RoseUI composite-payment-button component.",
+  "dependencies": [
+    "@tabler/icons-react"
+  ],
+  "registryDependencies": [
+    "button",
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/composite/payment-button.tsx",
+      "content": "\"use client\";\n\nimport { type ComponentProps, type ReactNode, useState } from \"react\";\n\nimport { IconCreditCard } from \"@tabler/icons-react\";\n\nimport { Button } from \"@/components/ui/button\";\nimport { cn } from \"@/lib/utils\";\n\nexport function PaymentButton({\n  label = \"Credit card\",\n  description = \"Pay securely with your card\",\n  icon = <IconCreditCard aria-hidden />,\n  variant = \"outline\",\n  className,\n  onClick,\n  ...buttonProps\n}: {\n  label?: string;\n  description?: ReactNode;\n  icon?: ReactNode;\n} & Omit<ComponentProps<typeof Button>, \"children\">) {\n  const [feedback, setFeedback] = useState(\"\");\n\n  return (\n    <Button\n      {...buttonProps}\n      variant={variant}\n      className={cn(\"h-auto max-w-full justify-start gap-3 px-4 py-3 text-left whitespace-normal\", className)}\n      onClick={(event) => {\n        setFeedback(`${label} selected`);\n        onClick?.(event);\n      }}\n    >\n      <span className=\"flex size-10 shrink-0 items-center justify-center rounded-md bg-muted\">{icon}</span>\n      <span className=\"flex flex-col gap-0.5\">\n        <span>{label}</span>\n        <span className=\"text-xs font-normal text-muted-foreground\">{feedback || description}</span>\n      </span>\n    </Button>\n  );\n}\n",
+      "type": "registry:component",
+      "target": "src/components/composite/payment-button.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

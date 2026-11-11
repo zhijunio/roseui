@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "close-button",
+  "title": "close-button",
+  "description": "RoseUI close-button component.",
+  "dependencies": [
+    "@tabler/icons-react"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/close-button.tsx",
+      "content": "import type { ComponentProps } from \"react\";\nimport { IconX as X } from \"@tabler/icons-react\";\nimport { cn } from \"@/lib/utils\";\n\ntype CloseButtonProps = Omit<ComponentProps<\"button\">, \"aria-label\"> & {\n  \"aria-label\": string;\n  size?: \"xs\" | \"sm\" | \"default\";\n};\n\nexport function CloseButton({\n  className,\n  size = \"sm\",\n  children,\n  ...props\n}: CloseButtonProps) {\n  return (\n    <button\n      {...props}\n      type=\"button\"\n      data-slot=\"close-button\"\n      className={cn(\n        \"inline-flex shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors motion-reduce:!transition-none hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50\",\n        size === \"xs\" && \"size-5 [&_svg]:size-3\",\n        size === \"sm\" && \"size-6 [&_svg]:size-3.5\",\n        size === \"default\" && \"size-8 [&_svg]:size-4\",\n        className,\n      )}\n    >\n      {children ?? <X aria-hidden=\"true\" />}\n    </button>\n  );\n}\n",
+      "type": "registry:ui",
+      "target": "src/components/ui/close-button.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

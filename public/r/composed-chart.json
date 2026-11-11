@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "composed-chart",
+  "title": "composed-chart",
+  "description": "RoseUI composed-chart component.",
+  "dependencies": [
+    "recharts"
+  ],
+  "registryDependencies": [
+    "chart"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/composed-chart.tsx",
+      "content": "\"use client\"\n\nimport { useId } from \"react\"\nimport { Area, Bar, CartesianGrid, ComposedChart as RechartsComposedChart, Line, Tooltip, XAxis, YAxis } from \"recharts\"\nimport { ChartContainer, ChartLegend, ChartLegendContent, ChartTooltipContent, type ChartConfig } from \"@/components/ui/chart\"\n\nexport type ComposedChartDatum = { key: string; label: string; values: Readonly<Record<string, number>> }\nexport type ComposedChartSeries = { key: string; label: string; kind: \"bar\" | \"line\" | \"area\"; color?: string; axis?: \"primary\" | \"secondary\" }\nexport type ComposedChartProps = { data: readonly [ComposedChartDatum, ...ComposedChartDatum[]]; series: readonly [ComposedChartSeries, ...ComposedChartSeries[]]; label: string; secondaryUnit?: string; height?: number }\n\nfunction colorFor(index: number) { return `var(--chart-${(index % 5) + 1})` }\n\nexport function ComposedChart({ data, series, label, secondaryUnit, height = 240 }: ComposedChartProps) {\n  const id = useId()\n  const config: ChartConfig = Object.fromEntries(series.map((item, index) => [item.key, { label: item.label, color: item.color ?? colorFor(index) }]))\n  const plotData = data.map((item) => ({ ...item.values, label: item.label }))\n  return <figure className=\"grid w-full\" aria-labelledby={`${id}-title`}>\n    <figcaption className=\"sr-only\" id={`${id}-title`}>{label}</figcaption>\n    <ChartContainer config={config} className=\"w-full aspect-auto\" style={{ height }} aria-label={label}>\n      <RechartsComposedChart accessibilityLayer data={plotData} margin={{ top: 12, right: 20, bottom: 0, left: 0 }}>\n        <CartesianGrid vertical={false} />\n        <XAxis dataKey=\"label\" tickLine={false} axisLine={false} tickMargin={8} />\n        <YAxis yAxisId=\"primary\" tickLine={false} axisLine={false} width={36} />\n        {series.some((item) => item.axis === \"secondary\") && <YAxis yAxisId=\"secondary\" orientation=\"right\" tickLine={false} axisLine={false} width={42} tickFormatter={(value) => `${value}${secondaryUnit ?? \"\"}`} />}\n        <Tooltip content={<ChartTooltipContent />} />\n        <ChartLegend content={<ChartLegendContent />} />\n        {series.map((item, index) => {\n          const color = item.color ?? colorFor(index)\n          const yAxisId = item.axis ?? \"primary\"\n          if (item.kind === \"bar\") return <Bar key={item.key} yAxisId={yAxisId} dataKey={item.key} fill={color} radius={4} isAnimationActive={false} />\n          if (item.kind === \"area\") return <Area key={item.key} yAxisId={yAxisId} dataKey={item.key} type=\"monotone\" stroke={color} fill={color} fillOpacity={0.2} strokeWidth={2} isAnimationActive={false} />\n          return <Line key={item.key} yAxisId={yAxisId} dataKey={item.key} type=\"monotone\" stroke={color} strokeWidth={2} dot={false} isAnimationActive={false} />\n        })}\n      </RechartsComposedChart>\n    </ChartContainer>\n  </figure>\n}\n",
+      "type": "registry:ui",
+      "target": "src/components/ui/composed-chart.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "icon-tile",
+  "title": "icon-tile",
+  "description": "RoseUI icon-tile component.",
+  "dependencies": [
+    "class-variance-authority",
+    "radix-ui"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/icon-tile.tsx",
+      "content": "import { Slot } from \"radix-ui\";\nimport { cva, type VariantProps } from \"class-variance-authority\";\n\nimport { cn } from \"@/lib/utils\";\n\nconst iconTileVariants = cva(\n  \"relative inline-flex shrink-0 items-center justify-center align-middle size-(--icon-tile-size) [--icon-tile-radius:min(var(--radius-md),calc(var(--icon-tile-size)/3))] rounded-[var(--icon-tile-radius)] [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*=size-])]:size-(--icon-tile-icon-size)\",\n  {\n    variants: {\n      variant: {\n        outline: \"border border-border bg-background dark:bg-input/32\",\n        elevated: \"border-2 border-background bg-muted text-secondary-foreground shadow-xs dark:border\",\n        soft: \"isolate bg-current/10 p-(--icon-tile-inset) text-primary after:absolute after:-z-10 after:inset-(--icon-tile-inset) after:rounded-[calc(var(--icon-tile-radius)_-_var(--icon-tile-inset))] after:border after:border-current/20 after:bg-current/5\",\n        solid: \"bg-primary text-primary-foreground\",\n        frame: \"isolate border border-border bg-muted/50 p-(--icon-tile-inset) after:absolute after:-z-10 after:inset-(--icon-tile-inset) after:rounded-[calc(var(--icon-tile-radius)_-_var(--icon-tile-inset))] after:border after:border-border after:bg-card after:shadow-xs\",\n      },\n      size: {\n        xs: \"[--icon-tile-size:--spacing(6)] [--icon-tile-icon-size:--spacing(3.5)] [--icon-tile-inset:--spacing(0.5)]\",\n        sm: \"[--icon-tile-size:--spacing(8)] [--icon-tile-icon-size:--spacing(4)] [--icon-tile-inset:--spacing(0.5)]\",\n        default: \"[--icon-tile-size:--spacing(10)] [--icon-tile-icon-size:--spacing(4.5)] [--icon-tile-inset:--spacing(0.75)]\",\n        lg: \"[--icon-tile-size:--spacing(12)] [--icon-tile-icon-size:--spacing(5.5)] [--icon-tile-inset:--spacing(0.75)]\",\n        xl: \"[--icon-tile-size:--spacing(14)] [--icon-tile-icon-size:--spacing(7)] [--icon-tile-inset:--spacing(1)]\",\n      },\n      radius: { default: \"\", full: \"[--icon-tile-radius:9999px]\" },\n    },\n    defaultVariants: { variant: \"outline\", size: \"default\", radius: \"default\" },\n  }\n);\n\nexport type IconTileVariant = NonNullable<VariantProps<typeof iconTileVariants>[\"variant\"]>;\nexport type IconTileSize = NonNullable<VariantProps<typeof iconTileVariants>[\"size\"]>;\n\nfunction IconTile({\n  className,\n  variant = \"outline\",\n  size = \"default\",\n  radius = \"default\",\n  asChild = false,\n  ...props\n}: React.ComponentProps<\"span\"> & {\n  variant?: IconTileVariant;\n  size?: IconTileSize;\n  radius?: \"default\" | \"full\";\n  asChild?: boolean;\n}) {\n  const Component = asChild ? Slot.Root : \"span\";\n\n  return (\n    <Component\n      data-slot=\"icon-tile\"\n      data-variant={variant}\n      data-size={size}\n      className={cn(iconTileVariants({ variant, size, radius }), className)}\n      {...props}\n    />\n  );\n}\n\nexport { IconTile };\n",
+      "type": "registry:ui",
+      "target": "src/components/ui/icon-tile.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

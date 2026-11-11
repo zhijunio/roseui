@@ -1,0 +1,59 @@
+.figure {
+  position: relative;
+  display: grid;
+  min-width: 0;
+  margin: 0;
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  letter-spacing: 0;
+}
+
+/* Series colors (--series-1 to --series-4) come from registry/foundation.css. */
+
+.stage { position: relative; min-width: 0; outline: none; touch-action: pan-y; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
+.columns { position: relative; height: 28px; }
+.column { position: absolute; top: 0; color: var(--muted-foreground); font-size: 0.875rem; line-height: 20px; white-space: nowrap; }
+
+.plot { position: relative; }
+.svg { display: block; overflow: visible; }
+.axis { stroke: var(--border); stroke-width: 1; shape-rendering: crispEdges; }
+
+/* Every line is one neutral ink; the story item takes the first series (derived from the accent) and the item in focus comes forward. */
+.item { --ink: color-mix(in oklab, var(--foreground) 36%, var(--card)); transition: opacity 200ms cubic-bezier(0.4, 0, 0.2, 1); }
+.item[data-accent] { --ink: var(--chart-3); }
+.item[data-on]:not([data-accent]) { --ink: var(--foreground); }
+.item[data-dim] { opacity: .14; }
+.line { stroke: var(--ink); stroke-width: 2; stroke-linecap: round; fill: none; transition: stroke 150ms cubic-bezier(0.4, 0, 0.2, 1); }
+.dot { fill: var(--ink); stroke: var(--card); stroke-width: 2; transform-box: fill-box; transform-origin: center; transition: fill 150ms cubic-bezier(0.4, 0, 0.2, 1); }
+.leader { fill: none; stroke: var(--border); stroke-width: 1; }
+
+.labels { transition: opacity 200ms cubic-bezier(0.4, 0, 0.2, 1); }
+.labels[data-dim] { opacity: .3; }
+.start, .end { position: absolute; top: 0; display: flex; height: 20px; align-items: center; gap: 8px; margin-top: -10px; font-size: 0.875rem; line-height: 20px; white-space: nowrap; pointer-events: none; }
+.start { justify-content: flex-end; max-width: 100%; }
+/* On a phone the labels step down a size so the longest names fit beside the first column instead of running off the edge. */
+.stage[data-narrow] .start, .stage[data-narrow] .end { gap: 6px; font-size: 0.75rem; }
+.name { min-width: 0; overflow: hidden; color: var(--muted-foreground); text-overflow: ellipsis; }
+.value { color: var(--foreground); font-variant-numeric: tabular-nums; }
+.labels[data-on] .name, .labels[data-accent] .name { color: var(--foreground); }
+/* Only the story item is medium; the item in focus changes color, not weight, so its label never shifts sideways. */
+.labels[data-accent] .value { font-weight: 500; }
+
+.rank { display: inline-flex; min-width: 30px; align-items: center; gap: 2px; color: var(--muted-foreground); font-size: 0.75rem; font-variant-numeric: tabular-nums; }
+.rank[data-move="up"] { color: var(--muted-foreground); }
+.rankSwap { position: relative; display: inline-flex; overflow: hidden; }
+
+.tooltip { position: absolute; top: 0; left: 0; z-index: 2; display: grid; min-width: 168px; max-width: min(240px, 100%); gap: 3px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 14px; background: var(--popover); box-shadow: var(--shadow-lg); opacity: 0; pointer-events: none; scale: .96; transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1), scale 150ms cubic-bezier(0.4, 0, 0.2, 1); }
+.stage[data-active] .tooltip { opacity: 1; scale: 1; }
+.tipTitle { margin: 0 0 2px; color: var(--foreground); font-size: 0.875rem; font-weight: 500; line-height: 1.5; white-space: nowrap; }
+.tipRow { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0; font-size: 0.875rem; line-height: 1.3; }
+.tipName { color: var(--muted-foreground); }
+.tipValue { color: var(--foreground); font-weight: 500; font-variant-numeric: tabular-nums; }
+.tipMeta { margin: 2px 0 0; color: var(--muted-foreground); font-size: 0.75rem; line-height: 1.5; font-variant-numeric: tabular-nums; }
+
+.message { display: grid; min-height: 160px; place-items: center; margin: 0; color: var(--muted-foreground); font-size: 0.875rem; }
+.srOnly { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+@media (prefers-reduced-motion: reduce) {
+  .item, .line, .dot, .labels, .tooltip { transition: none; }
+}

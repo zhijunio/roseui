@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "radio-group",
+  "title": "radio-group",
+  "description": "RoseUI radio-group component.",
+  "dependencies": [
+    "radix-ui"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/radio-group.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport type { ReactNode } from \"react\"\nimport { RadioGroup as RadioGroupPrimitive } from \"radix-ui\"\n\nimport { cn } from \"@/lib/utils\"\n\nfunction RadioGroup({\n  className,\n  onFocusCapture,\n  onKeyDownCapture,\n  ...props\n}: React.ComponentProps<typeof RadioGroupPrimitive.Root>) {\n  const arrowNavigationRef = React.useRef(false)\n  const arrowNavigationFromRef = React.useRef<HTMLElement | null>(null)\n  const arrowNavigationTimeoutRef = React.useRef<number | undefined>(undefined)\n\n  React.useEffect(() => () => {\n    window.clearTimeout(arrowNavigationTimeoutRef.current)\n  }, [])\n\n  return (\n    <RadioGroupPrimitive.Root\n      data-slot=\"radio-group\"\n      className={cn(\"grid w-full gap-2\", className)}\n      onKeyDownCapture={(event) => {\n        onKeyDownCapture?.(event)\n        if (\n          event.defaultPrevented ||\n          event.metaKey ||\n          event.ctrlKey ||\n          event.altKey ||\n          event.shiftKey ||\n          ![\"ArrowUp\", \"ArrowDown\", \"ArrowLeft\", \"ArrowRight\"].includes(event.key)\n        ) return\n\n        arrowNavigationRef.current = true\n        arrowNavigationFromRef.current =\n          event.target instanceof HTMLElement && event.target.getAttribute(\"role\") === \"radio\"\n            ? event.target\n            : null\n        window.clearTimeout(arrowNavigationTimeoutRef.current)\n        arrowNavigationTimeoutRef.current = window.setTimeout(() => {\n          arrowNavigationRef.current = false\n          arrowNavigationFromRef.current = null\n        }, 100)\n      }}\n      onFocusCapture={(event) => {\n        onFocusCapture?.(event)\n        const target = event.target\n        if (\n          event.defaultPrevented ||\n          !arrowNavigationRef.current ||\n          !(target instanceof HTMLElement) ||\n          target.getAttribute(\"role\") !== \"radio\" ||\n          target === arrowNavigationFromRef.current\n        ) return\n\n        arrowNavigationRef.current = false\n        arrowNavigationFromRef.current = null\n        window.clearTimeout(arrowNavigationTimeoutRef.current)\n        target.click()\n      }}\n      {...props}\n    />\n  )\n}\n\nfunction RadioGroupItem({\n  className,\n  indicator,\n  ...props\n}: React.ComponentProps<typeof RadioGroupPrimitive.Item> & {\n  indicator?: ReactNode\n}) {\n  return (\n    <RadioGroupPrimitive.Item\n      data-slot=\"radio-group-item\"\n      className={cn(\n        \"group/radio-group-item peer relative flex aspect-square size-4 shrink-0 rounded-full border border-input outline-none after:absolute after:-inset-x-3 after:-inset-y-2 focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 aria-invalid:aria-checked:border-primary dark:bg-input/30 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 data-checked:border-primary data-checked:bg-primary data-checked:text-primary-foreground dark:data-checked:bg-primary\",\n        className\n      )}\n      {...props}\n    >\n      <RadioGroupPrimitive.Indicator\n        data-slot=\"radio-group-indicator\"\n        className=\"flex size-4 items-center justify-center\"\n      >\n        {indicator ?? (\n          <span className=\"absolute top-1/2 left-1/2 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary-foreground\" />\n        )}\n      </RadioGroupPrimitive.Indicator>\n    </RadioGroupPrimitive.Item>\n  )\n}\n\nexport { RadioGroup, RadioGroupItem }\n",
+      "type": "registry:ui",
+      "target": "src/components/ui/radio-group.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "form",
+  "title": "form",
+  "description": "RoseUI form component.",
+  "dependencies": [
+    "radix-ui"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/form.tsx",
+      "content": "\"use client\";\n\nimport type { ComponentProps } from \"react\";\nimport { Form as FormPrimitive } from \"radix-ui\";\n\ntype FormProps = ComponentProps<typeof FormPrimitive.Root> & {\n  validationBehavior?: \"aria\" | \"native\";\n  validationErrors?: Record<string, string>;\n};\n\nexport function Form({ validationBehavior, validationErrors, ...props }: FormProps) {\n  void validationBehavior;\n  void validationErrors;\n  return <FormPrimitive.Root data-slot=\"form\" {...props} />;\n}\n",
+      "type": "registry:ui",
+      "target": "src/components/ui/form.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

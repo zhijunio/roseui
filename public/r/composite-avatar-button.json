@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "composite-avatar-button",
+  "title": "composite-avatar-button",
+  "description": "RoseUI composite-avatar-button component.",
+  "registryDependencies": [
+    "avatar",
+    "button"
+  ],
+  "files": [
+    {
+      "path": "src/components/composite/avatar-button.tsx",
+      "content": "import type { ComponentProps, ReactNode } from \"react\";\n\nimport { Avatar, AvatarFallback, AvatarImage } from \"@/components/ui/avatar\";\nimport { Button } from \"@/components/ui/button\";\n\nexport function AvatarButton({\n  label,\n  src,\n  alt = \"\",\n  fallback,\n  avatarSize = \"xs\",\n  variant = \"outline\",\n  ...buttonProps\n}: {\n  label: ReactNode;\n  src?: string;\n  alt?: string;\n  fallback?: ReactNode;\n  avatarSize?: ComponentProps<typeof Avatar>[\"size\"];\n} & Omit<ComponentProps<typeof Button>, \"children\">) {\n  return (\n    <Button {...buttonProps} variant={variant}>\n      <Avatar size={avatarSize}>\n        <AvatarImage src={src} alt={alt} />\n        <AvatarFallback>{fallback}</AvatarFallback>\n      </Avatar>\n      {label}\n    </Button>\n  );\n}\n",
+      "type": "registry:component",
+      "target": "src/components/composite/avatar-button.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "composite-color-picker",
+  "title": "composite-color-picker",
+  "description": "RoseUI composite-color-picker component.",
+  "dependencies": [
+    "react-aria-components"
+  ],
+  "registryDependencies": [
+    "input",
+    "popover",
+    "use-controlled-state",
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/composite/color-picker.tsx",
+      "content": "\"use client\";\n\nimport type { ComponentProps } from \"react\";\nimport { useState } from \"react\";\n\nimport { ColorPicker as AriaColorPicker } from \"react-aria-components\";\n\nimport { Input } from \"@/components/ui/input\";\nimport { Popover, PopoverContent, PopoverTrigger } from \"@/components/ui/popover\";\nimport { useControlledState } from \"@/hooks/use-controlled-state\";\nimport { cn } from \"@/lib/utils\";\n\nexport function ColorPicker(props: ComponentProps<typeof AriaColorPicker>) {\n  return <AriaColorPicker {...props} />;\n}\n\nexport function ColorInput({\n  value,\n  defaultValue = \"#2563eb\",\n  onValueChange,\n  className,\n  ...props\n}: Omit<ComponentProps<\"input\">, \"type\" | \"value\" | \"defaultValue\" | \"onChange\"> & {\n  value?: string;\n  defaultValue?: string;\n  onValueChange?: (value: string) => void;\n}) {\n  const [current, update] = useControlledState({\n    value,\n    defaultValue,\n    onChange: onValueChange,\n  });\n  return (\n    <div className=\"flex w-fit items-center gap-2 rounded-lg border bg-background p-1.5\">\n      <Input\n        {...props}\n        type=\"color\"\n        value={current}\n        onChange={(event) => update(event.currentTarget.value)}\n        className={cn(\"size-8 cursor-pointer rounded-md border-0 p-0\", className)}\n      />\n      <output className=\"min-w-18 font-mono text-xs uppercase text-muted-foreground\">{current}</output>\n    </div>\n  );\n}\n\nexport function ColorWell({\n  value,\n  defaultValue = \"#2563eb\",\n  onValueChange,\n  label,\n  swatches = [],\n  className,\n  disabled,\n}: {\n  value?: string;\n  defaultValue?: string;\n  onValueChange?: (value: string) => void;\n  label: string;\n  swatches?: string[];\n  className?: string;\n  disabled?: boolean;\n}) {\n  const [open, setOpen] = useState(false);\n  const [current, update] = useControlledState({\n    value,\n    defaultValue,\n    onChange: onValueChange,\n  });\n  return (\n    <Popover open={open} onOpenChange={setOpen}>\n      <PopoverTrigger asChild>\n        <button\n          type=\"button\"\n          aria-label={label}\n          aria-expanded={open}\n          disabled={disabled}\n          className={cn(\n            \"inline-flex h-9 items-center gap-2 rounded-lg border border-input bg-background px-2.5 text-sm shadow-sm outline-none hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50\",\n            className,\n          )}\n        >\n          <span\n            aria-hidden=\"true\"\n            className=\"size-5 rounded-full border border-foreground/15\"\n            style={{ backgroundColor: current }}\n          />\n          {current}\n        </button>\n      </PopoverTrigger>\n      <PopoverContent align=\"start\" className=\"w-auto\">\n        <ColorInput aria-label={label} value={current} onValueChange={update} disabled={disabled} />\n        <div className=\"flex flex-wrap gap-1.5\">\n          {swatches.map((swatch) => (\n            <button\n              key={swatch}\n              type=\"button\"\n              aria-label={`${label}: ${swatch}`}\n              aria-pressed={swatch.toLowerCase() === current.toLowerCase()}\n              disabled={disabled}\n              onClick={() => update(swatch)}\n              className=\"size-6 rounded-full border border-foreground/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring aria-pressed:scale-110 disabled:opacity-50\"\n              style={{ backgroundColor: swatch }}\n            />\n          ))}\n        </div>\n      </PopoverContent>\n    </Popover>\n  );\n}\n",
+      "type": "registry:component",
+      "target": "src/components/composite/color-picker.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

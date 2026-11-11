@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "sonner",
+  "title": "sonner",
+  "description": "RoseUI sonner component.",
+  "dependencies": [
+    "@tabler/icons-react",
+    "next-themes",
+    "sonner"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/sonner.tsx",
+      "content": "\"use client\"\n\nimport { useTheme } from \"next-themes\"\nimport { Toaster as Sonner, type ToasterProps } from \"sonner\"\nimport { IconCircleCheckFilled as CircleCheckIcon, IconInfoCircle as InfoIcon, IconAlertTriangle as TriangleAlertIcon, IconCircleX as OctagonXIcon, IconLoader2 as Loader2Icon } from \"@tabler/icons-react\"\n\nconst Toaster = ({ ...props }: ToasterProps) => {\n  const { theme = \"system\" } = useTheme()\n\n  return (\n    <Sonner\n      theme={theme as ToasterProps[\"theme\"]}\n      className=\"toaster group\"\n      position=\"bottom-right\"\n      gap={12}\n      visibleToasts={3}\n      duration={5000}\n      closeButton\n      offset={24}\n      mobileOffset={12}\n      dir=\"auto\"\n      containerAriaLabel=\"Notifications\"\n      icons={{\n        success: (\n          <CircleCheckIcon className=\"size-5\" />\n        ),\n        info: (\n          <InfoIcon className=\"size-5\" />\n        ),\n        warning: (\n          <TriangleAlertIcon className=\"size-5\" />\n        ),\n        error: (\n          <OctagonXIcon className=\"size-5\" />\n        ),\n        loading: (\n          <Loader2Icon className=\"size-5 motion-safe:animate-spin\" />\n        ),\n      }}\n      style={\n        {\n          \"--normal-bg\": \"var(--popover)\",\n          \"--normal-text\": \"var(--popover-foreground)\",\n          \"--normal-border\": \"var(--border)\",\n          \"--border-radius\": \"1rem\",\n          \"--width\": \"400px\",\n        } as React.CSSProperties\n      }\n      toastOptions={{\n        closeButtonAriaLabel: \"Dismiss notification\",\n        classNames: {\n          toast: \"cn-toast\",\n          title: \"cn-toast-title\",\n          description: \"cn-toast-description\",\n          success: \"cn-toast-success\",\n          info: \"cn-toast-info\",\n          warning: \"cn-toast-warning\",\n          error: \"cn-toast-error\",\n          loading: \"cn-toast-loading\",\n          actionButton: \"cn-toast-action\",\n          cancelButton: \"cn-toast-cancel\",\n          closeButton: \"cn-toast-close\",\n        },\n      }}\n      {...props}\n    />\n  )\n}\n\nexport { Toaster }\nexport type { ToasterProps } from \"sonner\"\n",
+      "type": "registry:ui",
+      "target": "src/components/ui/sonner.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

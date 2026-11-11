@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "bubble",
+  "title": "bubble",
+  "description": "RoseUI bubble component.",
+  "dependencies": [
+    "class-variance-authority"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/bubble.tsx",
+      "content": "import type { ComponentProps } from \"react\";\nimport { cva, type VariantProps } from \"class-variance-authority\";\nimport { cn } from \"@/lib/utils\";\n\nconst bubbleVariants = cva(\"\", {\n  variants: {\n    variant: {\n      default: \"bg-primary text-primary-foreground\",\n      secondary: \"bg-secondary text-secondary-foreground\",\n      muted: \"bg-muted text-foreground\",\n      tinted: \"bg-primary/10 text-foreground dark:bg-primary/20\",\n      outline: \"border-border bg-background text-foreground\",\n      ghost: \"border-transparent bg-transparent p-0 text-foreground\",\n      destructive: \"bg-destructive/10 text-destructive dark:bg-destructive/20\",\n    },\n  },\n  defaultVariants: { variant: \"default\" },\n});\n\nexport type BubbleVariant = NonNullable<VariantProps<typeof bubbleVariants>[\"variant\"]>;\nexport function BubbleGroup({ className, ...props }: ComponentProps<\"div\">) {\n  return <div data-slot=\"bubble-group\" className={cn(\"flex min-w-0 flex-col gap-2\", className)} {...props} />;\n}\n\nexport function Bubble({\n  variant = \"default\",\n  align = \"start\",\n  className,\n  ...props\n}: ComponentProps<\"div\"> & {\n  variant?: BubbleVariant\n  align?: \"start\" | \"end\"\n}) {\n  return <div data-slot=\"bubble\" data-variant={variant} data-align={align} className={cn(\"group/bubble relative flex w-fit min-w-0 max-w-[80%] flex-col\", align === \"end\" && \"self-end\", variant === \"ghost\" && \"max-w-full\", className)} {...props} />;\n}\n\nexport function BubbleContent({ className, ...props }: ComponentProps<\"div\">) {\n  return <div data-slot=\"bubble-content\" className={cn(\"w-fit min-w-0 max-w-full overflow-hidden wrap-break-word rounded-xl border border-transparent px-3 py-2 text-sm leading-relaxed\", className)} {...props} />;\n}\n\nexport function BubbleReactions({ side = \"bottom\", align = \"end\", className, ...props }: ComponentProps<\"div\"> & {\n  side?: \"top\" | \"bottom\"\n  align?: \"start\" | \"end\"\n}) {\n  return <div data-slot=\"bubble-reactions\" data-side={side} data-align={align} className={cn(\"absolute z-10 flex w-fit items-center gap-1 rounded-full border bg-card px-1.5 py-1 text-xs shadow-sm\", side === \"top\" ? \"-top-3\" : \"-bottom-3\", align === \"end\" ? \"right-2\" : \"left-2\", className)} {...props} />;\n}\n\nexport const bubbleVariantClass = (variant: BubbleVariant) => bubbleVariants({ variant });\n",
+      "type": "registry:ui",
+      "target": "src/components/ui/bubble.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

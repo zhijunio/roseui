@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "composite-segmented-control",
+  "title": "composite-segmented-control",
+  "description": "RoseUI composite-segmented-control component.",
+  "dependencies": [
+    "class-variance-authority",
+    "radix-ui"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/composite/segmented-control.tsx",
+      "content": "\"use client\";\nimport * as React from \"react\";\n\nimport { cva, type VariantProps } from \"class-variance-authority\";\nimport { ToggleGroup as ToggleGroupPrimitive } from \"radix-ui\";\n\nimport { cn } from \"@/lib/utils\";\n\nconst segmentedControlVariants = cva(\"inline-flex items-center rounded-lg text-muted-foreground\", {\n  variants: {\n    variant: {\n      default: \"bg-muted p-1\",\n      ghost: \"bg-transparent p-0\",\n    },\n    size: {\n      sm: \"h-7 gap-0.5\",\n      md: \"h-9 gap-1\",\n      lg: \"h-11 gap-1.5\",\n    },\n  },\n  defaultVariants: { variant: \"default\", size: \"md\" },\n});\n\nconst segmentedControlItemVariants = cva(\n  \"inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50\",\n  {\n    variants: {\n      variant: {\n        default:\n          \"hover:text-foreground data-[state=on]:bg-background data-[state=on]:text-foreground data-[state=on]:shadow-sm\",\n        ghost: \"hover:bg-muted hover:text-foreground data-[state=on]:bg-accent data-[state=on]:text-accent-foreground\",\n      },\n      size: {\n        sm: \"h-6 px-2 text-xs\",\n        md: \"h-7 px-3 text-sm\",\n        lg: \"h-9 px-4 text-sm\",\n      },\n    },\n    defaultVariants: { variant: \"default\", size: \"md\" },\n  },\n);\n\ntype SegmentedControlVariants = VariantProps<typeof segmentedControlVariants>;\nconst SegmentedControlContext = React.createContext<SegmentedControlVariants>({ variant: \"default\", size: \"md\" });\n\nfunction SegmentedControl({\n  className,\n  value,\n  defaultValue,\n  onValueChange,\n  variant = \"default\",\n  size = \"md\",\n  ...props\n}: {\n  children?: React.ReactNode;\n  className?: string;\n  id?: string;\n  dir?: \"ltr\" | \"rtl\";\n  \"aria-label\"?: string;\n  \"aria-labelledby\"?: string;\n  value?: string;\n  defaultValue?: string;\n  onValueChange?: (value: string) => void;\n  disabled?: boolean;\n  orientation?: \"horizontal\" | \"vertical\";\n  loop?: boolean;\n  variant?: SegmentedControlVariants[\"variant\"];\n  size?: SegmentedControlVariants[\"size\"];\n}) {\n  const [uncontrolled, setUncontrolled] = React.useState(defaultValue ?? \"\");\n  const current = value ?? uncontrolled;\n  return (\n    <SegmentedControlContext.Provider value={{ variant, size }}>\n      <ToggleGroupPrimitive.Root\n        {...props}\n        type=\"single\"\n        data-slot=\"segmented-control\"\n        data-variant={variant}\n        data-size={size}\n        value={current}\n        onValueChange={(next) => {\n          if (!next) return;\n          if (value === undefined) setUncontrolled(next);\n          onValueChange?.(next);\n        }}\n        className={cn(segmentedControlVariants({ variant, size }), className)}\n      />\n    </SegmentedControlContext.Provider>\n  );\n}\nfunction SegmentedControlItem({\n  className,\n  variant,\n  size,\n  ...props\n}: React.ComponentProps<typeof ToggleGroupPrimitive.Item> & SegmentedControlVariants) {\n  const inherited = React.useContext(SegmentedControlContext);\n  return (\n    <ToggleGroupPrimitive.Item\n      data-slot=\"segmented-control-item\"\n      className={cn(\n        segmentedControlItemVariants({ variant: variant ?? inherited.variant, size: size ?? inherited.size }),\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nfunction SegmentedControlSeparator({ className, ...props }: React.ComponentProps<\"span\">) {\n  return (\n    <span\n      aria-hidden=\"true\"\n      data-slot=\"segmented-control-separator\"\n      className={cn(\"h-4 w-px shrink-0 bg-border\", className)}\n      {...props}\n    />\n  );\n}\n\nexport { SegmentedControl, SegmentedControlItem, SegmentedControlSeparator };\n",
+      "type": "registry:component",
+      "target": "src/components/composite/segmented-control.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "composite-verification-code-form",
+  "title": "composite-verification-code-form",
+  "description": "RoseUI composite-verification-code-form component.",
+  "dependencies": [
+    "@tabler/icons-react"
+  ],
+  "registryDependencies": [
+    "button",
+    "composite-input-group",
+    "composite-input-otp",
+    "hint-text",
+    "label"
+  ],
+  "files": [
+    {
+      "path": "src/components/composite/verification-code-form.tsx",
+      "content": "\"use client\";\n\nimport { type FormEvent, type ReactNode, useId } from \"react\";\n\nimport { IconCheck, IconSend } from \"@tabler/icons-react\";\n\nimport { InputGroup, InputGroupAddon, InputGroupButton } from \"@/components/composite/input-group\";\nimport { InputOtp } from \"@/components/composite/input-otp\";\nimport { Button } from \"@/components/ui/button\";\nimport { HintText } from \"@/components/ui/hint-text\";\nimport { Label } from \"@/components/ui/label\";\n\ntype RecipientInputProps = {\n  id: string;\n  invalid: boolean;\n  errorMessageId: string;\n  onChange: () => void;\n};\n\nexport type VerificationCodeFormProps = {\n  recipientLabel: string;\n  recipientErrorMessage: string;\n  recipientInput: (props: RecipientInputProps) => ReactNode;\n  recipientInvalid?: boolean;\n  code: string;\n  codeVisible: boolean;\n  cooldownSecondsLeft: number;\n  sendLabel: string;\n  sendDisabled?: boolean;\n  onCodeChange: (code: string) => void;\n  onRecipientChange?: () => void;\n  verifyLabel: string;\n  onSendCode: () => void;\n  onVerifyCode: () => void;\n  codeLength?: number;\n};\n\nconst verificationGroupClass = \"has-disabled:bg-transparent has-disabled:opacity-100 dark:has-disabled:bg-transparent\";\n\nexport function VerificationCodeForm({\n  recipientLabel,\n  recipientErrorMessage,\n  recipientInput,\n  recipientInvalid = false,\n  code,\n  codeVisible,\n  cooldownSecondsLeft,\n  sendLabel,\n  sendDisabled = false,\n  onCodeChange,\n  onRecipientChange,\n  verifyLabel,\n  onSendCode,\n  onVerifyCode,\n  codeLength = 6,\n}: VerificationCodeFormProps) {\n  const id = useId();\n  const errorMessageId = `${id}-error`;\n\n  return (\n    <form\n      className=\"grid w-full gap-2\"\n      onSubmit={(event: FormEvent<HTMLFormElement>) => {\n        event.preventDefault();\n        onSendCode();\n      }}\n    >\n      <Label htmlFor={`${id}-recipient`}>{recipientLabel}</Label>\n      <InputGroup className={verificationGroupClass}>\n        {recipientInput({\n          id: `${id}-recipient`,\n          invalid: recipientInvalid,\n          errorMessageId,\n          onChange: onRecipientChange ?? (() => undefined),\n        })}\n        <InputGroupAddon align=\"inline-end\">\n          <InputGroupButton type=\"submit\" size=\"xs\" disabled={sendDisabled} aria-label={sendLabel} title={sendLabel}>\n            {cooldownSecondsLeft > 0 ? (\n              <>\n                <IconCheck className=\"size-3.5\" />\n                {cooldownSecondsLeft}s\n              </>\n            ) : (\n              <IconSend className=\"size-4\" aria-hidden=\"true\" />\n            )}\n          </InputGroupButton>\n        </InputGroupAddon>\n      </InputGroup>\n      {recipientInvalid ? (\n        <HintText id={errorMessageId} variant=\"error\">\n          {recipientErrorMessage}\n        </HintText>\n      ) : null}\n      {codeVisible ? (\n        <div className=\"flex flex-wrap items-center gap-2\">\n          <InputOtp aria-label={`${codeLength}-digit verification code`} value={code} onChange={onCodeChange} />\n          <Button type=\"button\" variant=\"outline\" disabled={code.length !== codeLength} onClick={onVerifyCode}>\n            {verifyLabel}\n          </Button>\n        </div>\n      ) : null}\n    </form>\n  );\n}\n",
+      "type": "registry:component",
+      "target": "src/components/composite/verification-code-form.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

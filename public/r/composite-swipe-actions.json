@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "composite-swipe-actions",
+  "title": "composite-swipe-actions",
+  "description": "RoseUI composite-swipe-actions component.",
+  "dependencies": [
+    "@tabler/icons-react"
+  ],
+  "registryDependencies": [
+    "button",
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/composite/swipe-actions.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\n\nimport { IconDots, IconX } from \"@tabler/icons-react\";\n\nimport { Button } from \"@/components/ui/button\";\nimport { cn } from \"@/lib/utils\";\n\nexport type SwipeAction = {\n  label: string;\n  icon?: React.ReactNode;\n  onSelect: () => void;\n  variant?: \"default\" | \"destructive\";\n};\n\nexport type SwipeActionsProps = {\n  children: React.ReactNode;\n  actions: SwipeAction[];\n  className?: string;\n  label?: string;\n};\n\nexport function SwipeActions({ children, actions, className, label = \"Item actions\" }: SwipeActionsProps) {\n  const [open, setOpen] = React.useState(false);\n  const pointerStart = React.useRef<{ x: number; y: number } | null>(null);\n  const swipedRef = React.useRef(false);\n  const actionWidth = actions.length * 40 + 8;\n\n  function finishAction(action: SwipeAction) {\n    action.onSelect();\n    setOpen(false);\n  }\n\n  return (\n    <div\n      data-slot=\"swipe-actions\"\n      data-open={open || undefined}\n      className={cn(\"relative isolate overflow-hidden rounded-xl border bg-card\", className)}\n      style={{ touchAction: \"pan-y\" }}\n      onPointerDown={(event) => {\n        pointerStart.current = { x: event.clientX, y: event.clientY };\n      }}\n      onPointerUp={(event) => {\n        if (!pointerStart.current) return;\n        const deltaX = event.clientX - pointerStart.current.x;\n        const deltaY = event.clientY - pointerStart.current.y;\n        if (Math.abs(deltaX) > 40 && Math.abs(deltaX) > Math.abs(deltaY)) {\n          setOpen(deltaX < 0);\n          swipedRef.current = true;\n          window.setTimeout(() => {\n            swipedRef.current = false;\n          }, 400);\n        }\n        pointerStart.current = null;\n      }}\n      onPointerCancel={() => {\n        pointerStart.current = null;\n      }}\n      onClickCapture={(event) => {\n        if (!swipedRef.current) return;\n        event.preventDefault();\n        event.stopPropagation();\n        swipedRef.current = false;\n      }}\n    >\n      <div aria-hidden={!open} className=\"absolute inset-y-0 right-0 flex items-center gap-2 px-2\">\n        {actions.map((action) => (\n          <Button\n            key={action.label}\n            type=\"button\"\n            variant={action.variant === \"destructive\" ? \"destructive\" : \"secondary\"}\n            size=\"icon-sm\"\n            aria-label={action.label}\n            tabIndex={open ? 0 : -1}\n            onClick={() => finishAction(action)}\n          >\n            {action.icon ?? (action.label === \"Close\" ? <IconX /> : action.label.slice(0, 1))}\n          </Button>\n        ))}\n      </div>\n      <div\n        className=\"relative flex min-w-0 items-center gap-2 bg-card p-3 motion-safe:transition-transform motion-safe:duration-200 motion-reduce:transition-none\"\n        style={{\n          transform: open ? `translateX(-${actionWidth}px)` : undefined,\n        }}\n      >\n        <div className=\"min-w-0 flex-1\">{children}</div>\n        <Button\n          type=\"button\"\n          variant=\"ghost\"\n          size=\"icon-sm\"\n          aria-label={open ? `Hide ${label.toLowerCase()}` : `Show ${label.toLowerCase()}`}\n          aria-expanded={open}\n          onClick={() => setOpen((value) => !value)}\n        >\n          {open ? <IconX /> : <IconDots />}\n        </Button>\n      </div>\n    </div>\n  );\n}\n",
+      "type": "registry:component",
+      "target": "src/components/composite/swipe-actions.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

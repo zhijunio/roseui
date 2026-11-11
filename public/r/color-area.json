@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "color-area",
+  "title": "color-area",
+  "description": "RoseUI color-area component.",
+  "dependencies": [
+    "react-aria-components"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/color-area.tsx",
+      "content": "\"use client\";\n\nimport type { ComponentProps, ReactNode } from \"react\";\nimport { ColorArea as AriaColorArea, ColorThumb, type ColorAreaRenderProps } from \"react-aria-components\";\n\nimport { cn } from \"@/lib/utils\";\n\nexport function ColorArea({ className, showDots = false, children, ...props }: Omit<ComponentProps<typeof AriaColorArea>, \"className\"> & {\n  className?: string;\n  showDots?: boolean;\n}) {\n  const dotOverlay = showDots ? <span aria-hidden=\"true\" className=\"pointer-events-none absolute inset-0 opacity-50\" style={{ backgroundImage: \"radial-gradient(circle, rgba(255,255,255,0.55) 1px, transparent 1px)\", backgroundSize: \"12px 12px\" }} /> : null;\n  const areaChildren = typeof children === \"function\"\n    ? (renderProps: ColorAreaRenderProps & { defaultChildren: ReactNode }) => <>{dotOverlay}{children(renderProps)}</>\n    : <>{dotOverlay}{children}</>;\n\n  return (\n    <AriaColorArea\n      data-slot=\"color-area\"\n      data-show-dots={showDots || undefined}\n      className={cn(\"relative isolate block h-48 w-full max-w-sm touch-none overflow-hidden rounded-lg\", className)}\n      {...props}\n    >\n      {areaChildren}\n    </AriaColorArea>\n  );\n}\n\nexport function ColorAreaThumb({ className, ...props }: ComponentProps<typeof ColorThumb>) {\n  return (\n    <ColorThumb\n      data-slot=\"color-area-thumb\"\n      className={cn(\"size-4 rounded-full border-2 border-white shadow-md outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 data-[disabled]:opacity-50\", className)}\n      {...props}\n    />\n  );\n}\n",
+      "type": "registry:ui",
+      "target": "src/components/ui/color-area.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

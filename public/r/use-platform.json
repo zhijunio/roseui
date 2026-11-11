@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "use-platform",
+  "title": "use-platform",
+  "description": "RoseUI use-platform hook.",
+  "files": [
+    {
+      "path": "src/hooks/use-platform.ts",
+      "content": "import * as React from \"react\";\n\n/**\n * Detects whether the current device is an Apple platform (Mac / iOS) so\n * keyboard hints can show the right modifier — ⌘ on Mac, Ctrl on Windows/Linux.\n * Defaults to `true` on the server and the first client render to avoid a\n * hydration mismatch, then corrects to the real value after mount.\n */\nexport function useIsMac() {\n  const subscribe = React.useCallback(() => () => {}, []);\n  const getSnapshot = React.useCallback(() => {\n    const nav = navigator as Navigator & {\n      userAgentData?: { platform?: string };\n    };\n    const platform = nav.userAgentData?.platform || nav.platform || nav.userAgent || \"\";\n    return /mac|iphone|ipad|ipod/i.test(platform);\n  }, []);\n  const getServerSnapshot = React.useCallback(() => true, []);\n  return React.useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);\n}\n",
+      "type": "registry:hook",
+      "target": "src/hooks/use-platform.ts"
+    }
+  ],
+  "type": "registry:hook"
+}

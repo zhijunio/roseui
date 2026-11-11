@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "hint-text",
+  "title": "hint-text",
+  "description": "RoseUI hint-text component.",
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/hint-text.tsx",
+      "content": "import type { ComponentProps } from \"react\";\n\nimport { cn } from \"@/lib/utils\";\n\nexport function HintText({\n  variant = \"default\",\n  role,\n  \"aria-live\": ariaLive,\n  className,\n  ...props\n}: Omit<ComponentProps<\"p\">, \"color\"> & {\n  variant?: \"default\" | \"error\" | \"success\";\n}) {\n  return (\n    <p\n      {...props}\n      role={role ?? (variant === \"error\" ? \"alert\" : undefined)}\n      aria-live={ariaLive ?? (variant === \"error\" ? \"assertive\" : undefined)}\n      className={cn(\n        \"text-xs leading-5\",\n        variant === \"default\" && \"text-muted-foreground\",\n        variant === \"error\" && \"text-destructive\",\n        variant === \"success\" && \"text-success\",\n        className,\n      )}\n    />\n  );\n}\n",
+      "type": "registry:ui",
+      "target": "src/components/ui/hint-text.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

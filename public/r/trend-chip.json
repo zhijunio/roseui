@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "trend-chip",
+  "title": "trend-chip",
+  "description": "RoseUI trend-chip component.",
+  "dependencies": [
+    "@tabler/icons-react"
+  ],
+  "registryDependencies": [
+    "chip"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/trend-chip.tsx",
+      "content": "import type { ComponentProps, ReactNode } from \"react\"\nimport { IconArrowDownRight, IconArrowUpRight } from \"@tabler/icons-react\"\nimport { Chip, type ChipSize, type ChipVariant } from \"@/components/ui/chip\"\n\nexport type TrendDirection = \"up\" | \"down\" | \"neutral\"\n\nexport function TrendChip({\n  trend,\n  value,\n  prefix,\n  suffix,\n  indicator,\n  size = \"sm\",\n  variant = \"soft\",\n  tabularNums = true,\n  className,\n  ...props\n}: Omit<ComponentProps<typeof Chip>, \"children\" | \"color\" | \"size\" | \"variant\" | \"prefix\"> & {\n  trend: TrendDirection\n  value: ReactNode\n  prefix?: ReactNode\n  suffix?: ReactNode\n  indicator?: ReactNode | null\n  size?: ChipSize\n  variant?: ChipVariant\n  tabularNums?: boolean\n}) {\n  const DefaultIndicator = trend === \"up\" ? IconArrowUpRight : trend === \"down\" ? IconArrowDownRight : null\n  const content = indicator === undefined ? (DefaultIndicator ? <DefaultIndicator aria-hidden=\"true\" /> : null) : indicator\n  const color = trend === \"up\" ? \"success\" : trend === \"down\" ? \"danger\" : \"neutral\"\n\n  return (\n    <Chip {...props} data-trend={trend} color={color} size={size} variant={variant} className={className}>\n      <span className=\"sr-only\">{trend} trend</span>\n      {prefix != null && <span data-slot=\"trend-chip-prefix\">{prefix}</span>}\n      {content != null && <span data-slot=\"trend-chip-indicator\" className=\"inline-flex items-center [&>svg]:size-3.5 [&>svg]:shrink-0\">{content}</span>}\n      <span data-slot=\"trend-chip-value\" className={tabularNums ? \"tabular-nums\" : undefined}>{value}</span>\n      {suffix != null && <span data-slot=\"trend-chip-suffix\">{suffix}</span>}\n    </Chip>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "src/components/ui/trend-chip.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "status-dot",
+  "title": "status-dot",
+  "description": "RoseUI status-dot component.",
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/status-dot.tsx",
+      "content": "import type { ComponentProps } from \"react\";\n\nimport { cn } from \"@/lib/utils\";\n\nexport type StatusDotColor =\n  | \"success\"\n  | \"warning\"\n  | \"error\"\n  | \"info\"\n  | \"neutral\";\n\nconst colors: Record<StatusDotColor, { halo: string; dot: string }> = {\n  success: { halo: \"bg-success/15\", dot: \"bg-success\" },\n  warning: { halo: \"bg-warning/15\", dot: \"bg-warning\" },\n  error: { halo: \"bg-destructive/15\", dot: \"bg-destructive\" },\n  info: { halo: \"bg-info/15\", dot: \"bg-info\" },\n  neutral: { halo: \"bg-muted\", dot: \"bg-muted\" },\n};\n\nexport function StatusDot({\n  color = \"neutral\",\n  className,\n  \"aria-hidden\": ariaHidden,\n  ...props\n}: Omit<ComponentProps<\"span\">, \"children\"> & {\n  color?: StatusDotColor;\n}) {\n  const palette = colors[color];\n\n  return (\n    <span\n      {...props}\n      aria-hidden={ariaHidden ?? true}\n      className={cn(\n        \"inline-flex size-3 shrink-0 items-center justify-center rounded-full\",\n        palette.halo,\n        className,\n      )}\n    >\n      <span className={cn(\"size-1.5 rounded-full\", palette.dot)} />\n    </span>\n  );\n}\n",
+      "type": "registry:ui",
+      "target": "src/components/ui/status-dot.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

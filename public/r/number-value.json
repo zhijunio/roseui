@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "number-value",
+  "title": "number-value",
+  "description": "RoseUI number-value component.",
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/number-value.tsx",
+      "content": "import * as React from \"react\"\nimport { cn } from \"@/lib/utils\"\n\ntype NumberValueFormat = \"decimal\" | \"currency\" | \"percent\" | \"unit\"\n\ntype NumberValueCommonProps = {\n  value: number\n  notation?: Intl.NumberFormatOptions[\"notation\"]\n  signDisplay?: Intl.NumberFormatOptions[\"signDisplay\"]\n  minimumFractionDigits?: number\n  maximumFractionDigits?: number\n  locale?: string\n  formatOptions?: Intl.NumberFormatOptions\n  prefix?: React.ReactNode\n  suffix?: React.ReactNode\n  children?: React.ReactNode | ((formatted: string) => React.ReactNode)\n}\ntype NumberValueFormatProps =\n  | { formatStyle?: \"decimal\"; currency?: never; unit?: never; unitDisplay?: never }\n  | { formatStyle: \"currency\"; currency: string; unit?: never; unitDisplay?: never }\n  | { formatStyle: \"unit\"; unit: NonNullable<Intl.NumberFormatOptions[\"unit\"]>; unitDisplay?: Intl.NumberFormatOptions[\"unitDisplay\"]; currency?: never }\n  | { formatStyle: \"percent\"; currency?: never; unit?: never; unitDisplay?: never }\ntype NumberValueProps = Omit<React.ComponentProps<\"span\">, \"children\" | \"style\" | \"prefix\"> & NumberValueCommonProps & NumberValueFormatProps\n\nfunction NumberValue({ value, formatStyle = \"decimal\", currency, unit, unitDisplay, notation, signDisplay, minimumFractionDigits, maximumFractionDigits, locale, formatOptions, prefix, suffix, children, className, ...props }: NumberValueProps) {\n  const formatted = React.useMemo(() => {\n    const options: Intl.NumberFormatOptions = {\n      style: formatStyle,\n      ...(formatStyle === \"currency\" && currency ? { currency } : {}),\n      ...(formatStyle === \"unit\" && unit ? { unit, unitDisplay } : {}),\n      ...(notation ? { notation } : {}),\n      ...(signDisplay ? { signDisplay } : {}),\n      ...(minimumFractionDigits !== undefined ? { minimumFractionDigits } : {}),\n      ...(maximumFractionDigits !== undefined ? { maximumFractionDigits } : {}),\n      ...formatOptions,\n    }\n    return new Intl.NumberFormat(locale, options).format(value)\n  }, [currency, formatOptions, formatStyle, locale, maximumFractionDigits, minimumFractionDigits, notation, signDisplay, unit, unitDisplay, value])\n  const content = typeof children === \"function\" ? children(formatted) : children ?? formatted\n\n  return <span data-slot=\"number-value\" className={cn(\"inline-flex flex-nowrap items-baseline gap-1 tabular-nums\", className)} {...props}>\n    {prefix != null && <span data-slot=\"number-value-prefix\">{prefix}</span>}\n    <span data-slot=\"number-value-value\">{content}</span>\n    {suffix != null && <span data-slot=\"number-value-suffix\">{suffix}</span>}\n  </span>\n}\n\nexport { NumberValue }\nexport type { NumberValueProps, NumberValueFormat }\n",
+      "type": "registry:ui",
+      "target": "src/components/ui/number-value.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

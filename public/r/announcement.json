@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "announcement",
+  "title": "announcement",
+  "description": "RoseUI announcement component.",
+  "dependencies": [
+    "@tabler/icons-react",
+    "motion"
+  ],
+  "registryDependencies": [
+    "button",
+    "close-button",
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/announcement.tsx",
+      "content": "\"use client\";\n\nimport { useId, useState, type ReactNode } from \"react\";\nimport { AnimatePresence, motion, useReducedMotion, type HTMLMotionProps } from \"motion/react\";\nimport { IconShieldStar } from \"@tabler/icons-react\";\nimport { Button } from \"@/components/ui/button\";\nimport { CloseButton } from \"@/components/ui/close-button\";\nimport { cn } from \"@/lib/utils\";\n\nexport function Announcement({\n  title,\n  description,\n  actionLabel,\n  onAction,\n  icon,\n  dismissible = false,\n  onDismiss,\n  closeLabel = \"Dismiss announcement\",\n  className,\n  ...props\n}: Omit<HTMLMotionProps<\"aside\">, \"children\" | \"title\"> & {\n  title: ReactNode;\n  description?: ReactNode;\n  actionLabel?: ReactNode;\n  onAction?: () => void;\n  icon?: ReactNode;\n  dismissible?: boolean;\n  onDismiss?: () => void;\n  closeLabel?: string;\n}) {\n  const [visible, setVisible] = useState(true);\n  const reduceMotion = useReducedMotion();\n  const titleId = useId();\n\n  return (\n    <AnimatePresence initial={false} onExitComplete={onDismiss}>\n      {visible && (\n        <motion.aside\n          {...props}\n          aria-labelledby={props[\"aria-labelledby\"] ?? (props[\"aria-label\"] ? undefined : titleId)}\n          initial={false}\n          exit={reduceMotion ? { opacity: 0, transition: { duration: 0 } } : {\n            opacity: 0,\n            scale: 0.85,\n            filter: \"blur(6px)\",\n            transition: { duration: 0.25, ease: \"easeInOut\" },\n          }}\n          className={cn(\"overflow-hidden\", className)}\n        >\n          <div className=\"relative flex w-full flex-col items-start gap-3 rounded-xl border border-border bg-card p-3\">\n            <div className=\"flex w-full flex-col items-start gap-1\">\n              {icon === undefined ? (\n                <IconShieldStar aria-hidden=\"true\" className=\"size-5 shrink-0 text-muted-foreground\" />\n              ) : (\n                icon\n              )}\n              <div className=\"flex w-full flex-col items-start gap-0.5\">\n                <p id={titleId} className=\"w-full text-sm font-medium leading-5 text-foreground\">{title}</p>\n                {description && <p className=\"w-full text-[13px] leading-[18px] text-muted-foreground\">{description}</p>}\n              </div>\n            </div>\n            {dismissible && (\n              <CloseButton\n                size=\"xs\"\n                aria-label={closeLabel}\n                onClick={() => setVisible(false)}\n                className=\"absolute end-3 top-3\"\n              />\n            )}\n            {actionLabel && (\n              <Button type=\"button\" variant=\"secondary\" size=\"sm\" onClick={onAction} className=\"w-full\">\n                {actionLabel}\n              </Button>\n            )}\n          </div>\n        </motion.aside>\n      )}\n    </AnimatePresence>\n  );\n}\n",
+      "type": "registry:ui",
+      "target": "src/components/ui/announcement.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

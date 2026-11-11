@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "scatter-chart",
+  "title": "scatter-chart",
+  "description": "RoseUI scatter-chart component.",
+  "dependencies": [
+    "recharts"
+  ],
+  "registryDependencies": [
+    "chart"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/scatter-chart.tsx",
+      "content": "\"use client\"\n\nimport { useId } from \"react\"\nimport { CartesianGrid, Scatter, ScatterChart as RechartsScatterChart, Tooltip, XAxis, YAxis } from \"recharts\"\nimport { ChartContainer, ChartTooltipContent, type ChartConfig } from \"@/components/ui/chart\"\n\nexport type ScatterChartDatum = { key: string; label: string; x: number; y: number }\nexport type ScatterChartProps = { data: readonly [ScatterChartDatum, ...ScatterChartDatum[]]; label: string; xLabel: string; yLabel: string; height?: number }\n\nexport function ScatterChart({ data, label, xLabel, yLabel, height = 240 }: ScatterChartProps) {\n  const id = useId()\n  const config: ChartConfig = { points: { label, color: \"var(--chart-1)\" } }\n  return <figure className=\"grid w-full\" aria-labelledby={`${id}-title`}>\n    <figcaption className=\"sr-only\" id={`${id}-title`}>{label}</figcaption>\n    <ChartContainer config={config} className=\"w-full aspect-auto\" style={{ height }} aria-label={label}>\n      <RechartsScatterChart accessibilityLayer margin={{ top: 16, right: 16, bottom: 16, left: 8 }}>\n        <CartesianGrid />\n        <XAxis type=\"number\" dataKey=\"x\" name={xLabel} tickLine={false} axisLine={false} tickMargin={8} />\n        <YAxis type=\"number\" dataKey=\"y\" name={yLabel} tickLine={false} axisLine={false} width={40} />\n        <Tooltip cursor={{ strokeDasharray: \"3 3\" }} content={<ChartTooltipContent labelFormatter={(_, payload) => payload[0]?.payload?.label ?? \"\"} />} />\n        <Scatter name={label} data={data} fill=\"var(--color-points)\" isAnimationActive={false} />\n      </RechartsScatterChart>\n    </ChartContainer>\n  </figure>\n}\n",
+      "type": "registry:ui",
+      "target": "src/components/ui/scatter-chart.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

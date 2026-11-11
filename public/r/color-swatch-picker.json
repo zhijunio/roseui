@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "color-swatch-picker",
+  "title": "color-swatch-picker",
+  "description": "RoseUI color-swatch-picker component.",
+  "dependencies": [
+    "react-aria-components"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/color-swatch-picker.tsx",
+      "content": "\"use client\";\n\nimport type { ComponentProps } from \"react\";\nimport { ColorSwatchPicker as AriaColorSwatchPicker, ColorSwatchPickerItem as AriaColorSwatchPickerItem } from \"react-aria-components\";\n\nimport { cn } from \"@/lib/utils\";\n\nexport function ColorSwatchPicker({ className, layout = \"grid\", ...props }: ComponentProps<typeof AriaColorSwatchPicker>) {\n  return <AriaColorSwatchPicker data-slot=\"color-swatch-picker\" layout={layout} className={cn(\"flex flex-wrap gap-2\", layout === \"stack\" && \"flex-col items-start\", className)} {...props} />;\n}\n\nexport function ColorSwatchPickerItem({ className, ...props }: ComponentProps<typeof AriaColorSwatchPickerItem>) {\n  return <AriaColorSwatchPickerItem data-slot=\"color-swatch-picker-item\" className={cn(\"grid size-9 cursor-pointer place-items-center rounded-lg border border-transparent outline-none transition-colors hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring data-[selected]:bg-accent/40\", className)} {...props} />;\n}\n",
+      "type": "registry:ui",
+      "target": "src/components/ui/color-swatch-picker.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

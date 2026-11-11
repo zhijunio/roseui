@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "composite-action-bar",
+  "title": "composite-action-bar",
+  "description": "RoseUI composite-action-bar component.",
+  "registryDependencies": [
+    "toolbar",
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/composite/action-bar.tsx",
+      "content": "\"use client\";\n\nimport type { ComponentProps, ReactNode } from \"react\";\n\nimport { Toolbar } from \"@/components/ui/toolbar\";\nimport { cn } from \"@/lib/utils\";\n\ntype ActionBarProps = Omit<\n  ComponentProps<typeof Toolbar>,\n  \"aria-label\" | \"aria-labelledby\" | \"children\" | \"className\" | \"isAttached\"\n> & {\n  \"aria-label\": string;\n  children: ReactNode;\n  className?: string;\n  isAttached?: boolean;\n  isOpen: boolean;\n};\n\nexport function ActionBar({\n  children,\n  className,\n  isAttached = true,\n  isOpen,\n  orientation = \"horizontal\",\n  ...props\n}: ActionBarProps) {\n  return (\n    <div\n      data-slot=\"action-bar-positioner\"\n      data-open={isOpen}\n      aria-hidden={!isOpen}\n      inert={!isOpen}\n      className={cn(\n        \"pointer-events-none fixed inset-x-0 bottom-4 z-50 flex justify-center px-4 transition duration-200 motion-reduce:transition-none\",\n        \"data-[open=false]:invisible data-[open=false]:translate-y-4 data-[open=false]:opacity-0\",\n        className,\n      )}\n    >\n      <Toolbar\n        {...props}\n        orientation={orientation}\n        isAttached={false}\n        data-slot=\"action-bar\"\n        data-orientation={orientation}\n        className={cn(\n          \"group/action-bar pointer-events-auto max-w-full flex-wrap gap-1.5 border border-border bg-popover px-2 py-1.5 text-popover-foreground shadow-md\",\n          orientation === \"vertical\" && \"flex-col\",\n          isAttached ? \"rounded-xl\" : \"rounded-md border-transparent bg-transparent shadow-none\",\n        )}\n      >\n        {children}\n      </Toolbar>\n    </div>\n  );\n}\n\nexport function ActionBarPrefix({ className, ...props }: ComponentProps<\"div\">) {\n  return (\n    <div data-slot=\"action-bar-prefix\" className={cn(\"flex shrink-0 items-center gap-2 pr-1\", className)} {...props} />\n  );\n}\n\nexport function ActionBarContent({ className, ...props }: ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"action-bar-content\"\n      className={cn(\n        \"flex min-w-0 flex-wrap items-center gap-1 group-data-[orientation=vertical]/action-bar:flex-col group-data-[orientation=vertical]/action-bar:flex-nowrap\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nexport function ActionBarSuffix({ className, ...props }: ComponentProps<\"div\">) {\n  return (\n    <div data-slot=\"action-bar-suffix\" className={cn(\"flex shrink-0 items-center gap-1 pl-1\", className)} {...props} />\n  );\n}\n\nexport function ActionBarSeparator({ className, ...props }: ComponentProps<\"span\">) {\n  return (\n    <span\n      aria-hidden=\"true\"\n      data-slot=\"action-bar-separator\"\n      className={cn(\n        \"mx-1 h-5 w-px shrink-0 bg-border group-data-[orientation=vertical]/action-bar:h-px group-data-[orientation=vertical]/action-bar:w-5\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nexport function ActionBarLabel({ className, ...props }: ComponentProps<\"span\">) {\n  return <span className={cn(\"sr-only sm:not-sr-only\", className)} {...props} />;\n}\n",
+      "type": "registry:component",
+      "target": "src/components/composite/action-bar.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "composite-copy-button",
+  "title": "composite-copy-button",
+  "description": "RoseUI composite-copy-button component.",
+  "dependencies": [
+    "@tabler/icons-react"
+  ],
+  "registryDependencies": [
+    "button",
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/composite/copy-button.tsx",
+      "content": "\"use client\";\n\nimport { type ComponentProps, useState } from \"react\";\n\nimport { IconCheck, IconCopy } from \"@tabler/icons-react\";\n\nimport { Button } from \"@/components/ui/button\";\nimport { cn } from \"@/lib/utils\";\n\nexport function CopyButton({\n  value = \"RoseUI\",\n  iconOnly = false,\n  copyLabel = \"Copy\",\n  copiedLabel = \"Copied\",\n  errorMessage = \"Unable to copy. Try again.\",\n  onCopied,\n  onClick,\n  variant = \"outline\",\n  size = iconOnly ? \"icon\" : \"default\",\n  \"aria-label\": ariaLabel,\n  className,\n  ...buttonProps\n}: {\n  value?: string;\n  iconOnly?: boolean;\n  copyLabel?: string;\n  copiedLabel?: string;\n  errorMessage?: string;\n  onCopied?: () => void;\n} & Omit<ComponentProps<typeof Button>, \"children\">) {\n  const [status, setStatus] = useState<\"idle\" | \"success\" | \"error\">(\"idle\");\n\n  const copy = async (event: Parameters<NonNullable<ComponentProps<typeof Button>[\"onClick\"]>>[0]) => {\n    onClick?.(event);\n    try {\n      await navigator.clipboard.writeText(value);\n      setStatus(\"success\");\n      onCopied?.();\n    } catch {\n      setStatus(\"error\");\n    }\n  };\n\n  const label = status === \"success\" ? copiedLabel : copyLabel;\n\n  return (\n    <span className=\"inline-flex items-center gap-3\">\n      <Button\n        {...buttonProps}\n        variant={variant}\n        size={size}\n        className={className}\n        aria-label={iconOnly ? (ariaLabel ?? label) : ariaLabel}\n        onClick={copy}\n      >\n        {status === \"success\" ? <IconCheck aria-hidden /> : <IconCopy aria-hidden />}\n        {iconOnly ? null : label}\n      </Button>\n      <span role=\"status\" className={cn(\"text-xs text-muted-foreground\", status !== \"error\" && \"sr-only\")}>\n        {status === \"error\" ? errorMessage : status === \"success\" ? copiedLabel : \"\"}\n      </span>\n    </span>\n  );\n}\n",
+      "type": "registry:component",
+      "target": "src/components/composite/copy-button.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

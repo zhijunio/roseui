@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "mask-input",
+  "title": "mask-input",
+  "description": "RoseUI mask-input component.",
+  "dependencies": [
+    "use-mask-input"
+  ],
+  "registryDependencies": [
+    "input"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/mask-input.tsx",
+      "content": "\"use client\";\n\nimport type { ComponentProps } from \"react\";\nimport { useMaskInput, type Mask, type Options } from \"use-mask-input\";\n\nimport { Input } from \"@/components/ui/input\";\n\nexport function MaskInput({ mask, maskOptions, ...inputProps }: Omit<ComponentProps<typeof Input>, \"ref\"> & {\n  mask: Mask;\n  maskOptions?: Options;\n}) {\n  const maskRef = useMaskInput({ mask, options: maskOptions });\n\n  return <Input {...inputProps} ref={maskRef} />;\n}\n",
+      "type": "registry:ui",
+      "target": "src/components/ui/mask-input.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

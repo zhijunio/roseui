@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "composite-arrow-link-button",
+  "title": "composite-arrow-link-button",
+  "description": "RoseUI composite-arrow-link-button component.",
+  "dependencies": [
+    "@tabler/icons-react"
+  ],
+  "registryDependencies": [
+    "button",
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/composite/arrow-link-button.tsx",
+      "content": "import type { ComponentProps, ReactNode } from \"react\";\n\nimport Link from \"next/link\";\n\nimport { IconArrowRight } from \"@tabler/icons-react\";\n\nimport { Button } from \"@/components/ui/button\";\nimport { cn } from \"@/lib/utils\";\n\ntype LinkProps = ComponentProps<typeof Link>;\n\nexport function ArrowLinkButton({\n  href,\n  children,\n  className,\n  variant = \"outline\",\n  size,\n  onClick,\n  onNavigate,\n  target,\n  rel,\n  prefetch,\n  replace,\n  scroll,\n  \"aria-label\": ariaLabel,\n}: {\n  href: LinkProps[\"href\"];\n  children: ReactNode;\n} & Pick<LinkProps, \"onClick\" | \"onNavigate\" | \"target\" | \"rel\" | \"prefetch\" | \"replace\" | \"scroll\"> &\n  Pick<ComponentProps<typeof Button>, \"className\" | \"variant\" | \"size\" | \"aria-label\">) {\n  return (\n    <Button\n      asChild\n      variant={variant}\n      size={size}\n      className={cn(\"group/slide relative overflow-hidden rounded-full px-6\", className)}\n    >\n      <Link\n        href={href}\n        onClick={onClick}\n        onNavigate={onNavigate}\n        target={target}\n        rel={rel}\n        prefetch={prefetch}\n        replace={replace}\n        scroll={scroll}\n        aria-label={ariaLabel}\n      >\n        <span className=\"group-hover/slide:-translate-x-2 group-focus-visible/slide:-translate-x-2 motion-safe:transition-transform\">\n          {children}\n        </span>\n        <IconArrowRight\n          aria-hidden\n          className=\"absolute right-2.5 translate-x-8 opacity-0 group-hover/slide:translate-x-0 group-hover/slide:opacity-100 group-focus-visible/slide:translate-x-0 group-focus-visible/slide:opacity-100 motion-safe:transition-[transform,opacity]\"\n        />\n      </Link>\n    </Button>\n  );\n}\n",
+      "type": "registry:component",
+      "target": "src/components/composite/arrow-link-button.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

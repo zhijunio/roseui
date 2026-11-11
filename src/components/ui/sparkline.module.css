@@ -1,0 +1,26 @@
+.figure { display: grid; min-width: 0; gap: 0.625rem; margin: 0; color: var(--foreground); }.caption { display: flex; align-items: baseline; gap: 0.5rem; min-width: 0; color: var(--foreground); font-size: 0.8125rem; line-height: 1.4; }.label { min-width: 0; overflow: hidden; color: var(--muted-foreground); white-space: nowrap; }.caption strong { margin-left: auto; color: var(--foreground); font-size: 1.125rem; font-weight: 500; line-height: 1; letter-spacing: normal; font-variant-numeric: tabular-nums; }.caption small { flex: none; font-size: 0.8125rem; font-weight: 500; line-height: 1; font-variant-numeric: tabular-nums; transition: color 240ms ease-out; }
+.accent { color: var(--primary); stroke: var(--primary); }.success { color: var(--success); stroke: var(--success); }.warning { color: var(--warning); stroke: var(--warning); }.danger { color: var(--destructive); stroke: var(--destructive); }
+/* The scrubbed date is context, not a change, so it stays neutral whatever the tone. */
+.point { color: var(--foreground); }
+
+/* Changing text rolls in place. Outgoing pieces are popped out of flow, so the wrapper never holds both widths; numbers stay anchored to their right edge. */
+.roll { position: relative; display: inline-flex; max-width: 100%; overflow-x: clip; white-space: pre; vertical-align: top; }
+.roll[data-end] { justify-content: flex-end; }
+.track, .slot, .glyph { position: relative; display: inline-block; white-space: pre; }
+.roll[data-whole] .track, .roll[data-whole] .slot, .roll[data-whole] .glyph { max-width: 100%; overflow: hidden; text-overflow: ellipsis; vertical-align: top; }
+.sizer { position: absolute; top: 0; left: 0; visibility: hidden; white-space: pre; pointer-events: none; }
+
+/* The plot is the scrubber: hover or drag across it, or focus it and use the arrow keys. Vertical swipes still scroll the page. */
+.plot { position: relative; min-width: 0; border-radius: calc(0.5rem / 2); outline: none; -webkit-tap-highlight-color: transparent; }
+.plot[data-interactive] { touch-action: pan-y; cursor: default; user-select: none; }
+.plot:focus-visible { --focus-outline-offset: 8px; }
+.chart { display: block; width: 100%; height: auto; overflow: visible; }
+.baseline { stroke: var(--border); stroke-width: 1; }
+/* The area under the line carries a faint wash of the line tone. */
+.area.area { fill: color-mix(in oklab, currentColor 13%, transparent); stroke: none; }
+.line, .trail { fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.line { transition: stroke 240ms ease-out; }
+.trail { stroke: var(--border); }
+.cursor { stroke: var(--border); stroke-width: 1; }
+.end { transition: stroke 240ms ease-out; }
+@media (prefers-reduced-motion: reduce) { .line, .end, .caption small { transition: none; } }

@@ -1,0 +1,812 @@
+"use client";
+
+import { type ReactNode, useState } from "react";
+
+import Link from "next/link";
+
+import {
+  IconArrowLeft,
+  IconArrowRight,
+  IconChevronDown,
+  IconCopy,
+  IconDownload,
+  IconLayoutGrid,
+  IconList,
+  IconMinus,
+  IconPlayerPause,
+  IconPlayerPlay,
+  IconPlayerSkipBack,
+  IconPlayerSkipForward,
+  IconPlus,
+  IconSearch,
+  IconShare,
+  IconStar,
+  IconThumbUp,
+  IconX,
+} from "@tabler/icons-react";
+
+import {
+  ButtonGroup,
+  ButtonGroupItem,
+  ButtonGroupSeparator,
+  ButtonGroupText,
+} from "@/components/composite/button-group";
+import { ComponentPreview, type ComponentPreviewLayout } from "@/components/examples/component-preview";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { StatusDot } from "@/components/ui/status-dot";
+import { users } from "@/data/user";
+
+type ExampleSection = {
+  title: string;
+  description?: string;
+  examples: number[];
+  stack?: boolean;
+  columns?: 2 | 3;
+  layout?: ComponentPreviewLayout;
+  span?: 1 | 2;
+};
+
+const sections: ExampleSection[] = [
+  { title: "Groups", layout: "wide" as const, span: 2 as const, examples: [1, 5, 6, 23] },
+  { title: "With Field", layout: "wide" as const, span: 2 as const, examples: [2, 16, 19, 20, 56] },
+  { title: "Menu", layout: "wide" as const, span: 2 as const, examples: [4, 15, 17, 21, 51] },
+  { title: "Split", layout: "wide" as const, span: 2 as const, examples: [18, 39] },
+  {
+    title: "Selection",
+    layout: "wide" as const,
+    span: 2 as const,
+    examples: [12, 24, 25, 26, 27, 32, 33, 34, 36, 41, 42, 43, 44, 45, 46, 54, 57],
+  },
+  { title: "Orientation", layout: "wide" as const, span: 2 as const, examples: [13, 14, 40, 49] },
+  { title: "Adornments", layout: "wide" as const, span: 2 as const, examples: [3, 7, 8, 29, 30, 31] },
+  { title: "Pagination", layout: "wide" as const, span: 2 as const, examples: [10, 11, 35] },
+  { title: "Nested", layout: "wide" as const, span: 2 as const, examples: [9] },
+  { title: "States", layout: "wide" as const, span: 2 as const, examples: [22] },
+  { title: "Toolbars", layout: "wide" as const, span: 2 as const, examples: [28, 37, 38, 47, 48, 50, 52, 53, 55] },
+  { title: "Full Width", stack: true, layout: "field" as const, examples: [58] },
+];
+
+export function ButtonGroupExamples() {
+  return (
+    <>
+      {sections.map((section) => {
+        const renderExample = (example: number) => <ButtonGroupExample example={example} />;
+        const isStack = section.stack === true;
+        const layout = section.layout ?? (isStack ? "stack" : "inline");
+        const columns = section.columns;
+        const previewClassName =
+          columns === 3
+            ? "grid items-stretch gap-4 sm:grid-cols-2 xl:grid-cols-3"
+            : columns === 2
+              ? "grid items-stretch gap-4 sm:grid-cols-2"
+              : isStack
+                ? "flex-col flex-nowrap items-stretch gap-6"
+                : undefined;
+        return (
+          <ComponentPreview
+            key={section.title}
+            title={section.title}
+            span={section.span ?? 1}
+            layout={layout}
+            previewClassName={previewClassName}
+          >
+            {section.examples.map((example) => {
+              const label = undefined;
+              return (
+                <div key={example} className={isStack ? "w-full min-w-0 space-y-2" : "min-w-0"}>
+                  {isStack && label ? <p className="text-muted-foreground text-xs font-medium">{label}</p> : null}
+                  {renderExample(example)}
+                </div>
+              );
+            })}
+          </ComponentPreview>
+        );
+      })}
+    </>
+  );
+}
+
+type GroupMenuProps = {
+  label: string;
+  options: { value: string; label: string }[];
+  onSelect: (value: string, label: string) => void;
+  iconOnly?: boolean;
+};
+
+function GroupMenu({ label, options, onSelect, iconOnly }: GroupMenuProps) {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <ButtonGroupItem variant="outline" size={iconOnly ? "icon" : "default"} aria-label={label}>
+          {!iconOnly && label}
+          <IconChevronDown aria-hidden />
+        </ButtonGroupItem>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        {options.map((option) => (
+          <DropdownMenuItem key={option.value} onSelect={() => onSelect(option.value, option.label)}>
+            {option.label}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
+export function ButtonGroupExample({ example }: { example: number }) {
+  const [selected, setSelected] = useState("");
+  const [selectedLabel, setSelectedLabel] = useState("");
+  const [secondary, setSecondary] = useState("");
+  const [query, setQuery] = useState("");
+  const [number, setNumber] = useState(example === 37 ? 100 : example === 28 ? 60 : 1);
+  const [pressed, setPressed] = useState(false);
+  const [feedback, setFeedback] = useState("");
+  const choose = (key: string, label: string) => {
+    setSelected(key);
+    setSelectedLabel(label);
+    setFeedback(label);
+  };
+  const item = (key: string, label: string, icon?: ReactNode) => (
+    <ButtonGroupItem key={key} variant="outline" onClick={() => setFeedback(label)}>
+      {icon}
+      {label}
+    </ButtonGroupItem>
+  );
+  const label = [
+    "Two Buttons",
+    "Button & Input",
+    "Buttons & Badge",
+    "Dropdown Menu",
+    "Team Activity",
+    "Icon Actions",
+    "Status Indicator",
+    "Like Counter",
+    "Nested Groups",
+    "Basic Pagination",
+    "Split Pagination",
+    "Text Alignment",
+    "Vertical Orientation",
+    "Vertical Tool Palette",
+    "Star With Dropdown",
+    "Search Filter Clear",
+    "Conversation Menu",
+    "Git Split Button",
+    "Search With Menu",
+    "Search With Button",
+    "File Name Menu",
+    "Disabled Button",
+    "Separated Buttons",
+    "Dashboard Views",
+    "Rating Scale",
+    "User Selection",
+    "Status Select",
+    "Volume Control",
+    "Follower Count",
+    "Active Count",
+    "Share Caption",
+    "Sort & View",
+    "Select Controls",
+    "Segmented Control",
+    "Numbered Pagination",
+    "View Switcher",
+    "Zoom Controls",
+    "Media Controls",
+    "Split Button",
+    "Vertical List",
+    "Model Selector",
+    "Order Type",
+    "Buy Sell Hold",
+    "Pipeline Stage",
+    "Environment Switcher",
+    "Time Interval",
+    "Review Actions",
+    "Export Toolbar",
+    "Vertical Nav",
+    "Filter Sort More",
+    "Create Menu",
+    "Dashboard Actions",
+    "Publish Controls",
+    "Service Selectors",
+    "Payout Release",
+    "File Attachment",
+    "Agent Mode",
+    "Full Width",
+  ][example - 1];
+  let content: ReactNode;
+  let vertical = false;
+  if ([10, 11, 35].includes(example))
+    content = (
+      <>
+        <ButtonGroupItem
+          variant="outline"
+          aria-label={"Previous"}
+          disabled={number === 1}
+          onClick={() => setNumber(number - 1)}
+        >
+          <IconArrowLeft aria-hidden />
+          {example === 10 && "Previous"}
+        </ButtonGroupItem>
+        {example === 10 ? (
+          [1, 2, 3].map((page) => (
+            <ButtonGroupItem
+              key={page}
+              variant="outline"
+              selected={number === page}
+              aria-current={number === page ? "page" : undefined}
+              onClick={() => setNumber(page)}
+            >
+              {page}
+            </ButtonGroupItem>
+          ))
+        ) : (
+          <ButtonGroupText aria-live="polite">{`Page ${number} of 3`}</ButtonGroupText>
+        )}
+        <ButtonGroupItem
+          variant="outline"
+          aria-label={"Next"}
+          disabled={number === 3}
+          onClick={() => setNumber(number + 1)}
+        >
+          {example === 10 && "Next"}
+          <IconArrowRight aria-hidden />
+        </ButtonGroupItem>
+      </>
+    );
+  else if ([8, 15, 29, 30].includes(example))
+    content = (
+      <>
+        <ButtonGroupItem variant="outline" selected={pressed} onClick={() => setPressed(!pressed)}>
+          {example === 8 ? <IconThumbUp aria-hidden /> : <IconStar aria-hidden />}
+          {example === 8 ? "Like" : example === 29 ? "Follow" : "Star"}
+        </ButtonGroupItem>
+        <ButtonGroupText aria-live="polite">{1200 + (pressed ? 1 : 0)}</ButtonGroupText>
+        {example === 15 && (
+          <GroupMenu
+            label={"More options"}
+            iconOnly
+            options={[
+              { value: "watch", label: "Watch" },
+              { value: "fork", label: "Fork" },
+              { value: "share", label: "Share" },
+            ]}
+            onSelect={choose}
+          />
+        )}
+      </>
+    );
+  else if ([28, 37].includes(example))
+    content = (
+      <>
+        <ButtonGroupItem
+          variant="outline"
+          aria-label={"Decrease"}
+          disabled={number <= 0}
+          onClick={() => setNumber(Math.max(0, number - 10))}
+        >
+          <IconMinus aria-hidden />
+        </ButtonGroupItem>
+        <ButtonGroupText aria-live="polite">
+          {(example === 28 ? "Volume {number}%" : "Zoom {number}%").replace("{number}", String(number))}
+        </ButtonGroupText>
+        <ButtonGroupItem
+          variant="outline"
+          aria-label={"Increase"}
+          disabled={number >= (example === 28 ? 100 : 200)}
+          onClick={() => setNumber(number + 10)}
+        >
+          <IconPlus aria-hidden />
+        </ButtonGroupItem>
+      </>
+    );
+  else if ([12, 24, 25, 36, 41, 42, 43, 45, 46, 57].includes(example)) {
+    const optionsForExample =
+      example === 12
+        ? [
+            { value: "left", label: "Left" },
+            { value: "center", label: "Center" },
+            { value: "right", label: "Right" },
+          ]
+        : [24, 36].includes(example)
+          ? [
+              { value: "grid", label: "Grid" },
+              { value: "list", label: "List" },
+            ]
+          : example === 25
+            ? ["1", "2", "3", "4", "5"].map((value) => ({ value, label: value }))
+            : example === 41
+              ? [
+                  { value: "fast", label: "Fast" },
+                  { value: "balanced", label: "Balanced" },
+                  { value: "advanced", label: "Advanced" },
+                ]
+              : example === 42
+                ? [
+                    { value: "market", label: "Market" },
+                    { value: "limit", label: "Limit" },
+                    { value: "stop", label: "Stop" },
+                  ]
+                : example === 43
+                  ? [
+                      { value: "buy", label: "Buy" },
+                      { value: "hold", label: "Hold" },
+                      { value: "sell", label: "Sell" },
+                    ]
+                  : example === 45
+                    ? [
+                        { value: "development", label: "Development" },
+                        { value: "staging", label: "Staging" },
+                        { value: "production", label: "Production" },
+                      ]
+                    : example === 46
+                      ? ["1H", "4H", "1D", "1W"].map((value) => ({ value, label: value }))
+                      : [
+                          { value: "assist", label: "Assist" },
+                          { value: "review", label: "Review" },
+                          { value: "auto", label: "Auto" },
+                        ];
+    content = (
+      <>
+        {optionsForExample.map(({ value, label: optionLabel }, index) => (
+          <ButtonGroupItem
+            key={value}
+            variant="outline"
+            selected={(selected || optionsForExample[0].value) === value}
+            onClick={() => {
+              setSelected(value);
+              setSelectedLabel(optionLabel);
+            }}
+          >
+            {[24, 36].includes(example) && (index === 0 ? <IconLayoutGrid aria-hidden /> : <IconList aria-hidden />)}
+            {optionLabel}
+          </ButtonGroupItem>
+        ))}
+        {example === 45 && (
+          <ButtonGroupText>
+            <StatusDot color="success" />
+            {"Live"}
+          </ButtonGroupText>
+        )}
+        {example === 41 && <ButtonGroupText>{"Pro"}</ButtonGroupText>}
+        {example === 57 && (
+          <GroupMenu
+            label={secondary || "10K credits"}
+            options={["2K", "10K", "50K"].map((value) => ({ value, label: value }))}
+            onSelect={setSecondary}
+          />
+        )}
+      </>
+    );
+  } else if ([2, 16, 19, 20, 21].includes(example))
+    content = (
+      <>
+        {example === 2 ? (
+          item("search", "Search", <IconSearch aria-hidden />)
+        ) : (
+          <GroupMenu
+            label={selected ? selectedLabel : "Filter"}
+            options={[
+              { value: "all", label: "All records" },
+              { value: "recent", label: "Recent" },
+              { value: "archived", label: "Archived" },
+            ]}
+            onSelect={choose}
+          />
+        )}
+        <Input
+          aria-label={"Search"}
+          placeholder={"Search"}
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+          className="bg-background w-36 min-w-0 rounded-none border-0 shadow-none focus-visible:ring-inset"
+        />
+        {[16, 20].includes(example) && (
+          <ButtonGroupItem variant="outline" size="icon" aria-label={"Clear search"} onClick={() => setQuery("")}>
+            <IconX aria-hidden />
+          </ButtonGroupItem>
+        )}
+        {example === 21 && (
+          <GroupMenu
+            label={"Create"}
+            options={[
+              { value: "newFile", label: "New file" },
+              { value: "newFolder", label: "New folder" },
+            ]}
+            onSelect={choose}
+          />
+        )}
+      </>
+    );
+  else if ([9, 14].includes(example)) {
+    vertical = example === 14;
+    content = (
+      <>
+        <ButtonGroup orientation={vertical ? "vertical" : "horizontal"} aria-label={"Tools"}>
+          {item("copy", "Copy", <IconCopy aria-hidden />)}
+          {item("share", "Share", <IconShare aria-hidden />)}
+        </ButtonGroup>
+        <ButtonGroup aria-label={"Search"}>
+          <Input
+            aria-label={"Search"}
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            className="bg-background w-32 rounded-none border-0"
+          />
+          {item("send", "Send", <IconArrowRight aria-hidden />)}
+        </ButtonGroup>
+      </>
+    );
+  } else if ([13, 40, 49].includes(example)) {
+    vertical = true;
+    content = [
+      { value: "components", label: "Components", href: "/components/accordion" },
+      { value: "analytics", label: "Analytics", href: "/components/donut-chart" },
+      { value: "settings", label: "Settings", href: "/components/select" },
+      { value: "help", label: "Help", href: "/components/command" },
+    ].map(({ value, label, href }) =>
+      example === 49 ? (
+        <ButtonGroupItem key={value} variant="outline" asChild>
+          <Link href={href}>{label}</Link>
+        </ButtonGroupItem>
+      ) : (
+        <ButtonGroupItem
+          key={value}
+          variant="outline"
+          selected={(selected || "components") === value}
+          onClick={() => {
+            setSelected(value);
+            setSelectedLabel(label);
+          }}
+        >
+          {label}
+        </ButtonGroupItem>
+      ),
+    );
+  } else if (example === 38)
+    content = (
+      <>
+        <ButtonGroupItem variant="outline" size="icon" aria-label={"Previous"} onClick={() => setFeedback("Previous")}>
+          <IconPlayerSkipBack aria-hidden />
+        </ButtonGroupItem>
+        <ButtonGroupItem
+          variant="outline"
+          size="icon"
+          aria-label={pressed ? "Pause" : "Play"}
+          selected={pressed}
+          onClick={() => setPressed(!pressed)}
+        >
+          {pressed ? <IconPlayerPause aria-hidden /> : <IconPlayerPlay aria-hidden />}
+        </ButtonGroupItem>
+        <ButtonGroupItem variant="outline" size="icon" aria-label={"Next"} onClick={() => setFeedback("Next")}>
+          <IconPlayerSkipForward aria-hidden />
+        </ButtonGroupItem>
+      </>
+    );
+  else if ([26, 27, 33, 54].includes(example)) {
+    const fields =
+      example === 54
+        ? [
+            ["api", "web"],
+            ["development", "production"],
+            ["v1", "v2"],
+          ]
+        : example === 26
+          ? [users.map((person) => person.id)]
+          : example === 27
+            ? [["active", "pending", "archived"]]
+            : [
+                ["observability", "analytics"],
+                ["basic", "pro"],
+              ];
+    content = (
+      <>
+        {example === 26 && <ButtonGroupText>{"Team"}</ButtonGroupText>}
+        {fields.map((keys, index) => (
+          <Select
+            key={keys.join("-")}
+            value={index === 0 ? selected : secondary}
+            onValueChange={index === 0 ? setSelected : setSecondary}
+          >
+            <SelectTrigger
+              aria-label={
+                example === 26 ? "Member" : example === 54 ? ["Service", "Environment", "Version"][index] : "Option"
+              }
+              className="bg-background rounded-none border-0"
+            >
+              <SelectValue placeholder={"Choose"} />
+            </SelectTrigger>
+            <SelectContent>
+              {keys.map((key) => (
+                <SelectItem key={key} value={key}>
+                  {example === 26 ? users.find((person) => person.id === key)?.name : key.startsWith("v") ? key : key}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        ))}
+      </>
+    );
+  } else if (example === 44) {
+    const stageOptions = [
+      { value: "plan", label: "Plan" },
+      { value: "build", label: "Build" },
+      { value: "review", label: "Review" },
+      { value: "deploy", label: "Deploy" },
+    ];
+    content = (
+      <>
+        <ButtonGroupItem
+          variant="outline"
+          disabled={number === 0}
+          aria-label={"Previous"}
+          onClick={() => setNumber(number - 1)}
+        >
+          <IconArrowLeft aria-hidden />
+        </ButtonGroupItem>
+        <GroupMenu
+          label={stageOptions[number].label}
+          options={stageOptions}
+          onSelect={(key) => setNumber(stageOptions.findIndex((item) => item.value === key))}
+        />
+        <ButtonGroupItem
+          variant="outline"
+          disabled={number === 3}
+          aria-label={"Next"}
+          onClick={() => setNumber(number + 1)}
+        >
+          <IconArrowRight aria-hidden />
+        </ButtonGroupItem>
+      </>
+    );
+  } else if (example === 5)
+    content = (
+      <>
+        <ButtonGroupText>
+          <Avatar size="xs">
+            <AvatarImage src={users[0].avatar} alt="" />
+            <AvatarFallback>AM</AvatarFallback>
+          </Avatar>
+          {"Team"}
+        </ButtonGroupText>
+        <GroupMenu
+          label={"Settings"}
+          options={[
+            { value: "members", label: "Manage members" },
+            { value: "preferences", label: "Team preferences" },
+            { value: "dashboard", label: "Dashboard" },
+          ]}
+          onSelect={choose}
+        />
+      </>
+    );
+  else if (example === 7)
+    content = (
+      <>
+        <GroupMenu
+          label={selected || "main"}
+          options={["main", "develop", "feature/auth"].map((value) => ({ value, label: value }))}
+          onSelect={setSelected}
+        />
+        <ButtonGroupText>
+          <StatusDot color="success" />
+          {"Production"}
+        </ButtonGroupText>
+      </>
+    );
+  else if (example === 3)
+    content = (
+      <>
+        {item("report", "Report")}
+        <ButtonGroupText>
+          <span className="bg-muted rounded px-2 text-xs">{"Save as draft"}</span>
+        </ButtonGroupText>
+        {item("edit", "Edit")}
+      </>
+    );
+  else if (example === 6)
+    content = [
+      { key: "copy", icon: <IconCopy aria-hidden /> },
+      { key: "share", icon: <IconShare aria-hidden /> },
+      { key: "download", icon: <IconDownload aria-hidden /> },
+    ].map(({ key, icon }) => (
+      <ButtonGroupItem key={key} variant="outline" size="icon" aria-label={key} onClick={() => setFeedback(key)}>
+        {icon}
+      </ButtonGroupItem>
+    ));
+  else if ([22, 23].includes(example))
+    content = (
+      <>
+        {item("files", "Files")}
+        {example === 23 && <ButtonGroupSeparator />}
+        {item("folder", "Folder")}
+        <ButtonGroupItem variant="outline" disabled={example === 22}>
+          {"Trash"}
+        </ButtonGroupItem>
+      </>
+    );
+  else if (example === 31)
+    content = (
+      <>
+        <ButtonGroupItem onClick={() => setFeedback("Share")}>{"Share"}</ButtonGroupItem>
+        {item("copy", "Copy", <IconCopy aria-hidden />)}
+      </>
+    );
+  else if (example === 56)
+    content = (
+      <>
+        <ButtonGroupText>roadmap.txt</ButtonGroupText>
+        <ButtonGroupItem variant="outline" asChild>
+          <a
+            href="data:text/plain;charset=utf-8,RoseUI%20roadmap%0APlan%20Build%20Review"
+            download="roadmap.txt"
+            aria-label={"Download attachment"}
+          >
+            <IconDownload aria-hidden />
+          </a>
+        </ButtonGroupItem>
+      </>
+    );
+  else if (example === 58)
+    content = (
+      <>
+        <ButtonGroupItem variant="outline" onClick={() => setFeedback("Cancelled")}>
+          Cancel
+        </ButtonGroupItem>
+        <ButtonGroupItem onClick={() => setFeedback("Continued")}>Continue</ButtonGroupItem>
+      </>
+    );
+  else {
+    const configs: Record<
+      number,
+      { action: { label: string }; menu: { value: string; label: string }[]; before?: { key: string; label: string }[] }
+    > = {
+      1: { action: { label: "Open" }, menu: [], before: [{ key: "archive", label: "Archive" }] },
+      4: {
+        action: { label: "Update" },
+        menu: [
+          { value: "production", label: "Production" },
+          { value: "staging", label: "Staging" },
+          { value: "development", label: "Development" },
+        ],
+      },
+      17: {
+        action: { label: "Conversation" },
+        menu: [
+          { value: "mute", label: "Mute" },
+          { value: "markRead", label: "Mark as read" },
+          { value: "share", label: "Share" },
+          { value: "copyLink", label: "Copy link" },
+          { value: "delete", label: "Delete" },
+        ],
+      },
+      18: {
+        action: { label: "Commit" },
+        menu: [
+          { value: "commitPush", label: "Commit and push" },
+          { value: "commitSync", label: "Commit and sync" },
+          { value: "amend", label: "Amend last commit" },
+        ],
+        before: [{ key: "branch", label: "Branch" }],
+      },
+      32: {
+        action: { label: "Newest" },
+        menu: [
+          { value: "oldest", label: "Oldest" },
+          { value: "updated", label: "Recently updated" },
+          { value: "newProject", label: "New project" },
+        ],
+      },
+      34: {
+        action: { label: "Filter" },
+        menu: [
+          { value: "group", label: "Group" },
+          { value: "sort", label: "Sort" },
+          { value: "export", label: "Export" },
+        ],
+      },
+      39: {
+        action: { label: "Save" },
+        menu: [
+          { value: "publish", label: "Publish" },
+          { value: "draft", label: "Save as draft" },
+          { value: "exit", label: "Save and exit" },
+        ],
+      },
+      47: {
+        action: { label: "Approve" },
+        menu: [
+          { value: "requestChanges", label: "Request changes" },
+          { value: "comment", label: "Comment" },
+        ],
+      },
+      48: {
+        action: { label: "Filter" },
+        menu: [
+          { value: "grid", label: "Grid" },
+          { value: "list", label: "List" },
+        ],
+        before: [{ key: "export", label: "Export" }],
+      },
+      50: {
+        action: { label: "Filter" },
+        menu: [
+          { value: "sort", label: "Sort" },
+          { value: "export", label: "Export" },
+        ],
+        before: [{ key: "sort", label: "Sort" }],
+      },
+      51: {
+        action: { label: "New" },
+        menu: [
+          { value: "newFile", label: "New file" },
+          { value: "newFolder", label: "New folder" },
+          { value: "workspace", label: "New workspace" },
+        ],
+      },
+      52: {
+        action: { label: "Refresh" },
+        menu: [
+          { value: "export", label: "Export" },
+          { value: "copyLink", label: "Copy link" },
+        ],
+        before: [{ key: "share", label: "Share" }],
+      },
+      53: {
+        action: { label: "Publish" },
+        menu: [
+          { value: "schedule", label: "Schedule" },
+          { value: "draft", label: "Save as draft" },
+          { value: "duplicate", label: "Duplicate" },
+          { value: "history", label: "View history" },
+          { value: "archive", label: "Archive" },
+          { value: "delete", label: "Delete" },
+        ],
+        before: [{ key: "preview", label: "Preview" }],
+      },
+      55: {
+        action: { label: "Release payout" },
+        menu: [
+          { value: "schedule", label: "Schedule" },
+          { value: "destination", label: "Change destination" },
+          { value: "export", label: "Export" },
+          { value: "cancel", label: "Cancel" },
+        ],
+        before: [{ key: "hold", label: "Hold" }],
+      },
+    };
+    const config = configs[example] ?? configs[1];
+    content = (
+      <>
+        {example === 55 && <ButtonGroupText>$12,480</ButtonGroupText>}
+        {config.before?.map(({ key, label }) => item(key, label))}
+        <ButtonGroupItem variant="outline" onClick={() => setFeedback(config.action.label)}>
+          {config.action.label}
+        </ButtonGroupItem>
+        {config.menu.length > 0 && (
+          <GroupMenu iconOnly label={"More options"} options={config.menu} onSelect={choose} />
+        )}
+      </>
+    );
+  }
+  return (
+    <div className={`min-w-0 space-y-2 ${example === 58 ? "w-full" : ""}`}>
+      <div className="max-w-full overflow-x-auto p-1">
+        <ButtonGroup orientation={vertical ? "vertical" : "horizontal"} fullWidth={example === 58} aria-label={label}>
+          {content}
+        </ButtonGroup>
+      </div>
+      {feedback && (
+        <p role="status" className="text-muted-foreground text-xs">
+          {feedback}
+        </p>
+      )}
+    </div>
+  );
+}

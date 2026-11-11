@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "composite-action-button",
+  "title": "composite-action-button",
+  "description": "RoseUI composite-action-button component.",
+  "dependencies": [
+    "@tabler/icons-react"
+  ],
+  "registryDependencies": [
+    "button"
+  ],
+  "files": [
+    {
+      "path": "src/components/composite/action-button.tsx",
+      "content": "\"use client\";\n\nimport { type ComponentProps, useEffect, useRef, useState } from \"react\";\n\nimport { IconArrowRight, IconCheck, IconLoader2 } from \"@tabler/icons-react\";\n\nimport { Button } from \"@/components/ui/button\";\n\ntype ActionStatus = \"idle\" | \"pending\" | \"success\";\n\ntype ActionButtonProps = Omit<ComponentProps<typeof Button>, \"children\" | \"onClick\" | \"aria-busy\" | \"aria-disabled\"> & {\n  label: string;\n  onAction: () => void | Promise<void>;\n  pendingLabel?: string;\n  successLabel?: string;\n  resetAfterMs?: number;\n  onActionError?: (error: unknown) => void;\n};\n\nexport function ActionButton({\n  label,\n  onAction,\n  pendingLabel = \"Saving\",\n  successLabel = \"Saved\",\n  resetAfterMs = 2400,\n  onActionError,\n  disabled,\n  variant = \"default\",\n  size = \"sm\",\n  className,\n  ...buttonProps\n}: ActionButtonProps) {\n  const [status, setStatus] = useState<ActionStatus>(\"idle\");\n  const actionInProgress = useRef(false);\n\n  useEffect(() => {\n    if (status !== \"success\" || resetAfterMs <= 0) return;\n\n    const timer = window.setTimeout(() => setStatus(\"idle\"), resetAfterMs);\n    return () => window.clearTimeout(timer);\n  }, [resetAfterMs, status]);\n\n  const runAction = async () => {\n    if (actionInProgress.current || disabled) return;\n\n    actionInProgress.current = true;\n    setStatus(\"pending\");\n\n    try {\n      await onAction();\n      setStatus(\"success\");\n    } catch (error) {\n      setStatus(\"idle\");\n      onActionError?.(error);\n    } finally {\n      actionInProgress.current = false;\n    }\n  };\n\n  const currentLabel = status === \"pending\" ? pendingLabel : status === \"success\" ? successLabel : label;\n\n  return (\n    <>\n      <Button\n        {...buttonProps}\n        variant={variant}\n        size={size}\n        disabled={disabled}\n        aria-busy={status === \"pending\"}\n        aria-disabled={status === \"pending\"}\n        data-action-state={status}\n        className={className}\n        onClick={() => void runAction()}\n      >\n        {currentLabel}\n        {status === \"pending\" ? (\n          <IconLoader2 aria-hidden=\"true\" className=\"motion-safe:animate-spin\" />\n        ) : status === \"success\" ? (\n          <IconCheck aria-hidden=\"true\" />\n        ) : (\n          <IconArrowRight aria-hidden=\"true\" />\n        )}\n      </Button>\n      <span role=\"status\" aria-live=\"polite\" aria-atomic=\"true\" className=\"sr-only\">\n        {status === \"pending\" ? pendingLabel : status === \"success\" ? successLabel : \"\"}\n      </span>\n    </>\n  );\n}\n",
+      "type": "registry:component",
+      "target": "src/components/composite/action-button.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

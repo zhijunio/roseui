@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "empty",
+  "title": "empty",
+  "description": "RoseUI empty component.",
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/empty.tsx",
+      "content": "import type { ComponentProps } from \"react\"\nimport { cn } from \"@/lib/utils\"\n\nfunction Empty({ className, ...props }: ComponentProps<\"div\">) {\n  return <div data-slot=\"empty\" className={cn(\"flex w-full min-w-0 flex-col items-center justify-center text-center text-balance\", className)} {...props} />\n}\nfunction EmptyHeader({ className, ...props }: ComponentProps<\"div\">) {\n  return <div data-slot=\"empty-header\" className={cn(\"flex max-w-sm flex-col items-center gap-1.5\", className)} {...props} />\n}\nfunction EmptyMedia({ className, variant = \"default\", ...props }: ComponentProps<\"div\"> & { variant?: \"default\" | \"icon\" }) {\n  return <div data-slot=\"empty-media\" data-variant={variant} className={cn(\"flex shrink-0 items-center justify-center\", variant === \"icon\" && \"mb-1 size-14 rounded-full bg-primary/10 text-primary [&_svg]:size-7\", className)} {...props} />\n}\nfunction EmptyTitle({ className, ...props }: ComponentProps<\"h3\">) {\n  return <h3 data-slot=\"empty-title\" className={cn(\"text-base font-semibold tracking-tight\", className)} {...props} />\n}\nfunction EmptyDescription({ className, ...props }: ComponentProps<\"p\">) {\n  return <p data-slot=\"empty-description\" className={cn(\"text-sm leading-relaxed text-muted-foreground [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary\", className)} {...props} />\n}\nfunction EmptyContent({ className, ...props }: ComponentProps<\"div\">) {\n  return <div data-slot=\"empty-content\" className={cn(\"mt-3 flex w-full max-w-sm min-w-0 flex-col items-center gap-2\", className)} {...props} />\n}\n\nexport { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle }\n",
+      "type": "registry:ui",
+      "target": "src/components/ui/empty.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}
