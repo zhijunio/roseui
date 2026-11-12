@@ -1752,7 +1752,6 @@
       "type": "registry:ui",
       "title": "logo-mark",
       "description": "RoseUI logo-mark component.",
-      "dependencies": ["@tabler/icons-react"],
       "registryDependencies": ["utils"],
       "files": [
         {

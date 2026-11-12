@@ -29,7 +29,7 @@ const chipVariants = cva(
         accent: "bg-primary text-primary-foreground",
         success: "bg-success text-success-foreground",
         warning: "bg-warning text-warning-foreground",
-        danger: "bg-destructive text-white",
+        danger: "bg-destructive text-destructive-foreground",
         info: "bg-info text-info-foreground",
       },
       variant: {

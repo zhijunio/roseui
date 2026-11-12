@@ -12,7 +12,6 @@ export function WorkspaceStep({
     <div className="bg-background grid gap-4 rounded-xl border p-4 sm:p-5">
       <div>
         <h2 className="text-base font-semibold">Name your workspace</h2>
-        <p className="text-muted-foreground mt-1 text-sm">Give your team a clear place to start working together.</p>
       </div>
       <div className="grid gap-4">
         <div className="grid gap-2">

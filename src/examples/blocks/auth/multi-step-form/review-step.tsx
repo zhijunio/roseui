@@ -5,7 +5,6 @@ export function ReviewStep({ workspace, role, updates }: { workspace: string; ro
     <div className="bg-background grid gap-4 rounded-xl border p-4 sm:p-5">
       <div>
         <h2 className="text-base font-semibold">Review your setup</h2>
-        <p className="text-muted-foreground mt-1 text-sm">Check these details before creating the workspace.</p>
       </div>
       <div className="divide-y rounded-lg border">
         <div className="flex items-center justify-between gap-4 p-4">

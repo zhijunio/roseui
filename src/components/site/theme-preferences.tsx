@@ -8,6 +8,7 @@ import {
   type ContentLayout,
   DEFAULT_THEME_MODE,
   DEFAULT_THEME_PREFERENCES,
+  getFontOption,
   getThemeColorOption,
   type NavbarStyle,
   type SidebarCollapsible,
@@ -29,6 +30,7 @@ type ThemePreferencesContextValue = {
 
 const PREFERENCE_COOKIES = {
   themeColor: "theme_color",
+  font: "font",
   contentLayout: "content_layout",
   navbarStyle: "navbar_style",
   sidebarVariant: "sidebar_variant",
@@ -37,6 +39,7 @@ const PREFERENCE_COOKIES = {
 
 const PREFERENCE_KEYS = [
   "themeColor",
+  "font",
   "contentLayout",
   "navbarStyle",
   "sidebarVariant",
@@ -88,6 +91,7 @@ function applyPreferences(preferences: ThemePreferences, resolvedTheme: string |
   const root = document.documentElement;
 
   applyThemeColor(root, getThemeColorOption(preferences.themeColor), resolvedTheme);
+  root.style.setProperty("--font-sans", getFontOption(preferences.font).stack);
   root.dataset.themeColor = preferences.themeColor;
   root.dataset.contentLayout = preferences.contentLayout;
   root.dataset.navbarStyle = preferences.navbarStyle;

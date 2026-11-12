@@ -208,7 +208,6 @@ function GroupDemo({ index }: { index: number }) {
           </InputGroupAddon>
           <InputGroupInput id="group-label" type="email" placeholder="name@company.com" />
         </InputGroup>
-        <p className="text-xs text-muted-foreground">Used for account notifications.</p>
       </div>
     );
   if (index === 31)

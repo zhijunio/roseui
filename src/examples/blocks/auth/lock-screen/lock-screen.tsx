@@ -11,7 +11,6 @@ import { getInitials } from "@/lib/utils";
 
 export function LockScreenExample() {
   const initials = getInitials(currentUser.name, true);
-  const firstName = currentUser.name.split(" ")[0];
 
   return (
     <ComponentPreview title="Unlock session" layout="fullBleed" span={2}>
@@ -29,9 +28,6 @@ export function LockScreenExample() {
           <div className="space-y-1.5">
             <p className="font-medium">{currentUser.name}</p>
             <h2 className="text-2xl font-semibold tracking-tight">Your session is locked</h2>
-            <p className="text-muted-foreground text-sm">
-              Welcome back, {firstName}. Enter your password to unlock and pick up where you left off.
-            </p>
           </div>
         </div>
         <form className="mt-6 space-y-4">

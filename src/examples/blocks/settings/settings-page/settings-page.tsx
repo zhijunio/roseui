@@ -335,7 +335,7 @@ export function SettingsPage() {
                 onChange={(event) => update("jobTitle", event.currentTarget.value)}
               />
             </Field>
-            <Field label="Email" description="Used for sign-in and notifications." htmlFor="settings-email">
+            <Field label="Email" htmlFor="settings-email">
               <Input
                 className="rounded-full px-4 text-[14px]"
                 id="settings-email"

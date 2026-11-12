@@ -11,9 +11,8 @@ export function ForgotPasswordExample() {
   return (
     <ComponentPreview title="Reset instructions" layout="fullBleed" span={2}>
       <div className="mx-auto w-full max-w-md px-1 py-2 sm:px-2">
-        <div className="space-y-1.5">
+        <div className="mb-6">
           <h1 className="text-2xl font-semibold tracking-tight">Forgot password?</h1>
-          <p className="text-muted-foreground text-sm">No worries, we&apos;ll send you reset instructions.</p>
         </div>
         <form className="space-y-4">
           <div className="space-y-2">

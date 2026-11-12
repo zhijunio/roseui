@@ -19,7 +19,6 @@ export function PreferencesStep({
     <div className="bg-background grid gap-4 rounded-xl border p-4 sm:p-5">
       <div>
         <h2 className="text-base font-semibold">Set your preferences</h2>
-        <p className="text-muted-foreground mt-1 text-sm">Choose defaults that can be changed later in settings.</p>
       </div>
       <div className="grid gap-4">
         <div className="grid gap-2">
@@ -46,9 +45,6 @@ export function PreferencesStep({
           />
           <span>
             <span className="font-medium">Product updates</span>
-            <span className="text-muted-foreground mt-1 block">
-              Receive occasional notes about new workspace features.
-            </span>
           </span>
         </label>
       </div>

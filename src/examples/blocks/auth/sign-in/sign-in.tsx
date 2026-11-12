@@ -40,7 +40,6 @@ function PasswordSignInExample() {
           <h2 id="sign-in-example-title" className="text-xl font-semibold tracking-tight">
             Welcome back
           </h2>
-          <p className="text-muted-foreground mt-1 text-sm">Continue to your workspace.</p>
         </div>
       </div>
       <form className="space-y-4">
@@ -111,7 +110,6 @@ function MagicLinkExample({ preview = false }: { preview?: boolean }) {
           <h2 id="magic-link-title" className="text-xl font-semibold tracking-tight">
             Sign in with a magic link
           </h2>
-          <p className="text-muted-foreground mt-1 text-sm">We&apos;ll send a one-time link to your work email.</p>
         </div>
       </div>
       {sent ? (
@@ -183,7 +181,6 @@ function CenteredLoginExample() {
             <h2 id="centered-login-example-title" className="text-xl font-semibold tracking-tight">
               Welcome back
             </h2>
-            <p className="text-muted-foreground mt-1 text-sm">Sign in with your email or a passkey.</p>
           </div>
         </div>
         {step.kind === "email" && (
@@ -316,7 +313,6 @@ function MethodPickerExample({ example, preview = false }: { example: MethodExam
           <h2 id={`auth-example-${example.slug}`} className="text-xl font-semibold tracking-tight">
             Sign in to RoseUI
           </h2>
-          <p className="text-muted-foreground mt-1 text-sm">Welcome back. Continue to your workspace.</p>
         </div>
       </div>
       {isMethodPicker ? (
@@ -343,7 +339,6 @@ function MethodPickerExample({ example, preview = false }: { example: MethodExam
         </div>
       ) : selectedMethod !== "Email" ? (
         <div className="grid gap-3 text-center">
-          <p className="text-muted-foreground text-sm">Continue with {selectedMethod} to access your workspace.</p>
           <Button type="button" onClick={() => setNotice(`${selectedMethod} sign-in is a demo action.`)}>
             Continue with {selectedMethod}
           </Button>

@@ -36,15 +36,11 @@ export function FormLayoutsExample() {
       {/* (a) Horizontal — Profile */}
       <ComponentPreview title="Profile Form" layout="fullStack">
         <div className="w-full space-y-6">
-          <FieldRow
-            htmlFor="acc-name"
-            label="Display name"
-            description="This is how your name appears across the workspace."
-          >
+          <FieldRow htmlFor="acc-name" label="Display name">
             <Input id="acc-name" defaultValue="Alex Morgan" />
           </FieldRow>
           <Separator />
-          <FieldRow htmlFor="acc-email" label="Email address" description="Used for sign-in and account notifications.">
+          <FieldRow htmlFor="acc-email" label="Email address">
             <InputGroup>
               <InputGroupAddon>
                 <IconMail />
@@ -53,7 +49,7 @@ export function FormLayoutsExample() {
             </InputGroup>
           </FieldRow>
           <Separator />
-          <FieldRow htmlFor="acc-username" label="Username" description="Your unique handle at roseui.com.">
+          <FieldRow htmlFor="acc-username" label="Username">
             <InputGroup>
               <InputGroupAddon>
                 <IconAt />
@@ -62,7 +58,7 @@ export function FormLayoutsExample() {
             </InputGroup>
           </FieldRow>
           <Separator />
-          <FieldRow htmlFor="acc-website" label="Website" description="Add a link to your portfolio or company.">
+          <FieldRow htmlFor="acc-website" label="Website">
             <InputGroup>
               <InputGroupAddon>
                 <InputGroupText>https://</InputGroupText>
@@ -71,7 +67,7 @@ export function FormLayoutsExample() {
             </InputGroup>
           </FieldRow>
           <Separator />
-          <FieldRow htmlFor="acc-bio" label="Bio" description="A short description shown on your profile.">
+          <FieldRow htmlFor="acc-bio" label="Bio">
             <Textarea
               id="acc-bio"
               rows={3}
@@ -305,23 +301,10 @@ export function FormLayoutsExample() {
 /* Presentational helpers                                             */
 /* ------------------------------------------------------------------ */
 
-function FieldRow({
-  label,
-  htmlFor,
-  description,
-  children,
-}: {
-  label: string;
-  htmlFor: string;
-  description?: string;
-  children: React.ReactNode;
-}) {
+function FieldRow({ label, htmlFor, children }: { label: string; htmlFor: string; children: React.ReactNode }) {
   return (
     <div className="grid gap-2 sm:grid-cols-[220px_1fr] sm:items-start sm:gap-6">
-      <div className="space-y-1">
-        <Label htmlFor={htmlFor}>{label}</Label>
-        {description && <p className="text-muted-foreground text-xs">{description}</p>}
-      </div>
+      <Label htmlFor={htmlFor}>{label}</Label>
       <div className="max-w-md">{children}</div>
     </div>
   );

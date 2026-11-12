@@ -12,8 +12,10 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { PROJECT_CONFIG } from "@/data/site";
 import {
   DEFAULT_THEME_MODE,
+  getFontOption,
   getThemeColorOption,
   parseContentLayout,
+  parseFont,
   parseNavbarStyle,
   parseSidebarCollapsible,
   parseSidebarVariant,
@@ -23,7 +25,10 @@ import {
 } from "@/data/theme";
 import "./globals.css";
 
-type ThemeColorStyle = CSSProperties & ThemeTokenSet;
+type ThemeColorStyle = CSSProperties &
+  ThemeTokenSet & {
+    "--font-sans": string;
+  };
 
 const geistSans = Geist({
   variable: "--font-geist",
@@ -48,13 +53,17 @@ export default async function RootLayout({
   const cookieStore = await cookies();
   const initialPreferences = {
     themeColor: parseThemeColor(cookieStore.get("theme_color")?.value),
+    font: parseFont(cookieStore.get("font")?.value),
     contentLayout: parseContentLayout(cookieStore.get("content_layout")?.value),
     navbarStyle: parseNavbarStyle(cookieStore.get("navbar_style")?.value),
     sidebarVariant: parseSidebarVariant(cookieStore.get("sidebar_variant")?.value),
     sidebarCollapsible: parseSidebarCollapsible(cookieStore.get("sidebar_collapsible")?.value),
   } satisfies ThemePreferences;
   const themeColor = getThemeColorOption(initialPreferences.themeColor);
-  const themeColorStyle: ThemeColorStyle = themeColor.light;
+  const themeColorStyle: ThemeColorStyle = {
+    ...themeColor.light,
+    "--font-sans": getFontOption(initialPreferences.font).stack,
+  };
 
   return (
     <html

@@ -9,7 +9,6 @@ export function WorkspaceReady({ onStartAgain }: { onStartAgain: () => void }) {
         <IconCheck aria-hidden="true" className="size-5" />
       </span>
       <h2 className="text-lg font-semibold tracking-tight">Workspace ready</h2>
-      <p className="text-muted-foreground text-sm">Your setup choices have been saved for this demo.</p>
       <Button type="button" variant="outline" onClick={onStartAgain}>
         Start again
       </Button>

@@ -28,9 +28,6 @@ export function ResetPasswordForm() {
           <IconLock className="size-5" />
         </div>
         <h1 className="text-2xl font-semibold tracking-tight">Set a new password</h1>
-        <p className="text-muted-foreground text-sm">
-          Your new password must be different from previously used passwords.
-        </p>
       </div>
 
       <form className="space-y-4">

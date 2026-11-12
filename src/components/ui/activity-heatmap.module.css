@@ -48,7 +48,7 @@
 .ring { position: absolute; top: -3px; left: -3px; width: calc(var(--cell) + 6px); height: calc(var(--cell) + 6px); border: 1.5px solid var(--foreground); border-radius: calc(var(--cell) * .28 + 3px); opacity: 0; pointer-events: none; transform: translate(calc(var(--col) * var(--step)), calc(var(--row) * var(--step))); transition: transform 500ms cubic-bezier(.22,1,.36,1), opacity 160ms ease-out; }
 .ring[data-shown] { opacity: 1; }
 
-.legend { display: flex; min-width: 0; align-items: center; justify-content: space-between; gap: 0.75rem; color: var(--muted-foreground); font-size: 0.75rem; }
+.legend { display: flex; min-width: 0; align-items: center; justify-content: space-between; gap: 0.75rem; padding-left: var(--legend-offset, 0px); color: var(--muted-foreground); font-size: 0.75rem; }
 /* The caption names the previewed level; it sits apart from the scale so its changing width never nudges the swatches. */
 .caption { position: relative; min-width: 0; overflow: hidden; color: var(--foreground); font-variant-numeric: tabular-nums; white-space: nowrap; text-overflow: ellipsis; }
 .scale { display: flex; flex: none; align-items: center; gap: 0.5rem; }

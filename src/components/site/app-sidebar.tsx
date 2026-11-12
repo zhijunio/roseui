@@ -8,6 +8,7 @@ import { EllipsisVertical, Search, X } from "lucide-react";
 
 import { NavMain } from "@/components/site/nav-main";
 import { UserAvatar, UserMenu } from "@/components/site/user-menu";
+import { LogoMark } from "@/components/ui/logo-mark";
 import {
   Sidebar,
   SidebarContent,
@@ -34,9 +35,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarHeader>
         <div className="flex h-10 items-center gap-2 px-2 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0">
           <Link prefetch={false} href="/components/accordion" aria-label="RoseUI home">
-            <span className="bg-primary text-primary-foreground grid size-7 shrink-0 place-items-center rounded-md text-xs font-semibold">
-              R
-            </span>
+            <LogoMark size={28} />
           </Link>
           <div className="min-w-0 group-data-[collapsible=icon]:hidden">
             <p className="truncate text-sm font-semibold">RoseUI</p>

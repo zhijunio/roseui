@@ -21,7 +21,6 @@ export function SignUpExample() {
           <LogoMark size={40} iconSize={28} />
           <div>
             <h1 className="text-2xl font-semibold tracking-tight">Create your account</h1>
-            <p className="text-muted-foreground mt-1 text-sm">Set up your workspace account.</p>
           </div>
         </div>
         <form className="space-y-4">

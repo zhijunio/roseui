@@ -12,7 +12,9 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import {
   CONTENT_LAYOUT_OPTIONS,
   DEFAULT_THEME_MODE,
+  FONT_OPTIONS,
   isContentLayout,
+  isFont,
   isNavbarStyle,
   isSidebarCollapsible,
   isSidebarVariant,
@@ -94,6 +96,15 @@ export function ThemeCustomizer() {
               }}
             />
             <PreferenceToggle
+              label="Font"
+              value={preferences.font}
+              options={FONT_OPTIONS}
+              layout="grid"
+              onValueChange={(value) => {
+                if (isFont(value)) setPreference("font", value);
+              }}
+            />
+            <PreferenceToggle
               label="Page layout"
               value={preferences.contentLayout}
               options={CONTENT_LAYOUT_OPTIONS}
@@ -140,17 +151,27 @@ function PreferenceToggle<T extends string>({
   label,
   options,
   value,
+  layout = "segmented",
   onValueChange,
 }: {
   label: string;
   options: readonly { label: string; value: T }[];
   value: T;
+  layout?: "segmented" | "grid";
   onValueChange: (value: string) => void;
 }) {
   return (
     <div className="space-y-1.5">
       <Label className="text-xs font-medium">{label}</Label>
-      <ToggleGroup type="single" size="sm" spacing={0} variant="outline" value={value} onValueChange={onValueChange}>
+      <ToggleGroup
+        type="single"
+        size="sm"
+        spacing={layout === "grid" ? 1 : 0}
+        variant="outline"
+        value={value}
+        onValueChange={onValueChange}
+        className={cn(layout === "grid" && "grid grid-cols-2 gap-1")}
+      >
         {options.map((option) => (
           <ToggleGroupItem key={option.value} value={option.value} aria-label={`${label}: ${option.label}`}>
             {option.label}

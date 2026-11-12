@@ -163,6 +163,7 @@ export function ActivityHeatmap({ days, label, period, unit: unitProp = CONTRIBU
   const rootRef = useRef<HTMLDivElement>(null);
   const plotRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLDivElement>(null);
   const scrollerRef = useRef<HTMLDivElement>(null);
   const [scrollEdges, setScrollEdges] = useState<ScrollEdges>({ left: false, right: false });
   const ringRef = useRef<HTMLSpanElement>(null);
@@ -227,6 +228,24 @@ export function ActivityHeatmap({ days, label, period, unit: unitProp = CONTRIBU
       resizeObserver?.disconnect();
     };
   }, []);
+
+  useLayoutEffect(() => {
+    const root = rootRef.current;
+    const canvas = canvasRef.current;
+    if (!root || !canvas) return;
+
+    const syncLegendOffset = () => {
+      const rootBox = root.getBoundingClientRect();
+      const canvasBox = canvas.getBoundingClientRect();
+      root.style.setProperty("--legend-offset", `${Math.max(0, Math.round(canvasBox.left - rootBox.left))}px`);
+    };
+
+    syncLegendOffset();
+    const resizeObserver = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(syncLegendOffset);
+    resizeObserver?.observe(root);
+    resizeObserver?.observe(canvas);
+    return () => resizeObserver?.disconnect();
+  }, [model.weeks]);
 
   const selectedIndex = selectedDate ? Math.round((toUtc(selectedDate) - model.start) / DAY) : -1;
   const hasSelection = selectedIndex >= 0 && selectedIndex < model.length;
@@ -399,7 +418,7 @@ export function ActivityHeatmap({ days, label, period, unit: unitProp = CONTRIBU
     </div>
 
     <div ref={scrollerRef} className={styles.scroller}>
-      <div className={styles.canvas} style={{ "--weeks": model.weeks } as CSSProperties}>
+      <div ref={canvasRef} className={styles.canvas} style={{ "--weeks": model.weeks } as CSSProperties}>
         <div className={styles.months} aria-hidden="true">
           {model.months.map((month, order) => <span key={`${month.month % 12}-${model.months.findIndex(item => item.month % 12 === month.month % 12) === order ? 0 : 1}`} className={styles.month} style={{ "--col": month.col } as CSSProperties}>{month.label}</span>)}
         </div>

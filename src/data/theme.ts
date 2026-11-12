@@ -18,18 +18,24 @@ export type ThemeTokenSet = {
   readonly "--muted-foreground": string;
   readonly "--accent": string;
   readonly "--accent-foreground": string;
+  readonly "--accent-strong": string;
+  readonly "--overlay": string;
   readonly "--destructive": string;
   readonly "--destructive-foreground": string;
   readonly "--destructive-soft": string;
+  readonly "--destructive-subtle-foreground": string;
   readonly "--success": string;
   readonly "--success-foreground": string;
   readonly "--success-soft": string;
+  readonly "--success-subtle-foreground": string;
   readonly "--info": string;
   readonly "--info-foreground": string;
   readonly "--info-soft": string;
+  readonly "--info-subtle-foreground": string;
   readonly "--warning": string;
   readonly "--warning-foreground": string;
   readonly "--warning-soft": string;
+  readonly "--warning-subtle-foreground": string;
   readonly "--border": string;
   readonly "--input": string;
   readonly "--ring": string;
@@ -114,52 +120,58 @@ function createThemeColor<const Value extends string>({
 }
 
 const LIGHT_THEME_TOKENS = {
-  "--background": "#fafafb",
-  "--foreground": "#1f2124",
+  "--background": "#ffffff",
+  "--foreground": "#18181b",
   "--card": "#ffffff",
-  "--card-foreground": "#1f2124",
-  "--popover": "#fafafb",
-  "--popover-foreground": "#1f2124",
-  "--primary": "#0385ff",
-  "--primary-foreground": "#fafafa",
-  "--secondary": "#f7f8f9",
-  "--secondary-foreground": "#1f2124",
-  "--muted": "#f1f2f3",
-  "--muted-foreground": "#62656b",
-  "--accent": "#f6f7f8",
-  "--accent-foreground": "#1f2124",
-  "--destructive": "#e3474c",
-  "--destructive-foreground": "#fafafa",
-  "--destructive-soft": "#e3474c26",
-  "--success": "var(--chart-2)",
-  "--success-foreground": "#03270f",
-  "--success-soft": "#0aa8521f",
-  "--info": "var(--chart-1)",
-  "--info-foreground": "#03060d",
-  "--info-soft": "#0385ff1f",
-  "--warning": "var(--chart-3)",
-  "--warning-foreground": "#45240f",
-  "--warning-soft": "#db99001f",
-  "--border": "#ecedef",
-  "--input": "#f2f2f3",
-  "--ring": "#ecedef",
-  "--chart-1": "#0385ff",
-  "--chart-2": "#0aa852",
-  "--chart-3": "#db9900",
-  "--chart-4": "#f14445",
-  "--chart-5": "#ac67ef",
+  "--card-foreground": "#18181b",
+  "--popover": "#ffffff",
+  "--popover-foreground": "#18181b",
+  "--primary": "#2563eb",
+  "--primary-foreground": "#ffffff",
+  "--secondary": "#e5e7eb",
+  "--secondary-foreground": "#18181b",
+  "--muted": "#f4f4f5",
+  "--muted-foreground": "#71717a",
+  "--accent": "#e5e7eb",
+  "--accent-foreground": "#18181b",
+  "--destructive": "#dc2626",
+  "--destructive-foreground": "#ffffff",
+  "--destructive-soft": "#dc262626",
+  "--destructive-subtle-foreground": "#b91c1c",
+  "--success": "#10b981",
+  "--success-foreground": "#022c22",
+  "--success-soft": "#10b98126",
+  "--success-subtle-foreground": "#047857",
+  "--info": "#38bdf8",
+  "--info-foreground": "#082f49",
+  "--info-soft": "#38bdf826",
+  "--info-subtle-foreground": "#0369a1",
+  "--warning": "#facc15",
+  "--warning-foreground": "#713f12",
+  "--warning-soft": "#facc1533",
+  "--warning-subtle-foreground": "#92400e",
+  "--border": "#e4e4e7",
+  "--input": "#d4d4d8",
+  "--ring": "#2563eb",
+  "--overlay": "#00000066",
+  "--accent-strong": "var(--primary)",
+  "--chart-1": "#2563eb",
+  "--chart-2": "#3b82f6",
+  "--chart-3": "#60a5fa",
+  "--chart-4": "#93c5fd",
+  "--chart-5": "#bfdbfe",
   "--series-1": "var(--chart-1)",
   "--series-2": "var(--chart-2)",
   "--series-3": "var(--chart-3)",
   "--series-4": "var(--chart-4)",
-  "--sidebar": "#ffffff",
-  "--sidebar-foreground": "#1f2124",
-  "--sidebar-primary": "#0385ff",
-  "--sidebar-primary-foreground": "#fafafa",
-  "--sidebar-accent": "#f6f7f8",
-  "--sidebar-accent-foreground": "#1f2124",
-  "--sidebar-border": "#ecedef",
-  "--sidebar-ring": "#ecedef",
+  "--sidebar": "#fafafa",
+  "--sidebar-foreground": "#18181b",
+  "--sidebar-primary": "#2563eb",
+  "--sidebar-primary-foreground": "#ffffff",
+  "--sidebar-accent": "#f4f4f5",
+  "--sidebar-accent-foreground": "#18181b",
+  "--sidebar-border": "#e4e4e7",
+  "--sidebar-ring": "var(--ring)",
   "--shadow-2xs": "0 1px 2px 0 #00000008",
   "--shadow-xs": "0 1px 3px 0 #0000000d",
   "--shadow-sm": "0 1px 3px 0 #0000001a",
@@ -178,43 +190,54 @@ const LIGHT_THEME_TOKENS = {
 
 const DARK_THEME_TOKENS = {
   ...LIGHT_THEME_TOKENS,
-  "--background": "#17181a",
-  "--foreground": "#f2f3f4",
-  "--card": "#232427",
-  "--card-foreground": "#f2f3f4",
-  "--popover": "#17181a",
-  "--popover-foreground": "#f2f3f4",
-  "--primary": "#3d9aff",
-  "--secondary": "#1f2022",
-  "--secondary-foreground": "#f2f3f4",
-  "--muted": "#1c1d1f",
-  "--muted-foreground": "#a5a8ad",
-  "--accent": "#2a2b2e",
-  "--accent-foreground": "#f2f3f4",
-  "--destructive": "#ee5c61",
-  "--destructive-soft": "#ee5c6126",
-  "--success-foreground": "#a9e1b8",
-  "--success-soft": "#46c77924",
-  "--info-foreground": "#08121f",
-  "--info-soft": "#3d9aff24",
-  "--warning-foreground": "#ffd4a6",
-  "--warning-soft": "#f5af2024",
-  "--border": "#2e3033",
-  "--input": "#2b2c2f",
-  "--ring": "#2e3033",
-  "--chart-1": "#3d9aff",
-  "--chart-2": "#46c779",
-  "--chart-3": "#f5af20",
-  "--chart-4": "#ff7871",
-  "--chart-5": "#c896ff",
-  "--sidebar": "#1c1d1f",
-  "--sidebar-foreground": "#f2f3f4",
-  "--sidebar-primary": "#3d9aff",
-  "--sidebar-primary-foreground": "#fafafa",
-  "--sidebar-accent": "#2a2b2e",
-  "--sidebar-accent-foreground": "#f2f3f4",
-  "--sidebar-border": "#2e3033",
-  "--sidebar-ring": "#2e3033",
+  "--background": "#18181b",
+  "--foreground": "#fafafa",
+  "--card": "#27272a",
+  "--card-foreground": "#fafafa",
+  "--popover": "#18181b",
+  "--popover-foreground": "#fafafa",
+  "--primary": "#2563eb",
+  "--primary-foreground": "#ffffff",
+  "--secondary": "#27272a",
+  "--secondary-foreground": "#fafafa",
+  "--muted": "#27272a",
+  "--muted-foreground": "#a1a1aa",
+  "--accent": "#3f3f46",
+  "--accent-foreground": "#fafafa",
+  "--destructive": "#dc2626",
+  "--destructive-foreground": "#ffffff",
+  "--destructive-soft": "#dc262626",
+  "--destructive-subtle-foreground": "#fca5a5",
+  "--success": "#34d399",
+  "--success-foreground": "#022c22",
+  "--success-soft": "#34d3991a",
+  "--success-subtle-foreground": "#6ee7b7",
+  "--info": "#38bdf8",
+  "--info-foreground": "#082f49",
+  "--info-soft": "#38bdf81a",
+  "--info-subtle-foreground": "#7dd3fc",
+  "--warning": "#facc15",
+  "--warning-foreground": "#713f12",
+  "--warning-soft": "#facc151a",
+  "--warning-subtle-foreground": "#fde047",
+  "--border": "#3f3f46",
+  "--input": "#52525b",
+  "--ring": "#60a5fa",
+  "--overlay": "#00000066",
+  "--accent-strong": "var(--primary)",
+  "--chart-1": "#3b82f6",
+  "--chart-2": "#60a5fa",
+  "--chart-3": "#93c5fd",
+  "--chart-4": "#bfdbfe",
+  "--chart-5": "#dbeafe",
+  "--sidebar": "#18181b",
+  "--sidebar-foreground": "#fafafa",
+  "--sidebar-primary": "#2563eb",
+  "--sidebar-primary-foreground": "#ffffff",
+  "--sidebar-accent": "#3f3f46",
+  "--sidebar-accent-foreground": "#fafafa",
+  "--sidebar-border": "#3f3f46",
+  "--sidebar-ring": "var(--ring)",
 } satisfies ThemeTokenSet;
 
 function createThemeTokens(base: ThemeTokenSet, overrides: ThemeTokenOverrides): ThemeTokenSet {
@@ -223,12 +246,7 @@ function createThemeTokens(base: ThemeTokenSet, overrides: ThemeTokenOverrides):
   return {
     ...tokens,
     "--destructive-soft": `${tokens["--destructive"]}26`,
-    "--success": "var(--chart-2)",
-    "--success-soft": `${tokens["--chart-2"]}1f`,
-    "--info": "var(--chart-1)",
-    "--info-soft": `${tokens["--chart-1"]}1f`,
-    "--warning": "var(--chart-3)",
-    "--warning-soft": `${tokens["--chart-3"]}1f`,
+    "--accent-strong": "var(--primary)",
     "--series-1": "var(--chart-1)",
     "--series-2": "var(--chart-2)",
     "--series-3": "var(--chart-3)",
@@ -260,7 +278,7 @@ export const THEME_COLOR_OPTIONS = [
       "--destructive-foreground": "#ffffff",
       "--border": "#e5e5e5",
       "--input": "#e5e5e5",
-      "--ring": "#a1a1a1",
+      "--ring": "#737373",
       "--chart-1": "#91c5ff",
       "--chart-2": "#3a81f6",
       "--chart-3": "#2563ef",
@@ -273,10 +291,7 @@ export const THEME_COLOR_OPTIONS = [
       "--sidebar-accent": "#f5f5f5",
       "--sidebar-accent-foreground": "#171717",
       "--sidebar-border": "#e5e5e5",
-      "--sidebar-ring": "#a1a1a1",
-      "--success-foreground": "#0a0a0a",
-      "--info-foreground": "#171717",
-      "--warning-foreground": "#0a0a0a",
+      "--sidebar-ring": "var(--ring)",
     },
     dark: {
       "--background": "#0a0a0a",
@@ -294,7 +309,7 @@ export const THEME_COLOR_OPTIONS = [
       "--accent": "#404040",
       "--accent-foreground": "#fafafa",
       "--destructive": "#ff6467",
-      "--destructive-foreground": "#fafafa",
+      "--destructive-foreground": "#4c0519",
       "--border": "#282828",
       "--input": "#343434",
       "--ring": "#737373",
@@ -310,21 +325,80 @@ export const THEME_COLOR_OPTIONS = [
       "--sidebar-accent": "#262626",
       "--sidebar-accent-foreground": "#fafafa",
       "--sidebar-border": "#282828",
-      "--sidebar-ring": "#525252",
-      "--success-foreground": "#fafafa",
-      "--info-foreground": "#171717",
-      "--warning-foreground": "#fafafa",
+      "--sidebar-ring": "var(--ring)",
     },
   }),
   createThemeColor({
     label: "Blue",
     value: "blue",
-    swatch: "#0385ff",
+    swatch: "#2563eb",
+    light: {
+      "--background": "#ffffff",
+      "--foreground": "#18181b",
+      "--card": "#ffffff",
+      "--card-foreground": "#18181b",
+      "--popover": "#ffffff",
+      "--popover-foreground": "#18181b",
+      "--primary": "#2563eb",
+      "--primary-foreground": "#ffffff",
+      "--secondary": "#e5e7eb",
+      "--secondary-foreground": "#18181b",
+      "--muted": "#f4f4f5",
+      "--muted-foreground": "#71717a",
+      "--accent": "#e5e7eb",
+      "--accent-foreground": "#18181b",
+      "--border": "#e4e4e7",
+      "--input": "#d4d4d8",
+      "--ring": "#2563eb",
+      "--info": "#38bdf8",
+      "--info-foreground": "#082f49",
+      "--info-soft": "#38bdf826",
+      "--chart-1": "#2563eb",
+      "--sidebar": "#fafafa",
+      "--sidebar-foreground": "#18181b",
+      "--sidebar-primary": "#2563eb",
+      "--sidebar-primary-foreground": "#ffffff",
+      "--sidebar-accent": "#f4f4f5",
+      "--sidebar-accent-foreground": "#18181b",
+      "--sidebar-border": "#e4e4e7",
+      "--sidebar-ring": "var(--ring)",
+    },
+    dark: {
+      "--background": "#18181b",
+      "--foreground": "#fafafa",
+      "--card": "#27272a",
+      "--card-foreground": "#fafafa",
+      "--popover": "#18181b",
+      "--popover-foreground": "#fafafa",
+      "--primary": "#2563eb",
+      "--primary-foreground": "#ffffff",
+      "--secondary": "#27272a",
+      "--secondary-foreground": "#fafafa",
+      "--muted": "#27272a",
+      "--muted-foreground": "#a1a1aa",
+      "--accent": "#3f3f46",
+      "--accent-foreground": "#fafafa",
+      "--border": "#3f3f46",
+      "--input": "#52525b",
+      "--ring": "#60a5fa",
+      "--info": "#38bdf8",
+      "--info-foreground": "#082f49",
+      "--info-soft": "#38bdf81a",
+      "--chart-1": "#3b82f6",
+      "--sidebar": "#18181b",
+      "--sidebar-foreground": "#fafafa",
+      "--sidebar-primary": "#2563eb",
+      "--sidebar-primary-foreground": "#ffffff",
+      "--sidebar-accent": "#3f3f46",
+      "--sidebar-accent-foreground": "#fafafa",
+      "--sidebar-border": "#3f3f46",
+      "--sidebar-ring": "var(--ring)",
+    },
   }),
   createThemeColor({
     label: "Violet",
     value: "violet",
-    swatch: "#7c3aed",
+    swatch: "#4f46e5",
     light: {
       "--background": "#f8fafc",
       "--foreground": "#1e293b",
@@ -332,7 +406,7 @@ export const THEME_COLOR_OPTIONS = [
       "--card-foreground": "#1e293b",
       "--popover": "#ffffff",
       "--popover-foreground": "#1e293b",
-      "--primary": "#6366f1",
+      "--primary": "#4f46e5",
       "--primary-foreground": "#ffffff",
       "--secondary": "#e5e7eb",
       "--secondary-foreground": "#374151",
@@ -340,24 +414,24 @@ export const THEME_COLOR_OPTIONS = [
       "--muted-foreground": "#6b7280",
       "--accent": "#e0e7ff",
       "--accent-foreground": "#374151",
-      "--destructive": "#ef4444",
+      "--destructive": "#dc2626",
       "--destructive-foreground": "#ffffff",
       "--border": "#d1d5db",
       "--input": "#d1d5db",
-      "--ring": "#6366f1",
-      "--chart-1": "#6366f1",
+      "--ring": "#4f46e5",
+      "--chart-1": "#4f46e5",
       "--chart-2": "#4f46e5",
       "--chart-3": "#4338ca",
       "--chart-4": "#3730a3",
       "--chart-5": "#312e81",
       "--sidebar": "#f3f4f6",
       "--sidebar-foreground": "#1e293b",
-      "--sidebar-primary": "#6366f1",
+      "--sidebar-primary": "#4f46e5",
       "--sidebar-primary-foreground": "#ffffff",
       "--sidebar-accent": "#e0e7ff",
       "--sidebar-accent-foreground": "#374151",
       "--sidebar-border": "#d1d5db",
-      "--sidebar-ring": "#6366f1",
+      "--sidebar-ring": "var(--ring)",
     },
     dark: {
       "--background": "#0f172a",
@@ -391,13 +465,13 @@ export const THEME_COLOR_OPTIONS = [
       "--sidebar-accent": "#374151",
       "--sidebar-accent-foreground": "#d1d5db",
       "--sidebar-border": "#4b5563",
-      "--sidebar-ring": "#818cf8",
+      "--sidebar-ring": "var(--ring)",
     },
   }),
   createThemeColor({
     label: "Green",
     value: "green",
-    swatch: "#16a34a",
+    swatch: "#15803d",
     light: {
       "--background": "#f7fbf8",
       "--foreground": "#17231b",
@@ -405,7 +479,7 @@ export const THEME_COLOR_OPTIONS = [
       "--card-foreground": "#17231b",
       "--popover": "#f7fbf8",
       "--popover-foreground": "#17231b",
-      "--primary": "#16a34a",
+      "--primary": "#15803d",
       "--primary-foreground": "#ffffff",
       "--secondary": "#eef7f0",
       "--secondary-foreground": "#17231b",
@@ -415,23 +489,20 @@ export const THEME_COLOR_OPTIONS = [
       "--accent-foreground": "#166534",
       "--border": "#dcebe0",
       "--input": "#e6f0e8",
-      "--ring": "#68b57b",
-      "--chart-1": "#16a34a",
+      "--ring": "#15803d",
+      "--chart-1": "#15803d",
       "--chart-2": "#0aa852",
       "--chart-3": "#15803d",
       "--chart-4": "#166534",
       "--chart-5": "#14532d",
       "--sidebar": "#f4fbf5",
       "--sidebar-foreground": "#17231b",
-      "--sidebar-primary": "#16a34a",
+      "--sidebar-primary": "#15803d",
       "--sidebar-primary-foreground": "#ffffff",
       "--sidebar-accent": "#e3f4e7",
       "--sidebar-accent-foreground": "#166534",
       "--sidebar-border": "#dcebe0",
-      "--sidebar-ring": "#68b57b",
-      "--success-foreground": "#ffffff",
-      "--info-foreground": "#ffffff",
-      "--warning-foreground": "#ffffff",
+      "--sidebar-ring": "var(--ring)",
     },
     dark: {
       "--background": "#101812",
@@ -463,10 +534,7 @@ export const THEME_COLOR_OPTIONS = [
       "--sidebar-accent": "#28412e",
       "--sidebar-accent-foreground": "#bbf7d0",
       "--sidebar-border": "#2c4533",
-      "--sidebar-ring": "#4ade80",
-      "--success-foreground": "#052e16",
-      "--info-foreground": "#052e16",
-      "--warning-foreground": "#052e16",
+      "--sidebar-ring": "var(--ring)",
     },
   }),
   createThemeColor({
@@ -490,7 +558,7 @@ export const THEME_COLOR_OPTIONS = [
       "--accent-foreground": "#115e59",
       "--border": "#d9eae8",
       "--input": "#e4f0ef",
-      "--ring": "#58a9a2",
+      "--ring": "#0f766e",
       "--chart-1": "#0f766e",
       "--chart-2": "#0d9488",
       "--chart-3": "#14b8a6",
@@ -503,10 +571,7 @@ export const THEME_COLOR_OPTIONS = [
       "--sidebar-accent": "#dff4f1",
       "--sidebar-accent-foreground": "#115e59",
       "--sidebar-border": "#d9eae8",
-      "--sidebar-ring": "#58a9a2",
-      "--success-foreground": "#ffffff",
-      "--info-foreground": "#ffffff",
-      "--warning-foreground": "#ffffff",
+      "--sidebar-ring": "var(--ring)",
     },
     dark: {
       "--background": "#0f1a1a",
@@ -538,16 +603,13 @@ export const THEME_COLOR_OPTIONS = [
       "--sidebar-accent": "#254441",
       "--sidebar-accent-foreground": "#99f6e4",
       "--sidebar-border": "#2c4745",
-      "--sidebar-ring": "#2dd4bf",
-      "--success-foreground": "#042f2e",
-      "--info-foreground": "#042f2e",
-      "--warning-foreground": "#042f2e",
+      "--sidebar-ring": "var(--ring)",
     },
   }),
   createThemeColor({
     label: "Amber",
     value: "amber",
-    swatch: "#d97706",
+    swatch: "#b45309",
     light: {
       "--background": "#fffbf5",
       "--foreground": "#2b2114",
@@ -555,7 +617,7 @@ export const THEME_COLOR_OPTIONS = [
       "--card-foreground": "#2b2114",
       "--popover": "#fffbf5",
       "--popover-foreground": "#2b2114",
-      "--primary": "#d97706",
+      "--primary": "#b45309",
       "--primary-foreground": "#ffffff",
       "--secondary": "#fff6e6",
       "--secondary-foreground": "#5b3a0a",
@@ -565,23 +627,20 @@ export const THEME_COLOR_OPTIONS = [
       "--accent-foreground": "#713f12",
       "--border": "#f0dfbf",
       "--input": "#f5e7cd",
-      "--ring": "#e4a43d",
-      "--chart-1": "#d97706",
+      "--ring": "#b45309",
+      "--chart-1": "#b45309",
       "--chart-2": "#b7791f",
       "--chart-3": "#f59e0b",
       "--chart-4": "#ca8a04",
       "--chart-5": "#92400e",
       "--sidebar": "#fffaf0",
       "--sidebar-foreground": "#2b2114",
-      "--sidebar-primary": "#d97706",
+      "--sidebar-primary": "#b45309",
       "--sidebar-primary-foreground": "#ffffff",
       "--sidebar-accent": "#ffefc8",
       "--sidebar-accent-foreground": "#713f12",
       "--sidebar-border": "#f0dfbf",
-      "--sidebar-ring": "#e4a43d",
-      "--success-foreground": "#ffffff",
-      "--info-foreground": "#ffffff",
-      "--warning-foreground": "#ffffff",
+      "--sidebar-ring": "var(--ring)",
     },
     dark: {
       "--background": "#1c160c",
@@ -613,16 +672,13 @@ export const THEME_COLOR_OPTIONS = [
       "--sidebar-accent": "#4a3512",
       "--sidebar-accent-foreground": "#fde68a",
       "--sidebar-border": "#57421d",
-      "--sidebar-ring": "#f5af20",
-      "--success-foreground": "#451a03",
-      "--info-foreground": "#451a03",
-      "--warning-foreground": "#451a03",
+      "--sidebar-ring": "var(--ring)",
     },
   }),
   createThemeColor({
     label: "Orange",
     value: "orange",
-    swatch: "#ea580c",
+    swatch: "#c2410c",
     light: {
       "--background": "#fffaf7",
       "--foreground": "#2b1710",
@@ -630,7 +686,7 @@ export const THEME_COLOR_OPTIONS = [
       "--card-foreground": "#2b1710",
       "--popover": "#fffaf7",
       "--popover-foreground": "#2b1710",
-      "--primary": "#ea580c",
+      "--primary": "#c2410c",
       "--primary-foreground": "#ffffff",
       "--secondary": "#fff0e8",
       "--secondary-foreground": "#61220c",
@@ -640,23 +696,20 @@ export const THEME_COLOR_OPTIONS = [
       "--accent-foreground": "#9a3412",
       "--border": "#f2ddd2",
       "--input": "#f7e5dc",
-      "--ring": "#ee8a5c",
-      "--chart-1": "#ea580c",
+      "--ring": "#c2410c",
+      "--chart-1": "#c2410c",
       "--chart-2": "#f97316",
       "--chart-3": "#fb923c",
       "--chart-4": "#c2410c",
       "--chart-5": "#9a3412",
       "--sidebar": "#fff8f4",
       "--sidebar-foreground": "#2b1710",
-      "--sidebar-primary": "#ea580c",
+      "--sidebar-primary": "#c2410c",
       "--sidebar-primary-foreground": "#ffffff",
       "--sidebar-accent": "#ffe6d9",
       "--sidebar-accent-foreground": "#9a3412",
       "--sidebar-border": "#f2ddd2",
-      "--sidebar-ring": "#ee8a5c",
-      "--success-foreground": "#ffffff",
-      "--info-foreground": "#ffffff",
-      "--warning-foreground": "#ffffff",
+      "--sidebar-ring": "var(--ring)",
     },
     dark: {
       "--background": "#1c100b",
@@ -688,10 +741,7 @@ export const THEME_COLOR_OPTIONS = [
       "--sidebar-accent": "#4b2818",
       "--sidebar-accent-foreground": "#fed7aa",
       "--sidebar-border": "#5a3321",
-      "--sidebar-ring": "#fb923c",
-      "--success-foreground": "#431407",
-      "--info-foreground": "#431407",
-      "--warning-foreground": "#431407",
+      "--sidebar-ring": "var(--ring)",
     },
   }),
   createThemeColor({
@@ -715,7 +765,7 @@ export const THEME_COLOR_OPTIONS = [
       "--accent-foreground": "#9f1239",
       "--border": "#f1dce1",
       "--input": "#f7e5e8",
-      "--ring": "#ed6b8a",
+      "--ring": "#e11d48",
       "--chart-1": "#e11d48",
       "--chart-2": "#db2777",
       "--chart-3": "#f43f5e",
@@ -728,10 +778,7 @@ export const THEME_COLOR_OPTIONS = [
       "--sidebar-accent": "#ffe4e8",
       "--sidebar-accent-foreground": "#9f1239",
       "--sidebar-border": "#f1dce1",
-      "--sidebar-ring": "#ed6b8a",
-      "--success-foreground": "#ffffff",
-      "--info-foreground": "#ffffff",
-      "--warning-foreground": "#ffffff",
+      "--sidebar-ring": "var(--ring)",
     },
     dark: {
       "--background": "#1c0d12",
@@ -763,10 +810,7 @@ export const THEME_COLOR_OPTIONS = [
       "--sidebar-accent": "#4b2330",
       "--sidebar-accent-foreground": "#fecdd3",
       "--sidebar-border": "#5c2e3b",
-      "--sidebar-ring": "#fb7185",
-      "--success-foreground": "#4c0519",
-      "--info-foreground": "#4c0519",
-      "--warning-foreground": "#4c0519",
+      "--sidebar-ring": "var(--ring)",
     },
   }),
 ] as const satisfies ThemeColorOptions;
@@ -798,17 +842,58 @@ export const SIDEBAR_COLLAPSIBLE_OPTIONS = [
   { label: "Offcanvas", value: "offcanvas" },
 ] as const satisfies ThemeOptions;
 
+export type FontOption = ThemeOption<string> & {
+  readonly stack: string;
+};
+
+export const FONT_OPTIONS = [
+  {
+    label: "Geist",
+    value: "geist",
+    stack: "var(--font-geist), ui-sans-serif, system-ui, sans-serif",
+  },
+  {
+    label: "System",
+    value: "system",
+    stack:
+      "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+  },
+  {
+    label: "Serif",
+    value: "serif",
+    stack: "ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif",
+  },
+  {
+    label: "Mono",
+    value: "mono",
+    stack: "var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace",
+  },
+  {
+    label: "Chinese Sans",
+    value: "chinese-sans",
+    stack:
+      "'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC', 'Source Han Sans SC', ui-sans-serif, system-ui, sans-serif",
+  },
+  {
+    label: "Chinese Serif",
+    value: "chinese-serif",
+    stack: "'Songti SC', STSong, SimSun, 'Noto Serif CJK SC', 'Source Han Serif SC', ui-serif, Georgia, serif",
+  },
+] as const satisfies readonly FontOption[];
+
 export type ThemeColor = (typeof THEME_COLOR_OPTIONS)[number]["value"];
 export type ThemeMode = (typeof THEME_MODE_OPTIONS)[number]["value"];
 export type ContentLayout = (typeof CONTENT_LAYOUT_OPTIONS)[number]["value"];
 export type NavbarStyle = (typeof NAVBAR_STYLE_OPTIONS)[number]["value"];
 export type SidebarVariant = (typeof SIDEBAR_VARIANT_OPTIONS)[number]["value"];
 export type SidebarCollapsible = (typeof SIDEBAR_COLLAPSIBLE_OPTIONS)[number]["value"];
+export type Font = (typeof FONT_OPTIONS)[number]["value"];
 
 export const DEFAULT_THEME_MODE: ThemeMode = "system";
 
 export type ThemePreferences = {
   themeColor: ThemeColor;
+  font: Font;
   contentLayout: ContentLayout;
   navbarStyle: NavbarStyle;
   sidebarVariant: SidebarVariant;
@@ -817,6 +902,7 @@ export type ThemePreferences = {
 
 export const DEFAULT_THEME_PREFERENCES = {
   themeColor: "blue",
+  font: "system",
   contentLayout: "centered",
   navbarStyle: "sticky",
   sidebarVariant: "floating",
@@ -825,6 +911,10 @@ export const DEFAULT_THEME_PREFERENCES = {
 
 export function isThemeColor(value: string | undefined): value is ThemeColor {
   return isOptionValue(THEME_COLOR_OPTIONS, value);
+}
+
+export function isFont(value: string | undefined): value is Font {
+  return isOptionValue(FONT_OPTIONS, value);
 }
 
 export function isThemeMode(value: string | undefined): value is ThemeMode {
@@ -851,8 +941,16 @@ export function parseThemeColor(value: string | undefined): ThemeColor {
   return parseOptionValue(THEME_COLOR_OPTIONS, value, DEFAULT_THEME_PREFERENCES.themeColor);
 }
 
+export function parseFont(value: string | undefined): Font {
+  return parseOptionValue(FONT_OPTIONS, value, DEFAULT_THEME_PREFERENCES.font);
+}
+
 export function getThemeColorOption(value: ThemeColor): ThemeColorOption {
   return THEME_COLOR_OPTIONS.find((option) => option.value === value) ?? THEME_COLOR_OPTIONS[0];
+}
+
+export function getFontOption(value: Font): FontOption {
+  return FONT_OPTIONS.find((option) => option.value === value) ?? FONT_OPTIONS[0];
 }
 
 export function parseContentLayout(value: string | undefined): ContentLayout {
