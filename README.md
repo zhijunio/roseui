@@ -55,21 +55,21 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Available commands
 
-| Command             | Purpose                               |
-| ------------------- | ------------------------------------- |
-| `npm run dev`       | Start the development server.         |
-| `npm run build`     | Create a production build.            |
-| `npm run start`     | Start the production server.          |
-| `npm run check`     | Run Biome formatting and lint checks. |
-| `npm run check:fix` | Apply Biome fixes.                    |
+| Command                  | Purpose                                  |
+| ------------------------ | ---------------------------------------- |
+| `npm run dev`            | Start the development server.            |
+| `npm run build`          | Create a production build.               |
+| `npm run start`          | Start the production server.             |
+| `npm run check`          | Run Biome formatting and lint checks.    |
+| `npm run check:fix`      | Apply Biome fixes.                       |
 | `npm run registry:build` | Generate `registry.json` and `public/r`. |
 
 ## Routes
 
-| URL | Route entry | Demo source |
-| --- | --- | --- |
-| `/` | `src/app/(external)/page.tsx` | Application overview |
-| `/components/<name>` | `src/app/(app)/components/<name>/page.tsx` | `src/examples/components/<name>/` |
+| URL                         | Route entry                                       | Demo source                              |
+| --------------------------- | ------------------------------------------------- | ---------------------------------------- |
+| `/`                         | `src/app/(external)/page.tsx`                     | Application overview                     |
+| `/components/<name>`        | `src/app/(app)/components/<name>/page.tsx`        | `src/examples/components/<name>/`        |
 | `/blocks/<category>/<name>` | `src/app/(app)/blocks/<category>/<name>/page.tsx` | `src/examples/blocks/<category>/<name>/` |
 
 Route groups such as `(app)` and `(external)` organize the source tree without changing the URL.
