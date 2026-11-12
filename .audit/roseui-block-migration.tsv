@@ -1,4 +1,0 @@
-ts	phase	decision	why	evidence	result
-2026-11-11T15:21:59Z	start	迁移第1至第7批 block	目标是把 roseui-bak 的 37 个业务 block 迁移到 roseui 的薄路由和 examples 结构中	roseui-bak/src/app/(app)/blocks, roseui/src/app/(app)/components	baseline captured; current type and Biome issues recorded
-2026-11-11T15:22:06Z	baseline	记录迁移前验证基线	现有项目已有 user-menu 缺失和导航嵌套类型错误；Biome 有现存告警，不能把它们误报成迁移回归	npx tsc --noEmit; npm run check	baseline not green
-2026-11-11T15:37:26Z	batch-1	迁移并验证 error-pages、form、headers-and-footers	现有 composite 和 UI 原语足够承载这三类 block，只需切换示例路径并修正两个站点 header 的可访问性问题	src/app/(app)/blocks/error-pages; src/app/(app)/blocks/form; src/app/(app)/blocks/headers-and-footers; npx tsc --noEmit	TypeScript green; Biome green for batch
