@@ -25,7 +25,7 @@ export async function AppLayout({ children }: { readonly children: ReactNode }) 
         )}
       >
         <AppHeader />
-        <div className="min-h-0 min-w-0 flex-1 overflow-x-hidden p-4 md:p-6">{children}</div>
+        <div className="min-h-0 min-w-0 flex-1 overflow-x-hidden p-3 md:p-4">{children}</div>
       </SidebarInset>
     </SidebarProvider>
   );

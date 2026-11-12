@@ -21,13 +21,13 @@ function rewrite(content) {
   return content
     .replaceAll("@/lib/utils", "@/lib/utils")
     .replaceAll("@/data/avatar-data", "@/data/user")
-    .replaceAll("@/components/workbench/component-preview", "@/components/examples/component-preview")
-    .replaceAll("@/components/workbench/page-header", "@/components/examples/page-header")
-    .replaceAll("@/app/(app)/components/", "@/components/examples/components/");
+    .replaceAll("@/components/workbench/component-preview", "@/examples/component-preview")
+    .replaceAll("@/components/workbench/page-header", "@/examples/page-header")
+    .replaceAll("@/app/(app)/components/", "@/examples/components/");
 }
 
 function rewritePage(content, slug) {
-  return rewrite(content).replaceAll('from "./examples"', `from "@/components/examples/components/${slug}/examples"`);
+  return rewrite(content).replaceAll('from "./examples"', `from "@/examples/components/${slug}/examples"`);
 }
 
 function rewriteTree(directory) {

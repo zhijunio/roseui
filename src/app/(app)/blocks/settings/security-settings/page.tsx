@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
-import { SecuritySettingsExample } from "@/components/examples/blocks/settings/security-settings/examples";
-import { ComponentPreview } from "@/components/examples/component-preview";
-import { PageHeader } from "@/components/examples/page-header";
+import { SecuritySettingsExample } from "@/examples/blocks/settings/security-settings/security-settings";
+import { ComponentPreview } from "@/examples/component-preview";
+import { PageHeader } from "@/examples/page-header";
 
 export const metadata: Metadata = {
   title: "Security Settings",
@@ -12,10 +12,7 @@ export const metadata: Metadata = {
 export default function SecuritySettingsPage() {
   return (
     <div className="space-y-6">
-      <PageHeader
-        title="Security Settings"
-        description="Keep account access protected with focused security controls."
-      />
+      <PageHeader title="Security Settings" />
       <ComponentPreview title="Account security" layout="fullStack">
         <SecuritySettingsExample />
       </ComponentPreview>

@@ -1,17 +1,14 @@
 import type { Metadata } from "next";
 
-import { ExpandableButtonExamples } from "@/components/examples/components/expandable-button/examples";
-import { PageHeader } from "@/components/examples/page-header";
+import { ExpandableButtonExamples } from "@/examples/components/expandable-button/examples";
+import { PageHeader } from "@/examples/page-header";
 
 export const metadata: Metadata = { title: "Expandable Button" };
 
 export default function ExpandableButtonPage() {
   return (
     <div className="space-y-6">
-      <PageHeader
-        title="Expandable Button"
-        description="Keep a frequent action compact until someone focuses or hovers it."
-      />
+      <PageHeader title="Expandable Button" />
       <div className="grid min-w-0 items-start gap-5 xl:grid-cols-2 [&>*]:min-w-0">
         <ExpandableButtonExamples />
       </div>

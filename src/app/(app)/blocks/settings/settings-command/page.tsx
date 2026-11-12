@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
-import { SettingsCommandExample } from "@/components/examples/blocks/settings/settings-command/examples";
-import { ComponentPreview } from "@/components/examples/component-preview";
-import { PageHeader } from "@/components/examples/page-header";
+import { SettingsCommandExample } from "@/examples/blocks/settings/settings-command/settings-command";
+import { ComponentPreview } from "@/examples/component-preview";
+import { PageHeader } from "@/examples/page-header";
 
 export const metadata: Metadata = {
   title: "Settings Command",
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default function SettingsCommandPage() {
   return (
     <div className="space-y-6">
-      <PageHeader title="Settings Command" description="Find settings quickly with a searchable command surface." />
+      <PageHeader title="Settings Command" />
       <ComponentPreview title="Workspace preferences" layout="fullBleed" span={2}>
         <SettingsCommandExample />
       </ComponentPreview>

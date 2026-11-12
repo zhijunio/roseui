@@ -1,12 +1,12 @@
-import { RadioCardsExamples } from "@/components/examples/components/radio-cards/examples";
-import { PageHeader } from "@/components/examples/page-header";
+import { RadioCardsExamples } from "@/examples/components/radio-cards/examples";
+import { PageHeader } from "@/examples/page-header";
 
 export const metadata = { title: "Radio Cards" };
 
 export default function RadioCardsPage() {
   return (
     <div className="space-y-6">
-      <PageHeader title="Radio Cards" description="Choose an option when its supporting details matter." />
+      <PageHeader title="Radio Cards" />
       <div className="grid min-w-0 items-start gap-5 xl:grid-cols-2 [&>*]:min-w-0">
         <RadioCardsExamples />
       </div>

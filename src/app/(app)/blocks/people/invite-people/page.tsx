@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
-import { InvitePeopleExample } from "@/components/examples/blocks/people/invite-people/examples";
-import { ComponentPreview } from "@/components/examples/component-preview";
-import { PageHeader } from "@/components/examples/page-header";
+import { InvitePeopleExample } from "@/examples/blocks/people/invite-people/invite-people";
+import { ComponentPreview } from "@/examples/component-preview";
+import { PageHeader } from "@/examples/page-header";
 
 export const metadata: Metadata = {
   title: "Invite People",
@@ -12,10 +12,7 @@ export const metadata: Metadata = {
 export default function InvitePeoplePage() {
   return (
     <div className="space-y-6">
-      <PageHeader
-        title="Invite People"
-        description="Add teammates in batches, assign roles, and send workspace invitations."
-      />
+      <PageHeader title="Invite People" />
       <ComponentPreview title="Workspace invitations" layout="fullStack">
         <InvitePeopleExample />
       </ComponentPreview>

@@ -56,6 +56,7 @@ export const NAV_DATA = [
           { title: "Breadcrumb", url: "/components/breadcrumb" },
           { title: "Brush Chart", url: "/components/brush-chart" },
           { title: "Bubble", url: "/components/bubble" },
+          { title: "Button", url: "/components/button" },
           { title: "Button Group", url: "/components/button-group" },
           { title: "Card", url: "/components/card" },
           { title: "Carousel", url: "/components/carousel" },
@@ -148,6 +149,7 @@ export const NAV_DATA = [
           { title: "Pagination", url: "/components/pagination" },
           { title: "Password Field", url: "/components/password-field" },
           { title: "Password Strength", url: "/components/password-strength" },
+          { title: "Payment Field", url: "/components/payment-field" },
           { title: "Pie Charts", url: "/components/pie" },
           { title: "Popover", url: "/components/popover" },
           { title: "Hold to Confirm", url: "/components/pressable-feedback" },
@@ -240,7 +242,6 @@ export const NAV_DATA = [
         items: [
           { title: "Form", url: "/blocks/form/form" },
           { title: "Form Layouts", url: "/blocks/form/form-layouts" },
-          { title: "Payment Card Field", url: "/blocks/form/payment-card-field" },
         ],
       },
       {
@@ -281,12 +282,10 @@ export const NAV_DATA = [
         icon: Settings2,
         items: [
           { title: "Billing Overview", url: "/blocks/settings/billing-overview" },
-          { title: "Cancel Flow", url: "/blocks/settings/cancel-flow" },
           { title: "Onboarding Survey", url: "/blocks/settings/onboarding-survey" },
           { title: "Security Settings", url: "/blocks/settings/security-settings" },
           { title: "Settings Command", url: "/blocks/settings/settings-command" },
           { title: "Settings Page", url: "/blocks/settings/settings-page" },
-          { title: "Spend Alert", url: "/blocks/settings/spend-alert" },
           { title: "Usage Billing", url: "/blocks/settings/usage-billing" },
         ],
       },

@@ -13,7 +13,6 @@ import {
   type SidebarCollapsible,
   type SidebarVariant,
   type ThemePreferences,
-  type ThemePreset,
   type ThemeTokenSet,
 } from "@/data/theme";
 
@@ -29,7 +28,6 @@ type ThemePreferencesContextValue = {
 };
 
 const PREFERENCE_COOKIES = {
-  themePreset: "theme_preset",
   themeColor: "theme_color",
   contentLayout: "content_layout",
   navbarStyle: "navbar_style",
@@ -38,7 +36,6 @@ const PREFERENCE_COOKIES = {
 } satisfies Record<ThemePreferenceKey, string>;
 
 const PREFERENCE_KEYS = [
-  "themePreset",
   "themeColor",
   "contentLayout",
   "navbarStyle",
@@ -54,19 +51,43 @@ function persistPreference(key: ThemePreferenceKey, value: string) {
   document.cookie = `${PREFERENCE_COOKIES[key]}=${encodeURIComponent(value)}; Max-Age=31536000; Path=/; SameSite=Lax`;
 }
 
+const BRAND_MARK_PATH =
+  "M33.9 35.5 43 44.7a8.3 8.3 0 0 1 0 11.6 8.1 8.1 0 0 1-10.8.7l-.2-.2-.2.2a8.1 8.1 0 0 1-4.4 1.7h-.5a8.1 8.1 0 0 1-5.8-2.4 8.3 8.3 0 0 1 0-11.6l9.1-9.2a2.7 2.7 0 0 1 3.7 0m22.3-14.4a8.1 8.1 0 0 1 .7 10.8l-.2.2.2.2a8.1 8.1 0 0 1 1.7 4.4v.5a8.1 8.1 0 0 1-2.4 5.8 8.3 8.3 0 0 1-11.6 0l-9.2-9.1a2.7 2.7 0 0 1 0-3.7l9.2-9.1a8.3 8.3 0 0 1 11.6 0M19.7 21.1l9.2 9.1a2.7 2.7 0 0 1 0 3.7l-9.2 9.1a8.3 8.3 0 0 1-11.6 0 8.1 8.1 0 0 1-.7-10.8l.2-.2-.2-.2a8.1 8.1 0 0 1-1.7-4.4v-.5a8.1 8.1 0 0 1 2.4-5.8 8.3 8.3 0 0 1 11.6 0m17.8-15.8a8.1 8.1 0 0 1 5.8 2.4 8.3 8.3 0 0 1 0 11.6l-9.1 9.2a2.7 2.7 0 0 1-3.7 0l-9.1-9.2a8.3 8.3 0 0 1 0-11.6 8.1 8.1 0 0 1 10.8-.7l.2.2.2-.2a8.1 8.1 0 0 1 4.4-1.7z";
+
+function applyFavicon(primary: string, foreground: string) {
+  let favicon = document.head.querySelector<HTMLLinkElement>('link[rel="icon"]');
+
+  if (!favicon) {
+    favicon = document.createElement("link");
+    favicon.rel = "icon";
+    document.head.appendChild(favicon);
+  }
+
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="16" fill="${primary}"/><path fill="${foreground}" d="${BRAND_MARK_PATH}"/></svg>`;
+  favicon.href = `data:image/svg+xml,${encodeURIComponent(svg)}`;
+}
+
 function applyThemeTokens(root: HTMLElement, tokens: ThemeTokenSet) {
   for (const [property, value] of Object.entries(tokens)) {
     root.style.setProperty(property, value);
   }
 }
 
-function applyPreferences(preferences: ThemePreferences, resolvedTheme: string | undefined) {
-  const root = document.documentElement;
-  const themeColor = getThemeColorOption(preferences.themeColor);
-  const tokens = resolvedTheme === "dark" ? themeColor.dark : themeColor.light;
+function applyThemeColor(
+  root: HTMLElement,
+  color: ReturnType<typeof getThemeColorOption>,
+  resolvedTheme: string | undefined,
+) {
+  const tokens = resolvedTheme === "dark" ? color.dark : color.light;
 
   applyThemeTokens(root, tokens);
-  root.dataset.themePreset = preferences.themePreset;
+  applyFavicon(tokens["--primary"], tokens["--primary-foreground"]);
+}
+
+function applyPreferences(preferences: ThemePreferences, resolvedTheme: string | undefined) {
+  const root = document.documentElement;
+
+  applyThemeColor(root, getThemeColorOption(preferences.themeColor), resolvedTheme);
   root.dataset.themeColor = preferences.themeColor;
   root.dataset.contentLayout = preferences.contentLayout;
   root.dataset.navbarStyle = preferences.navbarStyle;
@@ -123,4 +144,4 @@ export function useThemePreferences() {
   return context;
 }
 
-export type { ContentLayout, NavbarStyle, SidebarCollapsible, SidebarVariant, ThemePreset };
+export type { ContentLayout, NavbarStyle, SidebarCollapsible, SidebarVariant };

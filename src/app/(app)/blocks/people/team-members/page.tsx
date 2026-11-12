@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
-import { TeamMembersExample } from "@/components/examples/blocks/people/team-members/examples";
-import { ComponentPreview } from "@/components/examples/component-preview";
-import { PageHeader } from "@/components/examples/page-header";
+import { TeamMembersExample } from "@/examples/blocks/people/team-members/team-members";
+import { ComponentPreview } from "@/examples/component-preview";
+import { PageHeader } from "@/examples/page-header";
 
 export const metadata: Metadata = {
   title: "Team Members",
@@ -12,10 +12,7 @@ export const metadata: Metadata = {
 export default function TeamMembersPage() {
   return (
     <div className="space-y-6">
-      <PageHeader
-        title="Team Members"
-        description="Invite teammates, manage roles, and keep workspace seats under control."
-      />
+      <PageHeader title="Team Members" />
       <ComponentPreview title="Workspace members" layout="fullStack">
         <TeamMembersExample />
       </ComponentPreview>

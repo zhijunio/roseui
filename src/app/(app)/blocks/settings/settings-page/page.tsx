@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { SettingsPage } from "@/components/examples/blocks/settings/settings-page/examples";
+import { SettingsPage } from "@/examples/blocks/settings/settings-page/settings-page";
 
 export const metadata: Metadata = {
   title: "Settings Page",

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { NotFoundExample } from "@/components/examples/blocks/error-pages/404/examples";
+import { NotFoundExample } from "@/examples/blocks/error-pages/404/404";
 
 export const metadata: Metadata = {
   title: "Page not found",

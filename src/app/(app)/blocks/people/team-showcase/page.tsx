@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
-import { TeamShowcaseExample } from "@/components/examples/blocks/people/team-showcase/examples";
-import { ComponentPreview } from "@/components/examples/component-preview";
-import { PageHeader } from "@/components/examples/page-header";
+import { TeamShowcaseExample } from "@/examples/blocks/people/team-showcase/team-showcase";
+import { ComponentPreview } from "@/examples/component-preview";
+import { PageHeader } from "@/examples/page-header";
 
 export const metadata: Metadata = {
   title: "Team Showcase",
@@ -12,10 +12,7 @@ export const metadata: Metadata = {
 export default function TeamShowcasePage() {
   return (
     <div className="space-y-6">
-      <PageHeader
-        title="Team Showcase"
-        description="Introduce people with gallery, filmstrip, directory, and spotlight layouts."
-      />
+      <PageHeader title="Team Showcase" />
       <ComponentPreview title="Meet the team" layout="fullStack">
         <TeamShowcaseExample />
       </ComponentPreview>

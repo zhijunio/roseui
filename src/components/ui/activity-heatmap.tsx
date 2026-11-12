@@ -48,6 +48,7 @@ type Model = {
   perLevel: number[];
 };
 type Tip = { key: string; primary: string; secondary: string; value: number; anchor: HTMLElement };
+type ScrollEdges = { left: boolean; right: boolean };
 /** How the tooltip text changes: rolls up or down with the count, crossfades on a tie, or appears at once when the bubble opens. */
 type Change = 1 | -1 | 0 | "instant";
 
@@ -163,6 +164,7 @@ export function ActivityHeatmap({ days, label, period, unit: unitProp = CONTRIBU
   const plotRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
   const scrollerRef = useRef<HTMLDivElement>(null);
+  const [scrollEdges, setScrollEdges] = useState<ScrollEdges>({ left: false, right: false });
   const ringRef = useRef<HTMLSpanElement>(null);
   const measureRef = useRef<HTMLSpanElement>(null);
   const inView = useInView(plotRef, { once: true, amount: .35 });
@@ -190,6 +192,41 @@ export function ActivityHeatmap({ days, label, period, unit: unitProp = CONTRIBU
     const timer = window.setTimeout(() => setReveal("done"), WAVE + 700);
     return () => window.clearTimeout(timer);
   }, [reveal]);
+
+  useEffect(() => {
+    const scroller = scrollerRef.current;
+    if (!scroller) return;
+
+    let animationFrame = 0;
+    const updateScrollEdges = () => {
+      cancelAnimationFrame(animationFrame);
+      animationFrame = requestAnimationFrame(() => {
+        const maxScroll = scroller.scrollWidth - scroller.clientWidth;
+        if (maxScroll <= 1) {
+          setScrollEdges({ left: false, right: false });
+          return;
+        }
+
+        const isRtl = getComputedStyle(scroller).direction === "rtl";
+        const offset = isRtl ? Math.abs(scroller.scrollLeft) : scroller.scrollLeft;
+        setScrollEdges(isRtl
+          ? { left: offset < maxScroll - 1, right: offset > 1 }
+          : { left: offset > 1, right: offset < maxScroll - 1 });
+      });
+    };
+
+    updateScrollEdges();
+    scroller.addEventListener("scroll", updateScrollEdges, { passive: true });
+    const resizeObserver = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(updateScrollEdges);
+    resizeObserver?.observe(scroller);
+    if (scroller.firstElementChild) resizeObserver?.observe(scroller.firstElementChild);
+
+    return () => {
+      cancelAnimationFrame(animationFrame);
+      scroller.removeEventListener("scroll", updateScrollEdges);
+      resizeObserver?.disconnect();
+    };
+  }, []);
 
   const selectedIndex = selectedDate ? Math.round((toUtc(selectedDate) - model.start) / DAY) : -1;
   const hasSelection = selectedIndex >= 0 && selectedIndex < model.length;
@@ -376,6 +413,8 @@ export function ActivityHeatmap({ days, label, period, unit: unitProp = CONTRIBU
           <span ref={ringRef} className={styles.ring} data-shown={ringShown || undefined} style={{ "--col": selectedCol, "--row": selectedRow } as CSSProperties} aria-hidden="true" />
         </div>
       </div>
+      {scrollEdges.left && <span className={`${styles.scrollHint} ${styles.scrollHintLeft}`} aria-hidden="true" />}
+      {scrollEdges.right && <span className={`${styles.scrollHint} ${styles.scrollHintRight}`} aria-hidden="true" />}
     </div>
 
     <div className={styles.legend}>

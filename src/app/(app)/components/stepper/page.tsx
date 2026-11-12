@@ -1,12 +1,12 @@
-import { StepperExamples } from "@/components/examples/components/stepper/examples";
-import { PageHeader } from "@/components/examples/page-header";
+import { StepperExamples } from "@/examples/components/stepper/examples";
+import { PageHeader } from "@/examples/page-header";
 
 export const metadata = { title: "Stepper" };
 
 export default function ComponentExamplePage() {
   return (
     <div className="space-y-6">
-      <PageHeader title="Stepper" description="Usage examples for the Stepper component." />
+      <PageHeader title="Stepper" />
       <div className="grid min-w-0 items-start gap-5 xl:grid-cols-2 [&>*]:min-w-0">
         <StepperExamples />
       </div>

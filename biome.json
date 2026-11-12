@@ -106,10 +106,9 @@
     {
       "includes": [
         "src/components/ui/**",
-        "src/components/composite/**",
-        "src/components/examples/components/**",
-        "src/components/examples/component-preview.tsx",
-        "src/components/examples/page-header.tsx",
+        "src/examples/components/**",
+        "src/examples/component-preview.tsx",
+        "src/examples/page-header.tsx",
         "src/hooks/use-platform.ts"
       ],
       "linter": {

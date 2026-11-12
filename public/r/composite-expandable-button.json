@@ -12,10 +12,10 @@
   ],
   "files": [
     {
-      "path": "src/components/composite/expandable-button.tsx",
+      "path": "src/components/ui/expandable-button.tsx",
       "content": "\"use client\";\n\nimport { type ComponentProps, type ReactNode, useState } from \"react\";\n\nimport { IconPlus } from \"@tabler/icons-react\";\n\nimport { Button } from \"@/components/ui/button\";\nimport { cn } from \"@/lib/utils\";\n\nexport function ExpandableButton({\n  label = \"Create new\",\n  successLabel = \"Created\",\n  icon = <IconPlus aria-hidden />,\n  className,\n  onClick,\n  variant = \"outline\",\n  \"aria-label\": ariaLabel,\n  ...buttonProps\n}: {\n  label?: string;\n  successLabel?: string;\n  icon?: ReactNode;\n} & Omit<ComponentProps<typeof Button>, \"children\">) {\n  const [feedback, setFeedback] = useState(\"\");\n\n  return (\n    <Button\n      {...buttonProps}\n      variant={variant}\n      aria-label={ariaLabel ?? label}\n      className={cn(\n        \"group/expand relative w-9 overflow-hidden rounded-full hover:w-36 focus-visible:w-36 motion-safe:transition-[width]\",\n        className,\n      )}\n      onClick={(event) => {\n        setFeedback(successLabel);\n        onClick?.(event);\n      }}\n    >\n      <span className=\"absolute left-2.5\">{icon}</span>\n      <span className=\"ml-6 opacity-0 group-hover/expand:opacity-100 group-focus-visible/expand:opacity-100\">\n        {feedback || label}\n      </span>\n    </Button>\n  );\n}\n",
       "type": "registry:component",
-      "target": "src/components/composite/expandable-button.tsx"
+      "target": "src/components/ui/expandable-button.tsx"
     }
   ],
   "type": "registry:component"

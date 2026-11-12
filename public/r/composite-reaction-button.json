@@ -11,10 +11,10 @@
   ],
   "files": [
     {
-      "path": "src/components/composite/reaction-button.tsx",
+      "path": "src/components/ui/reaction-button.tsx",
       "content": "\"use client\";\n\nimport { type ComponentProps, type ReactNode, useState } from \"react\";\n\nimport { IconStar, IconThumbUp } from \"@tabler/icons-react\";\n\nimport { Button } from \"@/components/ui/button\";\n\nexport function ReactionButton({\n  icon,\n  label,\n  count,\n  pressed,\n  defaultPressed = false,\n  onPressedChange,\n  onClick,\n  ...buttonProps\n}: {\n  icon?: ReactNode;\n  label: ReactNode;\n  count: number;\n  pressed?: boolean;\n  defaultPressed?: boolean;\n  onPressedChange?: (pressed: boolean) => void;\n} & Omit<ComponentProps<typeof Button>, \"children\" | \"aria-pressed\">) {\n  const [uncontrolledPressed, setUncontrolledPressed] = useState(defaultPressed);\n  const isPressed = pressed ?? uncontrolledPressed;\n  const iconNode =\n    icon === \"like\" ? (\n      <IconThumbUp aria-hidden className={isPressed ? \"fill-current\" : undefined} />\n    ) : icon === \"star\" ? (\n      <IconStar aria-hidden className={isPressed ? \"fill-current\" : undefined} />\n    ) : (\n      (icon ?? <IconThumbUp aria-hidden />)\n    );\n\n  return (\n    <Button\n      {...buttonProps}\n      variant={buttonProps.variant ?? \"outline\"}\n      aria-pressed={isPressed}\n      onClick={(event) => {\n        const nextPressed = !isPressed;\n        if (pressed === undefined) setUncontrolledPressed(nextPressed);\n        onPressedChange?.(nextPressed);\n        onClick?.(event);\n      }}\n    >\n      {iconNode}\n      {label}\n      <span className=\"ml-1 border-l border-current/30 pl-3 text-xs\">{count + (isPressed ? 1 : 0)}</span>\n    </Button>\n  );\n}\n",
       "type": "registry:component",
-      "target": "src/components/composite/reaction-button.tsx"
+      "target": "src/components/ui/reaction-button.tsx"
     }
   ],
   "type": "registry:component"

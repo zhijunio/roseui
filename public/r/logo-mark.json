@@ -12,7 +12,7 @@
   "files": [
     {
       "path": "src/components/ui/logo-mark.tsx",
-      "content": "import { IconCloverFilled } from \"@tabler/icons-react\";\nimport type { CSSProperties } from \"react\";\n\nimport { cn } from \"@/lib/utils\";\n\nexport type LogoMarkProps = {\n  size?: number | string;\n  iconSize?: number | string;\n  className?: string;\n  style?: CSSProperties;\n};\n\nexport function LogoMark({\n  size = 28,\n  iconSize = \"60%\",\n  className,\n  style,\n}: LogoMarkProps) {\n  return (\n    <span\n      className={cn(\n        \"grid shrink-0 place-items-center rounded-lg bg-primary text-white\",\n        className,\n      )}\n      style={{ width: size, height: size, ...style }}\n      aria-hidden=\"true\"\n    >\n      <IconCloverFilled style={{ width: iconSize, height: iconSize }} />\n    </span>\n  );\n}\n",
+      "content": "import { IconCloverFilled } from \"@tabler/icons-react\";\nimport type { CSSProperties } from \"react\";\n\nimport { cn } from \"@/lib/utils\";\n\nexport type LogoMarkProps = {\n  size?: number | string;\n  iconSize?: number | string;\n  className?: string;\n  style?: CSSProperties;\n};\n\nexport function LogoMark({\n  size = 28,\n  iconSize = \"60%\",\n  className,\n  style,\n}: LogoMarkProps) {\n  return (\n    <span\n      className={cn(\n        \"grid shrink-0 place-items-center rounded-[25%] bg-primary text-primary-foreground\",\n        className,\n      )}\n      style={{ width: size, height: size, ...style }}\n      aria-hidden=\"true\"\n    >\n      <IconCloverFilled style={{ width: iconSize, height: iconSize }} />\n    </span>\n  );\n}\n",
       "type": "registry:ui",
       "target": "src/components/ui/logo-mark.tsx"
     }

@@ -4,10 +4,116 @@ import path from "node:path";
 const root = process.cwd();
 const packageJson = JSON.parse(readFileSync(path.join(root, "package.json"), "utf8"));
 const installedDependencies = new Set(Object.keys(packageJson.dependencies ?? {}));
+const uiDirectory = path.join(root, "src", "components", "ui");
+
+const compositeSourceFiles = new Set([
+  "action-bar.tsx",
+  "action-button.tsx",
+  "arrow-link-button.tsx",
+  "autocomplete.tsx",
+  "avatar-button.tsx",
+  "avatar-group.tsx",
+  "avatar-upload.tsx",
+  "billing-toggle.tsx",
+  "cascader.tsx",
+  "chat-thread.tsx",
+  "checkbox-group.tsx",
+  "color-picker.tsx",
+  "comment-thread.tsx",
+  "attachment.tsx",
+  "button-group.tsx",
+  "carousel.tsx",
+  "combobox.tsx",
+  "command.tsx",
+  "field.tsx",
+  "input-group.tsx",
+  "input-otp.tsx",
+  "message-scroller.tsx",
+  "message.tsx",
+  "pagination.tsx",
+  "questionnaire.tsx",
+  "resizable.tsx",
+  "copy-button.tsx",
+  "countdown.tsx",
+  "data-table.tsx",
+  "date-picker.tsx",
+  "date-range-picker.tsx",
+  "date-selector.tsx",
+  "emoji-picker.tsx",
+  "emoji-reaction-button.tsx",
+  "error-state.tsx",
+  "event-calendar.tsx",
+  "expandable-button.tsx",
+  "file-upload.tsx",
+  "filters.tsx",
+  "floating-toc.tsx",
+  "hold-to-confirm.tsx",
+  "inline-edit.tsx",
+  "input-mention.tsx",
+  "input-money.tsx",
+  "input-phone.tsx",
+  "input-tag.tsx",
+  "labeled-checkbox.tsx",
+  "labeled-radio.tsx",
+  "labeled-switch.tsx",
+  "list-view.tsx",
+  "multi-select.tsx",
+  "nav-user.tsx",
+  "notification.tsx",
+  "number-field.tsx",
+  "number-stepper.tsx",
+  "password-field.tsx",
+  "password-strength.tsx",
+  "payment-button.tsx",
+  "payment-field.tsx",
+  "radio-cards.tsx",
+  "rating.tsx",
+  "reaction-button.tsx",
+  "reactions.tsx",
+  "rich-text-editor.tsx",
+  "scrollspy.tsx",
+  "search-field.tsx",
+  "search-select.tsx",
+  "segmented-control.tsx",
+  "signature-pad.tsx",
+  "social-button.tsx",
+  "sortable.tsx",
+  "split-button.tsx",
+  "stepper.tsx",
+  "swipe-actions.tsx",
+  "tag-group.tsx",
+  "team-switcher.tsx",
+  "time-picker.tsx",
+  "timeline.tsx",
+  "tree-table.tsx",
+  "tree.tsx",
+  "undo-toast.tsx",
+  "user-menu.tsx",
+  "verification-code-form.tsx",
+]);
+const collisionFiles = new Set([
+  "attachment.tsx",
+  "button-group.tsx",
+  "carousel.tsx",
+  "combobox.tsx",
+  "command.tsx",
+  "field.tsx",
+  "input-group.tsx",
+  "input-otp.tsx",
+  "message-scroller.tsx",
+  "message.tsx",
+  "pagination.tsx",
+  "questionnaire.tsx",
+  "resizable.tsx",
+]);
+const registryComponentFiles = new Set(
+  [...compositeSourceFiles].map((file) => (collisionFiles.has(file) ? `composite-${file}` : file)),
+);
+const uiFiles = new Set(readdirSync(uiDirectory).filter((file) => file.endsWith(".tsx")));
 
 function componentName(file, kind) {
   const name = path.basename(file, path.extname(file));
-  return kind === "registry:component" ? `composite-${name}` : name;
+  return kind === "registry:component" ? `composite-${name.replace(/^composite-/, "")}` : name;
 }
 
 function readImports(file) {
@@ -22,11 +128,16 @@ function collectDependencies(files) {
   for (const file of files) {
     for (const imported of readImports(file)) {
       const uiMatch = imported.match(/^@\/components\/ui\/([^/]+)$/);
-      const compositeMatch = imported.match(/^@\/components\/composite\/([^/]+)$/);
       const hookMatch = imported.match(/^@\/hooks\/([^/]+)$/);
 
-      if (uiMatch) registryDependencies.add(uiMatch[1]);
-      if (compositeMatch) registryDependencies.add(`composite-${compositeMatch[1]}`);
+      if (uiMatch) {
+        const importedFile = `${uiMatch[1]}.tsx`;
+        if (registryComponentFiles.has(importedFile)) {
+          registryDependencies.add(`composite-${uiMatch[1].replace(/^composite-/, "")}`);
+        } else if (uiFiles.has(importedFile)) {
+          registryDependencies.add(uiMatch[1]);
+        }
+      }
       if (hookMatch) registryDependencies.add(hookMatch[1]);
       if (imported === "@/lib/utils") {
         registryDependencies.add("utils");
@@ -45,7 +156,7 @@ function collectDependencies(files) {
   };
 }
 
-function createItem({ directory, file, type, targetDirectory }) {
+function createItem({ directory, file, type, targetDirectory, additionalFiles = [] }) {
   const sourceFile = path.join(directory, file);
   const relativeSource = path.relative(root, sourceFile).split(path.sep).join("/");
   const target = path.join(targetDirectory, file).split(path.sep).join("/");
@@ -56,6 +167,15 @@ function createItem({ directory, file, type, targetDirectory }) {
       target,
     },
   ];
+
+  for (const additionalFile of additionalFiles) {
+    const additionalSource = path.join(directory, additionalFile);
+    files.push({
+      path: path.relative(root, additionalSource).split(path.sep).join("/"),
+      type: "registry:file",
+      target: path.join(targetDirectory, additionalFile).split(path.sep).join("/"),
+    });
+  }
 
   const cssModule = path.join(directory, `${path.basename(file, ".tsx")}.module.css`);
   if (existsSync(cssModule)) {
@@ -83,16 +203,17 @@ function createItem({ directory, file, type, targetDirectory }) {
 }
 
 const items = [];
-for (const [directoryName, type, targetDirectory] of [
-  ["ui", "registry:ui", "src/components/ui"],
-  ["composite", "registry:component", "src/components/composite"],
-]) {
-  const directory = path.join(root, "src", "components", directoryName);
-  for (const file of readdirSync(directory)
-    .filter((entry) => entry.endsWith(".tsx"))
-    .sort()) {
-    items.push(createItem({ directory, file, type, targetDirectory }));
-  }
+for (const file of readdirSync(uiDirectory)
+  .filter((entry) => entry.endsWith(".tsx"))
+  .sort()) {
+  const type = registryComponentFiles.has(file) ? "registry:component" : "registry:ui";
+  const additionalFiles =
+    file === "filters.tsx"
+      ? ["filters-query.ts"]
+      : file === "social-button.tsx"
+        ? ["social-color-logos.ts", "social-providers.ts"]
+        : [];
+  items.push(createItem({ directory: uiDirectory, file, type, targetDirectory: "src/components/ui", additionalFiles }));
 }
 
 items.push({

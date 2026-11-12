@@ -18,13 +18,12 @@ import {
   parseSidebarCollapsible,
   parseSidebarVariant,
   parseThemeColor,
-  parseThemePreset,
   type ThemePreferences,
   type ThemeTokenSet,
 } from "@/data/theme";
 import "./globals.css";
 
-type ThemeTokenStyle = CSSProperties & ThemeTokenSet;
+type ThemeColorStyle = CSSProperties & ThemeTokenSet;
 
 const geistSans = Geist({
   variable: "--font-geist",
@@ -48,7 +47,6 @@ export default async function RootLayout({
 }>) {
   const cookieStore = await cookies();
   const initialPreferences = {
-    themePreset: parseThemePreset(cookieStore.get("theme_preset")?.value),
     themeColor: parseThemeColor(cookieStore.get("theme_color")?.value),
     contentLayout: parseContentLayout(cookieStore.get("content_layout")?.value),
     navbarStyle: parseNavbarStyle(cookieStore.get("navbar_style")?.value),
@@ -56,13 +54,13 @@ export default async function RootLayout({
     sidebarCollapsible: parseSidebarCollapsible(cookieStore.get("sidebar_collapsible")?.value),
   } satisfies ThemePreferences;
   const themeColor = getThemeColorOption(initialPreferences.themeColor);
-  const themeColorStyle: ThemeTokenStyle = { ...themeColor.light };
+  const themeColorStyle: ThemeColorStyle = themeColor.light;
 
   return (
     <html
       lang="en"
       suppressHydrationWarning
-      data-theme-preset={initialPreferences.themePreset}
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       data-theme-color={initialPreferences.themeColor}
       data-content-layout={initialPreferences.contentLayout}
       data-navbar-style={initialPreferences.navbarStyle}
@@ -70,7 +68,7 @@ export default async function RootLayout({
       data-sidebar-collapsible={initialPreferences.sidebarCollapsible}
       style={themeColorStyle}
     >
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className="min-h-full" suppressHydrationWarning>
         <NextThemesProvider attribute="class" defaultTheme={DEFAULT_THEME_MODE} enableSystem disableTransitionOnChange>
           <ThemePreferencesProvider initialPreferences={initialPreferences}>
             <TooltipProvider>

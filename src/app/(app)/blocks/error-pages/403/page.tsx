@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { ForbiddenExample } from "@/components/examples/blocks/error-pages/403/examples";
+import { ForbiddenExample } from "@/examples/blocks/error-pages/403/403";
 
 export const metadata: Metadata = {
   title: "Access denied",

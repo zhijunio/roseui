@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
-import { OnboardingSurveyExample } from "@/components/examples/blocks/settings/onboarding-survey/examples";
-import { ComponentPreview } from "@/components/examples/component-preview";
-import { PageHeader } from "@/components/examples/page-header";
+import { OnboardingSurveyExample } from "@/examples/blocks/settings/onboarding-survey/onboarding-survey";
+import { ComponentPreview } from "@/examples/component-preview";
+import { PageHeader } from "@/examples/page-header";
 
 export const metadata: Metadata = {
   title: "Onboarding Survey",
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function OnboardingSurveyPage() {
   return (
     <div className="space-y-6">
-      <PageHeader title="Onboarding Survey" description="Collect an onboarding answer one focused step at a time." />
+      <PageHeader title="Onboarding Survey" />
       <ComponentPreview title="Onboarding" layout="fullStack">
         <OnboardingSurveyExample />
       </ComponentPreview>

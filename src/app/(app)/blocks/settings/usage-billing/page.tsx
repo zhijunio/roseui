@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
-import { UsageBillingExample } from "@/components/examples/blocks/settings/usage-billing/examples";
-import { ComponentPreview } from "@/components/examples/component-preview";
-import { PageHeader } from "@/components/examples/page-header";
+import { UsageBillingExample } from "@/examples/blocks/settings/usage-billing/usage-billing";
+import { ComponentPreview } from "@/examples/component-preview";
+import { PageHeader } from "@/examples/page-header";
 
 export const metadata: Metadata = {
   title: "Usage Billing",
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function UsageBillingPage() {
   return (
     <div className="space-y-6">
-      <PageHeader title="Usage Billing" description="Track usage, projected spend, alerts, and invoices." />
+      <PageHeader title="Usage Billing" />
       <ComponentPreview title="Usage and billing" layout="fullStack">
         <UsageBillingExample />
       </ComponentPreview>

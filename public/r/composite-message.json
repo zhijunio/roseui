@@ -8,10 +8,10 @@
   ],
   "files": [
     {
-      "path": "src/components/composite/message.tsx",
+      "path": "src/components/ui/composite-message.tsx",
       "content": "import type * as React from \"react\";\n\nimport { cn } from \"@/lib/utils\";\n\nexport function MessageGroup({ className, ...props }: React.ComponentProps<\"div\">) {\n  return <div data-slot=\"message-group\" className={cn(\"flex min-w-0 flex-col\", className)} {...props} />;\n}\n\nexport function Message({\n  className,\n  align = \"start\",\n  ...props\n}: React.ComponentProps<\"div\"> & { align?: \"start\" | \"end\" }) {\n  return (\n    <div\n      data-slot=\"message\"\n      data-align={align}\n      className={cn(\"group/message relative flex w-full min-w-0\", align === \"end\" && \"flex-row-reverse\", className)}\n      {...props}\n    />\n  );\n}\n\nexport function MessageAvatar({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"message-avatar\"\n      className={cn(\n        \"flex w-fit shrink-0 items-center justify-center self-end overflow-hidden rounded-full bg-muted\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nexport function MessageContent({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"message-content\"\n      className={cn(\"flex w-full min-w-0 flex-col wrap-break-word\", className)}\n      {...props}\n    />\n  );\n}\n\nexport function MessageHeader({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div data-slot=\"message-header\" className={cn(\"flex max-w-full min-w-0 items-center\", className)} {...props} />\n  );\n}\n\nexport function MessageFooter({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"message-footer\"\n      className={cn(\"flex max-w-full min-w-0 items-center group-data-[align=end]/message:justify-end\", className)}\n      {...props}\n    />\n  );\n}\n",
       "type": "registry:component",
-      "target": "src/components/composite/message.tsx"
+      "target": "src/components/ui/composite-message.tsx"
     }
   ],
   "type": "registry:component"

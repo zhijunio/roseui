@@ -13,8 +13,11 @@
 .rise { position: relative; display: inline-flex; }
 
 /* The scroller starts at its right edge on narrow screens (the most recent weeks) without script, through its writing direction. */
-.scroller { direction: rtl; overflow-x: auto; overflow-y: hidden; margin: -6px; padding: 6px; overscroll-behavior-x: contain; scrollbar-color: var(--border) transparent; scrollbar-width: thin; }
+.scroller { position: relative; direction: rtl; overflow-x: auto; overflow-y: hidden; margin: -6px; padding: 6px; overscroll-behavior-x: contain; scrollbar-color: var(--border) transparent; scrollbar-width: thin; }
 .canvas { --gap: 3px; --label: 30px; --cell: clamp(9px, calc((100cqi - var(--label) - var(--gap) * 53) / 53), 15px); --step: calc(var(--cell) + var(--gap)); direction: ltr; display: grid; width: max-content; grid-template-columns: var(--label) auto; grid-template-rows: auto auto; column-gap: var(--gap); row-gap: 0.5rem; }
+.scrollHint { position: absolute; z-index: 2; top: 0; bottom: 0; width: 1.25rem; pointer-events: none; }
+.scrollHintLeft { left: 30px; background: linear-gradient(90deg, var(--background), transparent); }
+.scrollHintRight { right: 0; background: linear-gradient(270deg, var(--background), transparent); }
 .months { position: relative; grid-row: 1; grid-column: 2; height: 1rem; color: var(--muted-foreground); font-size: 0.75rem; line-height: 1rem; }
 /* Month labels glide to their new week when a range starts on a different weekday. */
 .month { position: absolute; top: 0; left: 0; white-space: nowrap; transform: translateX(calc(var(--col) * var(--step))); transition: transform 500ms cubic-bezier(.22,1,.36,1); }
@@ -55,7 +58,7 @@
 .legendText { line-height: 1; }
 .swatches { display: flex; }
 /* The visible square stays the size of a day while the button keeps a comfortable target around it. */
-.swatch { position: relative; display: grid; width: 15px; height: 20px; place-items: center; padding: 0; border: 0; border-radius: 4px; background: transparent; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.swatch { position: relative; display: grid; width: 24px; height: 24px; place-items: center; padding: 0; border: 0; border-radius: 4px; background: transparent; cursor: pointer; -webkit-tap-highlight-color: transparent; }
 .swatch::before { content: ""; width: 11px; height: 11px; border-radius: 3px; background: var(--level-0); }
 .swatch[data-level="1"]::before { background: var(--level-1); }
 .swatch[data-level="2"]::before { background: var(--level-2); }
@@ -80,4 +83,8 @@
   .grid[data-reveal="hidden"] .cell { transform: none; }
   .cell[data-empty], .grid[data-reveal="hidden"] .cell[data-empty] { opacity: 0; transform: none; }
   .month, .ring { transition: opacity 160ms ease-out; }
+}
+
+@media (min-width: 640px) {
+  .scrollHint { display: none; }
 }

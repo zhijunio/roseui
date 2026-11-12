@@ -1,12 +1,12 @@
-import { ToggleExamples } from "@/components/examples/components/toggle/examples";
-import { PageHeader } from "@/components/examples/page-header";
+import { ToggleExamples } from "@/examples/components/toggle/examples";
+import { PageHeader } from "@/examples/page-header";
 
 export const metadata = { title: "Toggle" };
 
 export default function ComponentExamplePage() {
   return (
     <div className="space-y-6">
-      <PageHeader title="Toggle" description="Usage examples for the Toggle component." />
+      <PageHeader title="Toggle" />
       <div className="grid min-w-0 items-start gap-5 xl:grid-cols-2 [&>*]:min-w-0">
         <ToggleExamples />
       </div>

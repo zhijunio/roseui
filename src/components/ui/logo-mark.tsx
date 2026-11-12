@@ -19,7 +19,7 @@ export function LogoMark({
   return (
     <span
       className={cn(
-        "grid shrink-0 place-items-center rounded-lg bg-primary text-primary-foreground",
+        "grid shrink-0 place-items-center rounded-[25%] bg-primary text-primary-foreground",
         className,
       )}
       style={{ width: size, height: size, ...style }}

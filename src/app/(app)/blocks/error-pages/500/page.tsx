@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { ServerErrorExample } from "@/components/examples/blocks/error-pages/500/examples";
+import { ServerErrorExample } from "@/examples/blocks/error-pages/500/500";
 
 export const metadata: Metadata = {
   title: "Something went wrong",

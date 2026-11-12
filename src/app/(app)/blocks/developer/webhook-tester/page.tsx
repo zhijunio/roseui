@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
-import { WebhookTesterExample } from "@/components/examples/blocks/developer/webhook-tester/examples";
-import { ComponentPreview } from "@/components/examples/component-preview";
-import { PageHeader } from "@/components/examples/page-header";
+import { WebhookTesterExample } from "@/examples/blocks/developer/webhook-tester/webhook-tester";
+import { ComponentPreview } from "@/examples/component-preview";
+import { PageHeader } from "@/examples/page-header";
 
 export const metadata: Metadata = {
   title: "Webhook Tester",
@@ -12,10 +12,7 @@ export const metadata: Metadata = {
 export default function WebhookTesterPage() {
   return (
     <div className="space-y-6">
-      <PageHeader
-        title="Webhook Tester"
-        description="Send a signed event and inspect the request timeline and response."
-      />
+      <PageHeader title="Webhook Tester" />
       <ComponentPreview title="Test endpoint" layout="fullBleed" span={2}>
         <WebhookTesterExample />
       </ComponentPreview>

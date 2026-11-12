@@ -1,15 +1,12 @@
-import { SignInExamples } from "@/components/examples/blocks/auth/sign-in/examples";
-import { PageHeader } from "@/components/examples/page-header";
+import { SignInExamples } from "@/examples/blocks/auth/sign-in/sign-in";
+import { PageHeader } from "@/examples/page-header";
 
 export const metadata = { title: "Sign in" };
 
 export default function SignInPage() {
   return (
     <div className="space-y-6">
-      <PageHeader
-        title="Sign In"
-        description="Explore sign-in patterns for password, passkey, email link, and alternate methods."
-      />
+      <PageHeader title="Sign In" />
       <SignInExamples />
     </div>
   );

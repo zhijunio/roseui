@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { ServiceUnavailableExample } from "@/components/examples/blocks/error-pages/503/examples";
+import { ServiceUnavailableExample } from "@/examples/blocks/error-pages/503/503";
 
 export const metadata: Metadata = {
   title: "Service unavailable",

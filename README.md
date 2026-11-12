@@ -1,4 +1,4 @@
-# Next Structured Starter
+# RoseUI
 
 [![Next.js](https://img.shields.io/badge/Next.js-16.4.6-000000?logo=next.js&logoColor=FFFFFF)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19.3.1-61DAFB?logo=react&logoColor=111827)](https://react.dev/)
@@ -6,11 +6,11 @@
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.3.5-06B6D4?logo=tailwindcss&logoColor=FFFFFF)](https://tailwindcss.com/)
 [![Biome](https://img.shields.io/badge/Biome-2.6.6-60A5FA?logo=biome&logoColor=FFFFFF)](https://biomejs.dev/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-000000)](LICENSE)
-[![GitHub stars](https://img.shields.io/github/stars/zhijunio/next-structured-starter?style=flat)](https://github.com/zhijunio/next-structured-starter)
+[![GitHub stars](https://img.shields.io/github/stars/zhijunio/roseui?style=flat)](https://github.com/zhijunio/roseui)
 
-A modular Next.js starter with thin route entries and a structured feature layout.
+A shadcn/ui-compatible component library and Next.js showcase with reusable primitives, composite components, and page blocks.
 
-The template keeps route entries in `app` and route-specific business UI and data in `components/examples`. Shared site chrome stays in `components/site`, and reusable UI primitives stay in `components/ui`.
+The template keeps route entries in `src/app` and demo UI in `src/examples`. Shared application chrome stays in `src/components/site`, and reusable shadcn/ui primitives stay in `src/components/ui`.
 
 ## Stack
 
@@ -29,13 +29,13 @@ This repository is a starter template, not a finished business application. It g
 
 The example application includes:
 
-- An overview page that explains the structured feature approach.
-- Login and registration pages with client-side form validation.
-- An authenticated application shell with a sidebar, header, theme toggle, and user menu.
-- A Dashboard example page.
+- An overview page at `/`.
+- Component demos under `/components/*`.
+- Page and form blocks under `/blocks/*`.
+- An application shell with a sidebar, header, theme controls, and user menu.
 - Static data that you can replace with a database or API.
 
-The authentication forms currently display submitted values in a toast. They do not connect to an authentication provider or backend.
+The demos use local state and static data. They do not connect to an authentication provider or backend.
 
 ## Getting started
 
@@ -62,72 +62,62 @@ Open [http://localhost:3000](http://localhost:3000).
 | `npm run start`     | Start the production server.          |
 | `npm run check`     | Run Biome formatting and lint checks. |
 | `npm run check:fix` | Apply Biome fixes.                    |
+| `npm run registry:build` | Generate `registry.json` and `public/r`. |
 
 ## Routes
 
-| URL              | Route entry                             | Business UI and data                     |
-| ---------------- | --------------------------------------- | ---------------------------------------- |
-| `/`              | `src/app/(external)/page.tsx`           | `src/components/examples/home/`          |
-| `/auth/login`    | `src/app/(main)/auth/login/page.tsx`    | `src/components/examples/auth/login/`    |
-| `/auth/register` | `src/app/(main)/auth/register/page.tsx` | `src/components/examples/auth/register/` |
-| `/dashboard`     | `src/app/(app)/dashboard/page.tsx`      | `src/components/examples/dashboard/`     |
+| URL | Route entry | Demo source |
+| --- | --- | --- |
+| `/` | `src/app/(external)/page.tsx` | Application overview |
+| `/components/<name>` | `src/app/(app)/components/<name>/page.tsx` | `src/examples/components/<name>/` |
+| `/blocks/<category>/<name>` | `src/app/(app)/blocks/<category>/<name>/page.tsx` | `src/examples/blocks/<category>/<name>/` |
 
-Route groups such as `(app)`, `(main)`, and `(external)` organize the source tree without changing the URL.
+Route groups such as `(app)` and `(external)` organize the source tree without changing the URL.
 
 ## Project structure
 
 ```text
 src/
 ├── app/
-│   ├── (app)/dashboard/page.tsx  # Thin route entry
-│   ├── (external)/page.tsx       # Thin route entry
-│   ├── (main)/auth/              # Next.js route layout and entries
-│   │   ├── layout.tsx
-│   │   ├── login/page.tsx
-│   │   └── register/page.tsx
+│   ├── (app)/                    # Component and block route entries
+│   ├── (external)/page.tsx       # Overview route entry
 │   ├── globals.css
 │   └── layout.tsx                # Root layout and providers
-├── components/examples/          # Route-specific business UI and data
-│   ├── auth/
-│   │   ├── auth-layout.tsx
-│   │   ├── gh-signin.tsx
-│   │   ├── login/
-│   │   └── register/
-│   ├── dashboard/
-│   └── home/
+├── examples/                     # Demo UI and local demo data
+│   ├── blocks/                    # Page and form block demos
+│   └── components/                # Component demos
 ├── components/
 │   ├── site/                     # App shell, navigation, branding, and theme
 │   └── ui/                       # Reusable Shadcn UI primitives
 ├── data/
 │   ├── nav.ts                    # Sidebar menu data
 │   ├── site.ts                   # Project metadata
-│   └── theme.ts                  # Theme preset and layout preferences
+│   └── theme.ts                  # Theme colors and layout preferences
 ├── hooks/                        # Shared React hooks
-├── lib/                          # Shared utilities and navigation helpers
-└── styles/presets/               # Complete light/dark CSS token sets
+└── lib/                          # Shared utilities and navigation helpers
 ```
 
 ## Structure rules
 
-Keep route-specific business code and route-local data under `src/components/examples` using the URL path as the directory structure. For example, `/auth/login` has its thin entry at `src/app/(main)/auth/login/page.tsx` and its page component, form logic, and local UI in `src/components/examples/auth/login/login-page.tsx`.
+Keep route-specific demo code and local demo data under `src/examples`. Use `src/examples/components/<name>/` for component demos and `src/examples/blocks/<category>/<name>/` for block demos.
 
-Do not put route business code in `src/app` or a private `_components` folder. Keep the route entry in `app`, then import the page component from the matching directory in `components/examples`. Put components shared by several routes in `src/components/site` or `src/components/ui` only when they are genuinely shared.
+Keep route entries in `src/app` thin. Do not put route business code in a private `_components` folder. Put code shared by several routes in `src/components/site` or `src/components/ui` only when it is genuinely shared.
 
-Use a shared route layout when several pages need the same shell. The authentication route entry remains at `src/app/(main)/auth/layout.tsx`, while its implementation lives in `src/components/examples/auth/auth-layout.tsx`. Application pages share the shell in `src/components/site/app-layout.tsx`.
+Application pages share the shell in `src/components/site/app-layout.tsx`. Keep navigation and user records in `src/data`.
 
-Use `"use client"` only at the interactive leaf. The login and registration forms use client components because they manage form state and events. Their route entries remain server components.
+Use `"use client"` only at the interactive leaf. Interactive demos use client components when they manage browser state or events. Keep route entries server components when they do not need client behavior.
 
 ## Customize the theme
 
-The theme system stores each preset in its own CSS file. The selected preset is applied through the `data-theme-preset` attribute on the root HTML element. Each file defines a complete light and dark token set, so switching presets changes the whole visual system instead of only the accent color.
+The theme system keeps the complete light and dark token sets for each color option in `src/data/theme.ts`. The theme customizer presents color swatches, and selecting one applies the corresponding surfaces, status colors, borders, charts, sidebar tokens, and shadows together with the primary color.
 
-The default preset uses the default token values from [tweakcn](https://tweakcn.com/). Use the tweakcn theme editor as a reference when creating or tuning a preset, then keep the final values in src/styles/presets/.
+Use hex values for color tokens. Provide light and dark values for every color option.
 
 ### Change preferences at runtime
 
-Open the settings button in the application header. The preference panel supports:
+Open the theme button in the application header. The preference panel supports:
 
-- Theme preset
+- Theme color swatches
 - Light, dark, or system mode
 - Centered or full-width content
 - Sticky or scrolling navbar behavior
@@ -136,43 +126,31 @@ Open the settings button in the application header. The preference panel support
 
 The root layout reads these values from cookies on the server. The preferences provider applies changes in the browser and writes the same values back to cookies.
 
-### Add a theme preset
+### Add a theme color
 
-1. Create a token file in `src/styles/presets/`, such as `aurora.css`.
-2. Add the file to the imports in `src/app/globals.css`.
-3. Define the full light and dark token values with the preset selector.
-4. Add the preset label and preview colors to `THEME_PRESET_OPTIONS` in `src/data/theme.ts`.
+1. Add the color label and swatch to `THEME_COLOR_OPTIONS` in `src/data/theme.ts`.
+2. Provide complete light and dark token overrides, including surfaces, status colors, borders, charts, sidebar tokens, and shadows.
+3. Provide readable foreground colors for both modes and validate the swatch against both backgrounds.
 
-The repository includes these presets:
+`ThemePreferencesProvider` applies every entry in the selected token set to the document root. Keep the fallback token sets in `src/app/globals.css` aligned with the default blue theme.
 
-- `default.css`
-- `clean-slate.css`
-- `twitter.css`
-- `vtron.css`
-- `roseui.css`
+## Build the shadcn registry
 
-Use `src/styles/presets/vtron.css` as the example when a preset needs hex values:
+`src/components/ui` is the source directory for installable registry items. `src/examples` contains demos and is not part of the registry.
 
-```css
-:root[data-theme-preset="aurora"] {
-  --background: #fcfcfc;
-  --foreground: #0e142b;
-  --primary: #2e67ff;
-  --primary-foreground: #ffffff;
-}
+`components.json` defines the shadcn/ui aliases and points the CLI to `src/app/globals.css`. The registry generator scans the `.tsx` files in `src/components/ui`, detects dependencies on other registered UI components, and writes `registry.json`. The `shadcn build` step then writes the generated registry files to `public/r`.
 
-.dark:root[data-theme-preset="aurora"] {
-  --background: #000000;
-  --foreground: #ffffff;
-  --primary: #2b65ff;
-  --primary-foreground: #ffffff;
-}
-```
+To add an installable component:
 
-Each preset defines `--background`, `--foreground`, `--primary`, `--secondary`, `--muted`, `--accent`, `--border`, `--input`, `--ring`, chart colors, sidebar colors, fonts, and shadows for both modes. Keep foreground tokens readable against their corresponding surfaces.
+1. Add its source file under `src/components/ui`.
+2. Add any supporting files to `scripts/generate-registry.mjs` when the component needs them.
+3. Add the file to `compositeSourceFiles` when it should use the `registry:component` type.
+4. Run `npm run registry:build`.
+
+Keep demo-only imports such as `@/examples/component-preview` out of installable registry components. The generator only records UI, hook, and utility dependencies that it can resolve from the registry source directories.
 
 ## Extending the template
 
-To add a feature, create a thin `page.tsx` under the appropriate route group and put the route's business components, schemas, and local data under the matching `src/components/examples/<route>/` directory. Do not create a `_components` folder for route business code. Move code to `components/site`, `components/ui`, `data`, or `lib` only when it is genuinely shared.
+To add a demo feature, create a thin `page.tsx` under the appropriate route group and put its UI and local data under the matching directory in `src/examples`. Do not create a `_components` folder for route business code. Move code to `src/components/site`, `src/components/ui`, `src/data`, or `src/lib` only when it is genuinely shared.
 
 Replace the example data in `src/data` and the route-local data files with your application data source. Add authentication and persistence when you connect the template to a real backend.

@@ -3,13 +3,6 @@ type ThemeOption<Value extends string> = {
   readonly value: Value;
 };
 
-type ThemePresetOption = ThemeOption<string> & {
-  readonly primary: {
-    readonly light: string;
-    readonly dark: string;
-  };
-};
-
 export type ThemeTokenSet = {
   readonly "--background": string;
   readonly "--foreground": string;
@@ -27,6 +20,16 @@ export type ThemeTokenSet = {
   readonly "--accent-foreground": string;
   readonly "--destructive": string;
   readonly "--destructive-foreground": string;
+  readonly "--destructive-soft": string;
+  readonly "--success": string;
+  readonly "--success-foreground": string;
+  readonly "--success-soft": string;
+  readonly "--info": string;
+  readonly "--info-foreground": string;
+  readonly "--info-soft": string;
+  readonly "--warning": string;
+  readonly "--warning-foreground": string;
+  readonly "--warning-soft": string;
   readonly "--border": string;
   readonly "--input": string;
   readonly "--ring": string;
@@ -35,6 +38,10 @@ export type ThemeTokenSet = {
   readonly "--chart-3": string;
   readonly "--chart-4": string;
   readonly "--chart-5": string;
+  readonly "--series-1": string;
+  readonly "--series-2": string;
+  readonly "--series-3": string;
+  readonly "--series-4": string;
   readonly "--sidebar": string;
   readonly "--sidebar-foreground": string;
   readonly "--sidebar-primary": string;
@@ -43,12 +50,20 @@ export type ThemeTokenSet = {
   readonly "--sidebar-accent-foreground": string;
   readonly "--sidebar-border": string;
   readonly "--sidebar-ring": string;
-  readonly "--success": string;
-  readonly "--success-foreground": string;
-  readonly "--info": string;
-  readonly "--info-foreground": string;
-  readonly "--warning": string;
-  readonly "--warning-foreground": string;
+  readonly "--shadow-2xs": string;
+  readonly "--shadow-xs": string;
+  readonly "--shadow-sm": string;
+  readonly "--shadow": string;
+  readonly "--shadow-md": string;
+  readonly "--shadow-lg": string;
+  readonly "--shadow-xl": string;
+  readonly "--shadow-2xl": string;
+  readonly "--shadow-color": string;
+  readonly "--shadow-opacity": string;
+  readonly "--shadow-blur": string;
+  readonly "--shadow-spread": string;
+  readonly "--shadow-offset-x": string;
+  readonly "--shadow-offset-y": string;
 };
 
 type ThemeColorOption = ThemeOption<string> & {
@@ -58,9 +73,7 @@ type ThemeColorOption = ThemeOption<string> & {
 };
 
 type ThemeTokenOverrides = Partial<ThemeTokenSet>;
-
 type ThemeOptions = readonly ThemeOption<string>[];
-type ThemePresetOptions = readonly ThemePresetOption[];
 type ThemeColorOptions = readonly ThemeColorOption[];
 
 function isOptionValue<const Options extends ThemeOptions>(
@@ -77,131 +90,6 @@ function parseOptionValue<const Options extends ThemeOptions>(
 ): Options[number]["value"] {
   return isOptionValue(options, value) ? value : fallback;
 }
-
-export const THEME_PRESET_OPTIONS = [
-  {
-    label: "Default",
-    value: "default",
-    primary: {
-      light: "#0385ff",
-      dark: "#3d9aff",
-    },
-  },
-  {
-    label: "VTRON",
-    value: "vtron",
-    primary: {
-      light: "#2e67ff",
-      dark: "#2b65ff",
-    },
-  },
-  {
-    label: "Clean Slate",
-    value: "clean-slate",
-    primary: {
-      light: "#6366f1",
-      dark: "#818cf8",
-    },
-  },
-  {
-    label: "Twitter",
-    value: "twitter",
-    primary: {
-      light: "#1e9df1",
-      dark: "#1c9cf0",
-    },
-  },
-  {
-    label: "RoseUI",
-    value: "roseui",
-    primary: {
-      light: "#0385ff",
-      dark: "#3d9aff",
-    },
-  },
-] as const satisfies ThemePresetOptions;
-
-const ROSEUI_LIGHT_TOKENS = {
-  "--background": "#fafafb",
-  "--foreground": "#1f2124",
-  "--card": "#ffffff",
-  "--card-foreground": "#1f2124",
-  "--popover": "#fafafb",
-  "--popover-foreground": "#1f2124",
-  "--primary": "#0385ff",
-  "--primary-foreground": "#08121f",
-  "--secondary": "#f7f8f9",
-  "--secondary-foreground": "#1f2124",
-  "--muted": "#f1f2f3",
-  "--muted-foreground": "#62656b",
-  "--accent": "#f6f7f8",
-  "--accent-foreground": "#1f2124",
-  "--destructive": "#e3474c",
-  "--destructive-foreground": "#08121f",
-  "--border": "#ecedef",
-  "--input": "#f2f2f3",
-  "--ring": "#ecedef",
-  "--chart-1": "#0385ff",
-  "--chart-2": "#0aa852",
-  "--chart-3": "#db9900",
-  "--chart-4": "#f14445",
-  "--chart-5": "#ac67ef",
-  "--sidebar": "#ffffff",
-  "--sidebar-foreground": "#1f2124",
-  "--sidebar-primary": "#0385ff",
-  "--sidebar-primary-foreground": "#08121f",
-  "--sidebar-accent": "#f6f7f8",
-  "--sidebar-accent-foreground": "#1f2124",
-  "--sidebar-border": "#ecedef",
-  "--sidebar-ring": "#ecedef",
-  "--success": "var(--chart-2)",
-  "--success-foreground": "#03270f",
-  "--info": "var(--chart-1)",
-  "--info-foreground": "#03060d",
-  "--warning": "var(--chart-3)",
-  "--warning-foreground": "#45240f",
-} satisfies ThemeTokenSet;
-
-const ROSEUI_DARK_TOKENS = {
-  "--background": "#17181a",
-  "--foreground": "#f2f3f4",
-  "--card": "#232427",
-  "--card-foreground": "#f2f3f4",
-  "--popover": "#17181a",
-  "--popover-foreground": "#f2f3f4",
-  "--primary": "#3d9aff",
-  "--primary-foreground": "#08121f",
-  "--secondary": "#1f2022",
-  "--secondary-foreground": "#f2f3f4",
-  "--muted": "#1c1d1f",
-  "--muted-foreground": "#a5a8ad",
-  "--accent": "#2a2b2e",
-  "--accent-foreground": "#f2f3f4",
-  "--destructive": "#ee5c61",
-  "--destructive-foreground": "#08121f",
-  "--border": "#2e3033",
-  "--input": "#2b2c2f",
-  "--ring": "#2e3033",
-  "--chart-1": "#3d9aff",
-  "--chart-2": "#46c779",
-  "--chart-3": "#f5af20",
-  "--chart-4": "#ff7871",
-  "--chart-5": "#c896ff",
-  "--sidebar": "#1c1d1f",
-  "--sidebar-foreground": "#f2f3f4",
-  "--sidebar-primary": "#3d9aff",
-  "--sidebar-primary-foreground": "#08121f",
-  "--sidebar-accent": "#2a2b2e",
-  "--sidebar-accent-foreground": "#f2f3f4",
-  "--sidebar-border": "#2e3033",
-  "--sidebar-ring": "#2e3033",
-  "--success": "var(--chart-2)",
-  "--success-foreground": "#a9e1b8",
-  "--info": "var(--chart-1)",
-  "--info-foreground": "#08121f",
-  "--warning": "var(--chart-3)",
-  "--warning-foreground": "#ffd4a6",
-} satisfies ThemeTokenSet;
 
 function createThemeColor<const Value extends string>({
   label,
@@ -220,8 +108,131 @@ function createThemeColor<const Value extends string>({
     label,
     value,
     swatch,
-    light: { ...ROSEUI_LIGHT_TOKENS, ...light },
-    dark: { ...ROSEUI_DARK_TOKENS, ...dark },
+    light: createThemeTokens(LIGHT_THEME_TOKENS, light),
+    dark: createThemeTokens(DARK_THEME_TOKENS, dark),
+  };
+}
+
+const LIGHT_THEME_TOKENS = {
+  "--background": "#fafafb",
+  "--foreground": "#1f2124",
+  "--card": "#ffffff",
+  "--card-foreground": "#1f2124",
+  "--popover": "#fafafb",
+  "--popover-foreground": "#1f2124",
+  "--primary": "#0385ff",
+  "--primary-foreground": "#fafafa",
+  "--secondary": "#f7f8f9",
+  "--secondary-foreground": "#1f2124",
+  "--muted": "#f1f2f3",
+  "--muted-foreground": "#62656b",
+  "--accent": "#f6f7f8",
+  "--accent-foreground": "#1f2124",
+  "--destructive": "#e3474c",
+  "--destructive-foreground": "#fafafa",
+  "--destructive-soft": "#e3474c26",
+  "--success": "var(--chart-2)",
+  "--success-foreground": "#03270f",
+  "--success-soft": "#0aa8521f",
+  "--info": "var(--chart-1)",
+  "--info-foreground": "#03060d",
+  "--info-soft": "#0385ff1f",
+  "--warning": "var(--chart-3)",
+  "--warning-foreground": "#45240f",
+  "--warning-soft": "#db99001f",
+  "--border": "#ecedef",
+  "--input": "#f2f2f3",
+  "--ring": "#ecedef",
+  "--chart-1": "#0385ff",
+  "--chart-2": "#0aa852",
+  "--chart-3": "#db9900",
+  "--chart-4": "#f14445",
+  "--chart-5": "#ac67ef",
+  "--series-1": "var(--chart-1)",
+  "--series-2": "var(--chart-2)",
+  "--series-3": "var(--chart-3)",
+  "--series-4": "var(--chart-4)",
+  "--sidebar": "#ffffff",
+  "--sidebar-foreground": "#1f2124",
+  "--sidebar-primary": "#0385ff",
+  "--sidebar-primary-foreground": "#fafafa",
+  "--sidebar-accent": "#f6f7f8",
+  "--sidebar-accent-foreground": "#1f2124",
+  "--sidebar-border": "#ecedef",
+  "--sidebar-ring": "#ecedef",
+  "--shadow-2xs": "0 1px 2px 0 #00000008",
+  "--shadow-xs": "0 1px 3px 0 #0000000d",
+  "--shadow-sm": "0 1px 3px 0 #0000001a",
+  "--shadow": "0 1px 3px 0 #0000001a, 0 1px 2px -1px #0000001a",
+  "--shadow-md": "0 4px 6px -1px #0000001a, 0 2px 4px -2px #0000001a",
+  "--shadow-lg": "0 10px 15px -3px #0000001a, 0 4px 6px -4px #0000001a",
+  "--shadow-xl": "0 20px 25px -5px #0000001a, 0 8px 10px -6px #0000001a",
+  "--shadow-2xl": "0 25px 50px -12px #00000040",
+  "--shadow-color": "#000000",
+  "--shadow-opacity": "0.1",
+  "--shadow-blur": "8px",
+  "--shadow-spread": "-1px",
+  "--shadow-offset-x": "0px",
+  "--shadow-offset-y": "4px",
+} satisfies ThemeTokenSet;
+
+const DARK_THEME_TOKENS = {
+  ...LIGHT_THEME_TOKENS,
+  "--background": "#17181a",
+  "--foreground": "#f2f3f4",
+  "--card": "#232427",
+  "--card-foreground": "#f2f3f4",
+  "--popover": "#17181a",
+  "--popover-foreground": "#f2f3f4",
+  "--primary": "#3d9aff",
+  "--secondary": "#1f2022",
+  "--secondary-foreground": "#f2f3f4",
+  "--muted": "#1c1d1f",
+  "--muted-foreground": "#a5a8ad",
+  "--accent": "#2a2b2e",
+  "--accent-foreground": "#f2f3f4",
+  "--destructive": "#ee5c61",
+  "--destructive-soft": "#ee5c6126",
+  "--success-foreground": "#a9e1b8",
+  "--success-soft": "#46c77924",
+  "--info-foreground": "#08121f",
+  "--info-soft": "#3d9aff24",
+  "--warning-foreground": "#ffd4a6",
+  "--warning-soft": "#f5af2024",
+  "--border": "#2e3033",
+  "--input": "#2b2c2f",
+  "--ring": "#2e3033",
+  "--chart-1": "#3d9aff",
+  "--chart-2": "#46c779",
+  "--chart-3": "#f5af20",
+  "--chart-4": "#ff7871",
+  "--chart-5": "#c896ff",
+  "--sidebar": "#1c1d1f",
+  "--sidebar-foreground": "#f2f3f4",
+  "--sidebar-primary": "#3d9aff",
+  "--sidebar-primary-foreground": "#fafafa",
+  "--sidebar-accent": "#2a2b2e",
+  "--sidebar-accent-foreground": "#f2f3f4",
+  "--sidebar-border": "#2e3033",
+  "--sidebar-ring": "#2e3033",
+} satisfies ThemeTokenSet;
+
+function createThemeTokens(base: ThemeTokenSet, overrides: ThemeTokenOverrides): ThemeTokenSet {
+  const tokens = { ...base, ...overrides };
+
+  return {
+    ...tokens,
+    "--destructive-soft": `${tokens["--destructive"]}26`,
+    "--success": "var(--chart-2)",
+    "--success-soft": `${tokens["--chart-2"]}1f`,
+    "--info": "var(--chart-1)",
+    "--info-soft": `${tokens["--chart-1"]}1f`,
+    "--warning": "var(--chart-3)",
+    "--warning-soft": `${tokens["--chart-3"]}1f`,
+    "--series-1": "var(--chart-1)",
+    "--series-2": "var(--chart-2)",
+    "--series-3": "var(--chart-3)",
+    "--series-4": "var(--chart-4)",
   };
 }
 
@@ -263,9 +274,9 @@ export const THEME_COLOR_OPTIONS = [
       "--sidebar-accent-foreground": "#171717",
       "--sidebar-border": "#e5e5e5",
       "--sidebar-ring": "#a1a1a1",
-      "--success-foreground": "var(--foreground)",
-      "--info-foreground": "var(--primary-foreground)",
-      "--warning-foreground": "var(--foreground)",
+      "--success-foreground": "#0a0a0a",
+      "--info-foreground": "#171717",
+      "--warning-foreground": "#0a0a0a",
     },
     dark: {
       "--background": "#0a0a0a",
@@ -300,9 +311,9 @@ export const THEME_COLOR_OPTIONS = [
       "--sidebar-accent-foreground": "#fafafa",
       "--sidebar-border": "#282828",
       "--sidebar-ring": "#525252",
-      "--success-foreground": "var(--foreground)",
-      "--info-foreground": "var(--primary-foreground)",
-      "--warning-foreground": "var(--foreground)",
+      "--success-foreground": "#fafafa",
+      "--info-foreground": "#171717",
+      "--warning-foreground": "#fafafa",
     },
   }),
   createThemeColor({
@@ -787,7 +798,6 @@ export const SIDEBAR_COLLAPSIBLE_OPTIONS = [
   { label: "Offcanvas", value: "offcanvas" },
 ] as const satisfies ThemeOptions;
 
-export type ThemePreset = (typeof THEME_PRESET_OPTIONS)[number]["value"];
 export type ThemeColor = (typeof THEME_COLOR_OPTIONS)[number]["value"];
 export type ThemeMode = (typeof THEME_MODE_OPTIONS)[number]["value"];
 export type ContentLayout = (typeof CONTENT_LAYOUT_OPTIONS)[number]["value"];
@@ -798,7 +808,6 @@ export type SidebarCollapsible = (typeof SIDEBAR_COLLAPSIBLE_OPTIONS)[number]["v
 export const DEFAULT_THEME_MODE: ThemeMode = "system";
 
 export type ThemePreferences = {
-  themePreset: ThemePreset;
   themeColor: ThemeColor;
   contentLayout: ContentLayout;
   navbarStyle: NavbarStyle;
@@ -807,17 +816,12 @@ export type ThemePreferences = {
 };
 
 export const DEFAULT_THEME_PREFERENCES = {
-  themePreset: "default",
   themeColor: "blue",
   contentLayout: "centered",
   navbarStyle: "sticky",
-  sidebarVariant: "sidebar",
+  sidebarVariant: "floating",
   sidebarCollapsible: "icon",
 } satisfies ThemePreferences;
-
-export function isThemePreset(value: string | undefined): value is ThemePreset {
-  return isOptionValue(THEME_PRESET_OPTIONS, value);
-}
 
 export function isThemeColor(value: string | undefined): value is ThemeColor {
   return isOptionValue(THEME_COLOR_OPTIONS, value);
@@ -841,10 +845,6 @@ export function isSidebarVariant(value: string | undefined): value is SidebarVar
 
 export function isSidebarCollapsible(value: string | undefined): value is SidebarCollapsible {
   return isOptionValue(SIDEBAR_COLLAPSIBLE_OPTIONS, value);
-}
-
-export function parseThemePreset(value: string | undefined): ThemePreset {
-  return parseOptionValue(THEME_PRESET_OPTIONS, value, DEFAULT_THEME_PREFERENCES.themePreset);
 }
 
 export function parseThemeColor(value: string | undefined): ThemeColor {

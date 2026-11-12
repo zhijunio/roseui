@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
-import { ApiKeysExample } from "@/components/examples/blocks/developer/api-keys/examples";
-import { ComponentPreview } from "@/components/examples/component-preview";
-import { PageHeader } from "@/components/examples/page-header";
+import { ApiKeysExample } from "@/examples/blocks/developer/api-keys/api-keys";
+import { ComponentPreview } from "@/examples/component-preview";
+import { PageHeader } from "@/examples/page-header";
 
 export const metadata: Metadata = {
   title: "API Keys",
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default function ApiKeysPage() {
   return (
     <div className="space-y-6">
-      <PageHeader title="API Keys" description="Create and manage developer keys for your applications." />
+      <PageHeader title="API Keys" />
       <ComponentPreview title="Developer keys" layout="fullBleed" span={2}>
         <ApiKeysExample />
       </ComponentPreview>

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-import { Settings2 } from "lucide-react";
+import { Palette } from "lucide-react";
 import { useTheme } from "next-themes";
 
 import { Button } from "@/components/ui/button";
@@ -41,21 +41,20 @@ export function ThemeCustomizer() {
     <Popover>
       <PopoverTrigger asChild>
         <Button type="button" variant="ghost" size="icon-sm" aria-label="Open layout and theme preferences">
-          <Settings2 />
-          <span className="sr-only">Open layout and theme preferences</span>
+          <Palette />
+          <span className="sr-only">Customize theme</span>
         </Button>
       </PopoverTrigger>
       <PopoverContent align="end" className="w-80">
         <div className="flex flex-col gap-5">
           <div className="space-y-1.5">
             <h4 className="text-sm leading-none font-medium">Preferences</h4>
-            <p className="text-muted-foreground text-xs">Customize the workspace appearance and layout.</p>
           </div>
 
           <div className="space-y-3 [&_[data-slot=toggle-group-item]]:flex-1 [&_[data-slot=toggle-group-item]]:text-xs [&_[data-slot=toggle-group]]:w-full">
             <div className="space-y-1.5">
               <Label className="text-xs font-medium">Theme color</Label>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-2">
                 {THEME_COLOR_OPTIONS.map((color) => {
                   const isSelected = preferences.themeColor === color.value;
 
@@ -69,7 +68,7 @@ export function ThemeCustomizer() {
                         if (isThemeColor(color.value)) setPreference("themeColor", color.value);
                       }}
                       className={cn(
-                        "flex h-9 items-center gap-2 rounded-md border px-2 text-xs font-medium transition-colors",
+                        "flex items-center gap-2 rounded-md border px-2 py-1.5 text-xs font-medium transition-colors",
                         isSelected
                           ? "border-primary bg-primary/10 text-foreground"
                           : "border-border text-muted-foreground hover:bg-accent",
