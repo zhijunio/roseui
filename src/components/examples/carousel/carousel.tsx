@@ -9,10 +9,10 @@ import { Button } from "@/components/ui/button";
 import { Carousel, type CarouselApi } from "@/components/ui/carousel";
 
 const slides = [
-  { src: "/images/component-demos/abstract-01.svg", alt: "Creative workspace with a painted mural" },
-  { src: "/images/component-demos/abstract-02.svg", alt: "Desk calendar and accessories" },
-  { src: "/images/component-demos/abstract-03.svg", alt: "Colleagues working together" },
-  { src: "/images/component-demos/abstract-04.svg", alt: "Team collaborating around a table" },
+  { src: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=80", alt: "Creative workspace with a painted mural" },
+  { src: "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1200&q=80", alt: "Desk calendar and accessories" },
+  { src: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1200&q=80", alt: "Colleagues working together" },
+  { src: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=1200&q=80", alt: "Team collaborating around a table" },
 ];
 
 function Gallery({

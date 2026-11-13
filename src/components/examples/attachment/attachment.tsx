@@ -48,25 +48,25 @@ const filePool = [
 const imageShots = [
   {
     id: "one",
-    src: "/images/component-demos/abstract-01.svg",
+    src: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=80",
     alt: "Project workspace preview",
     dimensions: "1600 × 900",
   },
   {
     id: "two",
-    src: "/images/component-demos/abstract-02.svg",
+    src: "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1200&q=80",
     alt: "Dashboard overview preview",
     dimensions: "1600 × 900",
   },
   {
     id: "three",
-    src: "/images/component-demos/abstract-03.svg",
+    src: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1200&q=80",
     alt: "Analytics page preview",
     dimensions: "1600 × 900",
   },
   {
     id: "four",
-    src: "/images/component-demos/abstract-04.svg",
+    src: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=1200&q=80",
     alt: "Team settings preview",
     dimensions: "1600 × 900",
   },

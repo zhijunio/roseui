@@ -22,12 +22,12 @@ import { getUserAvatar } from "@/data/user";
 const styleOne = [
   {
     title: "Innovative renewable energy",
-    image: "/images/component-demos/abstract-01.svg",
+    image: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=80",
     description: "Exploring breakthrough technologies in solar and wind power to enhance global energy access.",
   },
   {
     title: "Circular Economy Models",
-    image: "/images/component-demos/abstract-04.svg",
+    image: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=1200&q=80",
     description: "Implementing strategies that promote product lifecycle extension and waste minimization.",
   },
 ];
@@ -35,7 +35,7 @@ const styleOne = [
 const styleTwo = {
   title: "Sustainability in Tech",
   date: "March 3, 2028",
-  image: "/images/component-demos/abstract-03.svg",
+  image: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1200&q=80",
   description: "Assessing eco-friendly practices to reduce carbon footprints in product development.",
   author: "John Doe",
   avatar: getUserAvatar("John Doe"),
@@ -43,7 +43,7 @@ const styleTwo = {
 
 const styleHorizontal = {
   title: "Material Library Refresh",
-  image: "/images/component-demos/abstract-02.svg",
+  image: "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1200&q=80",
   description: "Keep surface samples and finish notes together for the next product review.",
 };
 
@@ -51,7 +51,7 @@ const styleThree = {
   title: "AI Ethics",
   category: "Analysis",
   date: "March 3, 2028",
-  image: "/images/component-demos/abstract-04.svg",
+  image: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=1200&q=80",
   description: "Exploring the moral challenges and responsibilities in artificial intelligence deployment.",
 };
 
@@ -147,7 +147,7 @@ export function CardsExample() {
           <div
             role="img"
             aria-label="Operations team reviewing a project dashboard"
-            className="aspect-video rounded-t-xl bg-[url('/images/component-demos/abstract-03.svg')] bg-cover bg-center transition-transform duration-300 group-hover/card:scale-[1.03] motion-reduce:!transition-none"
+            className="aspect-video rounded-t-xl bg-[url('https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1200&q=80')] bg-cover bg-center transition-transform duration-300 group-hover/card:scale-[1.03] motion-reduce:!transition-none"
           />
           <CardContent className="flex items-center justify-between p-4">
             <div>
@@ -166,7 +166,7 @@ export function CardsExample() {
           <div
             role="img"
             aria-label="Abstract blue data visualization"
-            className="absolute inset-0 bg-[url('/images/component-demos/abstract-04.svg')] bg-cover bg-center"
+            className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=1200&q=80')] bg-cover bg-center"
           />
           <div
             aria-hidden="true"

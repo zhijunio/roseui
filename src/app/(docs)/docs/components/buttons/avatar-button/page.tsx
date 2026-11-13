@@ -82,7 +82,7 @@ export default function AvatarButtonPage() {
 
 <AvatarButton
   label="Alex Morgan"
-  src="/avatars/alex-morgan.svg"
+  src="https://api.dicebear.com/9.x/avataaars/svg?seed=Alex%20Morgan"
   fallback="AM"
   onPress={selectAlex}
 />`}

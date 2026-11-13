@@ -30,7 +30,7 @@ function NewProfileImageExample() {
 }
 
 function ExistingProfileImageExample() {
-  const [src, setSrc] = useState<string | undefined>("/avatars/alex-morgan.svg");
+  const [src, setSrc] = useState<string | undefined>("https://api.dicebear.com/9.x/avataaars/svg?seed=Alex%20Morgan");
 
   return (
     <AvatarUpload
@@ -39,14 +39,14 @@ function ExistingProfileImageExample() {
       onRemove={() => setSrc(undefined)}
       onUpload={async (_file, report) => {
         await simulateUpload(report);
-        return "/avatars/alex-morgan.svg";
+        return "https://api.dicebear.com/9.x/avataaars/svg?seed=Alex%20Morgan";
       }}
     />
   );
 }
 
 function FailedUploadExample() {
-  const [src, setSrc] = useState<string | undefined>("/avatars/sofia-rossi.svg");
+  const [src, setSrc] = useState<string | undefined>("https://api.dicebear.com/9.x/avataaars/svg?seed=Sofia%20Rossi");
 
   return (
     <AvatarUpload
@@ -75,7 +75,7 @@ export function AvatarUploadExamples() {
         <FailedUploadExample />
       </ComponentPreview>
       <ComponentPreview title="Disabled" layout="panel">
-        <AvatarUpload name="Jordan Lee" src="/avatars/jordan-lee.svg" onUpload={async () => {}} disabled />
+        <AvatarUpload name="Jordan Lee" src="https://api.dicebear.com/9.x/avataaars/svg?seed=Jordan%20Lee" onUpload={async () => {}} disabled />
       </ComponentPreview>
     </>
   );
