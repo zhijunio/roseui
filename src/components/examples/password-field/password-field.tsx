@@ -2,20 +2,20 @@
 
 import * as React from "react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { PasswordField } from "@/components/ui/password-field";
-import { ComponentPreview } from "@/examples/component-preview";
 
 function PasswordFieldExamplesContent() {
   const [password, setPassword] = React.useState("");
 
   return (
     <>
-      <ComponentPreview title="Sign-in field">
+      <ComponentPreview title="Visibility Toggle">
         <div className="w-full max-w-md">
           <PasswordField label="Account password" autoComplete="current-password" placeholder="Enter your password" />
         </div>
       </ComponentPreview>
-      <ComponentPreview title="Create a password">
+      <ComponentPreview title="Strength Feedback">
         <div className="w-full max-w-md">
           <PasswordField
             label="New password"
@@ -36,7 +36,7 @@ function PasswordFieldExamplesContent() {
           <PasswordField label="Saved credential" readOnly defaultValue="StoredCredential9!" />
         </div>
       </ComponentPreview>
-      <ComponentPreview title="Validation message">
+      <ComponentPreview title="Invalid State">
         <div className="w-full max-w-md">
           <PasswordField label="Account password" defaultValue="short" error="Check the password and try again." />
         </div>

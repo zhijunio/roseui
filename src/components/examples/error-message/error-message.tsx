@@ -2,18 +2,21 @@
 
 import * as React from "react";
 
+import type { Selection } from "react-aria-components/TagGroup";
+
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Button } from "@/components/ui/button";
 import { ErrorMessage } from "@/components/ui/error-message";
 import { ListBox, ListBoxItem } from "@/components/ui/list-box";
-import { TagGroup } from "@/components/ui/tag-group";
-import { ComponentPreview } from "@/examples/component-preview";
+import { Tag, TagGroup, TagList } from "@/components/ui/tag-group";
 
 const categories = ["News", "Travel", "Gaming", "Shopping"];
 
 function RequiredCategoriesExample() {
-  const [values, setValues] = React.useState<string[]>([]);
+  const [values, setValues] = React.useState<Selection>(new Set());
   const errorId = React.useId();
-  const hasError = values.length === 0;
+  const selectedValues = values === "all" ? [] : [...values].map(String);
+  const hasError = selectedValues.length === 0;
 
   return (
     <div className="grid w-full max-w-sm gap-3">
@@ -24,18 +27,21 @@ function RequiredCategoriesExample() {
       <TagGroup
         aria-label="Categories"
         aria-describedby={hasError ? errorId : undefined}
-        values={values}
-        options={categories}
         selectionMode="multiple"
-        onValuesChange={setValues}
-      />
+        selectedKeys={values}
+        onSelectionChange={setValues}
+      >
+        <TagList items={categories.map((name) => ({ id: name, name }))}>
+          {(category) => <Tag id={category.id}>{category.name}</Tag>}
+        </TagList>
+      </TagGroup>
       {hasError ? <ErrorMessage id={errorId}>Select at least one category.</ErrorMessage> : null}
       <div className="flex items-center gap-3">
-        <Button size="sm" onClick={() => setValues(values.length ? [] : ["News"])}>
+        <Button size="sm" onPress={() => setValues(selectedValues.length ? new Set() : new Set(["News"]))}>
           {hasError ? "Select News" : "Clear selection"}
         </Button>
         <span className="text-xs text-muted-foreground" aria-live="polite">
-          {values.length ? `${values.length} selected` : "No categories selected"}
+          {selectedValues.length ? `${selectedValues.length} selected` : "No categories selected"}
         </span>
       </div>
     </div>
@@ -70,7 +76,7 @@ function RequiredProjectExample() {
       </ListBox>
       {hasError && <ErrorMessage id={errorId}>Select a project to continue.</ErrorMessage>}
       <div className="flex items-center gap-3">
-        <Button size="sm" onClick={() => setSubmitted(true)}>
+        <Button size="sm" onPress={() => setSubmitted(true)}>
           Continue
         </Button>
         <span className="text-xs text-muted-foreground" aria-live="polite">

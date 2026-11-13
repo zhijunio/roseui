@@ -1,15 +1,15 @@
 "use client";
 import { type FormEvent, useState } from "react";
 
-import { IconHeart, IconStar } from "@tabler/icons-react";
+import { Heart as IconHeart, Star as IconStar } from "lucide-react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
 import { Rating } from "@/components/ui/rating";
 import { Separator } from "@/components/ui/separator";
-import { Textarea } from "@/components/ui/textarea";
-import { ComponentPreview } from "@/examples/component-preview";
+import { TextArea } from "@/components/ui/text-area";
 
 const distribution = [
   { stars: 5, count: 124, percentage: 62 },
@@ -57,7 +57,6 @@ function UncontrolledRatingExample() {
   return (
     <div className="flex flex-col items-center gap-3">
       <Rating defaultRating={2} editable showValue />
-      <p className="text-sm text-muted-foreground">Choose a star to update this rating.</p>
     </div>
   );
 }
@@ -66,7 +65,6 @@ function CustomRatingExample() {
   return (
     <div className="flex flex-col items-center gap-3">
       <Rating rating={4.5} icon={<IconHeart />} color="warning" />
-      <p className="text-xs text-muted-foreground">Heart icons with the warning color token</p>
     </div>
   );
 }
@@ -75,7 +73,6 @@ function PerItemRatingExample() {
   return (
     <div className="flex flex-col items-center gap-3">
       <Rating rating={3.5} icon={({ value }) => (value <= 2 ? <IconHeart /> : <IconStar />)} color="success" />
-      <p className="text-xs text-muted-foreground">Custom icon by rating value</p>
     </div>
   );
 }
@@ -177,7 +174,7 @@ export function RatingExamples() {
       <ComponentPreview title="Disabled" exampleLabels={["Disabled rating"]}>
         <Rating rating={3} editable disabled />
       </ComponentPreview>
-      <ComponentPreview title="Review Summary" layout="panel">
+      <ComponentPreview title="Read-only Summary" layout="panel">
         <div className="mx-auto w-full max-w-sm space-y-4">
           <div className="flex flex-col items-center gap-2">
             <span className="text-3xl font-semibold tabular-nums">4.6</span>
@@ -196,7 +193,7 @@ export function RatingExamples() {
           </div>
         </div>
       </ComponentPreview>
-      <ComponentPreview title="Review Form" layout="panel">
+      <ComponentPreview title="Editable Rating" layout="panel">
         <form
           onSubmit={(event: FormEvent<HTMLFormElement>) => {
             event.preventDefault();
@@ -226,7 +223,7 @@ export function RatingExamples() {
           </div>
           <div className="space-y-2">
             <Label htmlFor="rating-review">Review</Label>
-            <Textarea
+            <TextArea
               id="rating-review"
               value={review}
               onChange={(event) => {
@@ -237,7 +234,7 @@ export function RatingExamples() {
               rows={3}
             />
           </div>
-          <Button type="submit" size="sm" disabled={reviewRating === 0 || review.trim().length === 0}>
+          <Button type="submit" size="sm" isDisabled={reviewRating === 0 || review.trim().length === 0}>
             Submit review
           </Button>
           <p role="status" className="min-h-5 text-center text-sm text-primary">

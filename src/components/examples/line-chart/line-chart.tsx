@@ -1,173 +1,323 @@
 "use client";
+import { useState } from "react";
 
-import { useMemo, useState } from "react";
+import { CartesianGrid, Line, LineChart, ReferenceLine, XAxis, YAxis } from "recharts";
 
-import { AnimatedCounter } from "@/components/ui/animated-counter";
-import { LineChart, type LineChartDatum } from "@/components/ui/line-chart";
-import styles from "@/components/ui/line-chart.module.css";
-import { SegmentedControl, SegmentedControlItem } from "@/components/ui/segmented-control";
-import { ComponentPreview } from "@/examples/component-preview";
+import { ComponentPreview } from "@/components/docs/component-preview";
+import { ChartSeriesControls } from "@/components/examples/chart/chart-series-controls";
+import {
+  type ChartConfig,
+  ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
+import { LineChart as ConfigLineChart } from "@/components/ui/line-chart";
 
-type Range = "7d" | "30d" | "90d";
-
-const thirtyDayValues = [
-  [128, 121],
-  [198, 202],
-  [192, 198],
-  [211, 190],
-  [206, 182],
-  [199, 172],
-  [130, 121],
-  [159, 134],
-  [254, 218],
-  [262, 217],
-  [247, 226],
-  [260, 223],
-  [253, 231],
-  [169, 146],
-  [158, 121],
-  [231, 184],
-  [239, 203],
-  [437, 200],
-  [338, 181],
-  [240, 187],
-  [139, 118],
-  [134, 148],
-  [250, 235],
-  [268, 211],
-  [262, 230],
-  [260, 226],
-  [268, 232],
-  [154, 143],
-  [176, 147],
-  [248, 183],
-] satisfies readonly [number, number][];
-
-const thirtyDayLabels = [
-  "Sun, Aug 23",
-  "Mon, Aug 24",
-  "Tue, Aug 25",
-  "Wed, Aug 26",
-  "Thu, Aug 27",
-  "Fri, Aug 28",
-  "Sat, Aug 29",
-  "Sun, Aug 30",
-  "Mon, Aug 31",
-  "Tue, Sep 1",
-  "Wed, Sep 2",
-  "Thu, Sep 3",
-  "Fri, Sep 4",
-  "Sat, Sep 5",
-  "Sun, Sep 6",
-  "Mon, Sep 7",
-  "Tue, Sep 8",
-  "Wed, Sep 9",
-  "Thu, Sep 10",
-  "Fri, Sep 11",
-  "Sat, Sep 12",
-  "Sun, Sep 13",
-  "Mon, Sep 14",
-  "Tue, Sep 15",
-  "Wed, Sep 16",
-  "Thu, Sep 17",
-  "Fri, Sep 18",
-  "Sat, Sep 19",
-  "Sun, Sep 20",
-  "Today, Sep 21",
-] as const;
-
-function dateKey(startMonth: number, startDay: number, offset: number) {
-  return new Date(Date.UTC(2026, startMonth, startDay + offset)).toISOString().slice(0, 10);
+function monthlyData(locale: string) {
+  return [186, 305, 237, 173, 209, 214].map((desktop, index) => ({
+    desktop,
+    mobile: [80, 200, 120, 190, 130, 140][index],
+    forecast: index >= 3 ? desktop + 60 : undefined,
+    month: new Intl.DateTimeFormat(locale, { month: "short" }).format(new Date(2026, index, 1)),
+  }));
 }
 
-const thirtyDayData = thirtyDayLabels.map((label, index) => {
-  const values = thirtyDayValues[index] ?? [0, 0];
-  return {
-    key: dateKey(7, 23, index),
-    label,
-    axisLabel:
-      index === 0 || index === 8 || index === 16 || index === 24 || index === 29
-        ? label.replace(/^[A-Za-z]+, /, "")
-        : undefined,
-    values: { signups: values[0], previous: values[1] },
+function ConfigLineChartExample() {
+  const data = monthlyData("en-US");
+  const config: ChartConfig = {
+    desktop: { label: "Desktop", color: "var(--chart-1)" },
+    mobile: { label: "Mobile", color: "var(--chart-2)" },
   };
-}) satisfies LineChartDatum[];
 
-const olderData = Array.from({ length: 60 }, (_, index) => {
-  const day = index + 1;
-  const current = 118 + ((index * 29) % 126) + (index % 7 === 3 ? 44 : 0);
-  const previous = 112 + ((index * 23) % 104);
-  return {
-    key: dateKey(5, 1, index),
-    label: `Day ${day} before Aug 23`,
-    axisLabel: index % 15 === 0 ? `Jun ${day}` : undefined,
-    values: { signups: current, previous },
+  return (
+    <ConfigLineChart
+      config={config}
+      data={data}
+      dataKey="month"
+      className="!aspect-auto h-[260px] w-full sm:h-[360px]"
+      aria-label="Monthly visitors by device"
+    />
+  );
+}
+
+const axisProps = { tickLine: false, axisLine: false, tickMargin: 8 } as const;
+const chartClass = "!aspect-auto h-[260px] w-full sm:h-[360px]";
+
+export function VisitorLineChart({ curve }: { curve: "monotone" | "step" }) {
+  const data = monthlyData("en-US");
+  const config: ChartConfig = { desktop: { label: "Desktop", color: "var(--chart-1)" } };
+  return (
+    <ChartContainer
+      config={config}
+      className={chartClass}
+      aria-label={curve === "monotone" ? "Smooth line chart" : "Step line chart"}
+    >
+      <LineChart accessibilityLayer data={data} margin={{ top: 12, right: 12 }}>
+        <CartesianGrid vertical={false} />
+        <XAxis dataKey="month" {...axisProps} />
+        <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="line" />} />
+        <Line
+          dataKey="desktop"
+          type={curve}
+          stroke="var(--color-desktop)"
+          strokeWidth={2}
+          dot={false}
+          isAnimationActive={false}
+        />
+      </LineChart>
+    </ChartContainer>
+  );
+}
+
+const monthlyGoal = 220;
+
+export function GoalLineChart() {
+  const data = monthlyData("en-US");
+  const config: ChartConfig = {
+    desktop: { label: "Desktop", color: "var(--chart-1)" },
+    goal: { label: "Goal", color: "var(--chart-3)" },
   };
-}) satisfies LineChartDatum[];
+  return (
+    <ChartContainer config={config} className={chartClass} aria-label="Desktop visitors against a monthly goal">
+      <LineChart accessibilityLayer data={data} margin={{ top: 12, right: 12 }}>
+        <CartesianGrid vertical={false} />
+        <XAxis dataKey="month" {...axisProps} />
+        <YAxis tickLine={false} axisLine={false} width={32} />
+        <ReferenceLine
+          y={monthlyGoal}
+          stroke="var(--color-goal)"
+          strokeDasharray="4 4"
+          label={{ value: "Goal", position: "insideTopRight", fill: "var(--muted-foreground)", fontSize: 12 }}
+        />
+        <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+        <Line
+          dataKey="desktop"
+          type="monotone"
+          stroke="var(--color-desktop)"
+          strokeWidth={2}
+          dot={false}
+          isAnimationActive={false}
+        />
+      </LineChart>
+    </ChartContainer>
+  );
+}
 
-const ranges: Record<Range, LineChartDatum[]> = {
-  "7d": thirtyDayData.slice(-7),
-  "30d": thirtyDayData,
-  "90d": [...olderData, ...thirtyDayData],
-};
+export function VisitorSlopeChart() {
+  const data = monthlyData("en-US");
+  const points = [data[0], data[data.length - 1]].map((row) => ({
+    month: row.month,
+    desktop: row.desktop,
+    mobile: row.mobile,
+  }));
+  const config: ChartConfig = {
+    desktop: { label: "Desktop", color: "var(--chart-1)" },
+    mobile: { label: "Mobile", color: "var(--chart-2)" },
+  };
+  return (
+    <ChartContainer config={config} className={chartClass} aria-label="Visitor change from the first month to the last">
+      <LineChart accessibilityLayer data={points} margin={{ top: 12, right: 24, left: 12 }}>
+        <XAxis dataKey="month" {...axisProps} />
+        <YAxis tickLine={false} axisLine={false} width={32} />
+        <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+        <ChartLegend content={<ChartLegendContent />} />
+        <Line
+          dataKey="desktop"
+          stroke="var(--color-desktop)"
+          strokeWidth={2}
+          dot={{ r: 4 }}
+          isAnimationActive={false}
+        />
+        <Line dataKey="mobile" stroke="var(--color-mobile)" strokeWidth={2} dot={{ r: 4 }} isAnimationActive={false} />
+      </LineChart>
+    </ChartContainer>
+  );
+}
 
-const periodLabels: Record<Range, string> = {
-  "7d": "7 days",
-  "30d": "30 days",
-  "90d": "90 days",
-};
+function MissingDataLineChart() {
+  const data = [
+    { month: "Jan", desktop: 186, mobile: 80 },
+    { month: "Feb", desktop: 305, mobile: 200 },
+    { month: "Mar", desktop: null, mobile: 120 },
+    { month: "Apr", desktop: 173, mobile: 190 },
+    { month: "May", desktop: 209, mobile: 130 },
+    { month: "Jun", desktop: 214, mobile: 140 },
+  ];
+  const config: ChartConfig = {
+    desktop: { label: "Desktop", color: "var(--chart-1)" },
+    mobile: { label: "Mobile", color: "var(--chart-2)" },
+  };
 
-function total(data: readonly LineChartDatum[], key: string) {
-  return data.reduce((sum, item) => sum + (item.values[key] ?? 0), 0);
+  return (
+    <div className="grid w-full gap-4 sm:grid-cols-2">
+      <div className="grid min-w-0 gap-2">
+        <p className="text-sm font-medium">Show the gap</p>
+        <ConfigLineChart
+          config={config}
+          data={data}
+          dataKey="month"
+          connectNulls={false}
+          className="!aspect-auto h-[220px] w-full"
+          aria-label="Monthly visitors with missing data shown as a gap"
+        />
+      </div>
+      <div className="grid min-w-0 gap-2">
+        <p className="text-sm font-medium">Connect across the gap</p>
+        <ConfigLineChart
+          config={config}
+          data={data}
+          dataKey="month"
+          connectNulls
+          className="!aspect-auto h-[220px] w-full"
+          aria-label="Monthly visitors with missing data connected across the gap"
+        />
+      </div>
+    </div>
+  );
+}
+
+export function VisitorSparkline() {
+  const data = monthlyData("en-US");
+  const latest = data[data.length - 1];
+  const config: ChartConfig = {
+    desktop: { label: "Desktop", color: "var(--chart-1)" },
+    mobile: { label: "Mobile", color: "var(--chart-2)" },
+  };
+  return (
+    <div className="grid w-full gap-2">
+      <p className="text-sm text-muted-foreground">{`${latest.month}: ${latest.desktop.toLocaleString("en-US")} desktop, ${latest.mobile.toLocaleString("en-US")} mobile`}</p>
+      <ChartContainer
+        config={config}
+        initialDimension={{ width: 320, height: 64 }}
+        className="h-16 w-full aspect-auto"
+        aria-label="Visitor sparkline"
+      >
+        <LineChart accessibilityLayer data={data} margin={{ top: 4, right: 4, left: 4, bottom: 4 }}>
+          <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+          <Line
+            dataKey="desktop"
+            type="monotone"
+            stroke="var(--color-desktop)"
+            strokeWidth={2}
+            dot={false}
+            isAnimationActive={false}
+          />
+          <Line
+            dataKey="mobile"
+            type="monotone"
+            stroke="var(--color-mobile)"
+            strokeWidth={2}
+            dot={false}
+            isAnimationActive={false}
+          />
+        </LineChart>
+      </ChartContainer>
+    </div>
+  );
 }
 
 export function LineChartExamples() {
-  const [range, setRange] = useState<Range>("30d");
-  const [active, setActive] = useState<LineChartDatum | null>(null);
-  const data = ranges[range];
-  const readout = active ?? data[data.length - 1];
-  const totals = useMemo(() => ({ current: total(data, "signups"), previous: total(data, "previous") }), [data]);
-  const change = totals.previous ? ((totals.current / totals.previous - 1) * 100).toFixed(1) : "0.0";
+  return (
+    <>
+      <ComponentPreview title="Controlled series and percentage tooltip" layout="panel" density="chart">
+        <InteractiveRetentionLineChart />
+      </ComponentPreview>
+      <ComponentPreview title="Series from configuration" layout="panel" density="chart">
+        <ConfigLineChartExample />
+      </ComponentPreview>
+      <ComponentPreview title="Smooth line" layout="panel" density="chart">
+        <VisitorLineChart curve="monotone" />
+      </ComponentPreview>
+      <ComponentPreview title="Step line" layout="panel" density="chart">
+        <VisitorLineChart curve="step" />
+      </ComponentPreview>
+      <ComponentPreview title="Goal reference" layout="panel" density="chart">
+        <GoalLineChart />
+      </ComponentPreview>
+      <ComponentPreview title="Missing data and connectNulls" layout="panel" density="chart">
+        <MissingDataLineChart />
+      </ComponentPreview>
+      <ComponentPreview title="Compact sparkline" layout="panel" density="chart">
+        <VisitorSparkline />
+      </ComponentPreview>
+      <ComponentPreview title="First and last period" layout="panel" density="chart">
+        <VisitorSlopeChart />
+      </ComponentPreview>
+    </>
+  );
+}
+
+function InteractiveRetentionLineChart() {
+  const data = [
+    { month: "Jan", newCustomers: 0.74, returningCustomers: 0.62 },
+    { month: "Feb", newCustomers: 0.77, returningCustomers: 0.64 },
+    { month: "Mar", newCustomers: 0.75, returningCustomers: 0.68 },
+    { month: "Apr", newCustomers: 0.81, returningCustomers: 0.7 },
+    { month: "May", newCustomers: 0.84, returningCustomers: 0.73 },
+    { month: "Jun", newCustomers: 0.86, returningCustomers: 0.76 },
+  ];
+  const config: ChartConfig = {
+    newCustomers: { label: "New customers", color: "var(--chart-1)" },
+    returningCustomers: { label: "Returning customers", color: "var(--chart-2)" },
+  };
+  const series = [
+    { key: "newCustomers", label: "New customers", color: "var(--chart-1)" },
+    { key: "returningCustomers", label: "Returning customers", color: "var(--chart-2)" },
+  ];
+  const [visible, setVisible] = useState(new Set(series.map((item) => item.key)));
+  const formatPercent = (value: number) =>
+    new Intl.NumberFormat("en-US", { style: "percent", maximumFractionDigits: 0 }).format(value);
+  const toggleSeries = (key: string) => {
+    setVisible((current) => {
+      const next = new Set(current);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+  };
 
   return (
-    <ComponentPreview title="Trial signups" bare span={2} className={styles.card}>
-      <div className={styles.top}>
-        <h3 className={styles.title}>Trial signups</h3>
-        <SegmentedControl
-          aria-label="Range"
-          size="sm"
-          value={range}
-          onValueChange={(value) => {
-            if (value === "7d" || value === "30d" || value === "90d") {
-              setRange(value);
-              setActive(null);
-            }
-          }}
-        >
-          <SegmentedControlItem value="7d">7 days</SegmentedControlItem>
-          <SegmentedControlItem value="30d">30 days</SegmentedControlItem>
-          <SegmentedControlItem value="90d">90 days</SegmentedControlItem>
-        </SegmentedControl>
-      </div>
-      <div className={styles.readout}>
-        <AnimatedCounter
-          label={active ? readout?.label : "Total signups"}
-          value={active ? (readout?.values.signups ?? 0) : totals.current}
-          animateOnView
-        />
-        <p className={styles.note} data-up={!active || undefined}>
-          {active ? "Signups on selected day" : `+${change}% vs previous ${periodLabels[range]}`}
-        </p>
-      </div>
-      <LineChart
-        label="Trial signups"
+    <div className="grid w-full gap-3">
+      <ConfigLineChart
+        config={config}
         data={data}
-        series={[
-          { key: "signups", label: "This period" },
-          { key: "previous", label: "Previous period", dashed: true },
-        ]}
-        onActiveChange={(_, datum) => setActive(datum)}
+        dataKey="month"
+        legend={false}
+        valueFormatter={formatPercent}
+        tooltip={
+          <ChartTooltipContent
+            indicator="line"
+            formatter={(value, name) => (
+              <span className="font-mono tabular-nums">
+                {String(name)}: {formatPercent(Number(value))}
+              </span>
+            )}
+          />
+        }
+        className={chartClass}
+        aria-label="Monthly customer retention by cohort"
+      >
+        {series.map((item) => (
+          <Line
+            key={item.key}
+            dataKey={item.key}
+            name={item.label}
+            type="monotone"
+            stroke={item.color}
+            strokeWidth={2}
+            dot={{ r: 3, fill: item.color }}
+            hide={!visible.has(item.key)}
+          />
+        ))}
+      </ConfigLineChart>
+      <ChartSeriesControls
+        label="Visible customer cohorts"
+        series={series}
+        selected={visible}
+        onToggle={toggleSeries}
       />
-    </ComponentPreview>
+    </div>
   );
 }

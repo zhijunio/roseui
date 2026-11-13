@@ -1,8 +1,9 @@
 "use client";
 import * as React from "react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Checkbox, CheckboxButton, CheckboxField } from "@/components/ui/checkbox";
 import {
   Field,
   FieldContent,
@@ -14,18 +15,15 @@ import {
   FieldSeparator,
   FieldSet,
   FieldTitle,
-} from "@/components/ui/composite-field";
-import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "@/components/ui/composite-input-group";
-import { InputOtp } from "@/components/ui/composite-input-otp";
+} from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { NativeSelect } from "@/components/ui/native-select";
+import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "@/components/ui/input-group";
+import { InputOTP } from "@/components/ui/input-otp";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { Surface } from "@/components/ui/surface";
 import { Switch } from "@/components/ui/switch";
-import { Textarea } from "@/components/ui/textarea";
-import { ComponentPreview } from "@/examples/component-preview";
+import { TextArea } from "@/components/ui/text-area";
 
 const examples = [
   "Fields with input groups",
@@ -96,7 +94,7 @@ function FieldDemo({ index }: { index: number }) {
             <FieldLabel htmlFor="ticket-message">Message</FieldLabel>
             <span className="text-xs tabular-nums text-muted-foreground">{bio.length}/240</span>
           </div>
-          <Textarea
+          <TextArea
             id="ticket-message"
             value={bio}
             maxLength={240}
@@ -217,20 +215,20 @@ function FieldDemo({ index }: { index: number }) {
       <FieldGroup className="max-w-sm">
         <Field>
           <FieldLabel htmlFor="otp-channel">Delivery method</FieldLabel>
-          <NativeSelect
-            id="otp-channel"
-            value={method}
-            onChange={(event) => setMethod(event.target.value)}
-            className="w-full"
-          >
-            <option value="email">Email · a•••@northwind.dev</option>
-            <option value="phone">Text message · •••• 0198</option>
-          </NativeSelect>
+          <Select value={method} onValueChange={setMethod} aria-label="Delivery method">
+            <SelectTrigger id="otp-channel" className="w-full">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="email">Email · a•••@northwind.dev</SelectItem>
+              <SelectItem value="phone">Text message · •••• 0198</SelectItem>
+            </SelectContent>
+          </Select>
           <FieldDescription>A one-time verification code will be sent.</FieldDescription>
         </Field>
         <Field>
           <FieldLabel htmlFor="otp-code">Verification code</FieldLabel>
-          <InputOtp id="otp-code" groupEvery={3} aria-label="Verification code" />
+          <InputOTP id="otp-code" groupEvery={3} aria-label="Verification code" />
           <FieldDescription>Enter the six-digit code.</FieldDescription>
         </Field>
       </FieldGroup>
@@ -263,7 +261,7 @@ function FieldDemo({ index }: { index: number }) {
               <FieldLabel htmlFor="settings-bio">Description</FieldLabel>
               <span className="text-xs text-muted-foreground">{bio.length}/140</span>
             </div>
-            <Textarea
+            <TextArea
               id="settings-bio"
               value={bio}
               maxLength={140}
@@ -301,7 +299,7 @@ function FieldDemo({ index }: { index: number }) {
             type="button"
             size="sm"
             variant="outline"
-            onClick={() => {
+            onPress={() => {
               setSaved(false);
               setErrors(false);
               setSlug("northwind");
@@ -319,7 +317,7 @@ function FieldDemo({ index }: { index: number }) {
             variant="ghost"
             size="sm"
             className="ml-auto"
-            onClick={() => {
+            onPress={() => {
               setSlug("bad slug");
               setErrors(true);
               setSaved(false);
@@ -452,9 +450,9 @@ function FieldDemo({ index }: { index: number }) {
             />
           )}
         </Field>
-        <Label className="flex items-center gap-2 text-sm">
-          <Checkbox defaultChecked />I agree to the acceptable use policy
-        </Label>
+        <CheckboxField defaultSelected>
+          <CheckboxButton className="items-center gap-2 text-sm">I agree to the acceptable use policy</CheckboxButton>
+        </CheckboxField>
       </FieldGroup>
       <Button type="submit" size="sm">
         Create account
@@ -509,7 +507,7 @@ function ProfileFieldsetExample({ inSurface = false }: { inSurface?: boolean }) 
           </Field>
           <Field>
             <FieldLabel htmlFor={`${id}-bio`}>Bio</FieldLabel>
-            <Textarea
+            <TextArea
               id={`${id}-bio`}
               value={bio}
               onChange={(event) => {
@@ -530,7 +528,7 @@ function ProfileFieldsetExample({ inSurface = false }: { inSurface?: boolean }) 
           <Button
             type="button"
             variant="outline"
-            onClick={() => {
+            onPress={() => {
               setName("Jordan Lee");
               setEmail("jordan@northwind.dev");
               setBio("Product operations lead");

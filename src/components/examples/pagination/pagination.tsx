@@ -2,8 +2,14 @@
 
 import { useState } from "react";
 
-import { IconChevronLeft, IconChevronRight, IconChevronsLeft, IconChevronsRight } from "@tabler/icons-react";
+import {
+  ChevronLeft as IconChevronLeft,
+  ChevronRight as IconChevronRight,
+  ChevronsLeft as IconChevronsLeft,
+  ChevronsRight as IconChevronsRight,
+} from "lucide-react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Button } from "@/components/ui/button";
 import {
   Pagination,
@@ -13,9 +19,8 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/composite-pagination";
-import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
-import { ComponentPreview } from "@/examples/component-preview";
+} from "@/components/ui/pagination";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 type PaginationRowProps = {
   currentPage: number;
@@ -71,8 +76,7 @@ function PaginationRow({
             showIcon={previous !== "text"}
             isDisabled={currentPage <= 1}
             className={previous === "text" ? "h-10" : "h-10 max-sm:size-8 max-sm:justify-center max-sm:px-0"}
-            onClick={(event) => {
-              event.preventDefault();
+            onPress={() => {
               setCurrentPage(Math.max(1, currentPage - 1));
             }}
           />
@@ -86,8 +90,7 @@ function PaginationRow({
                 isActive={currentPage === item}
                 aria-label={`Go to page ${item}`}
                 className={`size-10 max-sm:size-8 ${joined ? "rounded-none border-r" : circle ? "rounded-full" : "rounded-[var(--radius)]"} ${currentPage === item ? "bg-primary font-medium text-primary-foreground hover:bg-primary/90" : variant === "outlined" ? "border border-input text-foreground hover:bg-muted" : "border border-transparent text-muted-foreground hover:bg-muted/60"}`}
-                onClick={(event) => {
-                  event.preventDefault();
+                onPress={() => {
                   setCurrentPage(item);
                 }}
               >
@@ -105,8 +108,7 @@ function PaginationRow({
             showIcon={next !== "text"}
             isDisabled={currentPage >= maxPage}
             className={next === "text" ? "h-10" : "h-10 max-sm:size-8 max-sm:justify-center max-sm:px-0"}
-            onClick={(event) => {
-              event.preventDefault();
+            onPress={() => {
               setCurrentPage(Math.min(maxPage, currentPage + 1));
             }}
           />
@@ -124,8 +126,8 @@ function TextPagination() {
       <Button
         variant="outline"
         size="sm"
-        disabled={page === 1}
-        onClick={() => setPage((value) => Math.max(1, value - 1))}
+        isDisabled={page === 1}
+        onPress={() => setPage((value) => Math.max(1, value - 1))}
       >
         Previous
       </Button>
@@ -135,8 +137,8 @@ function TextPagination() {
       <Button
         variant="outline"
         size="sm"
-        disabled={page === total}
-        onClick={() => setPage((value) => Math.min(total, value + 1))}
+        isDisabled={page === total}
+        onPress={() => setPage((value) => Math.min(total, value + 1))}
       >
         Next
       </Button>
@@ -155,8 +157,7 @@ function PageSelectPagination() {
           <PaginationLink
             href="#"
             aria-label="Go to first page"
-            onClick={(event) => {
-              event.preventDefault();
+            onPress={() => {
               goTo(1);
             }}
           >
@@ -167,8 +168,7 @@ function PageSelectPagination() {
           <PaginationLink
             href="#"
             aria-label="Go to previous page"
-            onClick={(event) => {
-              event.preventDefault();
+            onPress={() => {
               goTo(page - 1);
             }}
           >
@@ -176,25 +176,24 @@ function PageSelectPagination() {
           </PaginationLink>
         </PaginationItem>
         <PaginationItem>
-          <NativeSelect
-            aria-label="Select page"
-            className="w-28"
-            value={String(page)}
-            onChange={(event) => goTo(Number(event.currentTarget.value))}
-          >
-            {Array.from({ length: total }, (_, index) => (
-              <NativeSelectOption key={index + 1} value={String(index + 1)}>
-                Page {index + 1}
-              </NativeSelectOption>
-            ))}
-          </NativeSelect>
+          <Select aria-label="Select page" value={String(page)} onValueChange={(value) => goTo(Number(value))}>
+            <SelectTrigger className="w-28">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {Array.from({ length: total }, (_, index) => index + 1).map((pageNumber) => (
+                <SelectItem key={pageNumber} value={String(pageNumber)}>
+                  Page {pageNumber}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </PaginationItem>
         <PaginationItem>
           <PaginationLink
             href="#"
             aria-label="Go to next page"
-            onClick={(event) => {
-              event.preventDefault();
+            onPress={() => {
               goTo(page + 1);
             }}
           >
@@ -205,8 +204,7 @@ function PageSelectPagination() {
           <PaginationLink
             href="#"
             aria-label="Go to last page"
-            onClick={(event) => {
-              event.preventDefault();
+            onPress={() => {
               goTo(total);
             }}
           >
@@ -236,22 +234,17 @@ function PaginationSizes() {
           <Pagination aria-label={`${label} pagination`} className="mx-0 w-auto">
             <PaginationContent className="gap-0.5">
               <PaginationItem>
-                <PaginationPrevious href="#" size={size} onClick={(event) => event.preventDefault()} />
+                <PaginationPrevious href="#" size={size} onPress={() => {}} />
               </PaginationItem>
               {[1, 2, 3].map((page) => (
                 <PaginationItem key={page}>
-                  <PaginationLink
-                    href="#"
-                    size={size}
-                    isActive={page === 1}
-                    onClick={(event) => event.preventDefault()}
-                  >
+                  <PaginationLink href="#" size={size} isActive={page === 1} onPress={() => {}}>
                     {page}
                   </PaginationLink>
                 </PaginationItem>
               ))}
               <PaginationItem>
-                <PaginationNext href="#" size={size} onClick={(event) => event.preventDefault()} />
+                <PaginationNext href="#" size={size} onPress={() => {}} />
               </PaginationItem>
             </PaginationContent>
           </Pagination>
@@ -309,7 +302,7 @@ function CustomIconPagination() {
             href="#"
             text=""
             icon={<IconChevronsLeft aria-hidden="true" className="size-4" />}
-            onClick={(event) => event.preventDefault()}
+            onPress={() => {}}
           />
         </PaginationItem>
         <PaginationItem>
@@ -318,7 +311,7 @@ function CustomIconPagination() {
           </PaginationLink>
         </PaginationItem>
         <PaginationItem>
-          <PaginationLink href="#" onClick={(event) => event.preventDefault()}>
+          <PaginationLink href="#" onPress={() => {}}>
             2
           </PaginationLink>
         </PaginationItem>
@@ -327,7 +320,7 @@ function CustomIconPagination() {
             href="#"
             text=""
             icon={<IconChevronsRight aria-hidden="true" className="size-4" />}
-            onClick={(event) => event.preventDefault()}
+            onPress={() => {}}
           />
         </PaginationItem>
       </PaginationContent>
@@ -360,7 +353,7 @@ export function PaginationExamples() {
             onChange={(event) => setGoToPage(Math.min(10, Math.max(1, Number(event.currentTarget.value))))}
             className="h-9 w-20 rounded-md border bg-background px-2 text-sm"
           />
-          <Button size="sm" variant="outline" onClick={() => setFourth(goToPage)}>
+          <Button size="sm" variant="outline" onPress={() => setFourth(goToPage)}>
             Go
           </Button>
         </div>

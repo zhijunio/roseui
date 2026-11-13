@@ -4,9 +4,9 @@ import { useState } from "react";
 
 import { type Color, parseColor } from "react-aria-components";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { ColorSwatch } from "@/components/ui/color-swatch";
 import { ColorSwatchPicker, ColorSwatchPickerItem } from "@/components/ui/color-swatch-picker";
-import { ComponentPreview } from "@/examples/component-preview";
 
 const palette = [
   { name: "Blue", value: "#2563eb" },

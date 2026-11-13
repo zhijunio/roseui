@@ -3,18 +3,19 @@
 import { useEffect, useRef, useState } from "react";
 
 import {
-  IconArrowRight,
-  IconCheck,
-  IconDots,
-  IconFileText,
-  IconFolder,
-  IconInbox,
-  IconSend,
-  IconTrash,
-  IconX,
-} from "@tabler/icons-react";
+  ArrowRight as IconArrowRight,
+  Check as IconCheck,
+  Ellipsis as IconDots,
+  FileText as IconFileText,
+  Folder as IconFolder,
+  Inbox as IconInbox,
+  Send as IconSend,
+  Trash as IconTrash,
+  X as IconX,
+} from "lucide-react";
 import type { Key, Selection } from "react-aria-components";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import {
   ActionBar,
   ActionBarContent,
@@ -33,7 +34,6 @@ import {
   ListViewItemContent,
   ListViewTitle,
 } from "@/components/ui/list-view";
-import { ComponentPreview } from "@/examples/component-preview";
 
 type FileItem = { id: string; name: string; detail: string; kind: "folder" | "file" };
 
@@ -81,7 +81,7 @@ function FileRows({
                 variant="ghost"
                 size="icon-sm"
                 aria-label={`More actions for ${item.name}`}
-                onClick={() => onAction?.(item.name)}
+                onPress={() => onAction?.(item.name)}
               >
                 <IconDots aria-hidden="true" />
               </Button>
@@ -118,7 +118,6 @@ function MultiSelectExample() {
   }
   return (
     <div ref={listRef} className="w-full space-y-3">
-      <p className="text-sm text-muted-foreground">Select files with the keyboard or pointer to reveal bulk actions.</p>
       <ListView
         aria-label="Project file selection"
         selectionMode="multiple"
@@ -136,7 +135,7 @@ function MultiSelectExample() {
         </ActionBarPrefix>
         <ActionBarSeparator />
         <ActionBarContent>
-          <Button size="sm" variant="ghost" onClick={deleteSelected}>
+          <Button size="sm" variant="ghost" onPress={deleteSelected}>
             <IconTrash aria-hidden="true" />
             <ActionBarLabel>Delete</ActionBarLabel>
           </Button>
@@ -146,7 +145,7 @@ function MultiSelectExample() {
             size="icon-sm"
             variant="ghost"
             aria-label="Clear selection"
-            onClick={() => setSelectedKeys(new Set())}
+            onPress={() => setSelectedKeys(new Set())}
           >
             <IconX aria-hidden="true" />
           </Button>

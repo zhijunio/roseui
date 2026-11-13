@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 
-import { IconStar } from "@tabler/icons-react";
+import { Star as IconStar } from "lucide-react";
 import { ListLayout, type Selection, Virtualizer } from "react-aria-components";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { ListBox, ListBoxHeader, ListBoxItem, ListBoxSection } from "@/components/ui/list-box";
-import { ComponentPreview } from "@/examples/component-preview";
 
 const projects = [
   { id: "website", label: "Website refresh" },

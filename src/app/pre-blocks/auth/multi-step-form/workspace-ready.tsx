@@ -1,4 +1,4 @@
-import { IconCheck } from "@tabler/icons-react";
+import { Check as IconCheck } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
@@ -9,7 +9,7 @@ export function WorkspaceReady({ onStartAgain }: { onStartAgain: () => void }) {
         <IconCheck aria-hidden="true" className="size-5" />
       </span>
       <h2 className="text-lg font-semibold tracking-tight">Workspace ready</h2>
-      <Button type="button" variant="outline" onClick={onStartAgain}>
+      <Button type="button" variant="outline" onPress={onStartAgain}>
         Start again
       </Button>
     </div>

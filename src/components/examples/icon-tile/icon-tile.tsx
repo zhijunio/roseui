@@ -1,20 +1,20 @@
 import Link from "next/link";
 
 import {
-  IconAdjustmentsHorizontal,
-  IconAlertCircle,
-  IconCircleCheck,
-  IconClock,
-  IconDatabase,
-  IconFolder,
-  IconPackage,
-  IconPhoto,
-  IconStar,
-} from "@tabler/icons-react";
+  SlidersHorizontal as IconAdjustmentsHorizontal,
+  AlertCircle as IconAlertCircle,
+  CircleCheck as IconCircleCheck,
+  Clock as IconClock,
+  Database as IconDatabase,
+  Folder as IconFolder,
+  Package as IconPackage,
+  Image as IconPhoto,
+  Star as IconStar,
+} from "lucide-react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Frame, FramePanel } from "@/components/ui/frame";
 import { IconTile } from "@/components/ui/icon-tile";
-import { ComponentPreview } from "@/examples/component-preview";
 
 const variants = ["outline", "elevated", "soft", "solid", "frame"] as const;
 const sizes = ["xs", "sm", "default", "lg", "xl"] as const;
@@ -112,11 +112,11 @@ export function IconTileExamples() {
         </div>
 
         <div className="flex w-full flex-wrap items-center justify-center gap-4">
-          {[IconStar, IconAlertCircle, IconAdjustmentsHorizontal, IconDatabase].map((Icon, index) => (
+          {[IconStar, IconAlertCircle, IconAdjustmentsHorizontal, IconDatabase].map((Icon) => (
             <IconTile
-              key={index}
+              key={Icon.displayName ?? Icon.name}
               variant="elevated"
-              className={`text-primary ${index % 2 ? "bg-primary/10" : "bg-primary/20"}`}
+              className={`text-primary ${[IconAlertCircle, IconDatabase].includes(Icon) ? "bg-primary/10" : "bg-primary/20"}`}
               aria-hidden="true"
             >
               <Icon />
@@ -210,7 +210,7 @@ export function IconTileExamples() {
             variant="elevated"
             className="transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           >
-            <Link href="/components/button" aria-label="Open workspace settings">
+            <Link href="/docs/components/buttons/button" aria-label="Open workspace settings">
               <IconAdjustmentsHorizontal />
             </Link>
           </IconTile>

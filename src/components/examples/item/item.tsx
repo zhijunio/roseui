@@ -2,27 +2,27 @@
 import * as React from "react";
 
 import {
-  IconBell,
-  IconBrandGithub,
-  IconBrandSlack,
-  IconCheck,
-  IconChevronRight,
-  IconCloud,
-  IconDots,
-  IconFileText,
-  IconFolder,
-  IconLayoutDashboard,
-  IconMail,
-  IconMessageCircle,
-  IconMusic,
-  IconPlugConnected,
-  IconSettings,
-  IconShield,
-  IconVideo,
-} from "@tabler/icons-react";
+  Bell as IconBell,
+  Check as IconCheck,
+  ChevronRight as IconChevronRight,
+  Cloud as IconCloud,
+  Ellipsis as IconDots,
+  FileText as IconFileText,
+  Folder as IconFolder,
+  LayoutDashboard as IconLayoutDashboard,
+  Mail as IconMail,
+  MessageCircle as IconMessageCircle,
+  Music as IconMusic,
+  Plug as IconPlugConnected,
+  Settings as IconSettings,
+  Shield as IconShield,
+  Video as IconVideo,
+} from "lucide-react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { BrandIcon } from "@/components/ui/brand-icon";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -41,7 +41,6 @@ import {
 import { Kbd } from "@/components/ui/kbd";
 import { Switch } from "@/components/ui/switch";
 import { users as exampleUsers } from "@/data/user";
-import { ComponentPreview } from "@/examples/component-preview";
 import { getInitials } from "@/lib/utils";
 
 const examples = [
@@ -142,7 +141,7 @@ function ItemDemo({ index }: { index: number }) {
               <Button
                 size="sm"
                 variant={row.action === "Enable" ? "default" : "outline"}
-                onClick={() => setOpened(row.title)}
+                onPress={() => setOpened(row.title)}
               >
                 {opened === row.title ? "Enabled" : row.action}
               </Button>
@@ -167,7 +166,7 @@ function ItemDemo({ index }: { index: number }) {
               <Button
                 size="sm"
                 variant={following.includes(person.initials) ? "secondary" : "outline"}
-                onClick={() => toggle(following, person.initials, setFollowing)}
+                onPress={() => toggle(following, person.initials, setFollowing)}
               >
                 {following.includes(person.initials) ? "Following" : "Follow"}
               </Button>
@@ -239,7 +238,7 @@ function ItemDemo({ index }: { index: number }) {
             </ItemContent>
             <ItemActions>
               <Badge variant={file.state === "Final" ? "secondary" : "outline"}>{file.state}</Badge>
-              <Button size="sm" variant="ghost" onClick={() => setOpened(file.name)}>
+              <Button size="sm" variant="ghost" onPress={() => setOpened(file.name)}>
                 {opened === file.name ? "Opened" : "Open"}
               </Button>
             </ItemActions>
@@ -312,7 +311,7 @@ function ItemDemo({ index }: { index: number }) {
               size="icon-xs"
               variant="ghost"
               aria-label={`More actions for ${person.name}`}
-              onClick={() => setOpened(opened === person.name ? "" : person.name)}
+              onPress={() => setOpened(opened === person.name ? "" : person.name)}
             >
               <IconDots />
             </Button>
@@ -324,7 +323,7 @@ function ItemDemo({ index }: { index: number }) {
                 <Button
                   size="xs"
                   variant="ghost"
-                  onClick={() => setRoles({ ...roles, [person.initials.toLowerCase()]: "Removed" })}
+                  onPress={() => setRoles({ ...roles, [person.initials.toLowerCase()]: "Removed" })}
                 >
                   Remove
                 </Button>
@@ -338,8 +337,8 @@ function ItemDemo({ index }: { index: number }) {
     return (
       <ItemGroup className="max-w-md gap-2">
         {[
-          { id: "slack", icon: <IconBrandSlack />, name: "Slack", description: "Team conversations" },
-          { id: "github", icon: <IconBrandGithub />, name: "GitHub", description: "Code and deployments" },
+          { id: "slack", icon: <BrandIcon name="slack" />, name: "Slack", description: "Team conversations" },
+          { id: "github", icon: <BrandIcon name="github" />, name: "GitHub", description: "Code and deployments" },
           { id: "cloud", icon: <IconCloud />, name: "Cloud storage", description: "Files and shared folders" },
         ].map((app) => (
           <Item key={app.id} variant="outline" size="sm">
@@ -354,7 +353,7 @@ function ItemDemo({ index }: { index: number }) {
                 Connected
               </Badge>
             ) : (
-              <Button size="sm" variant="outline" onClick={() => toggle(enabled, app.id, setEnabled)}>
+              <Button size="sm" variant="outline" onPress={() => toggle(enabled, app.id, setEnabled)}>
                 <IconPlugConnected />
                 Connect
               </Button>
@@ -375,7 +374,7 @@ function ItemDemo({ index }: { index: number }) {
             <ItemDescription>Manage access, notifications, and connected services.</ItemDescription>
           </ItemContent>
           <ItemActions>
-            <Button size="sm" variant="outline" onClick={() => setOpened(opened ? "" : "Workspace settings")}>
+            <Button size="sm" variant="outline" onPress={() => setOpened(opened ? "" : "Workspace settings")}>
               {opened ? "Opened" : "Manage"}
             </Button>
           </ItemActions>
@@ -598,7 +597,7 @@ function ItemDemo({ index }: { index: number }) {
             size="icon-xs"
             variant="ghost"
             aria-label={`Open ${activity.target}`}
-            onClick={() => setOpened(activity.target)}
+            onPress={() => setOpened(activity.target)}
           >
             <IconChevronRight />
           </Button>

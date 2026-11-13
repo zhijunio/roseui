@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 
-import { IconArrowUpRight, IconCheck, IconClock, IconX } from "@tabler/icons-react";
+import { ArrowUpRight as IconArrowUpRight, Check as IconCheck, Clock as IconClock, X as IconX } from "lucide-react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Chip, type ChipColor, type ChipSize, type ChipTextStyle, type ChipVariant } from "@/components/ui/chip";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { StatusDot, type StatusDotColor } from "@/components/ui/status-dot";
-import { ComponentPreview } from "@/examples/component-preview";
 
 const colors: ChipColor[] = ["lime", "rose", "yellow", "cyan", "neutral", "gray", "soft"];
 

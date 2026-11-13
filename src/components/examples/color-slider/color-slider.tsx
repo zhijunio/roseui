@@ -4,8 +4,8 @@ import { useState } from "react";
 
 import { type Color, parseColor } from "react-aria-components";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { ColorSlider, ColorSliderThumb, ColorSliderTrack } from "@/components/ui/color-slider";
-import { ComponentPreview } from "@/examples/component-preview";
 
 const hueGradient = "linear-gradient(to right, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00)";
 

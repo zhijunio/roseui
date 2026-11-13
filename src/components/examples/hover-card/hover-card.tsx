@@ -3,14 +3,15 @@
 import { useEffect, useState } from "react";
 
 import {
-  IconArrowLeft,
-  IconArrowRight,
-  IconBolt,
-  IconCalendarEvent,
-  IconCircleCheck,
-  IconCloud,
-} from "@tabler/icons-react";
+  ArrowLeft as IconArrowLeft,
+  ArrowRight as IconArrowRight,
+  Bolt as IconBolt,
+  CalendarDays as IconCalendarEvent,
+  CircleCheck as IconCircleCheck,
+  Cloud as IconCloud,
+} from "lucide-react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -18,7 +19,6 @@ import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } 
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { Separator } from "@/components/ui/separator";
 import { getUserAvatar } from "@/data/user";
-import { ComponentPreview } from "@/examples/component-preview";
 
 const releases = [
   {
@@ -68,6 +68,45 @@ export function HoverCardExamples() {
           </HoverCard>
         </div>
       </ComponentPreview>
+      <ComponentPreview layout="fill" title="Rich Preview Content">
+        <p className="flex min-h-32 flex-wrap items-center justify-center gap-x-1 text-sm leading-6">
+          Deployment is blocked by{" "}
+          <HoverCard>
+            <HoverCardTrigger asChild>
+              <a href="#issue-1842" className="font-medium text-primary underline underline-offset-4">
+                #issue-1842
+              </a>
+            </HoverCardTrigger>
+            <HoverCardContent className="w-80">
+              <h3 className="font-medium">Authentication redirect loop</h3>
+              <p className="mt-1 text-muted-foreground">
+                Returning users are redirected repeatedly between sign-in and the application.
+              </p>
+              <Button size="sm" className="mt-4">
+                Open issue
+              </Button>
+            </HoverCardContent>
+          </HoverCard>
+          {" and "}
+          <HoverCard>
+            <HoverCardTrigger asChild>
+              <a href="#issue-1917" className="font-medium text-primary underline underline-offset-4">
+                #issue-1917
+              </a>
+            </HoverCardTrigger>
+            <HoverCardContent className="w-80">
+              <h3 className="font-medium">Duplicate webhook deliveries</h3>
+              <p className="mt-1 text-muted-foreground">
+                Deployment retries can enqueue the same webhook more than once.
+              </p>
+              <Button size="sm" className="mt-4">
+                Open issue
+              </Button>
+            </HoverCardContent>
+          </HoverCard>
+          .
+        </p>
+      </ComponentPreview>
       <ComponentPreview layout="fill" title="Placement Options">
         <div className="grid min-h-36 grid-cols-2 items-center gap-3">
           {(["top", "right", "bottom", "left"] as const).map((side) => (
@@ -79,13 +118,12 @@ export function HoverCardExamples() {
               </HoverCardTrigger>
               <HoverCardContent side={side}>
                 <p className="font-medium">{side} placement</p>
-                <p className="mt-1 text-muted-foreground">Position details on the {side} side of the trigger.</p>
               </HoverCardContent>
             </HoverCard>
           ))}
         </div>
       </ComponentPreview>
-      <ComponentPreview layout="fill" title="Member Profile">
+      <ComponentPreview layout="fill" title="Custom Preview Content">
         <div className="flex min-h-32 items-center justify-center">
           <HoverCard>
             <HoverCardTrigger asChild>
@@ -186,7 +224,7 @@ export function HoverCardExamples() {
           </Dialog>
         </div>
       </ComponentPreview>
-      <ComponentPreview layout="fill" title="Relative Deployment Time">
+      <ComponentPreview layout="fill" title="Relative Time">
         <div className="flex min-h-32 items-center justify-center text-sm text-muted-foreground">
           Last deployed{" "}
           <HoverCard>
@@ -218,7 +256,7 @@ export function HoverCardExamples() {
           by the CI pipeline.
         </div>
       </ComponentPreview>
-      <ComponentPreview layout="fill" title="Paginated Release Notes">
+      <ComponentPreview layout="fill" title="Paginated Content">
         <div className="flex min-h-32 items-center justify-center">
           <HoverCard>
             <HoverCardTrigger className="text-sm font-medium text-primary underline decoration-dashed underline-offset-4">
@@ -249,8 +287,8 @@ export function HoverCardExamples() {
                     variant="ghost"
                     size="icon-sm"
                     aria-label="Previous release"
-                    disabled={releaseIndex === 0}
-                    onClick={() => setReleaseIndex((index) => Math.max(0, index - 1))}
+                    isDisabled={releaseIndex === 0}
+                    onPress={() => setReleaseIndex((index) => Math.max(0, index - 1))}
                   >
                     <IconArrowLeft className="size-4" />
                   </Button>
@@ -258,8 +296,8 @@ export function HoverCardExamples() {
                     variant="ghost"
                     size="icon-sm"
                     aria-label="Next release"
-                    disabled={releaseIndex === releases.length - 1}
-                    onClick={() => setReleaseIndex((index) => Math.min(releases.length - 1, index + 1))}
+                    isDisabled={releaseIndex === releases.length - 1}
+                    onPress={() => setReleaseIndex((index) => Math.min(releases.length - 1, index + 1))}
                   >
                     <IconArrowRight className="size-4" />
                   </Button>
@@ -295,7 +333,6 @@ export function HoverCardExamples() {
             </HoverCardTrigger>
             <HoverCardContent showArrow side="top">
               <p className="font-medium">Project preview</p>
-              <p className="mt-1 text-muted-foreground">The arrow connects this preview to its trigger.</p>
             </HoverCardContent>
           </HoverCard>
         </div>
@@ -309,7 +346,7 @@ function ControlledHoverCardExample() {
 
   return (
     <div className="flex min-h-32 flex-wrap items-center justify-center gap-3">
-      <Button variant="outline" onClick={() => setOpen((value) => !value)}>
+      <Button variant="outline" onPress={() => setOpen((value) => !value)}>
         {open ? "Hide preview" : "Show preview"}
       </Button>
       <HoverCard open={open} onOpenChange={setOpen}>
@@ -320,7 +357,6 @@ function ControlledHoverCardExample() {
         </HoverCardTrigger>
         <HoverCardContent>
           <p className="font-medium">Controlled content</p>
-          <p className="mt-1 text-muted-foreground">The parent controls this preview&apos;s open state.</p>
         </HoverCardContent>
       </HoverCard>
     </div>

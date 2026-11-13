@@ -2,14 +2,13 @@
 
 import { useState } from "react";
 
-import { IconMoon, IconSun } from "@tabler/icons-react";
+import { Moon as IconMoon, Sun as IconSun } from "lucide-react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Button } from "@/components/ui/button";
-import { FieldLegend, FieldSet } from "@/components/ui/composite-field";
-import { Label } from "@/components/ui/label";
+import { FieldLegend, FieldSet } from "@/components/ui/field";
 import { LabeledSwitch } from "@/components/ui/labeled-switch";
-import { Switch } from "@/components/ui/switch";
-import { ComponentPreview } from "@/examples/component-preview";
+import { Switch, SwitchButton, SwitchField } from "@/components/ui/switch";
 
 function IconStateSwitch() {
   const [darkMode, setDarkMode] = useState(false);
@@ -40,31 +39,30 @@ export function SwitchExamples() {
     <>
       <ComponentPreview title="Appearance">
         <div className="flex flex-wrap items-center gap-6">
-          <div className="flex items-center gap-3">
-            <Switch id="notifications-off" />
-            <Label htmlFor="notifications-off">Notifications off</Label>
-          </div>
-          <div className="flex items-center gap-3">
-            <Switch id="notifications-on" defaultChecked />
-            <Label htmlFor="notifications-on">Notifications on</Label>
-          </div>
+          <SwitchField id="notifications-off">
+            <SwitchButton className="flex-row-reverse items-center gap-3 text-sm">Notifications off</SwitchButton>
+          </SwitchField>
+          <SwitchField id="notifications-on" defaultSelected>
+            <SwitchButton className="flex-row-reverse items-center gap-3 text-sm">Notifications on</SwitchButton>
+          </SwitchField>
         </div>
       </ComponentPreview>
 
       <ComponentPreview title="Size">
         <div className="flex flex-wrap items-center gap-6">
-          <div className="flex items-center gap-3">
-            <Switch id="compact-switch" size="sm" defaultChecked />
-            <Label htmlFor="compact-switch">Compact</Label>
-          </div>
-          <div className="flex items-center gap-3">
-            <Switch id="default-switch" defaultChecked />
-            <Label htmlFor="default-switch">Default</Label>
-          </div>
-          <div className="flex items-center gap-3">
-            <Switch id="large-switch" size="lg" defaultChecked />
-            <Label htmlFor="large-switch">Large</Label>
-          </div>
+          <SwitchField id="compact-switch" defaultSelected>
+            <SwitchButton size="sm" className="flex-row-reverse items-center gap-3 text-sm">
+              Compact
+            </SwitchButton>
+          </SwitchField>
+          <SwitchField id="default-switch" defaultSelected>
+            <SwitchButton className="flex-row-reverse items-center gap-3 text-sm">Default</SwitchButton>
+          </SwitchField>
+          <SwitchField id="large-switch" defaultSelected>
+            <SwitchButton size="lg" className="flex-row-reverse items-center gap-3 text-sm">
+              Large
+            </SwitchButton>
+          </SwitchField>
         </div>
       </ComponentPreview>
 
@@ -81,14 +79,16 @@ export function SwitchExamples() {
 
       <ComponentPreview title="States">
         <div className="space-y-4">
-          <div className="flex items-center gap-3">
-            <Switch id="maintenance-mode" checked={enabled} onCheckedChange={setEnabled} />
-            <Label htmlFor="maintenance-mode">Maintenance mode {enabled ? "on" : "off"}</Label>
-          </div>
-          <div className="flex items-center gap-3">
-            <Switch id="locked-feature" disabled checked />
-            <Label htmlFor="locked-feature">Managed by your administrator</Label>
-          </div>
+          <SwitchField id="maintenance-mode" checked={enabled} onCheckedChange={setEnabled}>
+            <SwitchButton className="flex-row-reverse items-center gap-3 text-sm">
+              Maintenance mode {enabled ? "on" : "off"}
+            </SwitchButton>
+          </SwitchField>
+          <SwitchField id="locked-feature" disabled checked>
+            <SwitchButton className="flex-row-reverse items-center gap-3 text-sm data-[disabled]:opacity-50">
+              Managed by your administrator
+            </SwitchButton>
+          </SwitchField>
         </div>
       </ComponentPreview>
 
@@ -103,25 +103,17 @@ export function SwitchExamples() {
           <p className="text-xs text-muted-foreground" aria-live="polite">
             Notifications {emailNotifications ? "enabled" : "disabled"}
           </p>
-          <div className="flex items-center justify-between gap-4 rounded-xl border bg-card p-4">
-            <div>
-              <Label htmlFor="weekly-report">Weekly report</Label>
-              <p className="text-xs text-muted-foreground">Get a summary every Monday.</p>
-            </div>
-            <Switch id="weekly-report" defaultChecked />
-          </div>
+          <LabeledSwitch label="Weekly report" description="Get a summary every Monday." defaultChecked />
         </div>
       </ComponentPreview>
 
       <ComponentPreview title="Label Position" layout="grid2">
-        <div className="flex items-center gap-3">
-          <Label htmlFor="label-before-switch">Label before</Label>
-          <Switch id="label-before-switch" />
-        </div>
-        <div className="flex items-center gap-3">
-          <Switch id="label-after-switch" />
-          <Label htmlFor="label-after-switch">Label after</Label>
-        </div>
+        <SwitchField id="label-before-switch">
+          <SwitchButton className="w-fit items-center gap-3 text-sm">Label before</SwitchButton>
+        </SwitchField>
+        <SwitchField id="label-after-switch">
+          <SwitchButton className="w-fit flex-row-reverse items-center gap-3 text-sm">Label after</SwitchButton>
+        </SwitchField>
       </ComponentPreview>
 
       <ComponentPreview title="Groups" layout="grid2">
@@ -132,10 +124,9 @@ export function SwitchExamples() {
               ["marketing-email", "Marketing emails"],
               ["social-updates", "Social updates"],
             ].map(([id, label]) => (
-              <div key={id} className="flex items-center justify-between gap-3">
-                <Label htmlFor={id}>{label}</Label>
-                <Switch id={id} />
-              </div>
+              <SwitchField key={id} id={id}>
+                <SwitchButton className="w-full items-center justify-between gap-3 text-sm">{label}</SwitchButton>
+              </SwitchField>
             ))}
           </div>
         </FieldSet>
@@ -147,16 +138,17 @@ export function SwitchExamples() {
               ["channel-app", "In app"],
               ["channel-sms", "SMS"],
             ].map(([id, label]) => (
-              <div key={id} className="flex items-center gap-2">
-                <Switch id={id} size="sm" />
-                <Label htmlFor={id}>{label}</Label>
-              </div>
+              <SwitchField key={id} id={id}>
+                <SwitchButton size="sm" className="flex-row-reverse items-center gap-2 text-sm">
+                  {label}
+                </SwitchButton>
+              </SwitchField>
             ))}
           </div>
         </FieldSet>
       </ComponentPreview>
 
-      <ComponentPreview title="Settings Group" layout="panel">
+      <ComponentPreview title="Grouped Controls" layout="panel">
         <div
           role="group"
           aria-label="Workspace notification settings"

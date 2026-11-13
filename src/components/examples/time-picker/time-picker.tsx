@@ -1,10 +1,10 @@
 "use client";
 import * as React from "react";
 
-import { IconCalendar } from "@tabler/icons-react";
+import { Calendar as IconCalendar } from "lucide-react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { TimePicker } from "@/components/ui/time-picker";
-import { ComponentPreview } from "@/examples/component-preview";
 
 const examples = [
   "Inline time panel",
@@ -97,7 +97,6 @@ function TimeDemo({ index }: { index: number }) {
           invalid={submitted && !maintenanceTime}
           required
         />
-        <p className="text-muted-foreground text-xs">Choose a required time between 00:00 and 06:00.</p>
         <div className="flex gap-2">
           <button className="bg-primary text-primary-foreground h-9 rounded-md px-3 text-sm">Save schedule</button>
           <button

@@ -5,17 +5,24 @@ import { type FormEvent, useState } from "react";
 
 import Link from "next/link";
 
-import { IconArrowRight, IconEye, IconEyeOff, IconKey, IconLock, IconMail, IconShieldLock } from "@tabler/icons-react";
+import {
+  ArrowRight as IconArrowRight,
+  Eye as IconEye,
+  EyeOff as IconEyeOff,
+  Key as IconKey,
+  Lock as IconLock,
+  Mail as IconMail,
+  ShieldLock as IconShieldLock,
+} from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { InputOtp } from "@/components/ui/composite-input-otp";
 import { Input } from "@/components/ui/input";
+import { InputOTP } from "@/components/ui/input-otp";
 import { Label } from "@/components/ui/label";
 import { LogoMark } from "@/components/ui/logo-mark";
 import { PasswordField } from "@/components/ui/password-field";
 import { SocialButton, type SocialProvider } from "@/components/ui/social-button";
-import { ComponentPreview } from "@/examples/component-preview";
 
 const socialProviders = ["google", "apple", "github", "microsoft"] as const satisfies readonly SocialProvider[];
 
@@ -25,13 +32,13 @@ type MethodExample = {
   providers: readonly SocialProvider[];
 };
 
-const methodExample: MethodExample = {
+export const methodExample: MethodExample = {
   slug: "method-picker",
   title: "Choose a Sign-In Method",
   providers: [],
 };
 
-function PasswordSignInExample() {
+export function PasswordSignInExample() {
   return (
     <section className="mx-auto w-full max-w-md p-2" aria-labelledby="sign-in-example-title">
       <div className="mb-7 grid justify-items-center gap-3 text-center">
@@ -55,7 +62,10 @@ function PasswordSignInExample() {
             placeholder="Enter your password"
           />
           <div className="flex justify-end">
-            <Link href="/blocks/auth/forgot-password" className="text-muted-foreground hover:text-foreground text-xs">
+            <Link
+              href="/docs/blocks/auth/forgot-password"
+              className="text-muted-foreground hover:text-foreground text-xs"
+            >
               Forgot password?
             </Link>
           </div>
@@ -66,11 +76,9 @@ function PasswordSignInExample() {
             Remember me for 30 days
           </Label>
         </div>
-        <Button asChild className="w-full">
-          <Link href="/components/accordion">
-            Sign in <IconArrowRight aria-hidden="true" />
-          </Link>
-        </Button>
+        <Link href="/docs/components/navigation/accordion" className={buttonVariants({ className: "w-full" })}>
+          Sign in <IconArrowRight aria-hidden="true" />
+        </Link>
       </form>
       <div className="text-muted-foreground my-5 flex items-center gap-3 text-xs">
         <span className="bg-border h-px flex-1" />
@@ -86,7 +94,7 @@ function PasswordSignInExample() {
   );
 }
 
-function MagicLinkExample({ preview = false }: { preview?: boolean }) {
+export function MagicLinkExample({ preview = false }: { preview?: boolean }) {
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
   function submit(event: FormEvent<HTMLFormElement>) {
@@ -117,7 +125,7 @@ function MagicLinkExample({ preview = false }: { preview?: boolean }) {
           <p className="text-muted-foreground text-sm">
             Check <span className="text-foreground font-medium">{email}</span> for your sign-in link.
           </p>
-          <Button type="button" variant="outline" className="w-full" onClick={() => setSent(false)}>
+          <Button type="button" variant="outline" className="w-full" onPress={() => setSent(false)}>
             Use a different email
           </Button>
           <button
@@ -153,7 +161,7 @@ function MagicLinkExample({ preview = false }: { preview?: boolean }) {
 
 type LoginStep = { kind: "email" } | { kind: "code"; email: string } | { kind: "complete" };
 
-function CenteredLoginExample() {
+export function CenteredLoginExample() {
   const [step, setStep] = React.useState<LoginStep>({ kind: "email" });
   const [email, setEmail] = React.useState("");
   const [code, setCode] = React.useState("");
@@ -189,7 +197,7 @@ function CenteredLoginExample() {
               type="button"
               variant="outline"
               className="w-full"
-              onClick={() => {
+              onPress={() => {
                 setStep({ kind: "complete" });
                 setNotice("Passkey sign-in completed for this demo.");
               }}
@@ -229,14 +237,14 @@ function CenteredLoginExample() {
                 Enter the six-digit code sent to <span className="text-foreground font-medium">{step.email}</span>.
               </p>
             </div>
-            <InputOtp
+            <InputOTP
               value={code}
               onChange={setCode}
               aria-label="Verification code"
               className="justify-center"
               groupEvery={3}
             />
-            <Button type="submit" className="w-full" disabled={code.length !== 6}>
+            <Button type="submit" className="w-full" isDisabled={code.length !== 6}>
               Verify <IconArrowRight aria-hidden="true" />
             </Button>
             <button
@@ -257,9 +265,9 @@ function CenteredLoginExample() {
               <IconLock aria-hidden="true" className="size-5" />
             </div>
             <p className="text-muted-foreground text-sm">Your workspace is ready.</p>
-            <Button asChild className="w-full">
-              <Link href="/components/accordion">Open workspace</Link>
-            </Button>
+            <Link href="/docs/components/navigation/accordion" className={buttonVariants({ className: "w-full" })}>
+              Open workspace
+            </Link>
             <button
               type="button"
               className="text-muted-foreground hover:text-foreground text-sm"
@@ -278,7 +286,7 @@ function CenteredLoginExample() {
         </p>
         <p className="text-muted-foreground text-center text-sm">
           Need an account?{" "}
-          <Link href="/blocks/auth/sign-up" className="text-foreground font-medium hover:underline">
+          <Link href="/docs/blocks/auth/sign-up" className="text-foreground font-medium hover:underline">
             Sign up
           </Link>
         </p>
@@ -287,7 +295,7 @@ function CenteredLoginExample() {
   );
 }
 
-function MethodPickerExample({ example, preview = false }: { example: MethodExample; preview?: boolean }) {
+export function MethodPickerExample({ example, preview = false }: { example: MethodExample; preview?: boolean }) {
   const [showPassword, setShowPassword] = useState(false);
   const [selectedMethod, setSelectedMethod] = useState<string | null>(null);
   const [notice, setNotice] = useState("");
@@ -321,7 +329,7 @@ function MethodPickerExample({ example, preview = false }: { example: MethodExam
             type="button"
             variant="outline"
             className="justify-start gap-3"
-            onClick={() => setSelectedMethod("Passkey")}
+            onPress={() => setSelectedMethod("Passkey")}
           >
             <IconKey aria-hidden="true" /> Use a passkey
           </Button>
@@ -329,23 +337,23 @@ function MethodPickerExample({ example, preview = false }: { example: MethodExam
             type="button"
             variant="outline"
             className="justify-start gap-3"
-            onClick={() => setSelectedMethod("SSO")}
+            onPress={() => setSelectedMethod("SSO")}
           >
             <IconLock aria-hidden="true" /> Continue with SSO
           </Button>
-          <Button type="button" variant="outline" onClick={() => setSelectedMethod("Email")}>
+          <Button type="button" variant="outline" onPress={() => setSelectedMethod("Email")}>
             Continue with email
           </Button>
         </div>
       ) : selectedMethod !== "Email" ? (
         <div className="grid gap-3 text-center">
-          <Button type="button" onClick={() => setNotice(`${selectedMethod} sign-in is a demo action.`)}>
+          <Button type="button" onPress={() => setNotice(`${selectedMethod} sign-in is a demo action.`)}>
             Continue with {selectedMethod}
           </Button>
           <Button
             type="button"
             variant="ghost"
-            onClick={() => {
+            onPress={() => {
               setSelectedMethod(null);
               setNotice("");
             }}
@@ -372,7 +380,7 @@ function MethodPickerExample({ example, preview = false }: { example: MethodExam
               <span className="flex items-center justify-between">
                 Password
                 <Link
-                  href="/blocks/auth/forgot-password"
+                  href="/docs/blocks/auth/forgot-password"
                   className="text-muted-foreground hover:text-foreground text-xs font-normal"
                 >
                   Forgot password?
@@ -436,31 +444,12 @@ function MethodPickerExample({ example, preview = false }: { example: MethodExam
           </p>
           <p className="text-muted-foreground mt-4 text-center text-sm">
             Need an account?{" "}
-            <Link href="/blocks/auth/sign-up" className="text-foreground font-medium hover:underline">
+            <Link href="/docs/blocks/auth/sign-up" className="text-foreground font-medium hover:underline">
               Sign up
             </Link>
           </p>
         </>
       )}
     </section>
-  );
-}
-
-export function SignInExamples() {
-  return (
-    <div className="grid min-w-0 items-start gap-5 xl:grid-cols-2 [&>*]:min-w-0">
-      <ComponentPreview title="Password sign-in" layout="fullStack">
-        <PasswordSignInExample />
-      </ComponentPreview>
-      <ComponentPreview title="Magic link" layout="fullStack">
-        <MagicLinkExample preview />
-      </ComponentPreview>
-      <ComponentPreview title="Email and passkey" layout="fullStack">
-        <CenteredLoginExample />
-      </ComponentPreview>
-      <ComponentPreview title={methodExample.title} layout="fullStack">
-        <MethodPickerExample example={methodExample} preview />
-      </ComponentPreview>
-    </div>
   );
 }

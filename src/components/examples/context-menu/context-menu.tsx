@@ -1,16 +1,9 @@
 "use client";
 import { type ComponentPropsWithRef, useState } from "react";
 
-import {
-  IconCopy as Copy,
-  IconCut as Cut,
-  IconExternalLink as ExternalLink,
-  IconPencil as Pencil,
-  IconRefresh as Refresh,
-  IconShare as Share,
-  IconTrash as Trash,
-} from "@tabler/icons-react";
+import { Copy, Scissors as Cut, ExternalLink, Pencil, RefreshCw as Refresh, Share, Trash } from "lucide-react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Button } from "@/components/ui/button";
 import {
   ContextMenu,
@@ -27,7 +20,6 @@ import {
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { ComponentPreview } from "@/examples/component-preview";
 import { cn } from "@/lib/utils";
 
 function TriggerSurface({ ref, children, className, ...props }: ComponentPropsWithRef<"button">) {
@@ -249,7 +241,7 @@ export function ContextMenuExamples() {
         <p className="mt-2 text-xs text-muted-foreground">Selected layout: {view}</p>
       </ComponentPreview>
 
-      <ComponentPreview title="Record Actions">
+      <ComponentPreview title="Action Items">
         <ContextMenu>
           <ContextMenuTrigger asChild>
             <TriggerSurface>Right-click a customer record</TriggerSurface>

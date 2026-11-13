@@ -2,10 +2,10 @@
 
 import { useRef } from "react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Scrollspy } from "@/components/ui/scrollspy";
-import { ComponentPreview } from "@/examples/component-preview";
 
 const sectionContent = [
   {

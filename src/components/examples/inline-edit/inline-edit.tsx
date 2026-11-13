@@ -2,8 +2,8 @@
 
 import * as React from "react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { InlineEdit } from "@/components/ui/inline-edit";
-import { ComponentPreview } from "@/examples/component-preview";
 
 function InlineEditExamplesContent() {
   const [workspaceName, setWorkspaceName] = React.useState("Operations Hub");
@@ -18,7 +18,7 @@ function InlineEditExamplesContent() {
 
   return (
     <>
-      <ComponentPreview title="Workspace details" span={2} layout="panel">
+      <ComponentPreview title="Editable Fields" span={2} layout="panel">
         <div className="grid w-full max-w-2xl gap-6">
           <div className="grid gap-2">
             <span className="text-xs font-medium text-muted-foreground">Workspace name</span>

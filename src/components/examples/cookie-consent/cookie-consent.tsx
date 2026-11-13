@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 
-import { IconAdjustments, IconCheck, IconCookie } from "@tabler/icons-react";
+import { SlidersHorizontal as IconAdjustments, Check as IconCheck, Cookie as IconCookie } from "lucide-react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -14,7 +15,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Switch } from "@/components/ui/switch";
-import { ComponentPreview } from "@/examples/component-preview";
 
 function ConsentBanner() {
   const [open, setOpen] = useState(true);
@@ -40,13 +40,13 @@ function ConsentBanner() {
               Choose which optional services can help improve this workspace.
             </p>
             <div className="mt-4 flex flex-wrap gap-2">
-              <Button size="sm" onClick={() => setOpen(false)}>
+              <Button size="sm" onPress={() => setOpen(false)}>
                 Allow optional
               </Button>
-              <Button size="sm" variant="outline" onClick={() => setOpen(false)}>
+              <Button size="sm" variant="outline" onPress={() => setOpen(false)}>
                 Only required
               </Button>
-              <Button size="sm" variant="ghost" onClick={() => setSettings(true)}>
+              <Button size="sm" variant="ghost" onPress={() => setSettings(true)}>
                 <IconAdjustments />
                 Manage
               </Button>
@@ -78,7 +78,7 @@ function ConsentBanner() {
           </div>
           <DialogFooter>
             <Button
-              onClick={() => {
+              onPress={() => {
                 setSettings(false);
                 setOpen(false);
               }}

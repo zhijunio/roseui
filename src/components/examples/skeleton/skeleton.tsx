@@ -2,10 +2,10 @@
 
 import { type ReactNode, useState } from "react";
 
+import { ComponentPreview, type ComponentPreviewLayout } from "@/components/docs/component-preview";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ComponentPreview, type ComponentPreviewLayout } from "@/examples/component-preview";
 
 type ExampleSection = {
   title: string;
@@ -86,18 +86,11 @@ export function LoadingExample() {
   return (
     <div className="w-full max-w-md space-y-4">
       <div aria-busy={loading} className="min-h-20">
-        {loading ? (
-          <div aria-hidden="true" className="flex items-center gap-4 py-1">
-            <Skeleton className="size-12 shrink-0 rounded-full" />
-            <div className="flex-1 space-y-2">
-              <Skeleton className="h-4 w-36 max-w-full" />
-              <Skeleton className="h-3 w-24 max-w-full" />
-            </div>
-          </div>
-        ) : (
+        <Skeleton isLoading={loading} className="block">
           <div className="flex items-center gap-4 py-1">
             <div
               aria-hidden="true"
+              data-slot="avatar"
               className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-medium text-primary"
             >
               MC
@@ -107,9 +100,9 @@ export function LoadingExample() {
               <p className="text-sm text-muted-foreground">{"Design lead"}</p>
             </div>
           </div>
-        )}
+        </Skeleton>
       </div>
-      <Button type="button" variant="outline" size="sm" onClick={() => setLoading((current) => !current)}>
+      <Button type="button" variant="outline" size="sm" onPress={() => setLoading((current) => !current)}>
         {loading ? "Show loaded content" : "Show loading state"}
       </Button>
     </div>

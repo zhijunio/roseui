@@ -1,8 +1,8 @@
 "use client";
 import * as React from "react";
 
-import { Resizable } from "@/components/ui/composite-resizable";
-import { ComponentPreview } from "@/examples/component-preview";
+import { ComponentPreview } from "@/components/docs/component-preview";
+import { Resizable } from "@/components/ui/resizable";
 
 const examples = [
   "Horizontal resizable layout",

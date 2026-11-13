@@ -3,12 +3,12 @@
 import { useState } from "react";
 
 import { Time } from "@internationalized/date";
-import { IconClock, IconInfoCircle } from "@tabler/icons-react";
+import { Clock as IconClock, Info as IconInfoCircle } from "lucide-react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { TimeField } from "@/components/ui/time-field";
-import { ComponentPreview } from "@/examples/component-preview";
 
 export function TimeFieldExamples() {
   const [time, setTime] = useState<Time | null>(new Time(9, 30));
@@ -82,10 +82,10 @@ export function TimeFieldExamples() {
         <div className="grid w-full gap-3">
           <TimeField label="Time" value={time} onChange={setTime} minValue={new Time(8)} maxValue={new Time(18)} />
           <div className="flex flex-wrap gap-2">
-            <Button type="button" variant="outline" size="sm" onClick={() => setTime(new Time(12))}>
+            <Button type="button" variant="outline" size="sm" onPress={() => setTime(new Time(12))}>
               Set noon
             </Button>
-            <Button type="button" variant="outline" size="sm" onClick={() => setTime(null)}>
+            <Button type="button" variant="outline" size="sm" onPress={() => setTime(null)}>
               Clear
             </Button>
           </div>

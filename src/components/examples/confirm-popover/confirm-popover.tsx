@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 
-import { IconAlertTriangle, IconTrash, IconX } from "@tabler/icons-react";
+import { AlertTriangle as IconAlertTriangle, Trash as IconTrash, X as IconX } from "lucide-react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { ComponentPreview } from "@/examples/component-preview";
 
 function ConfirmAction() {
   const [open, setOpen] = useState(false);
@@ -24,7 +24,7 @@ function ConfirmAction() {
     <div className="flex flex-wrap items-center gap-3">
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          <Button variant="outline" disabled={deleted}>
+          <Button variant="outline" isDisabled={deleted}>
             <IconTrash />
             {deleted ? "Removed" : "Remove item"}
           </Button>
@@ -41,11 +41,11 @@ function ConfirmAction() {
               </div>
             </div>
             <div className="flex justify-end gap-2">
-              <Button size="sm" variant="ghost" onClick={() => setOpen(false)}>
+              <Button size="sm" variant="ghost" onPress={() => setOpen(false)}>
                 <IconX />
                 Cancel
               </Button>
-              <Button size="sm" variant="destructive" onClick={confirm} disabled={busy}>
+              <Button size="sm" variant="destructive" onPress={confirm} isDisabled={busy}>
                 {busy ? "Removing…" : "Remove"}
               </Button>
             </div>
@@ -65,7 +65,7 @@ function InlineConfirmation() {
   const [confirmed, setConfirmed] = useState(false);
   return (
     <div className="flex flex-wrap items-center gap-3">
-      <Button variant="ghost" size="sm" onClick={() => setConfirmed(true)} disabled={confirmed}>
+      <Button variant="ghost" size="sm" onPress={() => setConfirmed(true)} isDisabled={confirmed}>
         {confirmed ? "Action confirmed" : "Confirm action"}
       </Button>
       {confirmed && (

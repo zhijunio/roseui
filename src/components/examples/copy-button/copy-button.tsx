@@ -1,7 +1,7 @@
 "use client";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { CopyButton } from "@/components/ui/copy-button";
-import { ComponentPreview } from "@/examples/component-preview";
 
 const workspaceId = "ws_1704_roseui";
 const endpoint = "https://api.roseui.dev/v1/workspaces/ws_1704";

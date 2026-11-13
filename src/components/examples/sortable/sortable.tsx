@@ -3,21 +3,21 @@
 import * as React from "react";
 
 import {
-  IconBell,
-  IconBrandGithub,
-  IconFileText,
-  IconMusic,
-  IconPhoto,
-  IconSettings,
-  IconVideo,
-} from "@tabler/icons-react";
+  Bell as IconBell,
+  FileText as IconFileText,
+  Music as IconMusic,
+  Image as IconPhoto,
+  Settings as IconSettings,
+  Video as IconVideo,
+} from "lucide-react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Badge } from "@/components/ui/badge";
+import { BrandIcon } from "@/components/ui/brand-icon";
 import { Button } from "@/components/ui/button";
 import { Item, ItemContent, ItemDescription, ItemHeader, ItemMedia, ItemTitle } from "@/components/ui/item";
 import { SortableList } from "@/components/ui/sortable";
 import { Switch } from "@/components/ui/switch";
-import { ComponentPreview } from "@/examples/component-preview";
 
 type Entry = {
   id: string;
@@ -121,7 +121,7 @@ export function SortableDemo({ index }: { index: number }) {
   const [failed, setFailed] = React.useState(false);
   const [channels, setChannels] = React.useState<Entry[]>([
     { id: "email", title: "Email", description: "Daily and urgent updates", icon: <IconBell /> },
-    { id: "in-app", title: "In-app", description: "Mentions and assigned work", icon: <IconBrandGithub /> },
+    { id: "in-app", title: "In-app", description: "Mentions and assigned work", icon: <BrandIcon name="github" /> },
     { id: "push", title: "Push", description: "Time-sensitive notifications", icon: <IconBell /> },
   ]);
   const [navigation, setNavigation] = React.useState<Entry[]>([
@@ -238,7 +238,6 @@ export function SortableDemo({ index }: { index: number }) {
       <div className="overflow-hidden rounded-xl border border-border bg-card">
         <div className="border-b border-border px-4 py-3">
           <h3 className="text-sm font-semibold">Notification priority</h3>
-          <p className="text-xs text-muted-foreground">Drag channels to set delivery order.</p>
         </div>
         <SortableList
           items={channels}
@@ -288,7 +287,6 @@ export function SortableDemo({ index }: { index: number }) {
       <div className="overflow-hidden rounded-xl border border-border bg-card">
         <div className="border-b border-border px-4 py-3">
           <h3 className="text-sm font-semibold">Launch gallery</h3>
-          <p className="text-xs text-muted-foreground">Reorder image assets for the campaign.</p>
         </div>
         <SortableList
           strategy="grid"
@@ -315,7 +313,6 @@ export function SortableDemo({ index }: { index: number }) {
       <div className="flex items-center justify-between border-b border-border px-4 py-3">
         <div>
           <h3 className="text-sm font-semibold">Release checklist</h3>
-          <p className="text-xs text-muted-foreground">Changes are saved after each reorder.</p>
         </div>
         <Badge variant={status === "Saved" ? "secondary" : "outline"}>{status}</Badge>
       </div>
@@ -352,7 +349,7 @@ export function SortableDemo({ index }: { index: number }) {
         )}
       />
       <div className="border-t border-border px-4 py-2">
-        <Button size="sm" variant="ghost" onClick={() => setFailed(true)}>
+        <Button size="sm" variant="ghost" onPress={() => setFailed(true)}>
           Simulate next save failure
         </Button>
       </div>

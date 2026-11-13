@@ -1,6 +1,6 @@
+import { ComponentPreview, type ComponentPreviewLayout } from "@/components/docs/component-preview";
 import { Label } from "@/components/ui/label";
 import { ProgressCircle } from "@/components/ui/progress-circle";
-import { ComponentPreview, type ComponentPreviewLayout } from "@/examples/component-preview";
 
 const sizeLabels: Record<number, string> = {
   1: "Small · 40%",
@@ -61,7 +61,7 @@ export function ProgressCircleExamples() {
             previewClassName={previewClassName}
           >
             {section.examples.map((example) => {
-              const label = labelForExample?.(example);
+              const label = labelForExample(example);
               return (
                 <div key={example} className={isStack ? "min-w-0 w-full space-y-2" : "min-w-0"}>
                   {isStack && label ? <p className="text-xs font-medium text-muted-foreground">{label}</p> : null}

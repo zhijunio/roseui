@@ -1,8 +1,8 @@
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Surface } from "@/components/ui/surface";
-import { ComponentPreview } from "@/examples/component-preview";
 
 const variants = [
   { variant: "default", label: "Default", description: "Standard content surface." },

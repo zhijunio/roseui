@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -17,8 +18,10 @@ import {
   type CalendarView,
   EventCalendar,
 } from "@/components/ui/event-calendar";
-import { Switch } from "@/components/ui/switch";
-import { ComponentPreview } from "@/examples/component-preview";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { SwitchButton, SwitchField } from "@/components/ui/switch";
+import { TextArea } from "@/components/ui/text-area";
 
 const today = new Date();
 const at = (dayOffset: number, hour: number) => {
@@ -139,12 +142,11 @@ export function EventCalendarExamples() {
 
   return (
     <>
-      <ComponentPreview title="Views and Settings" layout="fullBleed" span={2}>
+      <ComponentPreview title="View Modes and Controls" layout="fullBleed" span={2}>
         <div className="grid w-full max-w-4xl gap-3">
-          <label className="flex w-fit items-center gap-2 text-xs">
-            <Switch checked={showWeekends} onCheckedChange={setShowWeekends} aria-label="Show weekends" />
-            Show weekends
-          </label>
+          <SwitchField checked={showWeekends} onCheckedChange={setShowWeekends}>
+            <SwitchButton className="w-fit flex-row-reverse items-center gap-2 text-xs">Show weekends</SwitchButton>
+          </SwitchField>
           <EventCalendar
             events={events}
             view={view}
@@ -159,7 +161,7 @@ export function EventCalendarExamples() {
         </div>
       </ComponentPreview>
 
-      <ComponentPreview title="Resource Bookings" layout="fullBleed" span={2}>
+      <ComponentPreview title="Resource Columns" layout="fullBleed" span={2}>
         <div className="w-full max-w-4xl">
           <EventCalendar
             events={events.map((event, index) => ({ ...event, resourceId: rooms[index % rooms.length].id }))}
@@ -179,7 +181,7 @@ export function EventCalendarExamples() {
 
       <ComponentPreview title="Agenda and Dialog" layout="panel">
         <div className="grid w-full gap-3">
-          <Button className="w-fit" onClick={() => editEvent(null)}>
+          <Button className="w-fit" onPress={() => editEvent(null)}>
             Create event
           </Button>
           <EventCalendar events={events} view="agenda" onEventSelect={editEvent} />
@@ -190,37 +192,35 @@ export function EventCalendarExamples() {
                 <DialogDescription>Review the meeting details and save the calendar entry.</DialogDescription>
               </DialogHeader>
               <div className="grid gap-3">
-                <label className="grid gap-1 text-sm">
+                <Label className="grid gap-1 text-sm">
                   Title
-                  <input
+                  <Input
                     value={eventTitle}
                     onChange={(event) => setEventTitle(event.currentTarget.value)}
                     placeholder="Project review"
-                    className="h-9 rounded-md border border-input bg-background px-3"
                   />
-                </label>
-                <label className="grid gap-1 text-sm">
+                </Label>
+                <Label className="grid gap-1 text-sm">
                   Notes
-                  <textarea
+                  <TextArea
                     value={eventDetail}
                     onChange={(event) => setEventDetail(event.currentTarget.value)}
                     placeholder="Add agenda or attendees"
-                    className="min-h-20 rounded-md border border-input bg-background p-3"
                   />
-                </label>
+                </Label>
               </div>
               <DialogFooter>
-                <Button variant="outline" onClick={() => setDialogOpen(false)}>
+                <Button variant="outline" onPress={() => setDialogOpen(false)}>
                   Cancel
                 </Button>
-                <Button onClick={saveEvent}>Save event</Button>
+                <Button onPress={saveEvent}>Save event</Button>
               </DialogFooter>
             </DialogContent>
           </Dialog>
         </div>
       </ComponentPreview>
 
-      <ComponentPreview title="Custom Event Chips" layout="fullBleed" span={2}>
+      <ComponentPreview title="Custom Event Content" layout="fullBleed" span={2}>
         <div className="w-full max-w-4xl">
           <EventCalendar
             events={customEvents}

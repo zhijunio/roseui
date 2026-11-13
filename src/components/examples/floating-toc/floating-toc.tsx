@@ -2,9 +2,9 @@
 
 import { useRef, useState } from "react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Button } from "@/components/ui/button";
 import { FloatingToc, type FloatingTocItem } from "@/components/ui/floating-toc";
-import { ComponentPreview } from "@/examples/component-preview";
 
 const sections: Array<FloatingTocItem & { heading: string; description: string }> = [
   {
@@ -57,7 +57,7 @@ export function FloatingTocExamples() {
             type="button"
             size="sm"
             variant={mode === "hover" ? "secondary" : "outline"}
-            onClick={() => setMode("hover")}
+            onPress={() => setMode("hover")}
           >
             Hover
           </Button>
@@ -65,7 +65,7 @@ export function FloatingTocExamples() {
             type="button"
             size="sm"
             variant={mode === "press" ? "secondary" : "outline"}
-            onClick={() => setMode("press")}
+            onPress={() => setMode("press")}
           >
             Press
           </Button>
@@ -74,7 +74,7 @@ export function FloatingTocExamples() {
             type="button"
             size="sm"
             variant={placement === "left" ? "secondary" : "outline"}
-            onClick={() => setPlacement("left")}
+            onPress={() => setPlacement("left")}
           >
             Left
           </Button>
@@ -82,7 +82,7 @@ export function FloatingTocExamples() {
             type="button"
             size="sm"
             variant={placement === "right" ? "secondary" : "outline"}
-            onClick={() => setPlacement("right")}
+            onPress={() => setPlacement("right")}
           >
             Right
           </Button>
@@ -91,7 +91,7 @@ export function FloatingTocExamples() {
             size="sm"
             variant="ghost"
             className="ml-auto"
-            onClick={() => setOpen((value) => !value)}
+            onPress={() => setOpen((value) => !value)}
           >
             {open ? "Close directory" : "Open directory"}
           </Button>

@@ -2,20 +2,19 @@
 
 import { type ComponentProps, type ReactNode, useId, useState } from "react";
 
-import { IconCheck, IconLoader2, IconRosetteDiscountCheck, IconSelector, IconUser } from "@tabler/icons-react";
+import {
+  Check as IconCheck,
+  Loader2 as IconLoader2,
+  BadgeCheck as IconRosetteDiscountCheck,
+  ChevronsUpDown as IconSelector,
+  User as IconUser,
+} from "lucide-react";
 
+import { ComponentPreview, type ComponentPreviewLayout } from "@/components/docs/component-preview";
 import { Avatar, AvatarBadge, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { Menu, MenuHeader, MenuItem, MenuSeparator, MenuTrigger } from "@/components/ui/menu";
 import { users } from "@/data/user";
-import { ComponentPreview, type ComponentPreviewLayout } from "@/examples/component-preview";
 import { cn, getInitials } from "@/lib/utils";
 
 type ExampleSection = {
@@ -91,9 +90,9 @@ export function AvatarExamples() {
             previewClassName={previewClassName}
           >
             {section.examples.map((example) => {
-              const label = labelForExample?.(example);
+              const label = labelForExample(example);
               return (
-                <div key={example} className={isStack ? "min-w-0 w-full space-y-2" : "min-w-0"}>
+                <div key={example} className={isStack ? "min-w-0 w-full space-y-3" : "min-w-0"}>
                   {isStack && label ? <p className="text-xs font-medium text-muted-foreground">{label}</p> : null}
                   {renderExample(example)}
                 </div>
@@ -241,7 +240,7 @@ export function AvatarExample({ example }: { example: number }) {
         variant={example === 27 ? "default" : "outline"}
         size="sm"
         className={example === 19 ? undefined : "rounded-full"}
-        onClick={() => setAction(users[0].name)}
+        onPress={() => setAction(users[0].name)}
       >
         <PersonAvatar size="xs" />
         {action || users[0].name}
@@ -271,7 +270,7 @@ export function AvatarExample({ example }: { example: number }) {
             </span>
           )}
         </div>
-        <Button variant="outline" size="sm" onClick={() => setLoading(!loading)}>
+        <Button variant="outline" size="sm" onPress={() => setLoading(!loading)}>
           {loading ? "Finish loading" : "Load avatar"}
         </Button>
       </div>
@@ -311,32 +310,31 @@ export function AvatarExample({ example }: { example: number }) {
   if (example === 35)
     return (
       <div className="space-y-2">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="sm" className="rounded-full">
-              <PersonAvatar size="xs" />
-              {users[0].name}
-              <IconSelector aria-hidden />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start">
-            <DropdownMenuLabel>{"Management"}</DropdownMenuLabel>
+        <MenuTrigger>
+          <Button variant="outline" size="sm" className="rounded-full">
+            <PersonAvatar size="xs" />
+            {users[0].name}
+            <IconSelector aria-hidden />
+          </Button>
+
+          <Menu placement="bottom start">
+            <MenuHeader>{"Management"}</MenuHeader>
             {[
               { id: "profile", label: "Profile" },
               { id: "settings", label: "Settings" },
               { id: "team", label: "Project team" },
               { id: "invite", label: "Invite teammate" },
             ].map(({ id, label }) => (
-              <DropdownMenuItem key={id} onSelect={() => setAction(label)}>
+              <MenuItem key={id} onAction={() => setAction(label)}>
                 {label}
-              </DropdownMenuItem>
+              </MenuItem>
             ))}
-            <DropdownMenuSeparator />
-            <DropdownMenuItem variant="destructive" onSelect={() => setAction("Log out")}>
+            <MenuSeparator />
+            <MenuItem intent="danger" onAction={() => setAction("Log out")}>
               {"Log out"}
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+            </MenuItem>
+          </Menu>
+        </MenuTrigger>
         <p role="status" className="text-xs text-muted-foreground">
           {action}
         </p>

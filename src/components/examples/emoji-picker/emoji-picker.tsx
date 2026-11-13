@@ -2,8 +2,14 @@
 
 import { useRef, useState } from "react";
 
-import { IconMessageCircle, IconPaperclip, IconSend, IconSparkles } from "@tabler/icons-react";
+import {
+  MessageCircle as IconMessageCircle,
+  Paperclip as IconPaperclip,
+  Send as IconSend,
+  Sparkles as IconSparkles,
+} from "lucide-react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Button } from "@/components/ui/button";
 import {
   type EmojiOption,
@@ -12,7 +18,8 @@ import {
   EmojiShortcodeSuggestions,
   emojiOptions,
 } from "@/components/ui/emoji-picker";
-import { ComponentPreview } from "@/examples/component-preview";
+import { Label } from "@/components/ui/label";
+import { TextArea } from "@/components/ui/text-area";
 
 const teamEmojis: EmojiOption[] = [
   {
@@ -33,12 +40,15 @@ export function EmojiPickerExamples() {
   const [icon, setIcon] = useState("📊");
   const [message, setMessage] = useState("");
   const messageInputRef = useRef<HTMLTextAreaElement>(null);
-  const [sent, setSent] = useState<string[]>([]);
+  const [sent, setSent] = useState<{ id: number; text: string }[]>([]);
+  const nextSentId = useRef(0);
   const [shortcode, setShortcode] = useState(":cel");
   const [locale, setLocale] = useState<"en" | "zh">("en");
   function sendMessage() {
     if (!message.trim()) return;
-    setSent((current) => [...current, message.trim()]);
+    const sentMessage = { id: nextSentId.current, text: message.trim() };
+    nextSentId.current += 1;
+    setSent((current) => [...current, sentMessage]);
     setMessage("");
   }
   function insertEmoji(emoji: string) {
@@ -71,7 +81,7 @@ export function EmojiPickerExamples() {
             <Button variant="ghost" size="icon" aria-label="Attach file">
               <IconPaperclip />
             </Button>
-            <textarea
+            <TextArea
               ref={messageInputRef}
               rows={1}
               aria-label="Write a message"
@@ -87,20 +97,20 @@ export function EmojiPickerExamples() {
               className="min-w-0 flex-1 resize-none bg-transparent py-2 text-sm outline-none"
             />
             <EmojiPicker triggerLabel="Insert emoji" onValueChange={insertEmoji} />
-            <Button size="icon" aria-label="Send message" onClick={sendMessage} disabled={!message.trim()}>
+            <Button size="icon" aria-label="Send message" onPress={sendMessage} isDisabled={!message.trim()}>
               <IconSend />
             </Button>
           </div>
           <div className="space-y-1 text-sm">
-            {sent.map((item, index) => (
-              <p key={`${item}-${index}`} className="rounded-lg bg-muted px-3 py-2">
-                {item}
+            {sent.map((item) => (
+              <p key={item.id} className="rounded-lg bg-muted px-3 py-2">
+                {item.text}
               </p>
             ))}
           </div>
         </div>
       </ComponentPreview>
-      <ComponentPreview title="Message Reactions">
+      <ComponentPreview title="Recent Selection">
         <div className="grid w-full gap-3">
           <div className="flex items-start gap-2 rounded-lg border p-3">
             <IconMessageCircle className="mt-0.5 size-4 text-muted-foreground" />
@@ -137,12 +147,11 @@ export function EmojiPickerExamples() {
           <div className="grid size-12 place-items-center rounded-xl border bg-muted/40 text-2xl">{icon}</div>
           <div className="min-w-0 flex-1">
             <p className="text-sm font-medium">Usage overview</p>
-            <p className="text-xs text-muted-foreground">Choose an emoji to identify this saved dashboard.</p>
           </div>
           <EmojiPicker value={icon} triggerLabel="Change page icon" onValueChange={setIcon} />
         </div>
       </ComponentPreview>
-      <ComponentPreview title="Custom Team Emoji">
+      <ComponentPreview title="Custom Emoji Set">
         <div className="grid w-full gap-3">
           <EmojiPickerPanel customEmojis={teamEmojis} onSelect={(item) => setReaction(item.emoji)} />
           <p className="text-xs text-muted-foreground" aria-live="polite">
@@ -154,10 +163,10 @@ export function EmojiPickerExamples() {
       </ComponentPreview>
       <ComponentPreview title="Shortcode Suggestions">
         <div className="relative grid w-full max-w-sm gap-2">
-          <label htmlFor="emoji-shortcode" className="text-sm font-medium">
+          <Label htmlFor="emoji-shortcode" className="text-sm font-medium">
             Write a comment
-          </label>
-          <textarea
+          </Label>
+          <TextArea
             id="emoji-shortcode"
             rows={3}
             value={shortcode}
@@ -185,10 +194,10 @@ export function EmojiPickerExamples() {
       <ComponentPreview title="Localized Emoji Data and Labels">
         <div className="grid w-full gap-3">
           <div className="flex gap-2">
-            <Button size="sm" variant={locale === "en" ? "default" : "outline"} onClick={() => setLocale("en")}>
+            <Button size="sm" variant={locale === "en" ? "default" : "outline"} onPress={() => setLocale("en")}>
               English
             </Button>
-            <Button size="sm" variant={locale === "zh" ? "default" : "outline"} onClick={() => setLocale("zh")}>
+            <Button size="sm" variant={locale === "zh" ? "default" : "outline"} onPress={() => setLocale("zh")}>
               简体中文
             </Button>
           </div>

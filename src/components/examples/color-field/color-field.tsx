@@ -4,8 +4,8 @@ import { useState } from "react";
 
 import { type Color, parseColor } from "react-aria-components";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { ColorField, ColorFieldInput, ColorFieldLabel } from "@/components/ui/color-field";
-import { ComponentPreview } from "@/examples/component-preview";
 
 export function ColorFieldExamples() {
   const [color, setColor] = useState<Color>(() => parseColor("#7f007f"));

@@ -1,16 +1,17 @@
 "use client";
 import * as React from "react";
 
-import { IconCheck, IconInfoCircle, IconPencil, IconX } from "@tabler/icons-react";
+import { Check as IconCheck, Info as IconInfoCircle, Pencil as IconPencil, X as IconX } from "lucide-react";
+import { Button as TooltipButton } from "react-aria-components/Button";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+import { CheckboxButton, CheckboxField } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { ComponentPreview } from "@/examples/component-preview";
+import { TextArea } from "@/components/ui/text-area";
+import { Tooltip, TooltipTrigger } from "@/components/ui/tooltip";
 
 const examples = [
   "Basic label",
@@ -43,16 +44,15 @@ function LabelDemo({ index }: { index: number }) {
     );
   if (index === 1)
     return (
-      <label className="flex items-center gap-2 text-sm">
-        <Checkbox name="terms" id="label-terms" />
-        <span>I agree to the workspace terms</span>
-      </label>
+      <CheckboxField name="terms" id="label-terms">
+        <CheckboxButton className="items-center gap-2 text-sm">I agree to the workspace terms</CheckboxButton>
+      </CheckboxField>
     );
   if (index === 2)
     return (
       <div className="grid w-full max-w-sm gap-2">
         <Label htmlFor="label-message">Message</Label>
-        <Textarea id="label-message" placeholder="Write a message for your team…" />
+        <TextArea id="label-message" placeholder="Write a message for your team…" />
       </div>
     );
   if (index === 3)
@@ -93,24 +93,24 @@ function LabelDemo({ index }: { index: number }) {
     );
   if (index === 6)
     return (
-      <TooltipProvider>
+      <>
         <div className="grid w-full max-w-sm gap-2">
           <div className="flex items-center gap-1.5">
             <Label htmlFor="label-api-key">API key</Label>
-            <Tooltip>
-              <TooltipTrigger
+            <TooltipTrigger delay={0}>
+              <TooltipButton
                 type="button"
                 aria-label="Where to find the API key"
                 className="rounded-sm text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
               >
                 <IconInfoCircle className="size-4" />
-              </TooltipTrigger>
-              <TooltipContent>Find this under Developer settings → API keys.</TooltipContent>
-            </Tooltip>
+              </TooltipButton>
+              <Tooltip>Find this under Developer settings → API keys.</Tooltip>
+            </TooltipTrigger>
           </div>
           <Input id="label-api-key" placeholder="sk_live_…" />
         </div>
-      </TooltipProvider>
+      </>
     );
   if (index === 7)
     return (
@@ -128,7 +128,7 @@ function LabelDemo({ index }: { index: number }) {
         <Label htmlFor="label-bio" className="justify-between">
           Bio<span className="text-xs tabular-nums text-muted-foreground">{bio.length}/200</span>
         </Label>
-        <Textarea
+        <TextArea
           id="label-bio"
           value={bio}
           maxLength={200}
@@ -159,7 +159,7 @@ function LabelDemo({ index }: { index: number }) {
             Enter a complete work email address.
           </p>
         )}
-        <Button size="sm" variant="outline" className="w-fit" onClick={() => setInvalid((value) => !value)}>
+        <Button size="sm" variant="outline" className="w-fit" onPress={() => setInvalid((value) => !value)}>
           Toggle error state
         </Button>
       </div>
@@ -171,14 +171,14 @@ function LabelDemo({ index }: { index: number }) {
           <Label htmlFor="label-project-name">Project name</Label>
           {editing ? (
             <div className="flex gap-1">
-              <Button size="icon-xs" variant="ghost" aria-label="Save project name" onClick={() => setEditing(false)}>
+              <Button size="icon-xs" variant="ghost" aria-label="Save project name" onPress={() => setEditing(false)}>
                 <IconCheck />
               </Button>
               <Button
                 size="icon-xs"
                 variant="ghost"
                 aria-label="Cancel editing"
-                onClick={() => {
+                onPress={() => {
                   setName("Platform refresh");
                   setEditing(false);
                 }}
@@ -187,7 +187,7 @@ function LabelDemo({ index }: { index: number }) {
               </Button>
             </div>
           ) : (
-            <Button size="icon-xs" variant="ghost" aria-label="Edit project name" onClick={() => setEditing(true)}>
+            <Button size="icon-xs" variant="ghost" aria-label="Edit project name" onPress={() => setEditing(true)}>
               <IconPencil />
             </Button>
           )}

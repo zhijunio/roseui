@@ -1,13 +1,13 @@
 "use client";
 import { useId, useState } from "react";
 
-import { IconFilter, IconX } from "@tabler/icons-react";
+import { Filter as IconFilter, X as IconX } from "lucide-react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Button } from "@/components/ui/button";
 import { Kbd, KbdGroup } from "@/components/ui/kbd";
 import { Label } from "@/components/ui/label";
 import { SearchField } from "@/components/ui/search-field";
-import { ComponentPreview } from "@/examples/component-preview";
 
 const teammates = [
   { name: "Amir Haddad", team: "Design" },
@@ -106,9 +106,8 @@ function SearchFieldDemoContent() {
           <div className="grid gap-2">
             <Label htmlFor="search-help-center">Help center</Label>
             <SearchField id="search-help-center" placeholder="Search articles" loading={isLoading} />
-            <p className="text-xs text-muted-foreground">Try “team” or “plan”.</p>
           </div>
-          <Button type="button" variant="outline" size="sm" onClick={() => setIsLoading((loading) => !loading)}>
+          <Button type="button" variant="outline" size="sm" onPress={() => setIsLoading((loading) => !loading)}>
             {isLoading ? "Stop loading" : "Loading"}
           </Button>
         </div>

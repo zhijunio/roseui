@@ -1,5 +1,5 @@
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { JsonViewer } from "@/components/ui/json-viewer";
-import { ComponentPreview } from "@/examples/component-preview";
 
 const auditPayload = {
   event: "access.policy.updated",
@@ -24,10 +24,10 @@ const importPreview = [
 export function JsonViewerExamples() {
   return (
     <div className="grid min-w-0 items-start gap-5 [&>*]:min-w-0">
-      <ComponentPreview title="Access policy event" layout="fullStack">
+      <ComponentPreview title="Nested Object" layout="fullStack">
         <JsonViewer data={auditPayload} label="Access policy event payload" />
       </ComponentPreview>
-      <ComponentPreview title="Imported account records" layout="fullStack">
+      <ComponentPreview title="Array Data" layout="fullStack">
         <JsonViewer
           data={importPreview}
           label="Imported account records"

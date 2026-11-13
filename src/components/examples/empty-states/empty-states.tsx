@@ -2,37 +2,37 @@
 
 import { type ComponentType, type ReactNode, useRef, useState } from "react";
 
-import type { Icon } from "@tabler/icons-react";
+import type { LucideIcon as Icon } from "lucide-react";
 import {
-  IconArrowRight,
-  IconBellOff,
-  IconBookmark,
-  IconCalendarEvent,
-  IconChartBar,
-  IconCheck,
-  IconCreditCard,
-  IconFileText,
-  IconFolderPlus,
-  IconInbox,
-  IconLifebuoy,
-  IconMessageCircle,
-  IconPackage,
-  IconPlugConnected,
-  IconPlus,
-  IconRefresh,
-  IconSearch,
-  IconServerOff,
-  IconSettings,
-  IconUpload,
-  IconUsers,
-} from "@tabler/icons-react";
+  ArrowRight as IconArrowRight,
+  BellOff as IconBellOff,
+  Bookmark as IconBookmark,
+  CalendarDays as IconCalendarEvent,
+  ChartBar as IconChartBar,
+  Check as IconCheck,
+  CreditCard as IconCreditCard,
+  FileText as IconFileText,
+  FolderPlus as IconFolderPlus,
+  Inbox as IconInbox,
+  LifeBuoy as IconLifebuoy,
+  MessageCircle as IconMessageCircle,
+  Package as IconPackage,
+  Plug as IconPlugConnected,
+  Plus as IconPlus,
+  RefreshCw as IconRefresh,
+  Search as IconSearch,
+  ServerOff as IconServerOff,
+  Settings as IconSettings,
+  Upload as IconUpload,
+  Users as IconUsers,
+} from "lucide-react";
 import { toast } from "sonner";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Button } from "@/components/ui/button";
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import { ComponentPreview } from "@/examples/component-preview";
 
 export function EmptyStateExample({
   icon: IconComponent,
@@ -52,7 +52,7 @@ export function EmptyStateExample({
   iconClassName?: string;
 }) {
   return (
-    <Empty className={`min-h-40 rounded-xl ${variant === "dashed" ? "border border-dashed border-border p-5" : "p-4"}`}>
+    <Empty className={`min-h-40 rounded-xl ${variant === "dashed" ? "border-border border border-dashed p-5" : "p-4"}`}>
       <EmptyHeader>
         <EmptyMedia variant="icon" className={iconClassName}>
           <IconComponent aria-hidden="true" />
@@ -119,7 +119,7 @@ export function EmptyBasicExamples() {
         </EmptyStateExample>
       </ComponentPreview>
 
-      <ComponentPreview title="Documents">
+      <ComponentPreview title="No Content">
         <EmptyStateExample
           icon={IconFileText}
           iconClassName="bg-violet-500/10 text-violet-600 dark:text-violet-400"
@@ -151,7 +151,7 @@ export function EmptyBasicExamples() {
                 className="sr-only"
                 onChange={(event) => setFileName(event.currentTarget.files?.[0]?.name ?? "")}
               />
-              <Button variant="outline" onClick={() => uploadRef.current?.click()}>
+              <Button variant="outline" onPress={() => uploadRef.current?.click()}>
                 <IconUpload />
                 Choose file
               </Button>
@@ -160,7 +160,7 @@ export function EmptyBasicExamples() {
         />
       </ComponentPreview>
 
-      <ComponentPreview title="Team Members">
+      <ComponentPreview title="Call to Action">
         <EmptyStateExample
           icon={IconUsers}
           iconClassName="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
@@ -175,7 +175,7 @@ export function EmptyBasicExamples() {
         />
       </ComponentPreview>
 
-      <ComponentPreview title="No Analytics Data">
+      <ComponentPreview title="Data Empty State">
         <EmptyStateExample
           icon={IconChartBar}
           iconClassName="bg-blue-500/10 text-blue-600 dark:text-blue-400"
@@ -193,7 +193,7 @@ export function EmptyBasicExamples() {
           action={<Button variant="outline">Browse reports</Button>}
         />
       </ComponentPreview>
-      <ComponentPreview title="No Tasks">
+      <ComponentPreview title="Actionable Empty State">
         <EmptyStateExample
           icon={IconCheck}
           iconClassName="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
@@ -240,7 +240,7 @@ export function EmptyIconExamples() {
           action={<Button variant="outline">Add a comment</Button>}
         />
       </ComponentPreview>
-      <ComponentPreview title="Layered Products">
+      <ComponentPreview title="Custom Illustration">
         <EmptyIconStateExample
           icon={IconPackage}
           iconClassName="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
@@ -249,7 +249,7 @@ export function EmptyIconExamples() {
           action={<Button>Add product</Button>}
         />
       </ComponentPreview>
-      <ComponentPreview title="Chat Messages">
+      <ComponentPreview title="No Activity">
         <EmptyIconStateExample
           icon={IconMessageCircle}
           iconClassName="bg-violet-500/10 text-violet-600 dark:text-violet-400"
@@ -258,7 +258,7 @@ export function EmptyIconExamples() {
           action={<Button>New message</Button>}
         />
       </ComponentPreview>
-      <ComponentPreview title="Payments">
+      <ComponentPreview title="Empty Collection">
         <EmptyIconStateExample
           icon={IconCreditCard}
           iconClassName="bg-violet-500/10 text-violet-600 dark:text-violet-400"
@@ -268,7 +268,7 @@ export function EmptyIconExamples() {
         />
       </ComponentPreview>
 
-      <ComponentPreview title="Calendar Events">
+      <ComponentPreview title="Date-specific Empty State">
         <EmptyIconStateExample
           icon={IconCalendarEvent}
           iconClassName="bg-blue-500/10 text-blue-600 dark:text-blue-400"
@@ -291,6 +291,7 @@ type EmptyStateDef = {
   description: string;
   primary: Action;
   secondary?: Action;
+  statusCode?: string;
 };
 
 const states: EmptyStateDef[] = [
@@ -337,6 +338,7 @@ const states: EmptyStateDef[] = [
     description: "We couldn't load this data. This is usually temporary — try again in a moment.",
     primary: { label: "Try again", icon: IconRefresh },
     secondary: { label: "Contact support", icon: IconLifebuoy },
+    statusCode: "500",
   },
   {
     icon: IconPlugConnected,
@@ -361,31 +363,36 @@ export function EmptyStatesGrid() {
   );
 }
 
-function EmptyState({ icon: Icon, tint, title, description, primary, secondary }: EmptyStateDef) {
+function EmptyState({ icon: Icon, tint, title, description, primary, secondary, statusCode }: EmptyStateDef) {
   const fire = (label: string) => () => toast(label, { description: "Demo action — wired for preview." });
 
   return (
-    <div className="flex min-h-64 w-full flex-col items-center justify-center gap-4 px-4 py-8 text-center">
-      <div className={`flex size-14 shrink-0 items-center justify-center rounded-full ${tint}`}>
-        <Icon className="size-7" />
-      </div>
-      <div className="space-y-1.5">
-        <h3 className="text-base font-medium tracking-tight">{title}</h3>
-        <p className="mx-auto max-w-[30ch] text-sm text-muted-foreground">{description}</p>
-      </div>
-      <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
-        <Button size="sm" onClick={fire(primary.label)}>
+    <Empty className="min-h-64 w-full justify-center rounded-xl p-4">
+      <EmptyHeader className="max-w-[30ch] gap-3">
+        <EmptyMedia variant="icon" className={tint}>
+          <Icon className="size-7" />
+        </EmptyMedia>
+        {statusCode && (
+          <p className="text-muted-foreground text-5xl leading-none font-semibold tracking-tight tabular-nums select-none">
+            {statusCode}
+          </p>
+        )}
+        <EmptyTitle className="text-base font-medium">{title}</EmptyTitle>
+        <EmptyDescription>{description}</EmptyDescription>
+      </EmptyHeader>
+      <EmptyContent className="flex-row flex-wrap justify-center pt-1">
+        <Button size="sm" onPress={fire(primary.label)}>
           {primary.icon && <primary.icon className="size-4" />}
           {primary.label}
         </Button>
         {secondary && (
-          <Button size="sm" variant="outline" onClick={fire(secondary.label)}>
+          <Button size="sm" variant="outline" onPress={fire(secondary.label)}>
             {secondary.icon && <secondary.icon className="size-4" />}
             {secondary.label}
           </Button>
         )}
-      </div>
-    </div>
+      </EmptyContent>
+    </Empty>
   );
 }
 

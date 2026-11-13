@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 
-import { IconMinus, IconPlus, IconUsers } from "@tabler/icons-react";
+import { Minus as IconMinus, Plus as IconPlus, Users as IconUsers } from "lucide-react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Button } from "@/components/ui/button";
 import { NumberStepper } from "@/components/ui/number-stepper";
-import { ComponentPreview } from "@/examples/component-preview";
 
 export function NumberStepperExamples() {
   const [guests, setGuests] = useState(2);
@@ -44,10 +44,10 @@ export function NumberStepperExamples() {
             Quantity: {quantity}
           </output>
           <div className="flex gap-2">
-            <Button type="button" variant="link" size="xs" onClick={() => setQuantity(0)}>
+            <Button type="button" variant="link" size="xs" onPress={() => setQuantity(0)}>
               Reset
             </Button>
-            <Button type="button" variant="link" size="xs" onClick={() => setQuantity(10)}>
+            <Button type="button" variant="link" size="xs" onPress={() => setQuantity(10)}>
               Set to 10
             </Button>
           </div>
@@ -69,7 +69,6 @@ export function NumberStepperExamples() {
             step={5}
             defaultValue={10}
           />
-          <p className="text-xs text-muted-foreground">Changes in steps of 5, from 0 to 50.</p>
         </div>
       </ComponentPreview>
       <ComponentPreview title="Reversed Controls" layout="panel">
@@ -95,13 +94,11 @@ export function NumberStepperExamples() {
             defaultValue={1250}
             formatOptions={{ style: "currency", currency: "USD", maximumFractionDigits: 0 }}
           />
-          <p className="text-xs text-muted-foreground">Adjust the budget in $25 increments.</p>
         </div>
       </ComponentPreview>
       <ComponentPreview title="Disabled" layout="panel">
         <div className="grid gap-3">
           <NumberStepper aria-label="Unavailable seats" value={12} isDisabled />
-          <p className="text-xs text-muted-foreground">This seat count is managed by your organization.</p>
         </div>
       </ComponentPreview>
       <ComponentPreview title="Custom Button Icons" layout="panel">
@@ -116,7 +113,6 @@ export function NumberStepperExamples() {
             incrementLabel="Add team member"
             decrementLabel="Remove team member"
           />
-          <p className="text-xs text-muted-foreground">The increase action uses a team icon.</p>
         </div>
       </ComponentPreview>
     </>

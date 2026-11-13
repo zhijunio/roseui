@@ -1,9 +1,16 @@
 "use client";
 import { useState } from "react";
 
-import { IconAlertTriangle, IconCircleCheck, IconCircleX, IconInfoCircle, IconX } from "@tabler/icons-react";
+import {
+  AlertTriangle as IconAlertTriangle,
+  CircleCheck as IconCircleCheck,
+  CircleX as IconCircleX,
+  Info as IconInfoCircle,
+  X as IconX,
+} from "lucide-react";
 import { toast } from "sonner";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -21,7 +28,6 @@ import { Input } from "@/components/ui/input";
 import { Kbd } from "@/components/ui/kbd";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { ComponentPreview } from "@/examples/component-preview";
 
 type ModalSize = "sm" | "md" | "lg" | "xl";
 
@@ -117,7 +123,7 @@ export function DialogModalExamples() {
                 key={option.size}
                 variant="secondary"
                 size="sm"
-                onClick={() => {
+                onPress={() => {
                   setSize(option.size);
                   setSizeOpen(true);
                 }}
@@ -134,7 +140,7 @@ export function DialogModalExamples() {
                   </p>
                 </ModalBody>
                 <ModalFooter>
-                  <Button variant="secondary" onClick={() => setSizeOpen(false)}>
+                  <Button variant="secondary" onPress={() => setSizeOpen(false)}>
                     Close
                   </Button>
                 </ModalFooter>
@@ -170,7 +176,7 @@ export function DialogModalExamples() {
                     <Button variant="secondary">Cancel</Button>
                   </DialogClose>
                   <DialogClose asChild>
-                    <Button onClick={() => toast.success("Invitation sent")}>Send invitation</Button>
+                    <Button onPress={() => toast.success("Invitation sent")}>Send invitation</Button>
                   </DialogClose>
                 </ModalFooter>
               </Modal>
@@ -216,7 +222,7 @@ export function DialogModalExamples() {
             <Button
               variant="secondary"
               className="justify-self-start"
-              onClick={() => {
+              onPress={() => {
                 setDraftName(projectName);
                 setRenameOpen(true);
               }}
@@ -244,7 +250,7 @@ export function DialogModalExamples() {
                   </form>
                 </ModalBody>
                 <ModalFooter>
-                  <Button variant="secondary" onClick={() => setRenameOpen(false)}>
+                  <Button variant="secondary" onPress={() => setRenameOpen(false)}>
                     Cancel
                   </Button>
                   <Button type="submit" form="rename-project-form">
@@ -268,7 +274,7 @@ export function DialogModalExamples() {
             >
               <ModalHeader title="Review required" description="Use the button below to close this dialog." />
               <ModalFooter>
-                <Button onClick={() => setRequiredOpen(false)}>Continue</Button>
+                <Button onPress={() => setRequiredOpen(false)}>Continue</Button>
               </ModalFooter>
             </Modal>
           </Dialog>
@@ -346,7 +352,7 @@ export function DialogVariantExamples() {
                     <Button variant="secondary">Cancel</Button>
                   </DialogClose>
                   <DialogClose asChild>
-                    <Button onClick={() => navigator.clipboard?.writeText("https://example.com/projects/acme")}>
+                    <Button onPress={() => navigator.clipboard?.writeText("https://example.com/projects/acme")}>
                       Copy link
                     </Button>
                   </DialogClose>
@@ -404,7 +410,7 @@ export function DialogVariantExamples() {
                 />
                 <ModalFooter className="w-full">
                   <DialogClose asChild>
-                    <Button className="w-full" onClick={() => toast.success("Sign-in flow started")}>
+                    <Button className="w-full" onPress={() => toast.success("Sign-in flow started")}>
                       Sign in again
                     </Button>
                   </DialogClose>
@@ -451,16 +457,16 @@ export function DialogVariantExamples() {
       <ComponentPreview title="Grid Content Layout" layout="grid2">
         <div className="min-w-0">
           <div className="flex w-full flex-wrap justify-center gap-2">
-            <Button variant="secondary" onClick={() => setAlert("success")}>
+            <Button variant="secondary" onPress={() => setAlert("success")}>
               Success
             </Button>
-            <Button variant="secondary" onClick={() => setAlert("info")}>
+            <Button variant="secondary" onPress={() => setAlert("info")}>
               Information
             </Button>
-            <Button variant="secondary" onClick={() => setAlert("warning")}>
+            <Button variant="secondary" onPress={() => setAlert("warning")}>
               Warning
             </Button>
-            <Button variant="destructive" onClick={() => setAlert("danger")}>
+            <Button variant="destructive" onPress={() => setAlert("danger")}>
               Error
             </Button>
             <Dialog open={alert !== null} onOpenChange={(open) => !open && setAlert(null)}>
@@ -501,7 +507,7 @@ export function DialogVariantExamples() {
                     <Button variant="outline">Cancel</Button>
                   </DialogClose>
                   <DialogClose asChild>
-                    <Button variant="destructive" onClick={() => toast.error("Workspace deleted")}>
+                    <Button variant="destructive" onPress={() => toast.error("Workspace deleted")}>
                       Delete workspace
                     </Button>
                   </DialogClose>
@@ -542,7 +548,7 @@ export function DialogVariantExamples() {
                     <Button variant="outline">Cancel</Button>
                   </DialogClose>
                   <DialogClose asChild>
-                    <Button onClick={() => toast.success("Cookie preferences saved")}>Save preferences</Button>
+                    <Button onPress={() => toast.success("Cookie preferences saved")}>Save preferences</Button>
                   </DialogClose>
                 </ModalFooter>
               </Modal>
@@ -569,8 +575,8 @@ export function DialogVariantExamples() {
                     <div key={action} className="flex items-center justify-between gap-3">
                       <span className="text-sm text-muted-foreground">{action}</span>
                       <span className="flex gap-1">
-                        {keys.map((key, index) => (
-                          <Kbd key={`${action}-${index}`}>{key}</Kbd>
+                        {keys.map((key) => (
+                          <Kbd key={`${action}-${key}`}>{key}</Kbd>
                         ))}
                       </span>
                     </div>

@@ -1,10 +1,10 @@
 "use client";
 import { useEffect, useState } from "react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Autocomplete, type AutocompleteItem } from "@/components/ui/autocomplete";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { ComponentPreview } from "@/examples/component-preview";
 
 const features: AutocompleteItem[] = [
   { value: "Analytics", group: "Product" },
@@ -158,7 +158,7 @@ function AutocompleteDemoContent() {
                 type="button"
                 variant="outline"
                 className="flex-1"
-                onClick={() => {
+                onPress={() => {
                   setFormValue("");
                   setFormError("");
                 }}
@@ -228,9 +228,5 @@ function AutocompleteDemoContent() {
 }
 
 export function AutocompleteExamples() {
-  return (
-    <>
-      <AutocompleteDemoContent />
-    </>
-  );
+  return <AutocompleteDemoContent />;
 }

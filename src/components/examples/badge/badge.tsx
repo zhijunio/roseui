@@ -4,15 +4,15 @@ import { type ComponentProps, useState } from "react";
 
 import Link from "next/link";
 
-import { IconBell, IconCheck, IconX } from "@tabler/icons-react";
+import { Bell as IconBell, Check as IconCheck, X as IconX } from "lucide-react";
 import flags from "react-phone-number-input/flags";
 
+import { ComponentPreview, type ComponentPreviewLayout } from "@/components/docs/component-preview";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge, BadgeAnchor, type BadgePlacement } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { StatusDot } from "@/components/ui/status-dot";
 import { users } from "@/data/user";
-import { ComponentPreview, type ComponentPreviewLayout } from "@/examples/component-preview";
 
 type ExampleSection = {
   title: string;
@@ -216,7 +216,7 @@ export function BadgeExample({ example }: { example: number }) {
         <span role="status" className="text-xs text-muted-foreground">
           {"Badge removed"}
         </span>
-        <Button variant="ghost" size="sm" onClick={() => setDismissed(false)}>
+        <Button variant="ghost" size="sm" onPress={() => setDismissed(false)}>
           {"Restore"}
         </Button>
       </div>
@@ -236,7 +236,7 @@ export function BadgeExample({ example }: { example: number }) {
   if (example === 23)
     return (
       <Badge variant="outline" asChild>
-        <Link href="/components/button-group">{"Browse buttons"}</Link>
+        <Link href="/docs/components/buttons/button-group">{"Browse buttons"}</Link>
       </Badge>
     );
   if (example === 24)

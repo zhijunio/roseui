@@ -3,18 +3,19 @@
 import { type ReactNode, useState } from "react";
 
 import {
-  IconAlertTriangle,
-  IconBellRinging,
-  IconBluetooth,
-  IconCircleCheck,
-  IconDeviceDesktop,
-  IconLogout,
-  IconShieldCheck,
-  IconTrash,
-  IconUserOff,
-  IconX,
-} from "@tabler/icons-react";
+  AlertTriangle as IconAlertTriangle,
+  BellRing as IconBellRinging,
+  Bluetooth as IconBluetooth,
+  CircleCheck as IconCircleCheck,
+  Monitor as IconDeviceDesktop,
+  LogOut as IconLogout,
+  ShieldCheck as IconShieldCheck,
+  Trash as IconTrash,
+  UserX as IconUserOff,
+  X as IconX,
+} from "lucide-react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -29,7 +30,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+import { CheckboxButton, CheckboxField } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
@@ -40,7 +41,6 @@ import {
 } from "@/components/ui/dialog";
 import { Frame, FrameDescription, FrameFooter, FrameHeader, FramePanel, FrameTitle } from "@/components/ui/frame";
 import { Input } from "@/components/ui/input";
-import { ComponentPreview } from "@/examples/component-preview";
 
 function Example({ trigger, children }: { trigger: string; children: ReactNode }) {
   return (
@@ -458,7 +458,7 @@ function AlertDialogBehaviorExamples() {
               <AlertDialogDescription>Use Cancel, Confirm, or the explicit close action.</AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter className="sm:flex-wrap">
-              <Button variant="ghost" onClick={() => setCloseMethodsOpen(false)}>
+              <Button variant="ghost" onPress={() => setCloseMethodsOpen(false)}>
                 Close dialog
               </Button>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
@@ -515,13 +515,12 @@ function AlertDialogBehaviorExamples() {
                     <AlertDialogTitle>Discard unsaved changes?</AlertDialogTitle>
                     <AlertDialogDescription>Your edits to the quarterly report will be lost.</AlertDialogDescription>
                   </AlertDialogHeader>
-                  <label className="flex items-center gap-2 text-sm">
-                    <Checkbox
-                      checked={skipUnsavedPrompt}
-                      onCheckedChange={(value) => setSkipUnsavedPrompt(value === true)}
-                    />
-                    Don’t ask again
-                  </label>
+                  <CheckboxField
+                    checked={skipUnsavedPrompt}
+                    onCheckedChange={(value) => setSkipUnsavedPrompt(value === true)}
+                  >
+                    <CheckboxButton className="items-center gap-2 text-sm">Don’t ask again</CheckboxButton>
+                  </CheckboxField>
                   <AlertDialogFooter>
                     <AlertDialogCancel>Stay here</AlertDialogCancel>
                     <AlertDialogAction variant="destructive">Discard changes</AlertDialogAction>
@@ -552,10 +551,11 @@ function AlertDialogFeedbackExamples() {
                 <AlertDialogTitle>Import completed</AlertDialogTitle>
                 <AlertDialogDescription>All 128 records were imported successfully.</AlertDialogDescription>
               </AlertDialogHeader>
-              <label className="flex items-center gap-2 text-sm">
-                <Checkbox checked={saved} onCheckedChange={(value) => setSaved(value === true)} />
-                Don’t show this confirmation again
-              </label>
+              <CheckboxField checked={saved} onCheckedChange={(value) => setSaved(value === true)}>
+                <CheckboxButton className="items-center gap-2 text-sm">
+                  Don’t show this confirmation again
+                </CheckboxButton>
+              </CheckboxField>
               <AlertDialogFooter>
                 <AlertDialogCancel>Done</AlertDialogCancel>
               </AlertDialogFooter>
@@ -690,7 +690,7 @@ function AlertDialogFeedbackExamples() {
       <ComponentPreview title="Custom Motion" layout="grid2" span={2}>
         <div className="min-w-0">
           <Example trigger="Slide from bottom">
-            <AlertDialogContent className="data-open:slide-in-from-bottom-4 data-closed:slide-out-to-bottom-4 motion-reduce:!animate-none">
+            <AlertDialogContent className="entering:slide-in-from-bottom-4 exiting:slide-out-to-bottom-4 motion-reduce:!animate-none">
               <AlertDialogHeader>
                 <AlertDialogTitle>Review deployment?</AlertDialogTitle>
                 <AlertDialogDescription>
@@ -706,7 +706,7 @@ function AlertDialogFeedbackExamples() {
         </div>
         <div className="min-w-0">
           <Example trigger="Slide from top">
-            <AlertDialogContent className="data-open:slide-in-from-top-4 data-closed:slide-out-to-top-4 motion-reduce:!animate-none">
+            <AlertDialogContent className="entering:slide-in-from-top-4 exiting:slide-out-to-top-4 motion-reduce:!animate-none">
               <AlertDialogHeader>
                 <AlertDialogTitle>Rotate workspace keys?</AlertDialogTitle>
                 <AlertDialogDescription>

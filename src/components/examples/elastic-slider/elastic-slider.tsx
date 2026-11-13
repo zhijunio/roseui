@@ -2,10 +2,10 @@
 
 import * as React from "react";
 
-import { IconVolume, IconVolumeOff } from "@tabler/icons-react";
+import { Volume as IconVolume, VolumeOff as IconVolumeOff } from "lucide-react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { ElasticSlider } from "@/components/ui/elastic-slider";
-import { ComponentPreview } from "@/examples/component-preview";
 
 export function ElasticSliderExamples() {
   const [volume, setVolume] = React.useState(62);

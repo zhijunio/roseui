@@ -1,11 +1,14 @@
-import { IconArrowLeft, IconCircleDashed, IconDeviceFloppy } from "@tabler/icons-react";
+"use client";
 
+import { ArrowLeft as IconArrowLeft, CircleDashed as IconCircleDashed, Save as IconDeviceFloppy } from "lucide-react";
+import { Focusable } from "react-aria-components/Focusable";
+
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Button } from "@/components/ui/button";
-import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/composite-input-group";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Kbd, KbdGroup } from "@/components/ui/kbd";
 import { Separator } from "@/components/ui/separator";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { ComponentPreview } from "@/examples/component-preview";
+import { Tooltip, TooltipTrigger } from "@/components/ui/tooltip";
 
 const shortcuts = [
   { label: "Search workspace", keys: ["⌘", "K"] },
@@ -93,19 +96,19 @@ export function KbdExamples() {
 
       <ComponentPreview title="Shortcut in Tooltip">
         <div className="flex w-full items-center justify-center">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
+          <>
+            <TooltipTrigger delay={0}>
+              <Focusable>
                 <Button variant="outline" size="icon" aria-label="Save changes">
                   <IconDeviceFloppy />
                 </Button>
-              </TooltipTrigger>
-              <TooltipContent>
+              </Focusable>
+              <Tooltip>
                 <span>Save changes</span>
                 <Kbd>S</Kbd>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+              </Tooltip>
+            </TooltipTrigger>
+          </>
         </div>
       </ComponentPreview>
 

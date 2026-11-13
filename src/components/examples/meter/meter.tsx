@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-import { Meter, type MeterTone } from "@/components/ui/meter";
+import { ComponentPreview } from "@/components/docs/component-preview";
+import { Meter, MeterHeader, type MeterTone, MeterTrack, MeterValue } from "@/components/ui/meter";
 import { Slider } from "@/components/ui/slider";
-import { ComponentPreview } from "@/examples/component-preview";
 
 function toneFor(value: number): MeterTone {
   if (value >= 90) return "error";
@@ -14,10 +14,19 @@ function toneFor(value: number): MeterTone {
 
 export function MeterExamples() {
   const [used, setUsed] = useState(62);
+  const [animatedValue, setAnimatedValue] = useState(1);
+
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      setAnimatedValue((previous) => (previous < 100 ? previous + 1 : 100));
+    }, 50);
+
+    return () => window.clearInterval(interval);
+  }, []);
 
   return (
     <>
-      <ComponentPreview title="Usage and Quota Meters" layout="panel">
+      <ComponentPreview title="Multiple Values and Limits" layout="panel">
         <div className="grid gap-5">
           <Meter label="Storage" value={7.2} maxValue={10} valueLabel="7.2 of 10 GB" />
           <Meter
@@ -30,6 +39,10 @@ export function MeterExamples() {
           />
           <Meter label="API requests this month" value={96} valueLabel="96%" tone="error" />
         </div>
+      </ComponentPreview>
+
+      <ComponentPreview title="Animated Value" layout="panel">
+        <Meter label="Storage space" value={animatedValue} description="Current storage space usage" />
       </ComponentPreview>
 
       <ComponentPreview title="Status Tones" layout="panel">
@@ -52,8 +65,30 @@ export function MeterExamples() {
 
       <ComponentPreview title="Formatted Values" layout="panel">
         <div className="grid gap-5">
-          <Meter label="Revenue" value={750} maxValue={1000} formatOptions={{ style: "currency", currency: "USD" }} />
+          <Meter
+            label="Revenue"
+            value={15}
+            formatOptions={{ style: "currency", currency: "USD" }}
+            description="Current revenue"
+          />
+          <Meter
+            label="Progress"
+            value={75.25}
+            formatOptions={{ style: "decimal", minimumFractionDigits: 2, maximumFractionDigits: 2 }}
+          />
           <Meter label="Storage used" value={68} valueLabel="68% of 100 GB" />
+        </div>
+      </ComponentPreview>
+
+      <ComponentPreview title="Bounded Values" layout="panel">
+        <div className="grid gap-5">
+          <Meter label="Score" value={72} minValue={50} maxValue={100} />
+          <Meter
+            label="Storage"
+            value={140}
+            maxValue={100}
+            formatOptions={{ style: "decimal", maximumFractionDigits: 0 }}
+          />
         </div>
       </ComponentPreview>
 
@@ -61,7 +96,7 @@ export function MeterExamples() {
         <div className="grid gap-4">
           <Meter label="Storage" value={used} valueLabel={`${used}%`} tone={toneFor(used)} />
           <div className="grid gap-2">
-            <div className="flex items-center justify-between text-xs text-muted-foreground">
+            <div className="text-muted-foreground flex items-center justify-between text-xs">
               <span>Used</span>
               <span className="tabular-nums">{used}</span>
             </div>
@@ -76,6 +111,16 @@ export function MeterExamples() {
             />
           </div>
         </div>
+      </ComponentPreview>
+
+      <ComponentPreview title="Composition" layout="panel">
+        <Meter ariaLabel="Storage used" value={7.2} maxValue={10} valueLabel="7.2 of 10 GB">
+          <MeterHeader>
+            <span className="text-foreground font-medium">Workspace storage</span>
+            <MeterValue />
+          </MeterHeader>
+          <MeterTrack />
+        </Meter>
       </ComponentPreview>
     </>
   );

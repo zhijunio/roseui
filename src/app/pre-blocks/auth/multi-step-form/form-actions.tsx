@@ -1,11 +1,11 @@
-import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
+import { ArrowLeft as IconArrowLeft, ArrowRight as IconArrowRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
 export function FormActions({ step, totalSteps, onBack }: { step: number; totalSteps: number; onBack: () => void }) {
   return (
     <div className="flex flex-col gap-2 border-t pt-4 sm:flex-row sm:items-center sm:justify-between">
-      <Button type="button" variant="outline" className="w-full sm:w-auto" onClick={onBack} disabled={step === 1}>
+      <Button type="button" variant="outline" className="w-full sm:w-auto" onPress={onBack} isDisabled={step === 1}>
         <IconArrowLeft aria-hidden="true" />
         Back
       </Button>

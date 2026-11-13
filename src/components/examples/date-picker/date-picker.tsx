@@ -3,14 +3,9 @@
 import { useState } from "react";
 
 import { type CalendarDate, getLocalTimeZone, today } from "@internationalized/date";
-import {
-  IconCalendarEvent as CalendarDays,
-  IconClockHour3 as Clock3,
-  IconWorld as Globe2,
-  IconClockHour3,
-  IconVideo as Video,
-} from "@tabler/icons-react";
+import { CalendarDays, Clock3, Globe as Globe2, Clock3 as IconClockHour3, Video } from "lucide-react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -18,7 +13,6 @@ import { DatePicker } from "@/components/ui/date-picker";
 import { DateSelector, type DateSelectorValue, formatDateSelectorValue } from "@/components/ui/date-selector";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { ComponentPreview } from "@/examples/component-preview";
 
 export function MeetingSchedulerExample() {
   const [date, setDate] = useState(() => today(getLocalTimeZone()));
@@ -73,7 +67,7 @@ export function MeetingSchedulerExample() {
             variant={selectedTime === time ? "default" : "outline"}
             size="sm"
             aria-pressed={selectedTime === time}
-            onClick={() => setSelectedTime(time)}
+            onPress={() => setSelectedTime(time)}
           >
             {time}
           </Button>
@@ -92,7 +86,7 @@ export function DatePickerExamples() {
     <>
       <DatePickerFieldsExamples />
       <DatePickerAdditionalExamples />
-      <ComponentPreview title="Meeting Scheduler" layout="wide" span={2}>
+      <ComponentPreview title="Composite Date and Time Selection" layout="wide" span={2}>
         <MeetingSchedulerExample />
       </ComponentPreview>
       <DatePickerSelectorExamples />
@@ -264,7 +258,7 @@ export function DatePickerSelectorExamples() {
                   type="button"
                   variant="outline"
                   size="sm"
-                  onClick={() => {
+                  onPress={() => {
                     setSelectorDraft(selectorValue);
                     setSelectorPopoverOpen(false);
                   }}
@@ -274,7 +268,7 @@ export function DatePickerSelectorExamples() {
                 <Button
                   type="button"
                   size="sm"
-                  onClick={() => {
+                  onPress={() => {
                     setSelectorValue(selectorDraft);
                     setSelectorPopoverOpen(false);
                   }}
@@ -284,7 +278,6 @@ export function DatePickerSelectorExamples() {
               </div>
             </PopoverContent>
           </Popover>
-          <p className="text-xs text-muted-foreground">Changes stay in draft until Apply; Cancel discards them.</p>
         </div>
       </ComponentPreview>
 
@@ -294,7 +287,7 @@ export function DatePickerSelectorExamples() {
             type="button"
             variant="outline"
             className="w-fit"
-            onClick={() => {
+            onPress={() => {
               setSelectorDraft(selectorValue);
               setSelectorDialogOpen(true);
             }}
@@ -311,7 +304,7 @@ export function DatePickerSelectorExamples() {
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => {
+                  onPress={() => {
                     setSelectorDraft(selectorValue);
                     setSelectorDialogOpen(false);
                   }}
@@ -320,7 +313,7 @@ export function DatePickerSelectorExamples() {
                 </Button>
                 <Button
                   type="button"
-                  onClick={() => {
+                  onPress={() => {
                     setSelectorValue(selectorDraft);
                     setSelectorDialogOpen(false);
                   }}
@@ -358,7 +351,6 @@ export function DatePickerSelectorExamples() {
             locale={selectorLocale}
             label="Reporting date"
           />
-          <p className="text-xs text-muted-foreground">The selected date preview follows the chosen locale.</p>
         </div>
       </ComponentPreview>
     </>

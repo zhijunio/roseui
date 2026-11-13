@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 
-import { IconRefresh } from "@tabler/icons-react";
+import { RefreshCw as IconRefresh } from "lucide-react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Button } from "@/components/ui/button";
 import { PaymentField, type PaymentValues } from "@/components/ui/payment-field";
-import { ComponentPreview } from "@/examples/component-preview";
 
 const emptyValues: PaymentValues = {
   cardNumber: "",
@@ -19,7 +19,7 @@ export function PaymentFieldExamples() {
 
   return (
     <div className="grid min-w-0 items-start gap-5 xl:grid-cols-2">
-      <ComponentPreview title="Default payment field" layout="field">
+      <ComponentPreview title="Payment Methods" layout="field">
         <PaymentField onValueChange={setValues} />
       </ComponentPreview>
 
@@ -34,7 +34,7 @@ export function PaymentFieldExamples() {
                 variant="ghost"
                 size="sm"
                 className="gap-1.5"
-                onClick={() => setValues(emptyValues)}
+                onPress={() => setValues(emptyValues)}
               >
                 <IconRefresh />
                 Reset display

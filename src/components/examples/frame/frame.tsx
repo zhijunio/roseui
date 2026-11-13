@@ -1,8 +1,6 @@
-import { IconChevronRight } from "@tabler/icons-react";
-
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Frame, FrameDescription, FrameFooter, FrameHeader, FramePanel, FrameTitle } from "@/components/ui/frame";
-import { ComponentPreview } from "@/examples/component-preview";
 
 const examples = [
   {
@@ -196,9 +194,8 @@ function CollapsibleFrameExample() {
       <Frame className="w-full" stacked>
         <Collapsible defaultOpen className="group/frame-collapsible">
           <CollapsibleTrigger className="w-full text-left">
-            <FrameHeader className="flex flex-row items-center justify-between gap-2">
+            <FrameHeader className="flex flex-row items-center gap-2">
               <FrameTitle>Deployment checklist</FrameTitle>
-              <IconChevronRight className="size-4 text-muted-foreground transition-transform group-data-[state=open]/frame-collapsible:rotate-90" />
             </FrameHeader>
           </CollapsibleTrigger>
           <CollapsibleContent>

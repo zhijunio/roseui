@@ -1,9 +1,10 @@
 "use client";
+
 import { useState } from "react";
 
-import { FieldError } from "@/components/ui/composite-field";
-import { NumberField } from "@/components/ui/number-field";
-import { ComponentPreview } from "@/examples/component-preview";
+import { ComponentPreview } from "@/components/docs/component-preview";
+import { FieldError, FieldLabel } from "@/components/ui/field";
+import { NumberField, NumberInput } from "@/components/ui/number-field";
 
 export function NumberFieldExamples() {
   const [seats, setSeats] = useState(8);
@@ -15,7 +16,9 @@ export function NumberFieldExamples() {
     <>
       <ComponentPreview title="Controlled Value and Limits">
         <div className="grid gap-2">
-          <NumberField aria-label="Seats" min={1} max={25} value={seats} onValueChange={setSeats} />
+          <NumberField aria-label="Seats" minValue={1} maxValue={25} value={seats} onChange={setSeats}>
+            <NumberInput />
+          </NumberField>
           <p className="text-xs text-muted-foreground" aria-live="polite">
             {seats} seats selected
           </p>
@@ -24,83 +27,85 @@ export function NumberFieldExamples() {
       <ComponentPreview title="Sizes and Step Values" layout="panel">
         <div className="grid gap-5 sm:grid-cols-2">
           <div className="grid gap-3">
-            <NumberField aria-label="Small field" size="sm" defaultValue={2} />
-            <NumberField aria-label="Default field" defaultValue={5} />
-            <NumberField aria-label="Large field" size="lg" defaultValue={8} />
+            <NumberField aria-label="Small field" defaultValue={2}>
+              <NumberInput size="sm" />
+            </NumberField>
+            <NumberField aria-label="Default field" defaultValue={5}>
+              <NumberInput />
+            </NumberField>
+            <NumberField aria-label="Large field" defaultValue={8}>
+              <NumberInput size="lg" />
+            </NumberField>
           </div>
           <div className="grid gap-3">
-            <NumberField aria-label="Step 1" defaultValue={1} step={1} />
-            <NumberField aria-label="Step 5" defaultValue={5} step={5} />
-            <NumberField aria-label="Step 10" defaultValue={10} step={10} />
+            <NumberField aria-label="Step 1" defaultValue={1} step={1}>
+              <NumberInput />
+            </NumberField>
+            <NumberField aria-label="Step 5" defaultValue={5} step={5}>
+              <NumberInput />
+            </NumberField>
+            <NumberField aria-label="Step 10" defaultValue={10} step={10}>
+              <NumberInput />
+            </NumberField>
           </div>
         </div>
       </ComponentPreview>
       <ComponentPreview title="Stepper Layout and Read Only" layout="panel">
         <div className="flex flex-wrap items-center gap-4">
-          <NumberField aria-label="Guests" layout="right" min={1} max={12} defaultValue={4} />
-          <NumberField aria-label="Read-only quantity" value={3} readOnly />
+          <NumberField aria-label="Guests" minValue={1} maxValue={12} defaultValue={4}>
+            <NumberInput layout="right" />
+          </NumberField>
+          <NumberField aria-label="Read-only quantity" value={3} isReadOnly>
+            <NumberInput />
+          </NumberField>
         </div>
       </ComponentPreview>
       <ComponentPreview title="Disabled and Invalid States" layout="panel">
         <div className="grid gap-5 sm:grid-cols-2">
-          <div className="grid gap-2">
-            <label htmlFor="locked-value" className="text-sm font-medium">
-              Locked value
-            </label>
-            <NumberField id="locked-value" value={12} disabled />
-          </div>
-          <div className="grid gap-2">
-            <label htmlFor="order-quantity" className="text-sm font-medium">
-              Order quantity
-            </label>
-            <NumberField
-              id="order-quantity"
-              aria-invalid="true"
-              aria-describedby="order-error"
-              min={1}
-              max={3}
-              defaultValue={5}
-            />
+          <NumberField isDisabled defaultValue={12}>
+            <FieldLabel>Locked value</FieldLabel>
+            <NumberInput />
+          </NumberField>
+          <NumberField isInvalid minValue={1} maxValue={3} defaultValue={5}>
+            <FieldLabel>Order quantity</FieldLabel>
+            <NumberInput aria-describedby="order-error" />
             <FieldError id="order-error">Only 3 items are available.</FieldError>
-          </div>
+          </NumberField>
         </div>
       </ComponentPreview>
       <ComponentPreview title="Currency, Percentage, and Unit Formatting" span={2} layout="panel">
         <div className="grid w-full gap-4 sm:grid-cols-3">
-          <div className="grid gap-2 text-sm font-medium">
-            <label htmlFor="monthly-budget">Monthly budget</label>
-            <NumberField
-              id="monthly-budget"
-              min={0}
-              step={25}
-              value={budget}
-              onValueChange={setBudget}
-              formatOptions={{ style: "currency", currency: "USD" }}
-            />
-          </div>
-          <div className="grid gap-2 text-sm font-medium">
-            <label htmlFor="conversion-rate">Conversion rate</label>
-            <NumberField
-              id="conversion-rate"
-              min={0}
-              max={1}
-              step={0.01}
-              value={conversionRate}
-              onValueChange={setConversionRate}
-              formatOptions={{ style: "percent", maximumFractionDigits: 0 }}
-            />
-          </div>
-          <div className="grid gap-2 text-sm font-medium">
-            <label htmlFor="package-weight">Package weight</label>
-            <NumberField
-              id="package-weight"
-              min={0}
-              step={0.1}
-              value={weight}
-              onValueChange={setWeight}
-              formatOptions={{ style: "unit", unit: "kilogram", unitDisplay: "short", maximumFractionDigits: 1 }}
-            />
-          </div>
+          <NumberField
+            value={budget}
+            onChange={setBudget}
+            minValue={0}
+            step={25}
+            formatOptions={{ style: "currency", currency: "USD" }}
+          >
+            <FieldLabel>Monthly budget</FieldLabel>
+            <NumberInput />
+          </NumberField>
+          <NumberField
+            value={conversionRate}
+            onChange={setConversionRate}
+            minValue={0}
+            maxValue={1}
+            step={0.01}
+            formatOptions={{ style: "percent", maximumFractionDigits: 0 }}
+          >
+            <FieldLabel>Conversion rate</FieldLabel>
+            <NumberInput />
+          </NumberField>
+          <NumberField
+            value={weight}
+            onChange={setWeight}
+            minValue={0}
+            step={0.1}
+            formatOptions={{ style: "unit", unit: "kilogram", unitDisplay: "short", maximumFractionDigits: 1 }}
+          >
+            <FieldLabel>Package weight</FieldLabel>
+            <NumberInput />
+          </NumberField>
         </div>
       </ComponentPreview>
     </>

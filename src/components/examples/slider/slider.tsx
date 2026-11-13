@@ -1,9 +1,9 @@
 "use client";
 import { useState } from "react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Item, ItemContent, ItemDescription, ItemGroup, ItemTitle } from "@/components/ui/item";
 import { RangeSlider, Slider } from "@/components/ui/slider";
-import { ComponentPreview } from "@/examples/component-preview";
 
 function SliderDemoContent() {
   const [volume, setVolume] = useState(42);
@@ -258,7 +258,7 @@ function SliderDemoContent() {
           </div>
         </div>
       </ComponentPreview>
-      <ComponentPreview title="Settings Cell" layout="panel">
+      <ComponentPreview title="Compact Field Layout" layout="panel">
         <ItemGroup variant="outline" className="max-w-2xl">
           <Item className="items-start gap-4">
             <ItemContent className="gap-2">

@@ -2,26 +2,18 @@
 
 import { useMemo, useState } from "react";
 
-import { IconCopy, IconDotsVertical, IconTrash } from "@tabler/icons-react";
-import type { ColumnDef } from "@tanstack/react-table";
+import type { ColumnDef, PaginationState } from "@tanstack/react-table";
+import { Copy as IconCopy, EllipsisVertical as IconDotsVertical, Trash as IconTrash } from "lucide-react";
 import { toast } from "sonner";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DataTable, SortableHeader } from "@/components/ui/data-table";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { Menu, MenuHeader, MenuItem, MenuSeparator, MenuTrigger } from "@/components/ui/menu";
 import { users } from "@/data/user";
-import { ComponentPreview } from "@/examples/component-preview";
-import { PageHeader } from "@/examples/page-header";
 import { getInitials } from "@/lib/utils";
 
 type Customer = {
@@ -154,6 +146,7 @@ function makeColumns(onDelete: (customer: Customer) => void): ColumnDef<Customer
       id: "select",
       header: ({ table }) => (
         <Checkbox
+          slot="selection"
           checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
           aria-label="Select all"
@@ -161,6 +154,7 @@ function makeColumns(onDelete: (customer: Customer) => void): ColumnDef<Customer
       ),
       cell: ({ row }) => (
         <Checkbox
+          slot="selection"
           checked={row.getIsSelected()}
           onCheckedChange={(value) => row.toggleSelected(!!value)}
           aria-label={`Select ${row.original.name}`}
@@ -239,28 +233,27 @@ function makeColumns(onDelete: (customer: Customer) => void): ColumnDef<Customer
         const c = row.original;
         return (
           <div className="flex justify-end">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="size-8">
-                  <IconDotsVertical className="size-4" />
-                  <span className="sr-only">Open menu</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-40">
-                <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  onSelect={() => {
+            <MenuTrigger>
+              <Button variant="ghost" size="icon" className="size-8">
+                <IconDotsVertical className="size-4" />
+                <span className="sr-only">Open menu</span>
+              </Button>
+
+              <Menu placement="bottom end" className="w-40">
+                <MenuHeader>Actions</MenuHeader>
+                <MenuSeparator />
+                <MenuItem
+                  onAction={() => {
                     navigator.clipboard?.writeText(c.id);
                     toast.success("Customer ID copied", { description: c.id });
                   }}
                 >
                   <IconCopy className="size-4" /> Copy id
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  variant="destructive"
-                  onSelect={() => {
+                </MenuItem>
+                <MenuSeparator />
+                <MenuItem
+                  intent="danger"
+                  onAction={() => {
                     onDelete(c);
                     toast.success("Customer deleted", {
                       description: `${c.name} was removed.`,
@@ -268,9 +261,9 @@ function makeColumns(onDelete: (customer: Customer) => void): ColumnDef<Customer
                   }}
                 >
                   <IconTrash className="size-4" /> Delete
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+                </MenuItem>
+              </Menu>
+            </MenuTrigger>
           </div>
         );
       },
@@ -278,23 +271,69 @@ function makeColumns(onDelete: (customer: Customer) => void): ColumnDef<Customer
   ];
 }
 
+type TableDemoState = "ready" | "pending" | "empty" | "error";
+
 export function DataTableExamples() {
   const [data, setData] = useState<Customer[]>(customers);
+  const [pagination, setPagination] = useState<PaginationState>({ pageIndex: 0, pageSize: 3 });
+  const [tableState, setTableState] = useState<TableDemoState>("ready");
   const columns = useMemo(
     () => makeColumns((customer) => setData((prev) => prev.filter((c) => c.id !== customer.id))),
     [],
   );
+  const pageCount = Math.max(1, Math.ceil(data.length / pagination.pageSize));
+  const pageData = data.slice(
+    pagination.pageIndex * pagination.pageSize,
+    (pagination.pageIndex + 1) * pagination.pageSize,
+  );
 
   return (
     <div className="space-y-6">
-      <PageHeader title="Data Table" />
-
-      <ComponentPreview title="Customer Directory" layout="fullStack">
+      <ComponentPreview title="Sorting, Search, and Column Visibility" layout="fullStack">
         <div className="w-full space-y-3">
           <p className="text-sm text-muted-foreground">
             Sort columns, select rows, search by name, and manage visible columns.
           </p>
           <DataTable columns={columns} data={data} searchKey="name" searchPlaceholder="Search customers…" />
+        </div>
+      </ComponentPreview>
+
+      <ComponentPreview title="Manual pagination and states" layout="fullStack">
+        <div className="w-full space-y-3">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <p className="text-sm text-muted-foreground">
+              Server-driven pagination can preserve page state while loading, empty, and error feedback is displayed.
+            </p>
+            <div className="flex flex-wrap gap-1">
+              {(["ready", "pending", "empty", "error"] as const).map((state) => (
+                <Button
+                  key={state}
+                  size="sm"
+                  variant={tableState === state ? "secondary" : "outline"}
+                  onPress={() => setTableState(state)}
+                >
+                  {state}
+                </Button>
+              ))}
+            </div>
+          </div>
+          <DataTable
+            columns={columns}
+            data={tableState === "ready" ? pageData : []}
+            pagination={pagination}
+            onPaginationChange={setPagination}
+            manualPagination
+            pageCount={pageCount}
+            totalRowCount={data.length}
+            isPending={tableState === "pending"}
+            emptyState={
+              <div className="space-y-1">
+                <p className="font-medium text-foreground">No customers found</p>
+                <p>Try another search or invite a customer to this workspace.</p>
+              </div>
+            }
+            errorState={tableState === "error" ? "Customer data could not be loaded. Try again." : undefined}
+          />
         </div>
       </ComponentPreview>
     </div>

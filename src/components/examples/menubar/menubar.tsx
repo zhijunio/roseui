@@ -3,17 +3,18 @@
 import { useState } from "react";
 
 import {
-  IconBold,
-  IconChevronDown,
-  IconCopy,
-  IconFile,
-  IconItalic,
-  IconPlus,
-  IconScissors,
-  IconShare2,
-  IconUnderline,
-} from "@tabler/icons-react";
+  Bold as IconBold,
+  ChevronDown as IconChevronDown,
+  Copy as IconCopy,
+  File as IconFile,
+  Italic as IconItalic,
+  Plus as IconPlus,
+  Scissors as IconScissors,
+  Share2 as IconShare2,
+  Underline as IconUnderline,
+} from "lucide-react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Button } from "@/components/ui/button";
 import {
   Menubar,
@@ -31,7 +32,6 @@ import {
   MenubarSubTrigger,
   MenubarTrigger,
 } from "@/components/ui/menubar";
-import { ComponentPreview } from "@/examples/component-preview";
 
 export function MenubarExamples() {
   const [showToolbar, setShowToolbar] = useState(true);

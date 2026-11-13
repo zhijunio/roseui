@@ -2,14 +2,15 @@
 
 import { useState } from "react";
 
-import { IconCheck, IconPlus } from "@tabler/icons-react";
+import { Check as IconCheck, Plus as IconPlus } from "lucide-react";
+import { Focusable } from "react-aria-components/Focusable";
 
+import { ComponentPreview, type ComponentPreviewLayout } from "@/components/docs/component-preview";
 import { Avatar, AvatarBadge, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { AvatarGroup, AvatarGroupCount } from "@/components/ui/avatar-group";
 import { Button } from "@/components/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { Tooltip, TooltipTrigger } from "@/components/ui/tooltip";
 import { users } from "@/data/user";
-import { ComponentPreview, type ComponentPreviewLayout } from "@/examples/component-preview";
 import { cn, getInitials } from "@/lib/utils";
 
 type ExampleSection = {
@@ -75,7 +76,7 @@ export function AvatarGroupExamples() {
             previewClassName={previewClassName}
           >
             {section.examples.map((example) => {
-              const label = labelForExample?.(example);
+              const label = labelForExample(example);
               return (
                 <div key={example} className={isStack ? "min-w-0 w-full space-y-2" : "min-w-0"}>
                   {isStack && label ? <p className="text-xs font-medium text-muted-foreground">{label}</p> : null}
@@ -131,8 +132,8 @@ function PeopleGroup({ example }: { example: number }) {
         );
 
         return interactive ? (
-          <Tooltip key={person.id}>
-            <TooltipTrigger asChild>
+          <TooltipTrigger delay={0} key={person.id}>
+            <Focusable>
               <button
                 type="button"
                 aria-label={person.name}
@@ -140,9 +141,9 @@ function PeopleGroup({ example }: { example: number }) {
               >
                 {avatar}
               </button>
-            </TooltipTrigger>
-            {example !== 23 && <TooltipContent>{person.name}</TooltipContent>}
-          </Tooltip>
+            </Focusable>
+            {example !== 23 && <Tooltip>{person.name}</Tooltip>}
+          </TooltipTrigger>
         ) : (
           <span key={person.id} className={cn("rounded-full", example !== 40 && "ring-2 ring-background")}>
             {avatar}
@@ -200,15 +201,14 @@ export function AvatarGroupExample({ example }: { example: number }) {
         {example === 28 && (
           <div>
             <p className="text-sm font-medium">No active collaborators</p>
-            <p className="text-xs text-muted-foreground">Invite teammates to start working together.</p>
           </div>
         )}
         <Button
           variant="outline"
           size={example === 29 ? "icon" : "sm"}
           aria-label="Invite teammate"
-          disabled={invited}
-          onClick={() => setInvited(true)}
+          isDisabled={invited}
+          onPress={() => setInvited(true)}
         >
           {invited ? <IconCheck aria-hidden /> : <IconPlus aria-hidden />}
           {example === 28 && (invited ? "Invitation sent" : "Invite teammate")}

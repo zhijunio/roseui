@@ -1,5 +1,5 @@
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ComponentPreview } from "@/examples/component-preview";
 
 const rows = Array.from({ length: 18 }, (_, index) => ({
   id: index + 1,
@@ -13,7 +13,7 @@ const projects = ["Website refresh", "Mobile app", "Design system", "Q4 planning
 export function ScrollAreaExamples() {
   return (
     <>
-      <ComponentPreview title="Recent Activity Feed" layout="panel" span={2}>
+      <ComponentPreview title="Vertical Scrolling" layout="panel" span={2}>
         <ScrollArea aria-label="Activity feed" className="h-64 w-full rounded-lg border">
           <ul className="divide-y px-4">
             {rows.map((row) => (
@@ -29,9 +29,9 @@ export function ScrollAreaExamples() {
         </ScrollArea>
       </ComponentPreview>
 
-      <ComponentPreview title="Horizontal Project Strip">
+      <ComponentPreview title="Horizontal Scrolling">
         <ScrollArea
-          fadeEdges
+          scrollFade
           orientation="horizontal"
           aria-label="Project strip"
           className="h-36 w-full rounded-lg border"
@@ -49,7 +49,7 @@ export function ScrollAreaExamples() {
 
       <ComponentPreview title="Horizontal Snap">
         <ScrollArea
-          fadeEdges
+          scrollFade
           orientation="horizontal"
           role="region"
           aria-label="Recent workspace updates"
@@ -72,11 +72,16 @@ export function ScrollAreaExamples() {
       </ComponentPreview>
 
       <ComponentPreview title="Both Scrollbars">
-        <ScrollArea fadeEdges orientation="both" aria-label="Scrollable grid" className="h-56 w-full rounded-lg border">
+        <ScrollArea
+          scrollFade
+          orientation="both"
+          aria-label="Scrollable grid"
+          className="h-56 w-full rounded-lg border"
+        >
           <div className="grid w-[760px] grid-cols-6 gap-2 p-3">
-            {Array.from({ length: 48 }, (_, index) => (
-              <div key={index} className="rounded border p-3 text-sm">
-                Cell {index + 1}
+            {Array.from({ length: 48 }, (_, index) => index + 1).map((cell) => (
+              <div key={cell} className="rounded border p-3 text-sm">
+                Cell {cell}
               </div>
             ))}
           </div>
@@ -84,7 +89,7 @@ export function ScrollAreaExamples() {
       </ComponentPreview>
 
       <ComponentPreview title="Fade Edges">
-        <ScrollArea fadeEdges aria-label="Directory" className="h-56 w-full rounded-lg border">
+        <ScrollArea scrollFade aria-label="Directory" className="h-56 w-full rounded-lg border">
           <div className="p-2">
             {[..."ABCDEFGH"].map((letter) => (
               <section key={letter} className="mb-2">
@@ -106,9 +111,9 @@ export function ScrollAreaExamples() {
       <ComponentPreview title="Scrollbar Gutter">
         <ScrollArea aria-label="Directory" className="h-56 w-full rounded-lg border">
           <ol className="divide-y px-3">
-            {Array.from({ length: 20 }, (_, index) => (
-              <li key={index} className="py-2 text-sm">
-                {index + 1}. {rows[index % rows.length].name} · {rows[index % rows.length].action}
+            {Array.from({ length: 20 }, (_, index) => index + 1).map((row) => (
+              <li key={row} className="py-2 text-sm">
+                {row}. {rows[(row - 1) % rows.length].name} · {rows[(row - 1) % rows.length].action}
               </li>
             ))}
           </ol>

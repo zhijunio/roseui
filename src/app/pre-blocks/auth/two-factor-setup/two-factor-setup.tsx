@@ -5,20 +5,20 @@ import * as React from "react";
 import Image from "next/image";
 
 import {
-  IconArrowRight,
-  IconCheck,
-  IconCopy,
-  IconDeviceMobile,
-  IconDownload,
-  IconKey,
-  IconMail,
-  IconRefresh,
-  IconShieldCheck,
-} from "@tabler/icons-react";
+  ArrowRight as IconArrowRight,
+  Check as IconCheck,
+  Copy as IconCopy,
+  Smartphone as IconDeviceMobile,
+  Download as IconDownload,
+  Key as IconKey,
+  Mail as IconMail,
+  RefreshCw as IconRefresh,
+  ShieldCheck as IconShieldCheck,
+} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { InputOtp } from "@/components/ui/composite-input-otp";
+import { CheckboxButton, CheckboxField } from "@/components/ui/checkbox";
+import { InputOTP } from "@/components/ui/input-otp";
 
 const setupKey = "JBSW Y3DP EHPK 3PXP";
 const backupCodes = [
@@ -72,7 +72,7 @@ function CopyButton({
   onCopy: (value: string, kind: CopyKind) => void;
 }) {
   return (
-    <Button type="button" variant="outline" size="sm" onClick={() => onCopy(value, kind)}>
+    <Button type="button" variant="outline" size="sm" onPress={() => onCopy(value, kind)}>
       <IconCopy aria-hidden="true" />
       {copied === kind ? "Copied" : "Copy"}
     </Button>
@@ -118,7 +118,7 @@ export function TotpSetupExample() {
             type="button"
             variant="outline"
             size="sm"
-            onClick={() => {
+            onPress={() => {
               setVerified(false);
               setCode("");
             }}
@@ -145,9 +145,9 @@ export function TotpSetupExample() {
           </div>
           <div className="grid justify-items-center gap-3 border-t pt-5">
             <p className="text-sm font-medium">Enter the 6-digit code</p>
-            <InputOtp value={code} onChange={setCode} aria-label="Authenticator app code" groupEvery={3} />
+            <InputOTP value={code} onChange={setCode} aria-label="Authenticator app code" groupEvery={3} />
           </div>
-          <Button type="button" className="w-full" disabled={code.length !== 6} onClick={() => setVerified(true)}>
+          <Button type="button" className="w-full" isDisabled={code.length !== 6} onPress={() => setVerified(true)}>
             Verify authenticator <IconArrowRight aria-hidden="true" />
           </Button>
         </>
@@ -185,7 +185,7 @@ export function EmailCodeExample() {
             type="button"
             variant="outline"
             size="sm"
-            onClick={() => {
+            onPress={() => {
               setVerified(false);
               setCode("");
             }}
@@ -196,14 +196,14 @@ export function EmailCodeExample() {
       ) : (
         <>
           <div className="grid justify-items-center gap-3 py-4">
-            <InputOtp value={code} onChange={setCode} aria-label="Email verification code" groupEvery={3} />
+            <InputOTP value={code} onChange={setCode} aria-label="Email verification code" groupEvery={3} />
             {resent && <p className="text-muted-foreground text-xs">A new code was sent.</p>}
           </div>
           <div className="flex flex-col gap-2 sm:flex-row sm:justify-between">
             <Button
               type="button"
               variant="ghost"
-              onClick={() => {
+              onPress={() => {
                 setResent(true);
                 setCode("");
               }}
@@ -211,7 +211,7 @@ export function EmailCodeExample() {
               <IconRefresh aria-hidden="true" />
               Resend code
             </Button>
-            <Button type="button" disabled={code.length !== 6} onClick={() => setVerified(true)}>
+            <Button type="button" isDisabled={code.length !== 6} onPress={() => setVerified(true)}>
               Verify code <IconArrowRight aria-hidden="true" />
             </Button>
           </div>
@@ -239,7 +239,7 @@ export function BackupCodesExample() {
           type="button"
           variant="outline"
           size="sm"
-          onClick={() => {
+          onPress={() => {
             setEnabled(false);
             setSaved(false);
           }}
@@ -274,18 +274,19 @@ export function BackupCodesExample() {
           type="button"
           variant="outline"
           size="sm"
-          onClick={() => downloadText("roseui-backup-codes.txt", `RoseUI backup codes\n\n${codes}\n`)}
+          onPress={() => downloadText("roseui-backup-codes.txt", `RoseUI backup codes\n\n${codes}\n`)}
         >
           <IconDownload aria-hidden="true" />
           Download
         </Button>
         <CopyButton value={codes} kind="backup" copied={copied} onCopy={copy} />
       </div>
-      <label htmlFor="backup-codes-saved" className="flex items-start gap-3 text-sm">
-        <Checkbox id="backup-codes-saved" checked={saved} onCheckedChange={(value) => setSaved(value === true)} />
-        <span>I have saved these backup codes in a secure place.</span>
-      </label>
-      <Button type="button" className="w-full" disabled={!saved} onClick={() => setEnabled(true)}>
+      <CheckboxField id="backup-codes-saved" checked={saved} onCheckedChange={(value) => setSaved(value === true)}>
+        <CheckboxButton className="items-start gap-3 text-sm">
+          I have saved these backup codes in a secure place.
+        </CheckboxButton>
+      </CheckboxField>
+      <Button type="button" className="w-full" isDisabled={!saved} onPress={() => setEnabled(true)}>
         Continue
       </Button>
     </div>
@@ -310,7 +311,7 @@ export function RecoveryPhraseExample() {
           type="button"
           variant="outline"
           size="sm"
-          onClick={() => {
+          onPress={() => {
             setEnabled(false);
             setSaved(false);
           }}
@@ -348,20 +349,32 @@ export function RecoveryPhraseExample() {
           type="button"
           variant="outline"
           size="sm"
-          onClick={() => downloadText("roseui-recovery-phrase.txt", `RoseUI recovery phrase\n\n${phrase}\n`)}
+          onPress={() => downloadText("roseui-recovery-phrase.txt", `RoseUI recovery phrase\n\n${phrase}\n`)}
         >
           <IconDownload aria-hidden="true" />
           Download
         </Button>
         <CopyButton value={phrase} kind="recovery" copied={copied} onCopy={copy} />
       </div>
-      <label htmlFor="recovery-phrase-saved" className="flex items-start gap-3 text-sm">
-        <Checkbox id="recovery-phrase-saved" checked={saved} onCheckedChange={(value) => setSaved(value === true)} />
-        <span>I wrote down all 12 words and will keep this phrase private.</span>
-      </label>
-      <Button type="button" className="w-full" disabled={!saved} onClick={() => setEnabled(true)}>
+      <CheckboxField id="recovery-phrase-saved" checked={saved} onCheckedChange={(value) => setSaved(value === true)}>
+        <CheckboxButton className="items-start gap-3 text-sm">
+          I wrote down all 12 words and will keep this phrase private.
+        </CheckboxButton>
+      </CheckboxField>
+      <Button type="button" className="w-full" isDisabled={!saved} onPress={() => setEnabled(true)}>
         Continue
       </Button>
+    </div>
+  );
+}
+
+export function TwoFactorExamples() {
+  return (
+    <div className="grid min-w-0 items-start gap-5 xl:grid-cols-2">
+      <TotpSetupExample />
+      <EmailCodeExample />
+      <BackupCodesExample />
+      <RecoveryPhraseExample />
     </div>
   );
 }

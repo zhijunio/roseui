@@ -2,8 +2,8 @@
 
 import * as React from "react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { RangeHistogramSlider } from "@/components/ui/range-histogram-slider";
-import { ComponentPreview } from "@/examples/component-preview";
 
 const orderTotals = [
   18, 23, 27, 29, 31, 34, 36, 38, 41, 43, 45, 48, 49, 52, 54, 57, 60, 62, 65, 68, 72, 75, 78, 82, 85, 90, 96, 102, 110,
@@ -15,7 +15,7 @@ export function RangeHistogramSliderExamples() {
   const [delivery, setDelivery] = React.useState<[number, number]>([2, 8]);
   return (
     <>
-      <ComponentPreview title="Order totals" layout="fullStack">
+      <ComponentPreview title="Range Selection with Histogram" layout="fullStack">
         <RangeHistogramSlider
           label="Order amount"
           data={orderTotals}
@@ -28,9 +28,8 @@ export function RangeHistogramSliderExamples() {
           onValueCommit={setAmount}
           formatValue={(value) => `$${value}`}
         />
-        <p className="text-xs text-muted-foreground">Adjust the amount range to narrow the order list.</p>
       </ComponentPreview>
-      <ComponentPreview title="Fulfillment time" layout="fullStack">
+      <ComponentPreview title="Controlled Range" layout="fullStack">
         <RangeHistogramSlider
           label="Days to fulfill"
           data={[1, 2, 2, 3, 3, 3, 4, 4, 5, 5, 5, 6, 7, 7, 8, 9, 10, 12, 14, 16, 20]}

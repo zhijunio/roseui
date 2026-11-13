@@ -2,10 +2,19 @@
 
 import { useEffect, useId, useState } from "react";
 
-import { IconCalendar, IconCode, IconFile, IconPhoto, IconSelector, IconUsers, IconX } from "@tabler/icons-react";
+import {
+  Calendar as IconCalendar,
+  Code as IconCode,
+  File as IconFile,
+  Image as IconPhoto,
+  ChevronsUpDown as IconSelector,
+  Users as IconUsers,
+  X as IconX,
+} from "lucide-react";
 import type { Country } from "react-phone-number-input";
 import flags from "react-phone-number-input/flags";
 
+import { ComponentPreview, type ComponentPreviewLayout } from "@/components/docs/component-preview";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -31,7 +40,6 @@ import {
 } from "@/components/ui/select";
 import { StatusDot, type StatusDotColor } from "@/components/ui/status-dot";
 import { users } from "@/data/user";
-import { ComponentPreview, type ComponentPreviewLayout } from "@/examples/component-preview";
 import { cn } from "@/lib/utils";
 
 type ExampleSection = {
@@ -96,7 +104,7 @@ export function SelectExamples() {
             previewClassName={previewClassName}
           >
             {section.examples.map((example) => {
-              const label = labelForExample?.(example);
+              const label = labelForExample(example);
               return (
                 <div key={example} className={isStack ? "min-w-0 w-full space-y-2" : "min-w-0"}>
                   {isStack && label ? <p className="text-xs font-medium text-muted-foreground">{label}</p> : null}
@@ -107,7 +115,7 @@ export function SelectExamples() {
           </ComponentPreview>
         );
       })}
-      <ComponentPreview title="Settings Cells" layout="panel">
+      <ComponentPreview title="Custom Option Content" layout="panel">
         <ItemGroup variant="outline" dividers>
           <Item className="flex-nowrap rounded-none border-0 bg-transparent px-3 shadow-none first:rounded-t-lg last:rounded-b-lg">
             <ItemContent>
@@ -499,7 +507,7 @@ export function SelectExample({ example }: { example: number }) {
         {select}
         {example === 14 && (
           <Button
-            onClick={() =>
+            onPress={() =>
               setFeedback(
                 value ? (options.find((option) => option.value === value)?.label ?? "") : "Please choose an option.",
               )
@@ -509,7 +517,7 @@ export function SelectExample({ example }: { example: number }) {
           </Button>
         )}
         {[21, 22].includes(example) && value && (
-          <Button variant="ghost" size="icon-sm" aria-label={"Clear selection"} onClick={() => setValue("")}>
+          <Button variant="ghost" size="icon-sm" aria-label={"Clear selection"} onPress={() => setValue("")}>
             <IconX aria-hidden />
           </Button>
         )}

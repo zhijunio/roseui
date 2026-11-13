@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 
-import { IconPlus, IconSparkles } from "@tabler/icons-react";
+import { Plus as IconPlus, Sparkles as IconSparkles } from "lucide-react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { ExpandableButton } from "@/components/ui/expandable-button";
-import { ComponentPreview } from "@/examples/component-preview";
 
 export function ExpandableButtonExamples() {
   const [message, setMessage] = useState("No workspace has been created yet.");
@@ -17,7 +17,7 @@ export function ExpandableButtonExamples() {
           <ExpandableButton
             label="Create workspace"
             successLabel="Workspace created"
-            onClick={() => setMessage("Workspace creation started.")}
+            onPress={() => setMessage("Workspace creation started.")}
           />
           <p role="status" className="text-sm text-muted-foreground">
             {message}
@@ -30,7 +30,7 @@ export function ExpandableButtonExamples() {
             label="Add teammate"
             successLabel="Invite started"
             icon={<IconPlus aria-hidden />}
-            onClick={() => setMessage("Invite flow started.")}
+            onPress={() => setMessage("Invite flow started.")}
           />
           <ExpandableButton
             label="Generate summary"
@@ -38,6 +38,12 @@ export function ExpandableButtonExamples() {
             icon={<IconSparkles aria-hidden />}
             variant="default"
           />
+        </div>
+      </ComponentPreview>
+      <ComponentPreview title="Disabled and pending">
+        <div className="flex flex-wrap items-center gap-3">
+          <ExpandableButton label="Unavailable" isDisabled />
+          <ExpandableButton label="Creating project" isPending />
         </div>
       </ComponentPreview>
     </>

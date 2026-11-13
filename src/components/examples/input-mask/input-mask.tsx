@@ -1,8 +1,8 @@
 "use client";
 
-import { Field, FieldDescription, FieldLabel } from "@/components/ui/composite-field";
-import { MaskInput } from "@/components/ui/mask-input";
-import { ComponentPreview } from "@/examples/component-preview";
+import { ComponentPreview } from "@/components/docs/component-preview";
+import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
+import { InputMask } from "@/components/ui/input-mask";
 
 export function InputMaskExamples() {
   return (
@@ -10,21 +10,21 @@ export function InputMaskExamples() {
       <ComponentPreview title="Phone Number">
         <Field className="max-w-sm">
           <FieldLabel htmlFor="masked-phone">Phone number</FieldLabel>
-          <MaskInput id="masked-phone" mask="(999) 999-9999" placeholder="(555) 123-4567" />
+          <InputMask id="masked-phone" mask="(999) 999-9999" placeholder="(555) 123-4567" />
           <FieldDescription>Enter a 10-digit phone number.</FieldDescription>
         </Field>
       </ComponentPreview>
       <ComponentPreview title="Date">
         <Field className="max-w-sm">
           <FieldLabel htmlFor="masked-date">Date</FieldLabel>
-          <MaskInput id="masked-date" mask="99/99/9999" placeholder="MM/DD/YYYY" />
+          <InputMask id="masked-date" mask="99/99/9999" placeholder="MM/DD/YYYY" />
           <FieldDescription>Use month, day, and year.</FieldDescription>
         </Field>
       </ComponentPreview>
       <ComponentPreview title="Postal Code">
         <Field className="max-w-sm">
           <FieldLabel htmlFor="masked-postal">Postal code</FieldLabel>
-          <MaskInput id="masked-postal" mask="99999-9999" placeholder="12345-6789" />
+          <InputMask id="masked-postal" mask="99999-9999" placeholder="12345-6789" />
           <FieldDescription>ZIP+4 format.</FieldDescription>
         </Field>
       </ComponentPreview>

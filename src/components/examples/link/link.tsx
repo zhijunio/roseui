@@ -1,7 +1,11 @@
-import { IconArrowLeft, IconArrowRight, IconExternalLink } from "@tabler/icons-react";
+import {
+  ArrowLeft as IconArrowLeft,
+  ArrowRight as IconArrowRight,
+  ExternalLink as IconExternalLink,
+} from "lucide-react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Link } from "@/components/ui/link";
-import { ComponentPreview } from "@/examples/component-preview";
 
 const variants = [
   { label: "Primary", className: "text-primary" },
@@ -28,7 +32,11 @@ export function LinkExamples() {
       <ComponentPreview title="Colored Links">
         <div className="flex flex-wrap gap-x-6 gap-y-3">
           {variants.map((item) => (
-            <Link key={item.label} href="/components/button" className={`text-sm font-medium ${item.className}`}>
+            <Link
+              key={item.label}
+              href="/docs/components/buttons/button"
+              className={`text-sm font-medium ${item.className}`}
+            >
               {item.label} link
             </Link>
           ))}
@@ -40,7 +48,7 @@ export function LinkExamples() {
           {variants.map((item) => (
             <Link
               key={item.label}
-              href="/components/button"
+              href="/docs/components/buttons/button"
               className={`text-sm font-medium underline underline-offset-4 hover:opacity-80 ${item.className}`}
             >
               {item.label} custom link
@@ -52,7 +60,7 @@ export function LinkExamples() {
       <ComponentPreview title="Custom Link Opacity">
         <div className="flex flex-wrap gap-x-6 gap-y-3 text-sm font-medium text-primary">
           {opacityLevels.map((item) => (
-            <Link key={item.level} href="/components/button" className={item.className}>
+            <Link key={item.level} href="/docs/components/buttons/button" className={item.className}>
               Link opacity {item.level}
             </Link>
           ))}
@@ -62,7 +70,11 @@ export function LinkExamples() {
       <ComponentPreview title="Link Opacity Hover">
         <div className="flex flex-wrap gap-x-6 gap-y-3 text-sm font-medium text-primary">
           {opacityLevels.map((item) => (
-            <Link key={item.level} href="/components/button" className={`${item.className} hover:opacity-100`}>
+            <Link
+              key={item.level}
+              href="/docs/components/buttons/button"
+              className={`${item.className} hover:opacity-100`}
+            >
               Link opacity {item.level}
             </Link>
           ))}
@@ -71,13 +83,19 @@ export function LinkExamples() {
 
       <ComponentPreview title="Underline Styles">
         <div className="flex flex-wrap gap-x-6 gap-y-3">
-          <Link href="/components/button" className="text-sm underline underline-offset-4">
+          <Link href="/docs/components/buttons/button" className="text-sm underline underline-offset-4">
             Always underlined
           </Link>
-          <Link href="/components/button" className="text-sm decoration-dotted underline-offset-4 hover:underline">
+          <Link
+            href="/docs/components/buttons/button"
+            className="text-sm decoration-dotted underline-offset-4 hover:underline"
+          >
             Dotted on hover
           </Link>
-          <Link href="/components/button" className="text-sm decoration-2 underline-offset-4 hover:underline">
+          <Link
+            href="/docs/components/buttons/button"
+            className="text-sm decoration-2 underline-offset-4 hover:underline"
+          >
             Custom underline
           </Link>
         </div>
@@ -85,10 +103,10 @@ export function LinkExamples() {
 
       <ComponentPreview title="Icon Placement">
         <div className="flex flex-wrap items-center gap-6">
-          <Link href="/components/button" icon={<IconArrowRight />}>
+          <Link href="/docs/components/buttons/button" icon={<IconArrowRight />}>
             Continue
           </Link>
-          <Link href="/components/button" icon={<IconArrowLeft />} iconPlacement="start">
+          <Link href="/docs/components/buttons/button" icon={<IconArrowLeft />} iconPlacement="start">
             Go back
           </Link>
         </div>
@@ -107,7 +125,7 @@ export function LinkExamples() {
 
       <ComponentPreview title="Disabled Link">
         <div className="grid justify-items-start gap-2">
-          <Link href="/components/button" isDisabled>
+          <Link href="/docs/components/buttons/button" isDisabled>
             Unavailable destination
           </Link>
           <p className="text-xs text-muted-foreground">This destination is currently unavailable.</p>

@@ -1,6 +1,6 @@
-import { Checkbox } from "@/components/ui/checkbox";
+import { CheckboxButton, CheckboxField } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { NativeSelect } from "@/components/ui/native-select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 import type { WorkspaceRole } from "./data";
 
@@ -23,30 +23,32 @@ export function PreferencesStep({
       <div className="grid gap-4">
         <div className="grid gap-2">
           <Label htmlFor="workspace-role">Your role</Label>
-          <NativeSelect
-            id="workspace-role"
-            fullWidth
+          <Select
             value={role}
-            onChange={(event) => {
-              const value = event.currentTarget.value;
+            onValueChange={(value) => {
               if (value === "admin" || value === "manager" || value === "member") onRoleChange(value);
             }}
+            aria-label="Your role"
           >
-            <option value="admin">Workspace admin</option>
-            <option value="manager">Team manager</option>
-            <option value="member">Team member</option>
-          </NativeSelect>
+            <SelectTrigger id="workspace-role" className="w-full">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="admin">Workspace admin</SelectItem>
+              <SelectItem value="manager">Team manager</SelectItem>
+              <SelectItem value="member">Team member</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
-        <label htmlFor="workspace-product-updates" className="flex items-start gap-3 rounded-lg border p-3 text-sm">
-          <Checkbox
-            id="workspace-product-updates"
-            checked={updates}
-            onCheckedChange={(value) => onUpdatesChange(value === true)}
-          />
-          <span>
+        <CheckboxField
+          id="workspace-product-updates"
+          checked={updates}
+          onCheckedChange={(value) => onUpdatesChange(value === true)}
+        >
+          <CheckboxButton className="items-start gap-3 rounded-lg border p-3 text-sm">
             <span className="font-medium">Product updates</span>
-          </span>
-        </label>
+          </CheckboxButton>
+        </CheckboxField>
       </div>
     </div>
   );

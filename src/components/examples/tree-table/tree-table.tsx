@@ -2,9 +2,9 @@
 
 import { useRef, useState } from "react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Badge } from "@/components/ui/badge";
 import { TreeTable, type TreeTableColumn, type TreeTableNode } from "@/components/ui/tree-table";
-import { ComponentPreview } from "@/examples/component-preview";
 
 type TeamRow = { name: string; owner: string; members: number; status: "Active" | "Review" };
 
@@ -41,7 +41,7 @@ export function TreeTableExamples() {
   const loadAttempted = useRef(false);
   return (
     <div className="grid min-w-0 items-start gap-5 [&>*]:min-w-0">
-      <ComponentPreview title="Team directory" layout="fullStack">
+      <ComponentPreview title="Tree Rows and Columns" layout="fullStack">
         <TreeTable
           ariaLabel="Team directory"
           rows={teams}

@@ -4,10 +4,10 @@ import { useState } from "react";
 
 import { AnimatePresence } from "motion/react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Button } from "@/components/ui/button";
 import { Notification, type NotificationStatus, NotificationViewport } from "@/components/ui/notification";
 import { getUserAvatar } from "@/data/user";
-import { ComponentPreview } from "@/examples/component-preview";
 
 type DemoNotification = { id: number; status: NotificationStatus | "avatar" | "actions" };
 const notificationStatuses = [
@@ -45,7 +45,7 @@ export function NotificationExamples() {
 
   return (
     <>
-      <ComponentPreview title="Release Announcement Banner" layout="panel">
+      <ComponentPreview title="Action Layout" layout="panel">
         <div className="flex flex-wrap items-center justify-between gap-4 rounded-xl border bg-muted/40 p-4">
           <div>
             <p className="text-sm font-semibold">New update available</p>
@@ -59,7 +59,7 @@ export function NotificationExamples() {
           </div>
         </div>
       </ComponentPreview>
-      <ComponentPreview title="Cookie Consent Notice" layout="panel">
+      <ComponentPreview title="Multiple Actions" layout="panel">
         <div className="rounded-xl border bg-card p-4 shadow-sm">
           <p className="text-sm leading-5 text-muted-foreground">
             By clicking Accept, you agree to the storing of cookies on your device to enhance navigation and analyze
@@ -81,7 +81,7 @@ export function NotificationExamples() {
           <Notification status={item.status} title={item.title} description={item.description} />
         </ComponentPreview>
       ))}
-      <ComponentPreview title="Avatar and Actions" layout="panel">
+      <ComponentPreview title="Avatar and Action Buttons" layout="panel">
         <div className="grid w-full gap-3">
           <Notification
             avatar={{ src: getUserAvatar("Livia Saris"), alt: "Livia Saris", presence: "busy" }}
@@ -104,10 +104,10 @@ export function NotificationExamples() {
           />
         </div>
       </ComponentPreview>
-      <ComponentPreview title="Timed Notifications" layout="panel">
+      <ComponentPreview title="Viewport and Auto-dismiss" layout="panel">
         <div className="flex flex-wrap gap-2">
           {(["information", "success", "warning", "error", "avatar", "actions"] as const).map((status) => (
-            <Button key={status} variant="outline" onClick={() => show(status)}>
+            <Button key={status} variant="outline" onPress={() => show(status)}>
               {status === "avatar" ? "With avatar" : status === "actions" ? "With actions" : status}
             </Button>
           ))}
@@ -142,7 +142,8 @@ export function NotificationExamples() {
                     ]}
                   />
                 );
-              const copy = notificationStatuses.find((item) => item.status === notification.status)!;
+              const copy = notificationStatuses.find((item) => item.status === notification.status);
+              if (!copy) return null;
               return (
                 <Notification
                   key={notification.id}

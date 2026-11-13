@@ -1,51 +1,74 @@
 "use client";
 
-import { IconSparkles } from "@tabler/icons-react";
+import { useState } from "react";
+
+import { ArrowUpRight as IconArrowUpRight, Check as IconCheck, Sparkles as IconSparkles } from "lucide-react";
 import { toast } from "sonner";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Announcement } from "@/components/ui/announcement";
-import { ComponentPreview } from "@/examples/component-preview";
+import { Button } from "@/components/ui/button";
 
 export function AnnouncementExamples() {
+  const [showDismissible, setShowDismissible] = useState(true);
+
   return (
-    <>
-      <ComponentPreview title="Announcement With Action">
-        <div className="flex w-full justify-center">
+    <div className="grid gap-5 xl:grid-cols-2">
+      <ComponentPreview title="Custom icon" layout="panel">
+        <div className="grid w-full gap-3 sm:grid-cols-2">
           <Announcement
-            className="max-w-[260px]"
-            title="Setting up your account"
-            description="Take the tour and learn how to use your workspace."
-            actionLabel="Take the tour"
-            dismissible
-            onAction={() => toast.success("Tour opened")}
+            icon={<IconSparkles aria-hidden="true" className="size-5 shrink-0 text-primary" />}
+            title="New features are here"
+            description="Explore the latest improvements to your workspace."
+          />
+          <Announcement
+            icon={<IconCheck aria-hidden="true" className="size-5 shrink-0 text-success" />}
+            title="Changes saved"
+            description="Your preferences have been updated."
           />
         </div>
       </ComponentPreview>
-      <ComponentPreview title="Announcement With Leading Icon">
-        <div className="w-full max-w-sm">
+
+      <ComponentPreview title="Action button" layout="panel">
+        <div className="w-full max-w-lg">
           <Announcement
-            icon={<IconSparkles aria-hidden="true" className="size-5 text-primary" />}
-            title="What’s new in v2"
-            description="Charts, command menu, and a new data table."
-            actionLabel="See the changelog"
-            onAction={() => toast.success("Changelog opened")}
+            icon={<IconSparkles aria-hidden="true" className="size-5 shrink-0 text-primary" />}
+            title="A new update is available"
+            description="See what changed in the latest release."
+            actionLabel={
+              <>
+                View release notes
+                <IconArrowUpRight aria-hidden="true" />
+              </>
+            }
+            onAction={() => toast.success("Release notes opened")}
           />
         </div>
       </ComponentPreview>
-      <ComponentPreview title="Dismissible Announcement">
-        <div className="w-full max-w-sm">
-          <Announcement title="You’re all set" description="Your workspace is ready to go." dismissible />
+
+      <ComponentPreview title="Dismissible" layout="panel">
+        <div className="w-full max-w-lg">
+          {showDismissible ? (
+            <Announcement
+              title="Your workspace is ready"
+              description="Invite teammates when you’re ready to collaborate."
+              dismissible
+              onDismiss={() => setShowDismissible(false)}
+            />
+          ) : (
+            <Button variant="outline" size="sm" onPress={() => setShowDismissible(true)}>
+              Show announcement again
+            </Button>
+          )}
         </div>
       </ComponentPreview>
-      <ComponentPreview title="Compact Announcement">
-        <div className="w-full max-w-sm">
-          <Announcement
-            title="2 seats left on your plan"
-            actionLabel="Upgrade"
-            onAction={() => toast.success("Plan options opened")}
-          />
+
+      <ComponentPreview title="Optional description" layout="panel">
+        <div className="grid w-full gap-3 sm:grid-cols-2">
+          <Announcement title="Welcome back" />
+          <Announcement title="All caught up" description="There are no new updates." />
         </div>
       </ComponentPreview>
-    </>
+    </div>
   );
 }

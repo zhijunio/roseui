@@ -1,10 +1,15 @@
 "use client";
 
-import { IconChartPie, IconFileText, IconHome, IconSettings } from "@tabler/icons-react";
+import {
+  ChartPie as IconChartPie,
+  FileText as IconFileText,
+  Home as IconHome,
+  Settings as IconSettings,
+} from "lucide-react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ComponentPreview } from "@/examples/component-preview";
 
 const tabs = [
   { value: "overview", label: "Overview", Icon: IconHome },
@@ -52,7 +57,7 @@ export function TabsExamples() {
       <ComponentPreview title="Pill Tabs">
         <TabPanels variant="pill" />
       </ComponentPreview>
-      <ComponentPreview title="Vertical Settings">
+      <ComponentPreview title="Vertical Orientation">
         <Tabs defaultValue="profile" orientation="vertical" className="w-full flex-row gap-4">
           <TabsList aria-label="Settings sections" variant="line" className="h-auto items-stretch">
             <TabsTrigger value="profile">Profile</TabsTrigger>

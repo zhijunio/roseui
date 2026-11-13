@@ -2,9 +2,9 @@
 
 import * as React from "react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Button } from "@/components/ui/button";
 import { PasswordStrength, type PasswordStrengthResult } from "@/components/ui/password-strength";
-import { ComponentPreview } from "@/examples/component-preview";
 
 function PasswordStrengthExamplesContent() {
   const [result, setResult] = React.useState<PasswordStrengthResult>({
@@ -17,7 +17,7 @@ function PasswordStrengthExamplesContent() {
 
   return (
     <>
-      <ComponentPreview title="Set a workspace password" span={2} layout="panel">
+      <ComponentPreview title="Password Input and Strength" span={2} layout="panel">
         <form
           className="grid w-full max-w-lg gap-4"
           onSubmit={(event) => {
@@ -36,7 +36,7 @@ function PasswordStrengthExamplesContent() {
           />
           <div className="flex items-center justify-between gap-3">
             <span className="text-xs text-muted-foreground">{result.label}</span>
-            <Button type="submit" size="sm" disabled={result.level < result.total}>
+            <Button type="submit" size="sm" isDisabled={result.level < result.total}>
               Continue
             </Button>
           </div>

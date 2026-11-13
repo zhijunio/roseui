@@ -1,19 +1,22 @@
+"use client";
+
 import Link from "next/link";
 
 import {
-  IconArrowRight,
-  IconChartBar,
-  IconCircleCheck,
-  IconCode,
-  IconDatabase,
-  IconFileText,
-  IconGauge,
-  IconLayoutDashboard,
-  IconSettings,
-  IconUsers,
-} from "@tabler/icons-react";
+  ArrowRight as IconArrowRight,
+  ChartBar as IconChartBar,
+  CircleCheck as IconCircleCheck,
+  Code as IconCode,
+  Database as IconDatabase,
+  FileText as IconFileText,
+  Gauge as IconGauge,
+  LayoutDashboard as IconLayoutDashboard,
+  Settings as IconSettings,
+  Users as IconUsers,
+} from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import { ComponentPreview } from "@/components/docs/component-preview";
+import { buttonVariants } from "@/components/ui/button";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -23,7 +26,6 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import { ComponentPreview } from "@/examples/component-preview";
 
 export const metadata = { title: "Navigation Menu" };
 
@@ -31,19 +33,19 @@ const resources = [
   {
     title: "Overview",
     description: "Track workspace health and recent activity.",
-    href: "/components/card",
+    href: "/docs/components/surfaces/card",
     icon: IconLayoutDashboard,
   },
   {
     title: "Members",
     description: "Manage roles and team access.",
-    href: "/components/avatar",
+    href: "/docs/components/media/avatar",
     icon: IconUsers,
   },
   {
     title: "Usage reports",
     description: "Review usage trends and exports.",
-    href: "/components/progress",
+    href: "/docs/components/statuses/progress",
     icon: IconChartBar,
   },
 ];
@@ -59,13 +61,13 @@ export function NavigationMenuExamples() {
               <NavigationMenuContent>
                 <ul className="grid w-[min(20rem,calc(100vw-2rem))] gap-1">
                   <li>
-                    <NavigationMenuLink href="/components/card">
+                    <NavigationMenuLink href="/docs/components/surfaces/card">
                       <span className="font-medium">Workspace overview</span>
                       <span className="mt-1 block text-xs text-muted-foreground">Projects, members, and activity.</span>
                     </NavigationMenuLink>
                   </li>
                   <li>
-                    <NavigationMenuLink href="/components/notification">
+                    <NavigationMenuLink href="/docs/components/statuses/notification">
                       <span className="font-medium">Notifications</span>
                       <span className="mt-1 block text-xs text-muted-foreground">Review recent workspace updates.</span>
                     </NavigationMenuLink>
@@ -74,12 +76,12 @@ export function NavigationMenuExamples() {
               </NavigationMenuContent>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <NavigationMenuLink href="/components/event-calendar" className="px-3 py-2">
+              <NavigationMenuLink href="/docs/components/date-and-time/event-calendar" className="px-3 py-2">
                 Calendar
               </NavigationMenuLink>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <NavigationMenuLink href="/components/dialog" className="px-3 py-2">
+              <NavigationMenuLink href="/docs/components/overlays/dialog" className="px-3 py-2">
                 Settings
               </NavigationMenuLink>
             </NavigationMenuItem>
@@ -113,14 +115,14 @@ export function NavigationMenuExamples() {
               <NavigationMenuContent>
                 <ul className="grid w-[min(27.5rem,calc(100vw-2rem))] gap-1 p-1 sm:grid-cols-2">
                   <li>
-                    <NavigationMenuLink href="/components/command">
+                    <NavigationMenuLink href="/docs/components/controls/command-menu">
                       <IconCode className="mb-2 size-4" />
                       <span className="block font-medium">Command center</span>
                       <span className="mt-1 block text-xs text-muted-foreground">Find actions and destinations.</span>
                     </NavigationMenuLink>
                   </li>
                   <li>
-                    <NavigationMenuLink href="/components/number-field">
+                    <NavigationMenuLink href="/docs/components/forms/number-field">
                       <IconDatabase className="mb-2 size-4" />
                       <span className="block font-medium">Data controls</span>
                       <span className="mt-1 block text-xs text-muted-foreground">Configure data entry tools.</span>
@@ -136,9 +138,9 @@ export function NavigationMenuExamples() {
         <NavigationMenu>
           <NavigationMenuList>
             {[
-              { label: "Analytics", href: "/components/progress", Icon: IconGauge },
-              { label: "Reports", href: "/components/card", Icon: IconFileText },
-              { label: "Settings", href: "/components/dialog", Icon: IconSettings },
+              { label: "Analytics", href: "/docs/components/statuses/progress", Icon: IconGauge },
+              { label: "Reports", href: "/docs/components/surfaces/card", Icon: IconFileText },
+              { label: "Settings", href: "/docs/components/overlays/dialog", Icon: IconSettings },
             ].map(({ label, href, Icon }) => (
               <NavigationMenuItem key={label}>
                 <NavigationMenuLink href={href} className="flex items-center gap-2 px-3 py-2">
@@ -157,7 +159,7 @@ export function NavigationMenuExamples() {
               <NavigationMenuTrigger>Learn</NavigationMenuTrigger>
               <NavigationMenuContent>
                 <div className="grid w-[min(32.5rem,calc(100vw-2rem))] gap-3 p-3 sm:grid-cols-[1.1fr_1fr]">
-                  <NavigationMenuLink href="/components/tooltip" className="rounded-lg bg-muted p-4">
+                  <NavigationMenuLink href="/docs/components/overlays/tooltip" className="rounded-lg bg-muted p-4">
                     <IconCircleCheck className="mb-3 size-5 text-primary" />
                     <span className="block font-semibold">Admin handbook</span>
                     <span className="mt-1 block text-xs leading-relaxed text-muted-foreground">
@@ -169,17 +171,17 @@ export function NavigationMenuExamples() {
                       {
                         title: "API reference",
                         description: "Explore integration endpoints.",
-                        href: "/components/command",
+                        href: "/docs/components/controls/command-menu",
                       },
                       {
                         title: "Release notes",
                         description: "See what changed recently.",
-                        href: "/components/notification",
+                        href: "/docs/components/statuses/notification",
                       },
                       {
                         title: "Support center",
                         description: "Get help from the team.",
-                        href: "/components/dialog",
+                        href: "/docs/components/overlays/dialog",
                       },
                     ].map((item) => (
                       <li key={item.title}>
@@ -192,11 +194,9 @@ export function NavigationMenuExamples() {
                   </ul>
                   <div className="flex flex-wrap items-center justify-between gap-3 border-t pt-3 sm:col-span-2">
                     <span className="text-sm text-muted-foreground">Need a hand getting started?</span>
-                    <Button size="sm" asChild>
-                      <Link href="/components/accordion">
-                        Browse guides <IconArrowRight className="size-4" />
-                      </Link>
-                    </Button>
+                    <Link href="/docs/components/navigation/accordion" className={buttonVariants({ size: "sm" })}>
+                      Browse guides <IconArrowRight className="size-4" />
+                    </Link>
                   </div>
                 </div>
               </NavigationMenuContent>

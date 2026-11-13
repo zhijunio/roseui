@@ -1,8 +1,16 @@
 "use client";
 import * as React from "react";
 
-import { IconCheck, IconDownload, IconLink, IconLock, IconStar, IconUpload } from "@tabler/icons-react";
+import {
+  Check as IconCheck,
+  Download as IconDownload,
+  Link as IconLink,
+  Lock as IconLock,
+  Star as IconStar,
+  Upload as IconUpload,
+} from "lucide-react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Button } from "@/components/ui/button";
 import {
   FILE_TYPE_CATEGORIES,
@@ -11,7 +19,6 @@ import {
   getFileType,
   getFileTypeCategory,
 } from "@/components/ui/file-type";
-import { ComponentPreview } from "@/examples/component-preview";
 
 const examples = [
   "Common formats",
@@ -42,10 +49,11 @@ const files = [
 function FileTypeDemo({ index }: { index: number }) {
   const [query, setQuery] = React.useState("release-notes.mdx");
   const [queue, setQueue] = React.useState([
-    { name: "invoice.pdf", type: "application/pdf", status: "done" },
-    { name: "brand-kit.zip", type: "application/zip", status: "failed" },
-    { name: "team-photo.png", type: "image/png", status: "uploading" },
+    { id: "invoice", name: "invoice.pdf", type: "application/pdf", status: "done" },
+    { id: "brand-kit", name: "brand-kit.zip", type: "application/zip", status: "failed" },
+    { id: "team-photo", name: "team-photo.png", type: "image/png", status: "uploading" },
   ]);
+  const nextQueueId = React.useRef(0);
   const [selected, setSelected] = React.useState("pdf");
   const [status, setStatus] = React.useState("Ready to export");
   const [downloaded, setDownloaded] = React.useState("");
@@ -125,7 +133,7 @@ function FileTypeDemo({ index }: { index: number }) {
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex flex-wrap gap-1">
             {(["outline", "solid", "light", "mono"] as const).map((v) => (
-              <Button key={v} size="xs" variant={variant === v ? "secondary" : "ghost"} onClick={() => setVariant(v)}>
+              <Button key={v} size="xs" variant={variant === v ? "secondary" : "ghost"} onPress={() => setVariant(v)}>
                 {v}
               </Button>
             ))}
@@ -199,7 +207,7 @@ function FileTypeDemo({ index }: { index: number }) {
               size="icon-xs"
               variant="ghost"
               aria-label={`Download ${file.name}`}
-              onClick={() => setDownloaded(file.name)}
+              onPress={() => setDownloaded(file.name)}
             >
               <IconDownload />
             </Button>
@@ -222,28 +230,34 @@ function FileTypeDemo({ index }: { index: number }) {
             size="xs"
             variant="outline"
             className="ml-auto"
-            onClick={() => setQueue([...queue, { name: "new-attachment.csv", type: "text/csv", status: "uploading" }])}
+            onPress={() => {
+              const id = `new-${nextQueueId.current}`;
+              nextQueueId.current += 1;
+              setQueue((current) => [
+                ...current,
+                { id, name: "new-attachment.csv", type: "text/csv", status: "uploading" },
+              ]);
+            }}
           >
             Add file
           </Button>
         </div>
-        {queue.map((file, i) => (
-          <div
-            key={`${file.name}-${i}`}
-            className="grid grid-cols-[auto_1fr_auto] items-center gap-x-2 gap-y-1 text-sm"
-          >
+        {queue.map((file) => (
+          <div key={file.id} className="grid grid-cols-[auto_1fr_auto] items-center gap-x-2 gap-y-1 text-sm">
             <FileType type={getFileType({ name: file.name, type: file.type })} size="sm" />
             <span className="truncate">{file.name}</span>
             {file.status === "failed" ? (
               <Button
                 size="xs"
                 variant="outline"
-                onClick={() => setQueue(queue.map((item, n) => (n === i ? { ...item, status: "uploading" } : item)))}
+                onPress={() =>
+                  setQueue(queue.map((item) => (item.id === file.id ? { ...item, status: "uploading" } : item)))
+                }
               >
                 Retry
               </Button>
             ) : (
-              <Button size="xs" variant="ghost" onClick={() => setQueue(queue.filter((_, n) => n !== i))}>
+              <Button size="xs" variant="ghost" onPress={() => setQueue(queue.filter((item) => item.id !== file.id))}>
                 {file.status === "done" ? "Remove" : "Cancel"}
               </Button>
             )}
@@ -333,7 +347,7 @@ function FileTypeDemo({ index }: { index: number }) {
             ))}
           </div>
         </fieldset>
-        <Button size="sm" onClick={() => setStatus(`Exported as ${selected.toUpperCase()}`)}>
+        <Button size="sm" onPress={() => setStatus(`Exported as ${selected.toUpperCase()}`)}>
           Export
         </Button>
         <p aria-live="polite" className="text-xs text-muted-foreground">

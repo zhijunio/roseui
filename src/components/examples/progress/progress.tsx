@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 
-import { Progress } from "@/components/ui/progress";
+import { ComponentPreview, type ComponentPreviewLayout } from "@/components/docs/component-preview";
+import { Progress, ProgressHeader, ProgressTrack, ProgressValue } from "@/components/ui/progress";
 import { Slider } from "@/components/ui/slider";
-import { ComponentPreview, type ComponentPreviewLayout } from "@/examples/component-preview";
 
 const sizeLabels: Record<number, string> = {
   1: "Small · 40%",
@@ -65,7 +65,7 @@ export function ProgressExamples() {
             previewClassName={previewClassName}
           >
             {section.examples.map((example) => {
-              const label = labelForExample?.(example);
+              const label = labelForExample(example);
               return (
                 <div key={example} className={isStack ? "min-w-0 w-full space-y-2" : "min-w-0"}>
                   {isStack && label ? <p className="text-xs font-medium text-muted-foreground">{label}</p> : null}
@@ -76,6 +76,15 @@ export function ProgressExamples() {
           </ComponentPreview>
         );
       })}
+      <ComponentPreview title="Composition" layout="panel">
+        <Progress value={68} size="lg" tone="success" aria-label="Storage migration progress">
+          <ProgressHeader>
+            <span className="font-medium text-foreground">Migrating workspace</span>
+            <ProgressValue />
+          </ProgressHeader>
+          <ProgressTrack />
+        </Progress>
+      </ComponentPreview>
     </>
   );
 }

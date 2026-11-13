@@ -2,8 +2,8 @@
 
 import * as React from "react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { InputMention, type MentionValue } from "@/components/ui/input-mention";
-import { ComponentPreview } from "@/examples/component-preview";
 
 const people = [
   { id: "member-ava", name: "Ava Chen", description: "Account manager" },
@@ -42,7 +42,7 @@ function InputMentionExamplesContent() {
 
   return (
     <>
-      <ComponentPreview title="Review handoff" span={2} layout="panel">
+      <ComponentPreview title="Mention Suggestions" span={2} layout="panel">
         <div className="grid w-full max-w-2xl gap-4">
           <InputMention
             label="Update"

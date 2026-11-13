@@ -4,9 +4,9 @@ import { useState } from "react";
 
 import Image from "next/image";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Button } from "@/components/ui/button";
-import { Carousel, type CarouselApi } from "@/components/ui/composite-carousel";
-import { ComponentPreview } from "@/examples/component-preview";
+import { Carousel, type CarouselApi } from "@/components/ui/carousel";
 
 const slides = [
   { src: "/images/component-demos/abstract-01.svg", alt: "Creative workspace with a painted mural" },
@@ -65,18 +65,23 @@ function CarouselApiExample() {
   return (
     <div className="grid w-full gap-3">
       <div className="flex flex-wrap items-center gap-2">
-        <Button size="sm" variant="outline" disabled={!api || activeIndex === 0} onClick={() => api?.scrollPrevious()}>
+        <Button
+          size="sm"
+          variant="outline"
+          isDisabled={!api || activeIndex === 0}
+          onPress={() => api?.scrollPrevious()}
+        >
           Previous
         </Button>
         <Button
           size="sm"
           variant="outline"
-          disabled={!api || activeIndex >= (api?.getSlideCount() ?? 0) - 1}
-          onClick={() => api?.scrollNext()}
+          isDisabled={!api || activeIndex >= (api?.getSlideCount() ?? 0) - 1}
+          onPress={() => api?.scrollNext()}
         >
           Next
         </Button>
-        <Button size="sm" variant="ghost" disabled={!api} onClick={() => api?.scrollTo(0)}>
+        <Button size="sm" variant="ghost" isDisabled={!api} onPress={() => api?.scrollTo(0)}>
           Go to first
         </Button>
         <span aria-live="polite" className="text-xs tabular-nums text-muted-foreground">
@@ -101,7 +106,51 @@ function CarouselApiExample() {
           </div>
         ))}
       </Carousel>
+      <div className="flex flex-wrap items-center justify-center gap-1" role="group" aria-label="Choose a slide">
+        {slides.map((slide, index) => (
+          <Button
+            key={slide.src}
+            type="button"
+            size="icon-sm"
+            variant={activeIndex === index ? "secondary" : "ghost"}
+            aria-label={`Go to slide ${index + 1}`}
+            aria-current={activeIndex === index ? "true" : undefined}
+            isDisabled={!api}
+            onPress={() => api?.scrollTo(index)}
+            className="size-7 text-xs tabular-nums"
+          >
+            {index + 1}
+          </Button>
+        ))}
+      </div>
     </div>
+  );
+}
+
+function CardCarousel() {
+  const cards = Array.from({ length: 8 }, (_, index) => index + 1);
+
+  return (
+    <Carousel
+      aria-label="Featured collections"
+      autoPlay={false}
+      align="center"
+      loop
+      gap={12}
+      itemClassName="w-[48%] sm:w-[31%]"
+      className="border-0"
+    >
+      {cards.map((number) => (
+        <article
+          key={number}
+          className="grid aspect-square place-items-center rounded-xl border bg-card text-card-foreground shadow-sm"
+        >
+          <div className="grid size-14 place-items-center rounded-full bg-primary/10 text-2xl font-semibold text-primary">
+            {number}
+          </div>
+        </article>
+      ))}
+    </Carousel>
   );
 }
 
@@ -206,6 +255,9 @@ export function CarouselExamples() {
       </ComponentPreview>
       <ComponentPreview title="Programmatic Navigation" layout="wide">
         <CarouselApiExample />
+      </ComponentPreview>
+      <ComponentPreview title="Centered Card Carousel" layout="wide">
+        <CardCarousel />
       </ComponentPreview>
       <ComponentPreview
         title="Media"

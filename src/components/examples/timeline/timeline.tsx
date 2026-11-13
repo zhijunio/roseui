@@ -2,8 +2,14 @@
 
 import * as React from "react";
 
-import { IconCheck, IconCircleDashed, IconRocket, IconUser } from "@tabler/icons-react";
+import {
+  Check as IconCheck,
+  CircleDashed as IconCircleDashed,
+  Rocket as IconRocket,
+  User as IconUser,
+} from "lucide-react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Timeline,
@@ -16,7 +22,6 @@ import {
   TimelineTitle,
 } from "@/components/ui/timeline";
 import { getUserAvatar } from "@/data/user";
-import { ComponentPreview } from "@/examples/component-preview";
 import { cn } from "@/lib/utils";
 
 const timelineShowcase = [
@@ -341,7 +346,7 @@ function TimelineDemo({ index }: { index: number }) {
             );
 
           return (
-            <TimelineItem key={`${entry.title}-${stepIndex}`} step={step} className={itemClassName}>
+            <TimelineItem key={`${entry.date}-${entry.title}`} step={step} className={itemClassName}>
               <TimelineHeader className={horizontal ? "min-h-20" : undefined}>
                 <TimelineSeparator className={separatorClassName} />
                 <TimelineDate

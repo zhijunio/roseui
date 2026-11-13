@@ -3,24 +3,25 @@
 import { useState } from "react";
 
 import {
-  IconCheck,
-  IconChevronRight,
-  IconClipboardCheck,
-  IconCreditCard,
-  IconGasStation,
-  IconLoader2,
-  IconMapPin,
-  IconMoon,
-  IconPackage,
-  IconShieldCheck,
-  IconSun,
-  IconTruck,
-  IconUser,
-} from "@tabler/icons-react";
+  Check as IconCheck,
+  ChevronRight as IconChevronRight,
+  ClipboardCheck as IconClipboardCheck,
+  CreditCard as IconCreditCard,
+  Fuel as IconGasStation,
+  Loader2 as IconLoader2,
+  MapPin as IconMapPin,
+  Moon as IconMoon,
+  Package as IconPackage,
+  ShieldCheck as IconShieldCheck,
+  Sun as IconSun,
+  Truck as IconTruck,
+  User as IconUser,
+} from "lucide-react";
 
+import { ComponentPreview, type ComponentPreviewLayout } from "@/components/docs/component-preview";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+import { CheckboxButton, CheckboxField } from "@/components/ui/checkbox";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Frame, FramePanel } from "@/components/ui/frame";
 import { IconTile } from "@/components/ui/icon-tile";
@@ -36,7 +37,6 @@ import {
   StepperTitle,
   StepperTrigger,
 } from "@/components/ui/stepper";
-import { ComponentPreview, type ComponentPreviewLayout } from "@/examples/component-preview";
 import { cn } from "@/lib/utils";
 
 const stepperExampleLabels: Record<number, string> = {
@@ -130,7 +130,7 @@ export function StepperExamples() {
             previewClassName={previewClassName}
           >
             {section.examples.map((example) => {
-              const label = labelForExample?.(example);
+              const label = labelForExample(example);
               return (
                 <div key={example} className={isStack ? "min-w-0 w-full space-y-2" : "min-w-0"}>
                   {isStack && label ? <p className="text-xs font-medium text-muted-foreground">{label}</p> : null}
@@ -570,16 +570,16 @@ export function StepperExample({ example }: { example: number }) {
             <Button
               size="sm"
               variant="outline"
-              onClick={() => setStep((value) => Math.max(1, value - 1))}
-              disabled={step === 1}
+              onPress={() => setStep((value) => Math.max(1, value - 1))}
+              isDisabled={step === 1}
             >
               {"Previous"}
             </Button>
             <Button
               size="sm"
               variant="outline"
-              onClick={() => setStep((value) => Math.min(titles.length + (example >= 16 ? 1 : 0), value + 1))}
-              disabled={step === titles.length + (example >= 16 ? 1 : 0)}
+              onPress={() => setStep((value) => Math.min(titles.length + (example >= 16 ? 1 : 0), value + 1))}
+              isDisabled={step === titles.length + (example >= 16 ? 1 : 0)}
             >
               {"Next"}
             </Button>
@@ -622,15 +622,15 @@ function CheckGroups({ grouped }: { grouped: boolean }) {
                 { id: "validate", label: "Validate records" },
                 { id: "approve", label: "Approve" },
               ].map(({ id: checkId, label: checkLabel }) => (
-                <label key={checkId} className="flex items-center gap-2 text-xs">
-                  <Checkbox
-                    checked={checked[`${id}-${checkId}`] ?? false}
-                    onCheckedChange={(value) =>
-                      setChecked((current) => ({ ...current, [`${id}-${checkId}`]: value === true }))
-                    }
-                  />
-                  {checkLabel}
-                </label>
+                <CheckboxField
+                  key={checkId}
+                  checked={checked[`${id}-${checkId}`] ?? false}
+                  onCheckedChange={(value) =>
+                    setChecked((current) => ({ ...current, [`${id}-${checkId}`]: value === true }))
+                  }
+                >
+                  <CheckboxButton className="items-center gap-2 text-xs">{checkLabel}</CheckboxButton>
+                </CheckboxField>
               ))}
             </div>
           </CollapsibleContent>

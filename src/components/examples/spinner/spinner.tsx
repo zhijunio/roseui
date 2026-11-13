@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from "react";
 
+import { ComponentPreview, type ComponentPreviewLayout } from "@/components/docs/component-preview";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
-import { ComponentPreview, type ComponentPreviewLayout } from "@/examples/component-preview";
 import { cn } from "@/lib/utils";
 
 type ExampleSection = {
@@ -36,6 +36,14 @@ const sections: ExampleSection[] = [
 export function SpinnerExamples() {
   return (
     <>
+      <ComponentPreview title="Visual Variants">
+        <Spinner variant="ring" aria-label="Loading account" />
+        <Spinner variant="spin" aria-label="Loading account" />
+      </ComponentPreview>
+      <ComponentPreview title="Progress Semantics">
+        <Spinner mode="progress" percentage={64} isIndeterminate={false} variant="ring" label="Uploading file" />
+        <Spinner mode="progress" isIndeterminate label="Loading search results" />
+      </ComponentPreview>
       {sections.map((section) => {
         const renderExample = (example: number) => <SpinnerExample example={example} />;
         const isStack = section.stack === true;
@@ -92,11 +100,11 @@ export function SpinnerExample({ example }: { example: number }) {
   if (example === 2)
     return (
       <>
-        <Button disabled>
+        <Button isDisabled>
           {spinner}
           {"Saving…"}
         </Button>
-        <Button disabled variant="outline">
+        <Button isDisabled variant="outline">
           {spinner}
           {"Loading"}
         </Button>
@@ -124,7 +132,7 @@ export function SpinnerExample({ example }: { example: number }) {
     );
   if (example === 6)
     return (
-      <Button onClick={() => setLoading(true)} disabled={loading} aria-busy={loading}>
+      <Button onPress={() => setLoading(true)} isDisabled={loading} aria-busy={loading}>
         {loading && spinner}
         {loading ? "Saving…" : "Save changes"}
       </Button>
@@ -176,7 +184,7 @@ export function SpinnerExample({ example }: { example: number }) {
         <div className="space-y-3">
           <p className="font-medium">{"Workspace report"}</p>
           <p className="text-sm text-muted-foreground">{"Your latest activity and usage summary."}</p>
-          <Button variant="outline" disabled>
+          <Button variant="outline" isDisabled>
             {"Export"}
           </Button>
         </div>

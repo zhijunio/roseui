@@ -3,28 +3,28 @@
 import { type FormEvent, useId, useState } from "react";
 
 import {
-  IconBuilding,
-  IconChartBar,
-  IconCreditCard,
-  IconFolder,
-  IconInfoCircle,
-  IconKey,
-  IconSettings,
-  IconShieldCheck,
-  IconStarFilled,
-  IconUser,
-  IconUsers,
-} from "@tabler/icons-react";
+  Building as IconBuilding,
+  ChartBar as IconChartBar,
+  CreditCard as IconCreditCard,
+  Folder as IconFolder,
+  Info as IconInfoCircle,
+  Key as IconKey,
+  Settings as IconSettings,
+  ShieldCheck as IconShieldCheck,
+  Star as IconStarFilled,
+  User as IconUser,
+  Users as IconUsers,
+} from "lucide-react";
+import { Focusable } from "react-aria-components/Focusable";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+import { CheckboxButton, CheckboxField } from "@/components/ui/checkbox";
 import { HintText } from "@/components/ui/hint-text";
-import { Label } from "@/components/ui/label";
 import { LabeledCheckbox } from "@/components/ui/labeled-checkbox";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { ComponentPreview } from "@/examples/component-preview";
+import { Tooltip, TooltipTrigger } from "@/components/ui/tooltip";
 
 export function CheckboxExamples() {
   return (
@@ -44,48 +44,56 @@ export function CheckboxLayoutExamples() {
     <>
       <ComponentPreview title="Shape Variants" layout="stack" exampleLabels={["Color and shape", "Task list"]}>
         <div className="flex flex-wrap gap-5">
-          <label className="flex items-center gap-2 text-sm">
-            <Checkbox defaultChecked className="data-checked:border-primary data-checked:bg-primary" />
-            Primary selection
-          </label>
-          <label className="flex items-center gap-2 text-sm">
-            <Checkbox defaultChecked className="data-checked:border-success data-checked:bg-success" />
-            Approved
-          </label>
-          <label className="flex items-center gap-2 text-sm">
-            <Checkbox defaultChecked className="rounded-full" />
-            Circular selection
-          </label>
-          <label className="flex items-center gap-2 text-sm">
-            <Checkbox defaultChecked indicator={<IconStarFilled />} />
-            Custom indicator
-          </label>
+          <CheckboxField defaultSelected>
+            <CheckboxButton className="items-center gap-2 text-sm">Primary selection</CheckboxButton>
+          </CheckboxField>
+          <CheckboxField defaultSelected>
+            <CheckboxButton
+              className="items-center gap-2 text-sm"
+              boxClassName="group-data-[selected]/checkbox-button:border-success group-data-[selected]/checkbox-button:bg-success"
+            >
+              Approved
+            </CheckboxButton>
+          </CheckboxField>
+          <CheckboxField defaultSelected>
+            <CheckboxButton className="items-center gap-2 text-sm" boxClassName="rounded-full">
+              Circular selection
+            </CheckboxButton>
+          </CheckboxField>
+          <CheckboxField defaultSelected>
+            <CheckboxButton className="items-center gap-2 text-sm" indicator={<IconStarFilled fill="currentColor" />}>
+              Custom indicator
+            </CheckboxButton>
+          </CheckboxField>
         </div>
         <div className="grid w-full max-w-sm gap-3">
           {["Prepare release notes", "Review open issues", "Notify project owners"].map((label, index) => (
-            <label key={label} className="flex items-center gap-3 text-sm">
-              <Checkbox defaultChecked={index === 0} className="rounded-full" />
-              <span className={index === 0 ? "text-muted-foreground line-through" : ""}>{label}</span>
-            </label>
+            <CheckboxField key={label} defaultSelected={index === 0}>
+              <CheckboxButton className="items-center gap-3 text-sm" boxClassName="rounded-full">
+                <span className={index === 0 ? "text-muted-foreground line-through" : ""}>{label}</span>
+              </CheckboxButton>
+            </CheckboxField>
           ))}
         </div>
       </ComponentPreview>
 
       <ComponentPreview title="Label Layouts" layout="stack" exampleLabels={["Description and help", "Inline label"]}>
         <div className="grid w-full max-w-md gap-4">
-          <label className="flex cursor-pointer items-start gap-3 rounded-lg border p-4">
-            <Checkbox defaultChecked aria-label="Enable security notifications" />
-            <span className="grid gap-1">
-              <span className="text-sm font-medium">Security notifications</span>
-              <span className="text-xs text-muted-foreground">Receive alerts when workspace access changes.</span>
-            </span>
-          </label>
-          <TooltipProvider>
+          <CheckboxField defaultSelected>
+            <CheckboxButton className="items-start gap-3 rounded-lg border p-4">
+              <span className="grid gap-1">
+                <span className="text-sm font-medium">Security notifications</span>
+                <span className="text-xs text-muted-foreground">Receive alerts when workspace access changes.</span>
+              </span>
+            </CheckboxButton>
+          </CheckboxField>
+          <>
             <div className="flex items-center gap-2">
-              <Checkbox id={`${id}-retention`} />
-              <Label htmlFor={`${id}-retention`}>Enable extended retention</Label>
-              <Tooltip>
-                <TooltipTrigger asChild>
+              <CheckboxField id={`${id}-retention`}>
+                <CheckboxButton className="items-center gap-2 text-sm">Enable extended retention</CheckboxButton>
+              </CheckboxField>
+              <TooltipTrigger delay={0}>
+                <Focusable>
                   <button
                     type="button"
                     aria-label="About extended retention"
@@ -93,24 +101,25 @@ export function CheckboxLayoutExamples() {
                   >
                     <IconInfoCircle className="size-4" />
                   </button>
-                </TooltipTrigger>
-                <TooltipContent>Retained data follows your organization policy.</TooltipContent>
-              </Tooltip>
+                </Focusable>
+                <Tooltip>Retained data follows your organization policy.</Tooltip>
+              </TooltipTrigger>
             </div>
-          </TooltipProvider>
+          </>
         </div>
         <div className="grid w-full max-w-sm gap-3">
-          <label className="flex items-center gap-2 text-sm">
-            <Checkbox defaultChecked />
-            Include archived records
-            <span
-              title="Archived items stay available in search"
-              className="cursor-help text-muted-foreground"
-              aria-label="Help about archived records"
-            >
-              ⓘ
-            </span>
-          </label>
+          <CheckboxField defaultSelected>
+            <CheckboxButton className="items-center gap-2 text-sm">
+              Include archived records
+              <span
+                title="Archived items stay available in search"
+                className="cursor-help text-muted-foreground"
+                aria-label="Help about archived records"
+              >
+                ⓘ
+              </span>
+            </CheckboxButton>
+          </CheckboxField>
         </div>
       </ComponentPreview>
 
@@ -159,10 +168,11 @@ export function CheckboxLayoutExamples() {
         </div>
         <div className="w-full max-w-md divide-y rounded-xl border px-4">
           {["Email notifications", "Desktop notifications", "Weekly digest"].map((label, index) => (
-            <label key={label} className="flex items-center justify-between gap-4 py-3 text-sm">
-              <span>{label}</span>
-              <Checkbox aria-label={label} defaultChecked={index === 0} />
-            </label>
+            <CheckboxField key={label} defaultSelected={index === 0}>
+              <CheckboxButton className="w-full flex-row-reverse items-center justify-between gap-4 py-3 text-sm">
+                {label}
+              </CheckboxButton>
+            </CheckboxField>
           ))}
         </div>
         <div className="grid w-full max-w-md gap-2">
@@ -188,14 +198,14 @@ export function CheckboxLayoutExamples() {
         </div>
         <div className="grid w-full max-w-md grid-cols-2 gap-3">
           {["Product", "Engineering", "Operations", "Design"].map((label, index) => (
-            <label key={label} className="relative grid min-h-24 place-items-center rounded-xl border p-3 text-sm">
-              <Checkbox
-                aria-label={`Select ${label}`}
-                defaultChecked={index === 0}
-                className="absolute top-3 right-3"
-              />
-              {label}
-            </label>
+            <CheckboxField key={label} defaultSelected={index === 0}>
+              <CheckboxButton
+                className="relative min-h-24 place-items-center rounded-xl border p-3 text-sm data-[selected]:bg-primary/[0.04]"
+                boxClassName="absolute top-3 right-3"
+              >
+                {label}
+              </CheckboxButton>
+            </CheckboxField>
           ))}
         </div>
         <div className="grid w-full max-w-md grid-cols-2 gap-3">
@@ -222,13 +232,17 @@ export function CheckboxLayoutExamples() {
 
       <ComponentPreview title="Checkbox Content">
         <div className="grid w-full max-w-xl gap-3 sm:grid-cols-2">
-          <label className="relative flex min-h-24 cursor-pointer items-end rounded-xl border bg-muted/40 p-4">
-            <Checkbox defaultChecked aria-label="Select incident response project" className="absolute top-3 right-3" />
-            <span>
-              <span className="block text-sm font-medium">Incident response</span>
-              <span className="text-xs text-muted-foreground">Project · 8 members</span>
-            </span>
-          </label>
+          <CheckboxField defaultSelected>
+            <CheckboxButton
+              className="relative min-h-24 items-end rounded-xl border bg-muted/40 p-4"
+              boxClassName="absolute top-3 right-3"
+            >
+              <span>
+                <span className="block text-sm font-medium">Incident response</span>
+                <span className="text-xs text-muted-foreground">Project · 8 members</span>
+              </span>
+            </CheckboxButton>
+          </CheckboxField>
           <LabeledCheckbox
             label={
               <span className="flex items-center gap-3">
@@ -247,31 +261,31 @@ export function CheckboxLayoutExamples() {
           />
         </div>
         <div className="grid w-full max-w-sm gap-3">
-          <label className="flex items-center gap-3 border-b pb-3 text-sm font-medium">
-            <Checkbox
-              checked={selectedProjects.length === 3 ? true : selectedProjects.length > 0 ? "indeterminate" : false}
-              onCheckedChange={(checked) => setSelectedProjects(checked ? ["billing", "identity", "analytics"] : [])}
-              aria-label="Select all projects"
-            />
-            <span>Project permissions</span>
-          </label>
+          <CheckboxField
+            checked={selectedProjects.length === 3 ? true : selectedProjects.length > 0 ? "indeterminate" : false}
+            onCheckedChange={(checked) => setSelectedProjects(checked ? ["billing", "identity", "analytics"] : [])}
+          >
+            <CheckboxButton className="w-full items-center gap-3 border-b pb-3 text-sm font-medium">
+              Project permissions
+            </CheckboxButton>
+          </CheckboxField>
           <div className="grid gap-3 pl-7">
             {[
               { id: "billing", label: "Billing" },
               { id: "identity", label: "Identity" },
               { id: "analytics", label: "Analytics" },
             ].map((project) => (
-              <label key={project.id} className="flex items-center gap-3 text-sm">
-                <Checkbox
-                  checked={selectedProjects.includes(project.id)}
-                  onCheckedChange={(checked) =>
-                    setSelectedProjects((current) =>
-                      checked ? [...current, project.id] : current.filter((value) => value !== project.id),
-                    )
-                  }
-                />
-                <span>{project.label}</span>
-              </label>
+              <CheckboxField
+                key={project.id}
+                checked={selectedProjects.includes(project.id)}
+                onCheckedChange={(checked) =>
+                  setSelectedProjects((current) =>
+                    checked ? [...current, project.id] : current.filter((value) => value !== project.id),
+                  )
+                }
+              >
+                <CheckboxButton className="items-center gap-3 text-sm">{project.label}</CheckboxButton>
+              </CheckboxField>
             ))}
           </div>
         </div>
@@ -300,27 +314,25 @@ export function CheckboxLayoutExamples() {
             />
           </div>
           <div className="flex flex-wrap items-center gap-5">
-            <label className="flex items-center gap-2 text-sm">
-              <Checkbox defaultChecked />
-              Email receipts <Badge variant="secondary">Recommended</Badge>
-            </label>
-            <label className="flex items-center gap-2 text-sm">
-              <Checkbox />
-              Send weekly summary
-            </label>
-            <label className="flex items-center gap-2 text-sm">
-              <Checkbox />
-              Include archived projects
-            </label>
+            <CheckboxField defaultSelected>
+              <CheckboxButton className="items-center gap-2 text-sm">
+                Email receipts <Badge variant="secondary">Recommended</Badge>
+              </CheckboxButton>
+            </CheckboxField>
+            <CheckboxField>
+              <CheckboxButton className="items-center gap-2 text-sm">Send weekly summary</CheckboxButton>
+            </CheckboxField>
+            <CheckboxField>
+              <CheckboxButton className="items-center gap-2 text-sm">Include archived projects</CheckboxButton>
+            </CheckboxField>
           </div>
         </div>
         <fieldset className="grid w-full max-w-md gap-3 rounded-xl border bg-muted/20 p-4">
           <legend className="px-1 text-sm font-medium">Access permissions</legend>
           {["View reports", "Export data", "Manage members"].map((label, index) => (
-            <label key={label} className="flex items-center gap-3 text-sm">
-              <Checkbox defaultChecked={index === 0} />
-              {label}
-            </label>
+            <CheckboxField key={label} defaultSelected={index === 0}>
+              <CheckboxButton className="items-center gap-3 text-sm">{label}</CheckboxButton>
+            </CheckboxField>
           ))}
         </fieldset>
         <div className="flex flex-wrap items-center gap-4">
@@ -329,11 +341,12 @@ export function CheckboxLayoutExamples() {
             { label: "SMS", badge: "Optional" },
             { label: "Push", badge: "New" },
           ].map(({ label, badge }) => (
-            <label key={label} className="flex items-center gap-2 text-sm">
-              <Checkbox />
-              <span>{label}</span>
-              <span className="rounded bg-muted px-1.5 py-0.5 text-[10px]">{badge}</span>
-            </label>
+            <CheckboxField key={label}>
+              <CheckboxButton className="items-center gap-2 text-sm">
+                <span>{label}</span>
+                <span className="rounded bg-muted px-1.5 py-0.5 text-[10px]">{badge}</span>
+              </CheckboxButton>
+            </CheckboxField>
           ))}
         </div>
         <div className="grid w-full max-w-sm gap-3">
@@ -341,15 +354,14 @@ export function CheckboxLayoutExamples() {
             { label: "Billing alerts", badge: "REQUIRED" },
             { label: "Product updates", badge: "OPTIONAL" },
           ].map(({ label, badge }) => (
-            <label key={label} className="flex items-center justify-between gap-4 text-sm">
-              <span className="flex items-center gap-2">
-                <Checkbox defaultChecked={badge === "REQUIRED"} />
-                {label}
-              </span>
-              <span className="rounded bg-muted px-1.5 py-0.5 text-[9px] font-semibold tracking-wide text-muted-foreground">
-                {badge}
-              </span>
-            </label>
+            <CheckboxField key={label} defaultSelected={badge === "REQUIRED"}>
+              <CheckboxButton className="w-full items-center justify-between gap-4 text-sm">
+                <span>{label}</span>
+                <span className="rounded bg-muted px-1.5 py-0.5 text-[9px] font-semibold tracking-wide text-muted-foreground">
+                  {badge}
+                </span>
+              </CheckboxButton>
+            </CheckboxField>
           ))}
         </div>
       </ComponentPreview>
@@ -383,77 +395,75 @@ export function CheckboxUsageExamples() {
     <>
       <ComponentPreview title="Default Usage">
         <div className="grid gap-4">
-          <label className="flex cursor-pointer items-center gap-3 text-sm">
-            <Checkbox aria-label="Remember this device" />
-            <span>Remember this device</span>
-          </label>
-          <label className="flex cursor-pointer items-center gap-3 text-sm">
-            <Checkbox defaultChecked aria-label="Receive product updates" />
-            <span>Receive product updates</span>
-          </label>
+          <CheckboxField>
+            <CheckboxButton className="items-center gap-3 text-sm">Remember this device</CheckboxButton>
+          </CheckboxField>
+          <CheckboxField defaultSelected>
+            <CheckboxButton className="items-center gap-3 text-sm">Receive product updates</CheckboxButton>
+          </CheckboxField>
         </div>
 
         <div className="grid w-full max-w-sm gap-3">
-          <label className="flex cursor-pointer items-center gap-3 border-b pb-3 text-sm font-medium">
-            <Checkbox
-              checked={allSelected ? true : someSelected ? "indeterminate" : false}
-              onCheckedChange={(checked) => setSelected(checked ? preferences.map((item) => item.id) : [])}
-              aria-label="Select all notification preferences"
-            />
-            <span>Notification preferences</span>
-          </label>
+          <CheckboxField
+            checked={allSelected ? true : someSelected ? "indeterminate" : false}
+            onCheckedChange={(checked) => setSelected(checked ? preferences.map((item) => item.id) : [])}
+          >
+            <CheckboxButton className="w-full items-center gap-3 border-b pb-3 text-sm font-medium">
+              Notification preferences
+            </CheckboxButton>
+          </CheckboxField>
           <div className="grid gap-3 pl-7">
             {preferences.map((preference) => (
-              <label key={preference.id} className="flex cursor-pointer items-center gap-3 text-sm">
-                <Checkbox
-                  checked={selected.includes(preference.id)}
-                  onCheckedChange={(checked) => togglePreference(preference.id, checked === true)}
-                  aria-label={preference.label}
-                />
-                <span>{preference.label}</span>
-              </label>
+              <CheckboxField
+                key={preference.id}
+                checked={selected.includes(preference.id)}
+                onCheckedChange={(checked) => togglePreference(preference.id, checked === true)}
+              >
+                <CheckboxButton className="items-center gap-3 text-sm">{preference.label}</CheckboxButton>
+              </CheckboxField>
             ))}
           </div>
         </div>
 
-        <label className="flex cursor-not-allowed items-center gap-3 text-sm opacity-60">
-          <Checkbox disabled checked aria-label="Required policy accepted" />
-          <span>Required policy accepted</span>
-        </label>
+        <CheckboxField disabled checked>
+          <CheckboxButton className="items-center gap-3 text-sm data-[disabled]:cursor-not-allowed data-[disabled]:opacity-60">
+            Required policy accepted
+          </CheckboxButton>
+        </CheckboxField>
 
         <div className="grid w-full max-w-sm gap-2">
-          <div className="flex items-center gap-3">
-            <Checkbox id={`${id}-terms`} aria-invalid="true" />
-            <Label htmlFor={`${id}-terms`}>Accept the terms</Label>
-          </div>
+          <CheckboxField id={`${id}-terms`} isInvalid>
+            <CheckboxButton className="items-center gap-3 text-sm">Accept the terms</CheckboxButton>
+          </CheckboxField>
           <HintText variant="error">You must accept the terms to continue.</HintText>
         </div>
 
         <fieldset className="grid w-full max-w-sm gap-3">
           <legend className="text-sm font-medium">Notification preferences</legend>
           {["Product updates", "Security alerts", "Weekly summary"].map((label, index) => (
-            <label key={label} className="flex items-center gap-3 text-sm">
-              <Checkbox defaultChecked={index === 1} />
-              {label}
-            </label>
+            <CheckboxField key={label} defaultSelected={index === 1}>
+              <CheckboxButton className="items-center gap-3 text-sm">{label}</CheckboxButton>
+            </CheckboxField>
           ))}
         </fieldset>
       </ComponentPreview>
       <ComponentPreview title="Read Only" layout="stack">
-        <label className="flex cursor-default items-start gap-3 text-sm">
-          <Checkbox readOnly defaultChecked aria-label="Verified workspace policy" />
-          <span className="grid gap-1">
-            <span className="font-medium">Verified workspace policy</span>
-            <span className="text-xs text-muted-foreground">This setting is managed by your organization.</span>
-          </span>
-        </label>
+        <CheckboxField readOnly defaultSelected>
+          <CheckboxButton className="items-start gap-3 text-sm data-[disabled]:cursor-not-allowed data-[readonly]:cursor-default">
+            <span className="grid gap-1">
+              <span className="font-medium">Verified workspace policy</span>
+              <span className="text-xs text-muted-foreground">This setting is managed by your organization.</span>
+            </span>
+          </CheckboxButton>
+        </CheckboxField>
       </ComponentPreview>
       <ComponentPreview title="Form Integration" layout="field">
         <form className="grid w-full max-w-sm gap-3" onSubmit={submitRequiredForm}>
-          <label className="flex cursor-pointer items-start gap-3 text-sm">
-            <Checkbox required name="terms" value="accepted" aria-label="Accept the terms and privacy policy" />
-            <span>I agree to the terms and privacy policy.</span>
-          </label>
+          <CheckboxField required name="terms" value="accepted">
+            <CheckboxButton className="items-start gap-3 text-sm">
+              I agree to the terms and privacy policy.
+            </CheckboxButton>
+          </CheckboxField>
           <Button type="submit" size="sm" className="w-fit">
             Continue
           </Button>

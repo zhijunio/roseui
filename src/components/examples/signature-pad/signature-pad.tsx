@@ -4,8 +4,9 @@ import { useEffect, useId, useRef, useState } from "react";
 
 import Image from "next/image";
 
-import { IconDownload, IconPlayerPlay } from "@tabler/icons-react";
+import { Download as IconDownload, Play as IconPlayerPlay } from "lucide-react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -40,7 +41,6 @@ import {
 } from "@/components/ui/signature-pad";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ComponentPreview } from "@/examples/component-preview";
 
 const exportFormats: { format: SignaturePadFormat; label: string; extension: string }[] = [
   { format: "png", label: "PNG", extension: "png" },
@@ -241,7 +241,7 @@ export function SigningWorkspaceExample() {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => {
+                onPress={() => {
                   setSigned(false);
                   requestAnimationFrame(() => padRef.current?.focus());
                 }}
@@ -279,8 +279,8 @@ export function SigningWorkspaceExample() {
                 key={option.label}
                 size="xs"
                 variant={weight.label === option.label ? "secondary" : "ghost"}
-                disabled={locked}
-                onClick={() => setWeight(option)}
+                isDisabled={locked}
+                onPress={() => setWeight(option)}
               >
                 {option.label}
               </Button>
@@ -292,18 +292,18 @@ export function SigningWorkspaceExample() {
               variant="ghost"
               size="icon-sm"
               aria-label="Replay signature"
-              disabled={!strokes.length || locked}
-              onClick={playBack}
+              isDisabled={!strokes.length || locked}
+              onPress={playBack}
             >
               <IconPlayerPlay />
             </Button>
             <SignaturePadClear variant="ghost" />
             <div className="ms-auto flex gap-1">
-              <Button variant="ghost" size="sm" disabled={!strokes.length || locked} onClick={() => download("png")}>
+              <Button variant="ghost" size="sm" isDisabled={!strokes.length || locked} onPress={() => download("png")}>
                 <IconDownload data-icon="inline-start" />
                 PNG
               </Button>
-              <Button variant="ghost" size="sm" disabled={!strokes.length || locked} onClick={() => download("svg")}>
+              <Button variant="ghost" size="sm" isDisabled={!strokes.length || locked} onPress={() => download("svg")}>
                 <IconDownload data-icon="inline-start" />
                 SVG
               </Button>
@@ -314,7 +314,7 @@ export function SigningWorkspaceExample() {
           <span role="status">{downloadReady}</span>
           <span>{signed ? "Signed" : "Awaiting signature"}</span>
         </div>
-        <Button className="w-full" disabled={!strokes.length || signed} onClick={() => setSigned(true)}>
+        <Button className="w-full" isDisabled={!strokes.length || signed} onPress={() => setSigned(true)}>
           Sign statement
         </Button>
       </FramePanel>
@@ -452,7 +452,7 @@ export function DrawOrTypeExample() {
         </TabsContent>
       </Tabs>
       <div className="flex items-center gap-3">
-        <Button disabled={!ready} onClick={() => setAdopted(mode)}>
+        <Button isDisabled={!ready} onPress={() => setAdopted(mode)}>
           Adopt and sign
         </Button>
         <p role="status" className="text-sm text-primary">
@@ -483,7 +483,7 @@ export function AgreementSigningExample() {
               <Button
                 variant="ghost"
                 size="xs"
-                onClick={() => {
+                onPress={() => {
                   setSignedAt(null);
                   setStrokes([]);
                   setAgreed(false);
@@ -530,8 +530,8 @@ export function AgreementSigningExample() {
         ) : (
           <Button
             className="w-full"
-            disabled={!agreed || strokes.length === 0}
-            onClick={() => setSignedAt(new Intl.DateTimeFormat("en-US", { dateStyle: "medium" }).format(new Date()))}
+            isDisabled={!agreed || strokes.length === 0}
+            onPress={() => setSignedAt(new Intl.DateTimeFormat("en-US", { dateStyle: "medium" }).format(new Date()))}
           >
             Sign agreement
           </Button>
@@ -553,14 +553,13 @@ export function ProfileSignatureDialogExample() {
         <FramePanel className="flex items-center justify-between gap-3">
           <div>
             <h3 className="text-sm font-medium">Authorized signature</h3>
-            <p className="mt-1 text-xs text-muted-foreground">Used on invoices and purchase orders.</p>
           </div>
           <Button
             ref={editRef}
             variant="outline"
             size="sm"
-            onClick={(event) => {
-              event.currentTarget.focus();
+            onPress={() => {
+              editRef.current?.focus();
               setDraft(signature);
               setOpen(true);
             }}
@@ -573,7 +572,7 @@ export function ProfileSignatureDialogExample() {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => {
+                onPress={() => {
                   setSignature([]);
                   editRef.current?.focus();
                 }}
@@ -601,12 +600,12 @@ export function ProfileSignatureDialogExample() {
             </SignaturePadArea>
           </SignaturePad>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setOpen(false)}>
+            <Button variant="outline" onPress={() => setOpen(false)}>
               Cancel
             </Button>
             <Button
-              disabled={!draft.length}
-              onClick={() => {
+              isDisabled={!draft.length}
+              onPress={() => {
                 setSignature(draft);
                 setOpen(false);
               }}
@@ -635,7 +634,6 @@ export function StylusModeExample() {
       <div className="flex items-center justify-between gap-3">
         <div>
           <Label htmlFor={`${id}-pen`}>Stylus only</Label>
-          <p className="mt-1 text-xs text-muted-foreground">Ignore touch input while drawing with a pen.</p>
         </div>
         <Switch id={`${id}-pen`} checked={penOnly} onCheckedChange={setPenOnly} />
       </div>
@@ -666,7 +664,6 @@ export function ClauseInitialsExample() {
       <div className="flex items-start justify-between gap-3">
         <div>
           <p className="text-sm font-medium">Initial each clause</p>
-          <p className="text-xs text-muted-foreground">Initials confirm that you have reviewed the section.</p>
         </div>
         <Badge variant={complete ? "default" : "secondary"}>
           {count} of {clauses.length} complete
@@ -708,7 +705,7 @@ export function ClauseInitialsExample() {
           Initials submitted
         </p>
       ) : (
-        <Button disabled={!complete} className="ms-auto block" onClick={() => setSubmitted(true)}>
+        <Button isDisabled={!complete} className="ms-auto block" onPress={() => setSubmitted(true)}>
           Submit initials
         </Button>
       )}
@@ -764,8 +761,8 @@ export function ProofOfDeliveryExample() {
         ) : (
           <Button
             className="w-full"
-            disabled={!recipient.trim() || strokes.length === 0}
-            onClick={() => setConfirmed(true)}
+            isDisabled={!recipient.trim() || strokes.length === 0}
+            onPress={() => setConfirmed(true)}
           >
             Confirm delivery
           </Button>
@@ -802,14 +799,14 @@ export function ApiRefUploadExample() {
         </SignaturePadArea>
       </SignaturePad>
       <div className="flex items-center gap-2">
-        <Button disabled={empty} onClick={prepareUpload}>
+        <Button isDisabled={empty} onPress={prepareUpload}>
           <IconDownload data-icon="inline-start" />
           Attach as PNG
         </Button>
         <Button
           variant="ghost"
-          disabled={empty}
-          onClick={() => {
+          isDisabled={empty}
+          onPress={() => {
             padRef.current?.clear();
             padRef.current?.focus();
           }}
@@ -863,7 +860,7 @@ export function SignaturePadExamples() {
           <ClauseInitialsExample />
         </div>
       </ComponentPreview>
-      <ComponentPreview title="Workspace" span={2} layout="stack">
+      <ComponentPreview title="Canvas and Tools" span={2} layout="stack">
         <div className="min-w-0 w-full">
           <SigningWorkspaceExample />
         </div>

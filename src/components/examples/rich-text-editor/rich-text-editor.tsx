@@ -4,9 +4,9 @@ import { useState } from "react";
 
 import type { JSONContent } from "@tiptap/core";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Button } from "@/components/ui/button";
 import { RichTextEditor } from "@/components/ui/rich-text-editor";
-import { ComponentPreview } from "@/examples/component-preview";
 
 const launchBrief: JSONContent = {
   type: "doc",
@@ -65,7 +65,7 @@ function CustomToolbarExample() {
             size="sm"
             variant="outline"
             onMouseDown={(event) => event.preventDefault()}
-            onClick={() => editor.chain().focus().insertContent("Reviewed by the team. ").run()}
+            onPress={() => editor.chain().focus().insertContent("Reviewed by the team. ").run()}
           >
             Insert review note
           </Button>

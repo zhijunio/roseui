@@ -3,11 +3,11 @@
 import { useState } from "react";
 
 import { getLocalTimeZone, today } from "@internationalized/date";
-import { IconMapPin } from "@tabler/icons-react";
+import { MapPin as IconMapPin } from "lucide-react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Button } from "@/components/ui/button";
 import { DateRangePicker, type DateRangeValue } from "@/components/ui/date-range-picker";
-import { ComponentPreview } from "@/examples/component-preview";
 
 export function DateRangePickerExamples() {
   const [range, setRange] = useState<DateRangeValue | null>(null);

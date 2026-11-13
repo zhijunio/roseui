@@ -2,15 +2,15 @@
 
 import { useId, useState } from "react";
 
-import { IconEye, IconEyeOff, IconInfoCircle, IconLink } from "@tabler/icons-react";
+import { Eye as IconEye, EyeOff as IconEyeOff, Info as IconInfoCircle, Link as IconLink } from "lucide-react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { InputPhone } from "@/components/ui/input-phone";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
-import { ComponentPreview } from "@/examples/component-preview";
 
 export function InputExamples() {
   return <InputReferenceExamples />;
@@ -18,11 +18,12 @@ export function InputExamples() {
 
 export function InputReferenceExamples() {
   const id = useId();
+  const [bio, setBio] = useState("Design engineer. I build dashboards for a living.");
   const [text, setText] = useState("");
   const [password, setPassword] = useState("");
   const [visible, setVisible] = useState(false);
   const [phone, setPhone] = useState<string>();
-  const [counter, setCounter] = useState("");
+  const minimumBioLength = 40;
   const [sent, setSent] = useState(false);
   const preview = (_number: number, children: React.ReactNode) => <div className="min-w-0 w-full">{children}</div>;
   const section = (title: string, children: React.ReactNode, fullWidth = false) => (
@@ -157,7 +158,7 @@ export function InputReferenceExamples() {
                 variant="ghost"
                 size="icon"
                 aria-label={"Toggle password visibility"}
-                onClick={() => setVisible(!visible)}
+                onPress={() => setVisible(!visible)}
                 className="absolute right-1 top-1/2 size-7 -translate-y-1/2"
               >
                 {visible ? <IconEyeOff /> : <IconEye />}
@@ -258,7 +259,7 @@ export function InputReferenceExamples() {
                   variant="outline"
                   size="icon"
                   aria-label={"Toggle password visibility"}
-                  onClick={() => setVisible(!visible)}
+                  onPress={() => setVisible(!visible)}
                 >
                   {visible ? <IconEyeOff /> : <IconEye />}
                 </Button>
@@ -276,14 +277,23 @@ export function InputReferenceExamples() {
           {preview(
             6,
             <div className="grid w-full max-w-sm gap-2">
-              <Label htmlFor={`${id}-counter`}>{"Message"}</Label>
+              <Label htmlFor={`${id}-counter`}>{"Bio"}</Label>
               <Input
                 id={`${id}-counter`}
-                maxLength={80}
-                value={counter}
-                onChange={(event) => setCounter(event.target.value)}
+                maxLength={160}
+                value={bio}
+                onChange={(event) => setBio(event.target.value)}
+                aria-describedby={`${id}-counter-help`}
+                placeholder={"Write a short bio"}
               />
-              <output className="text-right text-xs text-muted-foreground">{counter.length}/80</output>
+              <div id={`${id}-counter-help`} className="flex justify-between gap-4 text-xs text-muted-foreground">
+                <span>{"Appears on your public profile."}</span>
+                <output className="shrink-0 text-right tabular-nums" aria-live="polite">
+                  {bio.length < minimumBioLength
+                    ? `${minimumBioLength - bio.length} more characters to reach the minimum`
+                    : `${160 - bio.length} characters remaining`}
+                </output>
+              </div>
             </div>,
           )}
           {preview(

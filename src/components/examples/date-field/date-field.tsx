@@ -3,12 +3,12 @@
 import { useState } from "react";
 
 import { type CalendarDate, getLocalTimeZone, today } from "@internationalized/date";
-import { IconCalendarEvent, IconInfoCircle } from "@tabler/icons-react";
+import { CalendarDays as IconCalendarEvent, Info as IconInfoCircle } from "lucide-react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { DateField } from "@/components/ui/date-field";
-import { ComponentPreview } from "@/examples/component-preview";
 
 export function DateFieldExamples() {
   const [date, setDate] = useState<CalendarDate | null>(null);
@@ -100,10 +100,10 @@ export function DateFieldExamples() {
         <div className="grid w-full gap-3">
           <DateField label="Date" value={date} onChange={setDate} />
           <div className="flex flex-wrap gap-2">
-            <Button type="button" variant="outline" size="sm" onClick={() => setDate(todayDate)}>
+            <Button type="button" variant="outline" size="sm" onPress={() => setDate(todayDate)}>
               Set today
             </Button>
-            <Button type="button" variant="outline" size="sm" onClick={() => setDate(null)}>
+            <Button type="button" variant="outline" size="sm" onPress={() => setDate(null)}>
               Clear
             </Button>
           </div>

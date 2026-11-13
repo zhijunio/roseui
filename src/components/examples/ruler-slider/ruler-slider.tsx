@@ -2,8 +2,8 @@
 
 import * as React from "react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { RulerSlider } from "@/components/ui/ruler-slider";
-import { ComponentPreview } from "@/examples/component-preview";
 
 export function RulerSliderExamples() {
   const [threshold, setThreshold] = React.useState(12500);
@@ -22,9 +22,8 @@ export function RulerSliderExamples() {
           onValueCommit={setThreshold}
           formatValue={(value) => `$${value.toLocaleString()}`}
         />
-        <p className="text-xs text-muted-foreground">Invoices above this amount require an additional review.</p>
       </ComponentPreview>
-      <ComponentPreview title="Record retention" layout="fullStack">
+      <ComponentPreview title="Range and Tick Labels" layout="fullStack">
         <RulerSlider
           label="Retention period"
           min={7}
@@ -35,7 +34,6 @@ export function RulerSliderExamples() {
           onValueChange={setRetention}
           unit=" days"
         />
-        <p className="text-xs text-muted-foreground">Changes apply to new records in this workspace.</p>
       </ComponentPreview>
     </>
   );

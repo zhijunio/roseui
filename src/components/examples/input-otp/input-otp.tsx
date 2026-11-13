@@ -2,11 +2,11 @@
 
 import { useEffect, useId, useState } from "react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Button } from "@/components/ui/button";
-import { FieldError, FieldLegend, FieldSet } from "@/components/ui/composite-field";
-import { InputOtp } from "@/components/ui/composite-input-otp";
+import { FieldError, FieldLegend, FieldSet } from "@/components/ui/field";
 import { Form } from "@/components/ui/form";
-import { ComponentPreview } from "@/examples/component-preview";
+import { InputOTP } from "@/components/ui/input-otp";
 
 function OtpResendExample() {
   const [secondsLeft, setSecondsLeft] = useState(0);
@@ -29,7 +29,7 @@ function OtpResendExample() {
     <div className="grid w-full max-w-sm gap-3">
       <fieldset className="grid gap-2">
         <legend className="text-sm font-medium">Enter the verification code</legend>
-        <InputOtp length={6} groupEvery={3} aria-label="Six-digit verification code" />
+        <InputOTP length={6} groupEvery={3} aria-label="Six-digit verification code" />
       </fieldset>
       <div className="flex min-h-8 items-center gap-2 text-sm">
         <p className="text-muted-foreground" aria-live="polite">
@@ -44,8 +44,8 @@ function OtpResendExample() {
           variant="link"
           size="sm"
           className="h-auto p-0"
-          disabled={secondsLeft > 0}
-          onClick={sendCode}
+          isDisabled={secondsLeft > 0}
+          onPress={sendCode}
         >
           Resend
         </Button>
@@ -79,7 +79,7 @@ function OtpFormExample() {
     >
       <FieldSet className="gap-2">
         <FieldLegend variant="label">Verification code</FieldLegend>
-        <InputOtp
+        <InputOTP
           name="verificationCode"
           value={code}
           onChange={(nextCode) => {
@@ -119,15 +119,15 @@ function InputOtpDemoContent() {
       <ComponentPreview title="Lengths and Grouping" layout="grid3" span={2}>
         <div className="grid min-w-0 gap-2">
           <p className="text-sm font-medium">Six-digit code</p>
-          <InputOtp aria-label="Six-digit verification code" />
+          <InputOTP aria-label="Six-digit verification code" />
         </div>
         <div className="grid min-w-0 gap-2">
           <p className="text-sm font-medium">Four-digit PIN</p>
-          <InputOtp length={4} inputClassName="size-11 sm:size-12" aria-label="Four-digit PIN" />
+          <InputOTP length={4} inputClassName="size-11 sm:size-12" aria-label="Four-digit PIN" />
         </div>
         <div className="grid min-w-0 gap-2">
           <p className="text-sm font-medium">Grouped recovery code</p>
-          <InputOtp
+          <InputOTP
             length={8}
             groupEvery={4}
             inputClassName="size-8 sm:size-9"
@@ -138,7 +138,7 @@ function InputOtpDemoContent() {
 
       <ComponentPreview title="Controlled Completion" layout="field">
         <div className="grid gap-3">
-          <InputOtp
+          <InputOTP
             value={code}
             onChange={(nextCode) => {
               setCode(nextCode);
@@ -159,7 +159,7 @@ function InputOtpDemoContent() {
 
       <ComponentPreview title="Alphanumeric Code" layout="field">
         <div className="grid gap-2">
-          <InputOtp
+          <InputOTP
             length={6}
             allowAlphanumeric
             groupEvery={3}
@@ -167,13 +167,12 @@ function InputOtpDemoContent() {
             aria-label="Six-character alphanumeric code"
             digitAriaLabel={(digit, total) => `Character ${digit} of ${total}`}
           />
-          <p className="text-xs text-muted-foreground">Letters are accepted alongside numbers.</p>
         </div>
       </ComponentPreview>
 
       <ComponentPreview title="Invalid and Disabled" layout="grid2" exampleLabels={["Invalid", "Disabled"]}>
-        <InputOtp defaultValue="12" invalid aria-label="Invalid six-digit verification code" />
-        <InputOtp defaultValue="123456" disabled aria-label="Disabled six-digit verification code" />
+        <InputOTP defaultValue="12" invalid aria-label="Invalid six-digit verification code" />
+        <InputOTP defaultValue="123456" disabled aria-label="Disabled six-digit verification code" />
       </ComponentPreview>
 
       <ComponentPreview title="Resend Cooldown" span={2} layout="field">

@@ -4,8 +4,8 @@ import { useState } from "react";
 
 import { type Color, parseColor } from "react-aria-components";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { ColorArea, ColorAreaThumb } from "@/components/ui/color-area";
-import { ComponentPreview } from "@/examples/component-preview";
 
 function colorPlane(color: Color) {
   return {

@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import { type Color, parseColor } from "react-aria-components";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Button } from "@/components/ui/button";
 import { ColorArea, ColorAreaThumb } from "@/components/ui/color-area";
 import { ColorField, ColorFieldInput, ColorFieldLabel } from "@/components/ui/color-field";
@@ -11,7 +12,6 @@ import { ColorInput, ColorPicker, ColorWell } from "@/components/ui/color-picker
 import { ColorSlider, ColorSliderThumb, ColorSliderTrack } from "@/components/ui/color-slider";
 import { ColorSwatch } from "@/components/ui/color-swatch";
 import { ColorSwatchPicker, ColorSwatchPickerItem } from "@/components/ui/color-swatch-picker";
-import { ComponentPreview } from "@/examples/component-preview";
 
 const palette = ["#2563eb", "#7c3aed", "#059669", "#d97706", "#dc2626", "#0f766e", "#db2777", "#475569"];
 
@@ -158,9 +158,9 @@ export function ColorPickerExamples() {
           </div>
           <div className="flex items-center gap-2">
             <span className="text-xs text-muted-foreground">Recent</span>
-            {recent.map((item, index) => (
+            {recent.map((item) => (
               <button
-                key={`${item}-${index}`}
+                key={item}
                 type="button"
                 aria-label={`Restore recent color ${item}`}
                 onClick={() => updateColor(item)}
@@ -251,7 +251,6 @@ export function ColorPickerExamples() {
               </label>
             ))}
           </div>
-          <p className="text-xs text-muted-foreground">Hue wheel and RGB channels update the selected color.</p>
         </div>
       </ComponentPreview>
 
@@ -285,7 +284,7 @@ export function ColorPickerExamples() {
             <Button
               type="button"
               size="sm"
-              onClick={() =>
+              onPress={() =>
                 void navigator.clipboard?.writeText(
                   `--primary: oklch(${(lightness / 100).toFixed(2)} ${(chroma / 100).toFixed(2)} ${hue});`,
                 )

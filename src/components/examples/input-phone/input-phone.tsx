@@ -1,9 +1,9 @@
 "use client";
 import * as React from "react";
 
-import { Field, FieldDescription, FieldLabel } from "@/components/ui/composite-field";
+import { ComponentPreview } from "@/components/docs/component-preview";
+import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
 import { InputPhone } from "@/components/ui/input-phone";
-import { ComponentPreview } from "@/examples/component-preview";
 
 const examples = [
   "Basic phone input",

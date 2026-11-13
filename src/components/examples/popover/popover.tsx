@@ -1,7 +1,8 @@
 import Link from "next/link";
 
-import { IconTrash } from "@tabler/icons-react";
+import { Trash as IconTrash } from "lucide-react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -22,7 +23,6 @@ import {
   PopoverTitle,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { ComponentPreview } from "@/examples/component-preview";
 
 function AlignmentPopovers() {
   return (
@@ -199,7 +199,7 @@ function LinkPopover() {
           </PopoverDescription>
         </PopoverHeader>
         <Link
-          href="/components/popover"
+          href="/docs/components/overlays/popover"
           className="mt-3 inline-flex text-sm font-medium text-primary underline underline-offset-4"
         >
           Learn more

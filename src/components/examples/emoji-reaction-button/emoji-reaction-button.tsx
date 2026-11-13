@@ -1,41 +1,30 @@
 "use client";
 
-import * as React from "react";
+import { useState } from "react";
 
-import { type Reaction, Reactions } from "@/components/ui/reactions";
-import { ComponentPreview } from "@/examples/component-preview";
+import { ComponentPreview } from "@/components/docs/component-preview";
+import { EmojiReactionButton } from "@/components/ui/emoji-reaction-button";
 
-const initialReactions: Reaction[] = [
-  { emoji: "❤️", label: "Love", count: 11, selected: true },
-  { emoji: "🎉", label: "Celebrate", count: 4 },
-  { emoji: "👍", label: "Like", count: 8 },
-  { emoji: "😂", label: "Laugh", count: 3 },
-];
+export function EmojiReactionButtonExamples() {
+  const [pressed, setPressed] = useState(false);
 
-function InteractiveReactions() {
-  const [reactions, setReactions] = React.useState(initialReactions);
   return (
-    <div className="grid justify-items-center gap-3">
-      <Reactions reactions={reactions} onReactionsChange={setReactions} />
-      <p className="min-h-5 text-xs text-muted-foreground" aria-live="polite">
-        {reactions.length} reaction types
-      </p>
+    <div className="grid gap-5 xl:grid-cols-2">
+      <ComponentPreview title="Controlled selection" layout="panel">
+        <div className="grid justify-items-start gap-3">
+          <EmojiReactionButton emoji="🎉" label="Celebrate" count={12} pressed={pressed} onPressedChange={setPressed} />
+          <output aria-live="polite" className="text-muted-foreground text-xs">
+            {pressed ? "Reaction selected" : "Reaction not selected"}
+          </output>
+        </div>
+      </ComponentPreview>
+      <ComponentPreview title="Sizes and read-only state" layout="panel">
+        <div className="flex flex-wrap items-center gap-2">
+          <EmojiReactionButton emoji="❤️" label="Love" count={21} size="sm" />
+          <EmojiReactionButton emoji="👍" label="Like" count={8} size="md" defaultPressed />
+          <EmojiReactionButton emoji="😂" label="Laugh" count={4} size="lg" readOnly />
+        </div>
+      </ComponentPreview>
     </div>
-  );
-}
-
-export function ReactionsExamples() {
-  return (
-    <>
-      <ComponentPreview title="Message reactions" exampleLabels={["Toggle", "Add reaction"]}>
-        <InteractiveReactions />
-      </ComponentPreview>
-      <ComponentPreview title="Read-only summary" exampleLabels={["Non-interactive"]}>
-        <Reactions reactions={initialReactions} readOnly />
-      </ComponentPreview>
-      <ComponentPreview title="Compact reaction group" exampleLabels={["Inline use"]}>
-        <Reactions reactions={initialReactions.slice(0, 2)} label="Comment reactions" className="justify-center" />
-      </ComponentPreview>
-    </>
   );
 }

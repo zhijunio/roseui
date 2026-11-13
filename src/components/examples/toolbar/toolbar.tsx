@@ -3,23 +3,23 @@
 import { useState } from "react";
 
 import {
-  IconAlignCenter,
-  IconAlignLeft,
-  IconAlignRight,
-  IconArrowBackUp,
-  IconArrowForwardUp,
-  IconBold,
-  IconDownload,
-  IconItalic,
-  IconRefresh,
-  IconSettings,
-  IconUnderline,
-} from "@tabler/icons-react";
+  AlignCenter as IconAlignCenter,
+  AlignLeft as IconAlignLeft,
+  AlignRight as IconAlignRight,
+  Undo2 as IconArrowBackUp,
+  Redo2 as IconArrowForwardUp,
+  Bold as IconBold,
+  Download as IconDownload,
+  Italic as IconItalic,
+  RefreshCw as IconRefresh,
+  Settings as IconSettings,
+  Underline as IconUnderline,
+} from "lucide-react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Button } from "@/components/ui/button";
-import { ButtonGroup, ButtonGroupItem, ButtonGroupSeparator } from "@/components/ui/composite-button-group";
+import { ButtonGroup, ButtonGroupItem, ButtonGroupSeparator } from "@/components/ui/button-group";
 import { Toolbar } from "@/components/ui/toolbar";
-import { ComponentPreview } from "@/examples/component-preview";
 
 function FormatActions() {
   return (
@@ -95,14 +95,14 @@ export function ToolbarExamples() {
         </Toolbar>
       </ComponentPreview>
 
-      <ComponentPreview title="Responsive report actions" layout="wide">
+      <ComponentPreview title="Responsive Layout" layout="wide">
         <div className="min-w-0 space-y-3">
           <Toolbar aria-label="Report actions" className="w-full flex-wrap rounded-lg border border-border p-1">
             <Button
               variant="ghost"
               size="sm"
               aria-label="Refresh report"
-              onClick={() => setReportStatus("Report refreshed.")}
+              onPress={() => setReportStatus("Report refreshed.")}
             >
               <IconRefresh aria-hidden="true" />
               <span>Refresh</span>
@@ -111,7 +111,7 @@ export function ToolbarExamples() {
               variant="ghost"
               size="sm"
               aria-label="Download report"
-              onClick={() => setReportStatus("Report download started.")}
+              onPress={() => setReportStatus("Report download started.")}
             >
               <IconDownload aria-hidden="true" />
               <span>Download</span>
@@ -120,7 +120,7 @@ export function ToolbarExamples() {
               variant="ghost"
               size="sm"
               aria-label="Open report settings"
-              onClick={() => setReportStatus("Report settings opened.")}
+              onPress={() => setReportStatus("Report settings opened.")}
             >
               <IconSettings aria-hidden="true" />
               <span>Settings</span>

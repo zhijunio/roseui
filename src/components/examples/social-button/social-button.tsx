@@ -1,69 +1,70 @@
-import { IconBuilding } from "@tabler/icons-react";
+"use client";
 
+import { useState } from "react";
+
+import { Building as IconBuilding } from "lucide-react";
+
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { SocialButton } from "@/components/ui/social-button";
 import { SOCIAL_PROVIDERS, type SocialProvider } from "@/components/ui/social-providers";
-import { ComponentPreview } from "@/examples/component-preview";
 
 const providers = Object.keys(SOCIAL_PROVIDERS) as SocialProvider[];
 
 export function SocialButtonExamples() {
+  const [status, setStatus] = useState("");
+
   return (
     <>
-      <ComponentPreview title="Brands" span={2} layout="grid3">
+      <ComponentPreview title="Providers" span={2} layout="grid3">
         {providers.map((brand) => (
           <SocialButton key={brand} brand={brand} appearance="white" fullWidth />
         ))}
       </ComponentPreview>
 
-      <ComponentPreview title="Appearance" layout="stack" exampleLabels={["Colorful", "Black", "White"]}>
+      <ComponentPreview title="Appearance" layout="stack">
         <SocialButton brand="google" appearance="colorful" />
         <SocialButton brand="google" appearance="black" />
         <SocialButton brand="google" appearance="white" />
-      </ComponentPreview>
-
-      <ComponentPreview title="Sizes" layout="stack" exampleLabels={["Default", "Compact", "Full width"]}>
-        <SocialButton brand="github" appearance="white" size="default" />
         <SocialButton brand="github" appearance="white" size="sm" />
-        <SocialButton brand="github" appearance="white" fullWidth />
+        <SocialButton brand="github" appearance="white" disabled />
       </ComponentPreview>
 
-      <ComponentPreview title="Icon Only">
-        <SocialButton brand="google" appearance="white" iconOnly aria-label="Continue with Google" />
-        <SocialButton brand="apple" appearance="white" iconOnly aria-label="Continue with Apple" />
-        <SocialButton brand="github" appearance="white" iconOnly aria-label="Continue with GitHub" />
-      </ComponentPreview>
-
-      <ComponentPreview title="Custom Brand">
-        <SocialButton
-          brand="custom"
-          appearance="colorful"
-          config={{ icon: <IconBuilding className="size-full" />, label: "Acme", color: "#334155" }}
-        >
-          Continue with Acme
-        </SocialButton>
-      </ComponentPreview>
-
-      <ComponentPreview
-        title="Labels"
-        layout="stack"
-        exampleLabels={["Provider default", "Sign-up action", "Login action"]}
-      >
+      <ComponentPreview title="Labels and Layout" layout="stack">
         <SocialButton brand="google" appearance="white" />
         <SocialButton brand="google" appearance="white">
           Sign up with Google
         </SocialButton>
-        <SocialButton brand="google" appearance="white">
-          Log in with Google
+        <SocialButton brand="google" appearance="white" fullWidth>
+          Continue with Google
         </SocialButton>
+        <div className="flex gap-2">
+          <SocialButton brand="google" appearance="white" iconOnly aria-label="Continue with Google" />
+          <SocialButton brand="apple" appearance="white" iconOnly aria-label="Continue with Apple" />
+          <SocialButton brand="github" appearance="white" iconOnly aria-label="Continue with GitHub" />
+        </div>
       </ComponentPreview>
 
-      <ComponentPreview title="Buttons and Links">
-        <SocialButton brand="google" appearance="white">
-          Start Google sign-in
-        </SocialButton>
-        <SocialButton brand="github" appearance="white" href="https://github.com/login">
-          Continue to GitHub
-        </SocialButton>
+      <ComponentPreview title="Actions and Custom Brand" layout="stack">
+        <div className="space-y-3">
+          <SocialButton brand="google" appearance="white" onClick={() => setStatus("Google sign-in started.")}>
+            Continue with Google
+          </SocialButton>
+          <SocialButton brand="github" appearance="white" href="https://github.com/login">
+            Continue to GitHub
+          </SocialButton>
+          <SocialButton
+            brand="custom"
+            appearance="colorful"
+            config={{ icon: <IconBuilding className="size-full" />, label: "Acme", color: "#334155" }}
+          >
+            Continue with Acme
+          </SocialButton>
+          {status ? (
+            <p role="status" aria-live="polite" className="text-muted-foreground text-sm">
+              {status}
+            </p>
+          ) : null}
+        </div>
       </ComponentPreview>
     </>
   );

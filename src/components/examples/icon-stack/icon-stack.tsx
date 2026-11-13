@@ -1,16 +1,16 @@
 import {
-  IconBell,
-  IconCheck,
-  IconCloud,
-  IconDatabase,
-  IconInbox,
-  IconPackage,
-  IconUserPlus,
-} from "@tabler/icons-react";
+  Bell as IconBell,
+  Check as IconCheck,
+  Cloud as IconCloud,
+  Database as IconDatabase,
+  Inbox as IconInbox,
+  Package as IconPackage,
+  UserPlus as IconUserPlus,
+} from "lucide-react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Button } from "@/components/ui/button";
 import { IconStack } from "@/components/ui/icon-stack";
-import { ComponentPreview } from "@/examples/component-preview";
 
 const sizes = [
   { label: "Small", className: "h-12 w-11", iconClassName: "size-3" },

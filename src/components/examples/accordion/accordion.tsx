@@ -3,19 +3,19 @@
 import { useState } from "react";
 
 import {
-  IconBell,
-  IconChevronDown,
-  IconChevronRight,
-  IconCreditCard,
-  IconLock,
-  IconMinus,
-  IconPlus,
-} from "@tabler/icons-react";
+  Bell as IconBell,
+  ChevronDown as IconChevronDown,
+  ChevronRight as IconChevronRight,
+  CreditCard as IconCreditCard,
+  Lock as IconLock,
+  Minus as IconMinus,
+  Plus as IconPlus,
+} from "lucide-react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ComponentPreview } from "@/examples/component-preview";
 import { cn } from "@/lib/utils";
 
 const accountItems = [
@@ -243,10 +243,10 @@ export function ControlledAccordionExample() {
   return (
     <div className="w-full space-y-4">
       <div className="flex flex-wrap gap-2">
-        <Button variant="outline" size="sm" onClick={() => setOpenItems(controlledItems.map(({ value }) => value))}>
+        <Button variant="outline" size="sm" onPress={() => setOpenItems(controlledItems.map(({ value }) => value))}>
           Expand all
         </Button>
-        <Button variant="outline" size="sm" onClick={() => setOpenItems([])}>
+        <Button variant="outline" size="sm" onPress={() => setOpenItems([])}>
           Collapse all
         </Button>
       </div>

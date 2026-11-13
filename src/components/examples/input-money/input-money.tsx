@@ -2,8 +2,8 @@
 
 import * as React from "react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { InputMoney } from "@/components/ui/input-money";
-import { ComponentPreview } from "@/examples/component-preview";
 
 function InputMoneyExamplesContent() {
   const [amount, setAmount] = React.useState<number | null>(6499);
@@ -11,7 +11,7 @@ function InputMoneyExamplesContent() {
 
   return (
     <>
-      <ComponentPreview title="Invoice line amount">
+      <ComponentPreview title="Controlled Value and Quick Add">
         <div className="grid w-full max-w-md gap-3">
           <InputMoney
             label="Implementation fee"
@@ -25,7 +25,7 @@ function InputMoneyExamplesContent() {
           </p>
         </div>
       </ComponentPreview>
-      <ComponentPreview title="Bounded account credit">
+      <ComponentPreview title="Limits and Validation">
         <div className="w-full max-w-md">
           <InputMoney
             label="Credit adjustment"
@@ -42,7 +42,7 @@ function InputMoneyExamplesContent() {
           />
         </div>
       </ComponentPreview>
-      <ComponentPreview title="Read-only payment amount">
+      <ComponentPreview title="Read-only Value">
         <div className="w-full max-w-md">
           <InputMoney
             label="Captured amount"

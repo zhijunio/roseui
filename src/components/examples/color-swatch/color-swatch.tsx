@@ -2,8 +2,8 @@
 
 import { parseColor } from "react-aria-components";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { ColorSwatch } from "@/components/ui/color-swatch";
-import { ComponentPreview } from "@/examples/component-preview";
 
 const samples = [
   { name: "Blue", color: "#2563eb" },

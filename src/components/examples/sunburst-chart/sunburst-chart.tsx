@@ -18,24 +18,26 @@ export function SunburstExample() {
           <p className="mt-4 text-sm font-medium text-accent-strong sm:text-base">All teams</p>
         </div>
         <ToggleGroup
-          type="single"
-          value={month}
-          onValueChange={(value) => {
-            if (value === "Aug" || value === "Sep") setMonth(value);
-          }}
+          selectionMode="single"
+          selectedKeys={[month]}
+          onSelectionChange={(keys) =>
+            ((value) => {
+              if (value === "Aug" || value === "Sep") setMonth(value);
+            })(String(Array.from(keys)[0] ?? ""))
+          }
           variant="outline"
           size="sm"
           aria-label="Choose month"
           className="shrink-0 rounded-xl border border-border bg-muted/45 p-1 shadow-none"
         >
           <ToggleGroupItem
-            value="Aug"
+            id="Aug"
             className="h-8 border-0 px-2.5 text-sm text-muted-foreground shadow-none data-[state=on]:bg-background data-[state=on]:text-accent-strong data-[state=on]:shadow-[0_1px_3px_color-mix(in_oklab,var(--foreground)_12%,transparent)] sm:h-9 sm:px-3"
           >
             Aug
           </ToggleGroupItem>
           <ToggleGroupItem
-            value="Sep"
+            id="Sep"
             className="h-8 border-0 px-2.5 text-sm text-muted-foreground shadow-none data-[state=on]:bg-background data-[state=on]:text-accent-strong data-[state=on]:shadow-[0_1px_3px_color-mix(in_oklab,var(--foreground)_12%,transparent)] sm:h-9 sm:px-3"
           >
             Sep

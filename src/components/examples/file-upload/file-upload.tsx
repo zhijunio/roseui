@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 
 import Image from "next/image";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { FileUpload } from "@/components/ui/file-upload";
-import { ComponentPreview } from "@/examples/component-preview";
 
 const imageAccept = {
   "image/png": [".png"],
@@ -18,17 +18,29 @@ const documentAccept = {
   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [".xlsx"],
 };
 
+type ExtraFileCollection =
+  | "avatar"
+  | "gallery"
+  | "product"
+  | "sortable"
+  | "cards"
+  | "cover"
+  | "drop"
+  | "progress"
+  | "table";
+
 function FileUploadDemoContent() {
   const [documents, setDocuments] = useState<File[]>([]);
   const [singleFile, setSingleFile] = useState<File[]>([]);
   const [previewFiles, setPreviewFiles] = useState<File[]>([]);
   const [validatedFiles, setValidatedFiles] = useState<File[]>([]);
-  const [extraFiles, setExtraFiles] = useState<Record<string, File[]>>({});
-  const setExtra = (key: string) => (files: File[]) => setExtraFiles((current) => ({ ...current, [key]: files }));
+  const [extraFiles, setExtraFiles] = useState<Partial<Record<ExtraFileCollection, File[]>>>({});
+  const setExtra = (key: ExtraFileCollection) => (files: File[]) =>
+    setExtraFiles((current) => ({ ...current, [key]: files }));
 
   return (
     <>
-      <ComponentPreview title="Files" layout="stack">
+      <ComponentPreview title="Single and Multiple Files" layout="stack">
         <div className="space-y-2">
           <p className="text-sm font-medium">Multiple documents</p>
           <FileUpload
@@ -37,6 +49,7 @@ function FileUploadDemoContent() {
             accept={documentAccept}
             multiple
             maxSize={10 * 1024 * 1024}
+            maxFiles={3}
           />
         </div>
         <div className="space-y-2">
@@ -132,7 +145,6 @@ function FileUploadDemoContent() {
 
         <div className="grid w-full gap-3">
           <p className="text-sm font-medium">Ordered product photos</p>
-          <p className="text-xs text-muted-foreground">The selected order is used when displaying these images.</p>
           <FileUpload
             files={extraFiles.sortable ?? []}
             onFilesChange={setExtra("sortable")}
@@ -176,7 +188,6 @@ function FileUploadDemoContent() {
       </ComponentPreview>
       <ComponentPreview title="Drop Zone" layout="stack">
         <div className="w-full max-w-xl">
-          <p className="mb-2 text-sm text-muted-foreground">Drop one or more project assets below.</p>
           <FileUpload
             files={extraFiles.drop ?? []}
             onFilesChange={setExtra("drop")}
@@ -189,7 +200,15 @@ function FileUploadDemoContent() {
       <ComponentPreview title="Progress" layout="stack">
         <div className="grid w-full gap-3">
           <p className="text-sm font-medium">Progress indicator preview</p>
-          <FileUpload files={extraFiles.progress ?? []} onFilesChange={setExtra("progress")} multiple />
+          <FileUpload
+            files={extraFiles.progress ?? []}
+            onFilesChange={setExtra("progress")}
+            multiple
+            maxFiles={4}
+            getFileStatus={(_, index) =>
+              index === 0 ? { label: "Ready", tone: "neutral" } : { label: "Uploading", tone: "progress" }
+            }
+          />
           <ul className="grid gap-2">
             {(extraFiles.progress ?? []).map((file) => (
               <li key={`${file.name}-${file.lastModified}`} className="grid gap-1 text-xs">
@@ -229,7 +248,6 @@ function FileUploadDemoContent() {
       </ComponentPreview>
       <ComponentPreview title="Disabled Drop Zone" layout="panel">
         <div className="grid w-full gap-2">
-          <p className="text-sm text-muted-foreground">Uploads are unavailable while the workspace is read only.</p>
           <FileUpload files={[]} onFilesChange={() => {}} disabled accept={imageAccept} />
         </div>
       </ComponentPreview>

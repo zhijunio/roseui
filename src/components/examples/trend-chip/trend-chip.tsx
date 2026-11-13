@@ -1,7 +1,7 @@
-import { IconActivity, IconArrowRight, IconCurrencyDollar } from "@tabler/icons-react";
+import { Activity as IconActivity, ArrowRight as IconArrowRight, DollarSign as IconCurrencyDollar } from "lucide-react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { TrendChip } from "@/components/ui/trend-chip";
-import { ComponentPreview } from "@/examples/component-preview";
 
 export function TrendChipExamples() {
   return (

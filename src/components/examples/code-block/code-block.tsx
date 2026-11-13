@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Button } from "@/components/ui/button";
 import { CodeBlock } from "@/components/ui/code-block";
-import { ComponentPreview } from "@/examples/component-preview";
 
 const snippet = `export async function getProject(id: string) {\n  const project = await db.project.findUnique({ where: { id } })\n  if (!project) throw new Error("Project not found")\n  return project\n}`;
 const longSnippet = Array.from(
@@ -58,7 +58,7 @@ export function CodeBlockExamples() {
         />
       </ComponentPreview>
 
-      <ComponentPreview title="Files" span={2} layout="fullStack">
+      <ComponentPreview title="Multiple Files" span={2} layout="fullStack">
         <div className="max-w-3xl">
           <CodeBlock code={snippet} language="typescript" fileName="project.ts" className="sticky top-4" />
         </div>
@@ -180,7 +180,7 @@ export function CodeBlockExamples() {
           <Button
             size="sm"
             className="w-fit"
-            onClick={() => setNotice("Suggested fix: add 0 as the initial accumulator.")}
+            onPress={() => setNotice("Suggested fix: add 0 as the initial accumulator.")}
           >
             Suggest fix
           </Button>
@@ -204,7 +204,7 @@ export function CodeBlockExamples() {
         <div className="max-w-3xl">
           <CodeBlock
             code={
-              'const endpoint = "https://api.example.test/v1/workspaces/engineering/projects/operations"\nawait fetch(endpoint, { headers: { authorization: `Bearer ${"${token}"}` } })'
+              'const endpoint = "https://api.example.test/v1/workspaces/engineering/projects/operations"\nawait fetch(endpoint, { headers: { authorization: `Bearer ${token}` } })'
             }
             language="typescript"
             wrap

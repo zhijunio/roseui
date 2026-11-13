@@ -1,22 +1,23 @@
 "use client";
 import { useState } from "react";
 
-import { IconArrowRight, IconChevronDown, IconDotsVertical, IconExternalLink } from "@tabler/icons-react";
+import {
+  ArrowRight as IconArrowRight,
+  ChevronDown as IconChevronDown,
+  EllipsisVertical as IconDotsVertical,
+  ExternalLink as IconExternalLink,
+} from "lucide-react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Menu, MenuItem, MenuTrigger } from "@/components/ui/menu";
+import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@/components/ui/table";
 import { getUserAvatar } from "@/data/user";
-import { ComponentPreview } from "@/examples/component-preview";
 
 const styleOne = [
   {
@@ -66,7 +67,7 @@ const styleFour = {
 export function CardsExample() {
   return (
     <>
-      <ComponentPreview title="Default Card" layout="panel">
+      <ComponentPreview title="Content Slots" layout="panel">
         <Card className="w-full max-w-md gap-0">
           <CardHeader className="border-b">
             <CardTitle>API access</CardTitle>
@@ -104,7 +105,7 @@ export function CardsExample() {
         </div>
       </ComponentPreview>
 
-      <ComponentPreview title="Image on Top" layout="panel">
+      <ComponentPreview title="Vertical Media Layout" layout="panel">
         <Card className="w-full max-w-sm gap-0 border-0 bg-transparent p-0 shadow-none ring-0">
           <div
             role="img"
@@ -123,7 +124,7 @@ export function CardsExample() {
         </Card>
       </ComponentPreview>
 
-      <ComponentPreview title="Horizontal Media" layout="panel">
+      <ComponentPreview title="Horizontal Media Layout" layout="panel">
         <Card className="flex w-full max-w-lg flex-col gap-0 overflow-hidden p-0 sm:flex-row">
           <div
             role="img"
@@ -141,7 +142,7 @@ export function CardsExample() {
         </Card>
       </ComponentPreview>
 
-      <ComponentPreview title="Linked Media" layout="panel">
+      <ComponentPreview title="Linked Card" layout="panel">
         <Card className="group/card w-full max-w-sm p-0">
           <div
             role="img"
@@ -160,7 +161,7 @@ export function CardsExample() {
         </Card>
       </ComponentPreview>
 
-      <ComponentPreview title="Overlay Hero" layout="panel">
+      <ComponentPreview title="Image Overlay" layout="panel">
         <Card className="relative min-h-52 w-full max-w-sm justify-end overflow-hidden border-0 p-0 text-white">
           <div
             role="img"
@@ -179,7 +180,7 @@ export function CardsExample() {
         </Card>
       </ComponentPreview>
 
-      <ComponentPreview title="Article Metadata" layout="panel">
+      <ComponentPreview title="Metadata Layout" layout="panel">
         <Card className="w-full max-w-sm gap-0 border-0 bg-transparent p-0 shadow-none ring-0">
           <div
             role="img"
@@ -201,7 +202,7 @@ export function CardsExample() {
         </Card>
       </ComponentPreview>
 
-      <ComponentPreview title="Author Byline" layout="panel">
+      <ComponentPreview title="Avatar Byline" layout="panel">
         <Card className="w-full max-w-sm gap-0 border-0 bg-muted/50 p-2 shadow-none ring-0">
           <div
             role="img"
@@ -224,7 +225,7 @@ export function CardsExample() {
         </Card>
       </ComponentPreview>
 
-      <ComponentPreview title="Author Footer" layout="panel">
+      <ComponentPreview title="Footer Content" layout="panel">
         <Card className="flex w-full max-w-sm flex-col gap-0 rounded-xl border-0 bg-muted/50 p-2 shadow-none ring-0">
           <div className="flex items-center justify-between gap-3">
             <p className="text-sm font-medium text-muted-foreground">{styleFour.category}</p>
@@ -272,18 +273,17 @@ export function CardInteractiveExamples() {
           <CardHeader>
             <CardTitle>Deployment summary</CardTitle>
             <CardAction>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button size="icon" variant="ghost" aria-label="Deployment actions">
-                    <IconDotsVertical />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem>Edit details</DropdownMenuItem>
-                  <DropdownMenuItem>Copy deployment link</DropdownMenuItem>
-                  <DropdownMenuItem variant="destructive">Archive deployment</DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <MenuTrigger>
+                <Button size="icon" variant="ghost" aria-label="Deployment actions">
+                  <IconDotsVertical />
+                </Button>
+
+                <Menu placement="bottom end">
+                  <MenuItem>Edit details</MenuItem>
+                  <MenuItem>Copy deployment link</MenuItem>
+                  <MenuItem intent="danger">Archive deployment</MenuItem>
+                </Menu>
+              </MenuTrigger>
             </CardAction>
           </CardHeader>
           <CardContent className="flex items-center justify-between">
@@ -324,7 +324,7 @@ export function CardInteractiveExamples() {
             )}
           </CardContent>
           <CardFooter>
-            <Button variant="outline" size="sm" aria-expanded={expanded} onClick={() => setExpanded((value) => !value)}>
+            <Button variant="outline" size="sm" aria-expanded={expanded} onPress={() => setExpanded((value) => !value)}>
               {expanded ? "Show less" : "Show usage details"}
               <IconChevronDown className={expanded ? "rotate-180" : ""} />
             </Button>
@@ -364,6 +364,40 @@ export function CardInteractiveExamples() {
               </Button>
             </CardFooter>
           </form>
+        </Card>
+      </ComponentPreview>
+
+      <ComponentPreview title="Card With Table" layout="panel">
+        <Card className="w-full max-w-md">
+          <CardHeader>
+            <CardTitle>Team members</CardTitle>
+            <p className="text-sm text-muted-foreground">People with access to this workspace.</p>
+          </CardHeader>
+          <CardContent className="px-0">
+            <Table>
+              <TableHeader>
+                <TableColumn isRowHeader>Name</TableColumn>
+                <TableColumn>Role</TableColumn>
+              </TableHeader>
+              <TableBody>
+                {[
+                  { name: "Maya Chen", role: "Design" },
+                  { name: "Alex Rivera", role: "Engineering" },
+                  { name: "Sofia Rossi", role: "Product" },
+                ].map((member) => (
+                  <TableRow key={member.name}>
+                    <TableCell className="font-medium text-foreground">{member.name}</TableCell>
+                    <TableCell className="text-muted-foreground">{member.role}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+          <CardFooter>
+            <Button size="sm" variant="outline">
+              Manage access
+            </Button>
+          </CardFooter>
         </Card>
       </ComponentPreview>
     </>

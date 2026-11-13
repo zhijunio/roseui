@@ -2,608 +2,748 @@
 
 import { useState } from "react";
 
-import { IconDots, IconFile, IconKey, IconTrash } from "@tabler/icons-react";
+import { Star } from "lucide-react";
+import { Collection, type Key, type Selection, useAsyncList, useDragAndDrop, useListData } from "react-aria-components";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ComponentPreview } from "@/components/docs/component-preview";
+import { Autocomplete } from "@/components/ui/autocomplete";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Frame, FramePanel } from "@/components/ui/frame";
-import { Input } from "@/components/ui/input";
-import { Switch } from "@/components/ui/switch";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Spinner } from "@/components/ui/spinner";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
-  TableFooter,
-  TableHead,
+  TableColumn,
   TableHeader,
+  TableLoadMoreItem,
   TableRow,
 } from "@/components/ui/table";
-import { getUserAvatar } from "@/data/user";
-import { ComponentPreview, type ComponentPreviewLayout } from "@/examples/component-preview";
-import { getInitials } from "@/lib/utils";
 
-const tableExampleLabels: Record<number, string> = {
-  1: "Basic table",
-  2: "Table with footer",
-  3: "Table in card with status badges",
-  4: "Table card with actions column",
-  5: "Table with interactive elements",
-  6: "Team members table",
-  7: "Orders table",
-  11: "Product inventory table",
-  12: "API keys table",
-  13: "File manager table",
-  14: "Issues table",
-  16: "Vertical employee profile",
-};
+const initialProjects = [
+  { id: "atlas", name: "Atlas redesign", owner: "Maya Chen", status: "In progress", updated: "Today" },
+  { id: "mobile", name: "Mobile onboarding", owner: "Leo Park", status: "In review", updated: "Yesterday" },
+  { id: "billing", name: "Billing portal", owner: "Nina Patel", status: "Planned", updated: "Nov 10" },
+  { id: "analytics", name: "Analytics dashboard", owner: "Omar Ali", status: "In progress", updated: "Nov 9" },
+  { id: "docs", name: "Developer docs", owner: "Eva Martin", status: "Complete", updated: "Nov 8" },
+];
 
-type ExampleSection = {
-  title: string;
-  description?: string;
-  examples: number[];
-  stack?: boolean;
-  columns?: 2 | 3;
-  layout?: ComponentPreviewLayout;
-  span?: 1 | 2;
-};
-
-const sections: ExampleSection[] = [
+const users = [
   {
-    title: "Basic",
-    description: "Simple data tables, footers, and inline controls.",
-    examples: [1, 2, 5],
-    stack: true,
-    layout: "wide" as const,
-    span: 2 as const,
+    id: "1",
+    name: "Justice Larkin",
+    email: "justice.larkin@example.com",
+    role: "Admin",
+    status: "Active",
+    joined: "2022-01-15",
   },
   {
-    title: "Actions",
-    description: "Row actions, permissions, and status badges.",
-    examples: [3, 4, 12],
-    stack: true,
-    layout: "wide" as const,
-    span: 2 as const,
+    id: "2",
+    name: "Megan Smith",
+    email: "megan.smith@example.com",
+    role: "Editor",
+    status: "Active",
+    joined: "2022-03-12",
   },
   {
-    title: "Records",
-    description: "People, orders, inventory, files, and issue data.",
-    examples: [6, 7, 11, 13, 14],
-    stack: true,
-    layout: "wide" as const,
-    span: 2 as const,
+    id: "3",
+    name: "Daniel Wu",
+    email: "daniel.wu@example.com",
+    role: "Viewer",
+    status: "Inactive",
+    joined: "2022-04-08",
   },
   {
-    title: "Vertical",
-    description: "Label-value rows for detail panels.",
-    examples: [16],
-    stack: true,
-    layout: "wide" as const,
-    span: 2 as const,
+    id: "4",
+    name: "Sophia Hernandez",
+    email: "sophia.hernandez@example.com",
+    role: "Admin",
+    status: "Active",
+    joined: "2022-05-25",
+  },
+  {
+    id: "5",
+    name: "Liam Johnson",
+    email: "liam.johnson@example.com",
+    role: "Editor",
+    status: "Suspended",
+    joined: "2022-06-14",
+  },
+  {
+    id: "6",
+    name: "Emily Brown",
+    email: "emily.brown@example.com",
+    role: "Viewer",
+    status: "Active",
+    joined: "2022-07-09",
+  },
+  {
+    id: "7",
+    name: "Noah Miller",
+    email: "noah.miller@example.com",
+    role: "Admin",
+    status: "Active",
+    joined: "2022-08-02",
+  },
+  {
+    id: "8",
+    name: "Ava Wilson",
+    email: "ava.wilson@example.com",
+    role: "Editor",
+    status: "Inactive",
+    joined: "2022-09-19",
+  },
+  {
+    id: "9",
+    name: "Ethan Davis",
+    email: "ethan.davis@example.com",
+    role: "Viewer",
+    status: "Active",
+    joined: "2022-10-21",
+  },
+  {
+    id: "10",
+    name: "Olivia Martinez",
+    email: "olivia.martinez@example.com",
+    role: "Editor",
+    status: "Active",
+    joined: "2022-11-30",
   },
 ];
 
-export function TableExamples() {
-  return (
-    <>
-      {sections.map((section) => {
-        const renderExample = (example: number) => <TableExample example={example} />;
-        const labelForExample = (example: number) => tableExampleLabels[example];
-        const isStack = section.stack === true;
-        const layout = section.layout ?? (isStack ? "stack" : "inline");
-        const columns = section.columns;
-        const previewClassName =
-          columns === 3
-            ? "grid items-stretch gap-4 sm:grid-cols-2 xl:grid-cols-3"
-            : columns === 2
-              ? "grid items-stretch gap-4 sm:grid-cols-2"
-              : isStack
-                ? "flex-col flex-nowrap items-stretch gap-6"
-                : undefined;
-        return (
-          <ComponentPreview
-            key={section.title}
-            title={section.title}
-            span={section.span ?? 1}
-            layout={layout}
-            previewClassName={previewClassName}
-          >
-            {section.examples.map((example) => {
-              const label = labelForExample?.(example);
-              return (
-                <div key={example} className={isStack ? "min-w-0 w-full space-y-2" : "min-w-0"}>
-                  {isStack && label ? <p className="text-xs font-medium text-muted-foreground">{label}</p> : null}
-                  {renderExample(example)}
-                </div>
-              );
-            })}
-          </ComponentPreview>
-        );
-      })}
-    </>
-  );
+const books = [
+  { id: "1", title: "To Kill a Mockingbird", author: "Harper Lee", genre: "Fiction", publishedYear: 1960 },
+  { id: "2", title: "1984", author: "George Orwell", genre: "Dystopian", publishedYear: 1949 },
+  { id: "3", title: "The Great Gatsby", author: "F. Scott Fitzgerald", genre: "Fiction", publishedYear: 1925 },
+  { id: "4", title: "The Catcher in the Rye", author: "J.D. Salinger", genre: "Fiction", publishedYear: 1951 },
+  { id: "5", title: "Pride and Prejudice", author: "Jane Austen", genre: "Romance", publishedYear: 1813 },
+  { id: "6", title: "The Lord of the Rings", author: "J.R.R. Tolkien", genre: "Fantasy", publishedYear: 1954 },
+  {
+    id: "7",
+    title: "Harry Potter and the Sorcerer's Stone",
+    author: "J.K. Rowling",
+    genre: "Fantasy",
+    publishedYear: 1997,
+  },
+];
+
+const movies = [
+  { id: "1", name: "The Matrix", genre: "Sci-Fi", releaseYear: 1999, rating: 8.7 },
+  { id: "2", name: "Inception", genre: "Sci-Fi", releaseYear: 2010, rating: 8.8 },
+  { id: "3", name: "The Godfather", genre: "Crime", releaseYear: 1972, rating: 9.2 },
+  { id: "4", name: "Pulp Fiction", genre: "Crime", releaseYear: 1994, rating: 8.9 },
+  { id: "5", name: "The Dark Knight", genre: "Action", releaseYear: 2008, rating: 9 },
+  { id: "6", name: "Fight Club", genre: "Drama", releaseYear: 1999, rating: 8.8 },
+  { id: "7", name: "Forrest Gump", genre: "Drama", releaseYear: 1994, rating: 8.8 },
+];
+
+const vocalists = [
+  {
+    id: "1",
+    name: "Randy Blythe",
+    email: "randy.blythe@example.com",
+    age: 52,
+    role: "Vocalist",
+    band: "Lamb of God",
+    status: "Active",
+  },
+  {
+    id: "2",
+    name: "Phil Anselmo",
+    email: "phil.anselmo@example.com",
+    age: 55,
+    role: "Vocalist",
+    band: "Pantera",
+    status: "Active",
+  },
+  {
+    id: "3",
+    name: "George Fisher",
+    email: "george.fisher@example.com",
+    age: 53,
+    role: "Vocalist",
+    band: "Cannibal Corpse",
+    status: "Active",
+  },
+  {
+    id: "4",
+    name: "Corey Taylor",
+    email: "corey.taylor@example.com",
+    age: 50,
+    role: "Vocalist",
+    band: "Slipknot",
+    status: "Active",
+  },
+  {
+    id: "5",
+    name: "Trevor Strnad",
+    email: "trevor.strnad@example.com",
+    age: 41,
+    role: "Vocalist",
+    band: "The Black Dahlia Murder",
+    status: "Inactive",
+  },
+  {
+    id: "6",
+    name: "Chuck Schuldiner",
+    email: "chuck.schuldiner@example.com",
+    age: 34,
+    role: "Vocalist",
+    band: "Death",
+    status: "Deceased",
+  },
+  {
+    id: "7",
+    name: "Mitch Lucker",
+    email: "mitch.lucker@example.com",
+    age: 28,
+    role: "Vocalist",
+    band: "Suicide Silence",
+    status: "Deceased",
+  },
+];
+
+const films = [
+  {
+    id: "a-new-hope",
+    title: "A New Hope",
+    director: "George Lucas",
+    producer: "Gary Kurtz",
+    release_date: "1977-05-25",
+  },
+  {
+    id: "empire",
+    title: "The Empire Strikes Back",
+    director: "Irvin Kershner",
+    producer: "Gary Kurtz",
+    release_date: "1980-05-17",
+  },
+  {
+    id: "jedi",
+    title: "Return of the Jedi",
+    director: "Richard Marquand",
+    producer: "Howard G. Kazanjian",
+    release_date: "1983-05-25",
+  },
+  {
+    id: "phantom",
+    title: "The Phantom Menace",
+    director: "George Lucas",
+    producer: "Rick McCallum",
+    release_date: "1999-05-19",
+  },
+  {
+    id: "clones",
+    title: "Attack of the Clones",
+    director: "George Lucas",
+    producer: "Rick McCallum",
+    release_date: "2002-05-16",
+  },
+];
+
+type Project = (typeof initialProjects)[number];
+
+const loadableProjects = Array.from({ length: 24 }, (_, index) => ({
+  id: `project-${index + 1}`,
+  name: ["Atlas redesign", "Mobile onboarding", "Billing portal", "Analytics dashboard"][index % 4],
+  owner: ["Maya Chen", "Leo Park", "Nina Patel", "Omar Ali"][index % 4],
+  status: ["In progress", "In review", "Planned", "Complete"][index % 4],
+  updated: `Nov ${13 - (index % 13)}`,
+}));
+
+function ProjectStatus({ status }: { status: string }) {
+  const variant = status === "Complete" ? "default" : status === "In progress" ? "secondary" : "outline";
+  return <Badge variant={variant}>{status}</Badge>;
 }
 
-export type Invoice = { id: string; name: string; status: "paid" | "pending" | "overdue"; amount: number };
+function SearchableTableExample() {
+  const [query, setQuery] = useState("");
+  const searchableUsers = users.map((user) => ({
+    value: user.name,
+    description: `${user.email} · ${user.role}`,
+  }));
+  const filteredUsers = users.filter((user) =>
+    `${user.name} ${user.email} ${user.role} ${user.status} ${user.joined}`.toLowerCase().includes(query.toLowerCase()),
+  );
 
-export const invoices: Invoice[] = [
-  { id: "INV-001", name: "Design audit", status: "paid", amount: 1250 },
-  { id: "INV-002", name: "Cloud hosting", status: "pending", amount: 240 },
-  { id: "INV-003", name: "Support plan", status: "overdue", amount: 480 },
-  { id: "INV-004", name: "User research", status: "paid", amount: 920 },
-  { id: "INV-005", name: "Cloud hosting", status: "paid", amount: 180 },
-  { id: "INV-006", name: "Support plan", status: "pending", amount: 360 },
-  { id: "INV-007", name: "Design audit", status: "paid", amount: 1500 },
-  { id: "INV-008", name: "User research", status: "overdue", amount: 720 },
-  { id: "INV-009", name: "Cloud hosting", status: "pending", amount: 300 },
-  { id: "INV-010", name: "Support plan", status: "paid", amount: 600 },
-  { id: "INV-011", name: "User research", status: "pending", amount: 850 },
-  { id: "INV-012", name: "Design audit", status: "paid", amount: 1100 },
-];
-
-const statusLabel = (status: string) => (status === "paid" ? "Paid" : status === "pending" ? "Pending" : "Overdue");
-
-const exampleTitles = [
-  "Basic table",
-  "Table with footer",
-  "Table in card with status badges",
-  "Table card with actions column",
-  "Table with interactive elements",
-  "Team members table with avatars, roles, and status",
-  "Orders table with customer info and payment status",
-  "Projects table with team avatars and status",
-  "Activity log table with user avatars and timestamps",
-  "Subscriptions table with plan badges and billing info",
-  "Product inventory table with stock badges and prices",
-  "API keys table with permission badges and actions",
-  "File manager table with owners and sharing badges",
-  "Issues table with priority, assignee, and labels",
-  "Leaderboard table with rank, score, and level badges",
-  "Vertical table with employee profile details",
-  "Vertical table with server configuration details",
-];
-
-type ExampleRow = {
-  id: string;
-  name: string;
-  detail?: string;
-  status?: string;
-  amount?: number;
-  role?: string;
-  metric?: string;
-  extra?: string;
-};
-
-function PersonCell({ name, detail }: { name: string; detail?: string }) {
   return (
-    <div className="flex items-center gap-3">
-      <Avatar size="sm">
-        <AvatarImage src={getUserAvatar(name)} alt="" />
-        <AvatarFallback>{getInitials(name)}</AvatarFallback>
-      </Avatar>
-      <div className="min-w-0">
-        <span className="block font-medium">{name}</span>
-        {detail && <span className="block text-xs text-muted-foreground">{detail}</span>}
-      </div>
+    <div className="space-y-3">
+      <Autocomplete
+        aria-label="Search users"
+        items={searchableUsers}
+        placeholder="Search users"
+        value={query}
+        onValueChange={setQuery}
+        onSelect={(item) => setQuery(item.value)}
+        emptyText="No matching users."
+        clearable
+        showTrigger
+      />
+      <Table aria-label="Searchable users">
+        <TableHeader>
+          <TableColumn className="w-0">#</TableColumn>
+          <TableColumn isRowHeader>Name</TableColumn>
+          <TableColumn>Email</TableColumn>
+          <TableColumn>Role</TableColumn>
+          <TableColumn>Status</TableColumn>
+          <TableColumn>Joined</TableColumn>
+        </TableHeader>
+        <TableBody
+          items={filteredUsers}
+          renderEmptyState={() => (
+            <div className="text-muted-foreground px-4 py-6 text-center text-sm">No users match this search.</div>
+          )}
+        >
+          {(user) => (
+            <TableRow id={user.id}>
+              <TableCell>{user.id}</TableCell>
+              <TableCell>{user.name}</TableCell>
+              <TableCell>{user.email}</TableCell>
+              <TableCell>{user.role}</TableCell>
+              <TableCell>{user.status}</TableCell>
+              <TableCell>{user.joined}</TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+      <p className="text-muted-foreground text-xs" aria-live="polite">
+        {filteredUsers.length} of {users.length} users
+      </p>
     </div>
   );
 }
 
-export function TableExample({ example }: { example: number }) {
-  const locale = "en-US";
-  const [removed, setRemoved] = useState<string[]>([]);
-  const [quantities, setQuantities] = useState<Record<string, number>>({ "item-a": 1, "item-b": 2, "item-c": 1 });
-  const [selected, setSelected] = useState<ExampleRow | null>(null);
-  const [feedback, setFeedback] = useState("");
-  const [enabled, setEnabled] = useState(true);
-  const currency = new Intl.NumberFormat(locale, { style: "currency", currency: "USD" });
-  const people: ExampleRow[] = [
-    {
-      id: "alex",
-      name: "Alex Morgan",
-      detail: "alex@example.test",
-      role: "Admin",
-      status: "Active",
-      metric: "2,480",
-      extra: "Gold",
-    },
-    {
-      id: "sam",
-      name: "Sam Chen",
-      detail: "sam@example.test",
-      role: "Developer",
-      status: "Away",
-      metric: "1,920",
-      extra: "Silver",
-    },
-    {
-      id: "jordan",
-      name: "Jordan Lee",
-      detail: "jordan@example.test",
-      role: "Designer",
-      status: "Offline",
-      metric: "1,680",
-      extra: "Bronze",
-    },
-  ];
-  let headers: string[] = [];
-  let rows: ExampleRow[] = [];
-  if (example <= 4) {
-    headers = ["Invoice", "Name", "Status", "Amount"];
-    rows = invoices.slice(0, 5).map((row) => ({ ...row, name: row.name, status: statusLabel(row.status) }));
-  } else if (example === 5) {
-    headers = ["Item", "Quantity", "Price"];
-    rows = [
-      { id: "item-a", name: "Design audit", amount: 10 },
-      { id: "item-b", name: "Cloud hosting", amount: 20 },
-      { id: "item-c", name: "Support plan", amount: 30 },
-    ];
-  } else if (example === 6) {
-    headers = ["Member", "Role", "Status"];
-    rows = people;
-  } else if (example === 7) {
-    headers = ["Order", "Customer", "Status", "Amount"];
-    rows = people.map((person, index) => ({
-      ...person,
-      id: `ORD-${1001 + index}`,
-      amount: [240, 180, 360][index],
-      status: statusLabel(["paid", "pending", "overdue"][index]),
-    }));
-  } else if (example === 8) {
-    headers = ["Project", "Team", "Status"];
-    rows = [
-      ["design", "Design audit"],
-      ["research", "User research"],
-      ["development", "Development"],
-    ].map(([id, name], index) => ({ id, name, status: index === 0 ? "Active" : "Planned", metric: String(index + 2) }));
-  } else if (example === 9) {
-    headers = ["Member", "Activity", "Time"];
-    rows = people.map((person, index) => ({
-      ...person,
-      role: ["Created a project", "Updated a task", "Invited a member"][index],
-      metric: new Intl.DateTimeFormat(locale, { hour: "2-digit", minute: "2-digit" }).format(
-        new Date(2026, 10, 3, 9, index * 15),
-      ),
-    }));
-  } else if (example === 10) {
-    headers = ["Plan", "Status", "Billing", "Renewal"];
-    rows = [
-      ["starter", "Starter"],
-      ["pro", "Pro"],
-      ["enterprise", "Enterprise"],
-    ].map(([id, name], index) => ({
-      id,
-      name,
-      status: "Active",
-      amount: [19, 49, 129][index],
-      metric: new Intl.DateTimeFormat(locale).format(new Date(2026, 11, 3)),
-    }));
-  } else if (example === 11) {
-    headers = ["Product", "Stock", "Price"];
-    rows = [
-      ["keyboard", "Keyboard"],
-      ["headphones", "Headphones"],
-      ["monitor", "Monitor"],
-    ].map(([id, name], index) => ({ id, name, metric: String([24, 3, 0][index]), amount: [99, 149, 329][index] }));
-  } else if (example === 12) {
-    headers = ["Name", "Permissions", "Created", "Actions"];
-    rows = [
-      { id: "key-preview", name: "Preview key", role: "Read only", metric: "2026-11-01" },
-      { id: "key-development", name: "Development key", role: "Read and write", metric: "2026-11-02" },
-    ];
-  } else if (example === 13) {
-    headers = ["File", "Owner", "Sharing", "Size"];
-    rows = [
-      { id: "brief", name: "brief.pdf", role: "Alex Morgan", status: "Private", metric: "2.4 MB" },
-      { id: "report", name: "report.csv", role: "Sam Chen", status: "Team only", metric: "128 KB" },
-    ];
-  } else if (example === 14) {
-    headers = ["Issue", "Priority", "Assignee", "Labels"];
-    rows = [
-      { id: "ISS-101", name: "Fix search results", role: "Alex Morgan", status: "High", metric: "Bug" },
-      { id: "ISS-102", name: "Add CSV export", role: "Sam Chen", status: "Medium", metric: "Feature" },
-    ];
-  } else if (example === 15) {
-    headers = ["Rank", "Member", "Score", "Level"];
-    rows = people;
-  }
-  const visible = rows.filter((row) => !removed.includes(row.id));
-  const status = (value?: string) => (
-    <Badge
-      variant={
-        value === "Overdue" || value === "High"
-          ? "destructive"
-          : value === "Paid" || value === "Active"
-            ? "default"
-            : "secondary"
-      }
-    >
-      {value}
-    </Badge>
+type ProjectTreeNode = {
+  id: string;
+  name: string;
+  owner: string;
+  status: string;
+  children: ProjectTreeNode[];
+  detail?: string;
+};
+
+const nestedProjects: ProjectTreeNode[] = [
+  {
+    id: "design",
+    name: "Design system",
+    owner: "Maya Chen",
+    status: "In progress",
+    children: [
+      {
+        id: "design-details",
+        name: "Project details",
+        owner: "",
+        status: "",
+        detail: "The shared component library is in review. The team is documenting usage and accessibility patterns.",
+        children: [],
+      },
+    ],
+  },
+  {
+    id: "website",
+    name: "Website redesign",
+    owner: "Nina Patel",
+    status: "In progress",
+    children: [
+      {
+        id: "website-details",
+        name: "Project details",
+        owner: "",
+        status: "",
+        detail: "The new site is being rebuilt around the product catalog and customer stories.",
+        children: [],
+      },
+    ],
+  },
+];
+
+function ExpandableRowsExample() {
+  const [expandedKeys, setExpandedKeys] = useState<Set<Key>>(new Set(["design"]));
+  const renderProject = (project: ProjectTreeNode) => (
+    <TableRow key={project.id} id={project.id}>
+      {project.detail ? (
+        <TableCell colSpan={3}>
+          <div className="space-y-1 py-1">
+            <p className="text-foreground text-sm font-medium">Additional details</p>
+            <p className="text-muted-foreground text-sm whitespace-normal">{project.detail}</p>
+          </div>
+        </TableCell>
+      ) : (
+        <>
+          <TableCell>{project.name}</TableCell>
+          <TableCell>{project.owner}</TableCell>
+          <TableCell>
+            <ProjectStatus status={project.status} />
+          </TableCell>
+        </>
+      )}
+      <Collection items={project.children}>{renderProject}</Collection>
+    </TableRow>
   );
-  const actions = (row: ExampleRow) => (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon-sm" aria-label={`${"Actions"} ${row.id}`}>
-          <IconDots />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onSelect={() => setSelected(row)}>{"View details"}</DropdownMenuItem>
-        {example === 12 && (
-          <DropdownMenuItem
-            onSelect={async () => {
-              try {
-                await navigator.clipboard.writeText(`demo-${row.id}`);
-                setFeedback("Demo key copied.");
-              } catch {
-                setFeedback("Copy failed. Try again.");
-              }
-            }}
-          >
-            {"Copy demo key"}
-          </DropdownMenuItem>
-        )}
-        <DropdownMenuItem
-          onSelect={() => {
-            setRemoved((current) => [...current, row.id]);
-            setFeedback("Row removed.");
-          }}
-        >
-          <IconTrash />
-          {"Remove"}
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-  if (example >= 16) {
-    const details =
-      example === 16
-        ? [
-            ["Name", "Alex Morgan"],
-            ["Email", "alex@example.test"],
-            ["Role", "Admin"],
-            ["Department", "Development"],
-            ["Location", "Shanghai"],
-          ]
-        : [
-            ["Hostname", "app-01.internal"],
-            ["Region", "ap-east-1"],
-            ["Runtime", "Node.js"],
-            ["Memory", "16 GB"],
-            ["Storage", "256 GB"],
-          ];
-    return (
-      <Frame spacing="xs" className="w-full">
-        <FramePanel className="p-0">
-          <Table>
-            <TableCaption className="sr-only">{exampleTitles[example - 1]}</TableCaption>
-            <TableBody>
-              {details.map(([label, value]) => (
-                <TableRow key={label}>
-                  <TableHead scope="row" className="w-2/5 bg-muted/30">
-                    {label}
-                  </TableHead>
-                  <TableCell>{value}</TableCell>
-                </TableRow>
-              ))}
-              {example === 17 && (
-                <TableRow>
-                  <TableHead scope="row">{"Enabled"}</TableHead>
-                  <TableCell>
-                    <Switch checked={enabled} onCheckedChange={setEnabled} aria-label={"Enabled"} />
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </FramePanel>
-      </Frame>
-    );
-  }
+
   return (
-    <div className="w-full min-w-0 space-y-3">
-      <Frame spacing="xs">
-        <FramePanel className="p-0">
-          <Table>
-            <TableCaption className="sr-only">{exampleTitles[example - 1]}</TableCaption>
-            <TableHeader>
-              <TableRow>
-                {headers.map((header) => (
-                  <TableHead key={header}>{header}</TableHead>
-                ))}
-                {example === 4 && <TableHead>{"Actions"}</TableHead>}
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {visible.map((row, index) => (
-                <TableRow key={row.id}>
-                  {example <= 4 ? (
-                    <>
-                      <TableCell className="font-medium">{row.id}</TableCell>
-                      <TableCell>{row.name}</TableCell>
-                      <TableCell>{example >= 3 ? status(row.status) : row.status}</TableCell>
-                      <TableCell className="tabular-nums">{currency.format(row.amount ?? 0)}</TableCell>
-                      {example === 4 && <TableCell>{actions(row)}</TableCell>}
-                    </>
-                  ) : example === 5 ? (
-                    <>
-                      <TableCell>{row.name}</TableCell>
-                      <TableCell>
-                        <Input
-                          type="number"
-                          min={0}
-                          max={99}
-                          value={quantities[row.id] ?? 0}
-                          onChange={(event) =>
-                            setQuantities((current) => ({
-                              ...current,
-                              [row.id]: Math.min(99, Math.max(0, Number(event.target.value))),
-                            }))
-                          }
-                          aria-label={`${"Quantity"} ${row.name}`}
-                          className="w-20"
-                        />
-                      </TableCell>
-                      <TableCell className="tabular-nums">
-                        {currency.format((row.amount ?? 0) * (quantities[row.id] ?? 0))}
-                      </TableCell>
-                    </>
-                  ) : example === 6 ? (
-                    <>
-                      <TableCell>
-                        <PersonCell name={row.name} detail={row.detail} />
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant="outline">{row.role}</Badge>
-                      </TableCell>
-                      <TableCell>{status(row.status)}</TableCell>
-                    </>
-                  ) : example === 7 ? (
-                    <>
-                      <TableCell>{row.id}</TableCell>
-                      <TableCell>
-                        <PersonCell name={row.name} detail={row.detail} />
-                      </TableCell>
-                      <TableCell>{status(row.status)}</TableCell>
-                      <TableCell>{currency.format(row.amount ?? 0)}</TableCell>
-                    </>
-                  ) : example === 8 ? (
-                    <>
-                      <TableCell>{row.name}</TableCell>
-                      <TableCell>
-                        <div className="flex -space-x-2">
-                          {people.slice(0, Number(row.metric)).map((person) => (
-                            <Avatar key={person.id} size="sm" className="ring-2 ring-card">
-                              <AvatarImage src={getUserAvatar(person.name)} alt={person.name} />
-                              <AvatarFallback>{person.name[0]}</AvatarFallback>
-                            </Avatar>
-                          ))}
-                        </div>
-                      </TableCell>
-                      <TableCell>{status(row.status)}</TableCell>
-                    </>
-                  ) : example === 9 ? (
-                    <>
-                      <TableCell>
-                        <PersonCell name={row.name} />
-                      </TableCell>
-                      <TableCell>{row.role}</TableCell>
-                      <TableCell className="tabular-nums">{row.metric}</TableCell>
-                    </>
-                  ) : example === 10 ? (
-                    <>
-                      <TableCell>
-                        <Badge variant="outline">{row.name}</Badge>
-                      </TableCell>
-                      <TableCell>{status(row.status)}</TableCell>
-                      <TableCell>{currency.format(row.amount ?? 0)}</TableCell>
-                      <TableCell>{row.metric}</TableCell>
-                    </>
-                  ) : example === 11 ? (
-                    <>
-                      <TableCell>{row.name}</TableCell>
-                      <TableCell>
-                        <Badge variant={row.metric === "0" ? "destructive" : "secondary"}>{row.metric}</Badge>
-                      </TableCell>
-                      <TableCell>{currency.format(row.amount ?? 0)}</TableCell>
-                    </>
-                  ) : example === 12 ? (
-                    <>
-                      <TableCell>
-                        <span className="inline-flex items-center gap-2">
-                          <IconKey className="size-4 text-muted-foreground" />
-                          {row.name}
-                        </span>
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant="outline">{row.role}</Badge>
-                      </TableCell>
-                      <TableCell>{row.metric}</TableCell>
-                      <TableCell>{actions(row)}</TableCell>
-                    </>
-                  ) : example === 13 ? (
-                    <>
-                      <TableCell>
-                        <span className="inline-flex items-center gap-2">
-                          <IconFile className="size-4 text-muted-foreground" />
-                          {row.name}
-                        </span>
-                      </TableCell>
-                      <TableCell>{row.role}</TableCell>
-                      <TableCell>{status(row.status)}</TableCell>
-                      <TableCell>{row.metric}</TableCell>
-                    </>
-                  ) : example === 14 ? (
-                    <>
-                      <TableCell>
-                        <span className="block text-xs text-muted-foreground">{row.id}</span>
-                        {row.name}
-                      </TableCell>
-                      <TableCell>{status(row.status)}</TableCell>
-                      <TableCell>{row.role}</TableCell>
-                      <TableCell>
-                        <Badge variant="outline">{row.metric}</Badge>
-                      </TableCell>
-                    </>
-                  ) : (
-                    <>
-                      <TableCell className="tabular-nums">{index + 1}</TableCell>
-                      <TableCell>
-                        <PersonCell name={row.name} />
-                      </TableCell>
-                      <TableCell className="tabular-nums">{row.metric}</TableCell>
-                      <TableCell>
-                        <Badge variant="outline">{row.extra}</Badge>
-                      </TableCell>
-                    </>
-                  )}
-                </TableRow>
-              ))}
-            </TableBody>
-            {(example === 2 || example === 5) && (
-              <TableFooter>
-                <TableRow>
-                  <TableCell colSpan={headers.length - 1}>{"Total"}</TableCell>
-                  <TableCell>
-                    {currency.format(
-                      visible.reduce(
-                        (sum, row) => sum + (row.amount ?? 0) * (example === 5 ? (quantities[row.id] ?? 0) : 1),
-                        0,
-                      ),
-                    )}
-                  </TableCell>
-                </TableRow>
-              </TableFooter>
-            )}
-          </Table>
-        </FramePanel>
-      </Frame>
-      <output role="status" className="block text-xs text-muted-foreground">
-        {feedback}
-      </output>
-      <Dialog
-        open={!!selected}
-        onOpenChange={(open) => {
-          if (!open) setSelected(null);
-        }}
+    <Table
+      aria-label="Projects with expandable details"
+      treeColumn="name"
+      expandedKeys={expandedKeys}
+      onExpandedChange={setExpandedKeys}
+    >
+      <TableHeader>
+        <TableColumn id="name" isRowHeader>
+          Project
+        </TableColumn>
+        <TableColumn>Owner</TableColumn>
+        <TableColumn>Status</TableColumn>
+      </TableHeader>
+      <TableBody items={nestedProjects}>{renderProject}</TableBody>
+    </Table>
+  );
+}
+
+function BulkActionsExample() {
+  const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set());
+  const selectedIds = selectedKeys === "all" ? books.map((book) => book.id) : [...selectedKeys].map(String);
+
+  return (
+    <div className="space-y-2">
+      <Table
+        aria-label="Books"
+        selectionMode="multiple"
+        selectedKeys={selectedKeys}
+        onSelectionChange={setSelectedKeys}
       >
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>{"View details"}</DialogTitle>
-            <DialogDescription>{selected?.id}</DialogDescription>
-          </DialogHeader>
-          <p>{selected?.name}</p>
-        </DialogContent>
-      </Dialog>
+        <TableHeader>
+          <TableColumn className="w-0">#</TableColumn>
+          <TableColumn isRowHeader>Title</TableColumn>
+          <TableColumn>Author</TableColumn>
+          <TableColumn>Genre</TableColumn>
+          <TableColumn>Published</TableColumn>
+        </TableHeader>
+        <TableBody items={books}>
+          {(book) => (
+            <TableRow id={book.id}>
+              <TableCell>{book.id}</TableCell>
+              <TableCell className="whitespace-nowrap">{book.title}</TableCell>
+              <TableCell className="whitespace-nowrap">{book.author}</TableCell>
+              <TableCell>{book.genre}</TableCell>
+              <TableCell>{book.publishedYear}</TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+      <p className="text-muted-foreground text-sm" aria-live="polite">
+        {selectedIds.length > 0 ? (
+          <>
+            You have selected: <strong className="text-foreground">{selectedIds.join(", ")}</strong>
+          </>
+        ) : (
+          "You have not selected anything."
+        )}
+      </p>
+    </div>
+  );
+}
+
+function DragAndDropExample() {
+  const list = useListData({ initialItems: movies });
+  const { dragAndDropHooks } = useDragAndDrop({
+    getItems: (keys) => [...keys].map((key) => ({ "text/plain": list.getItem(String(key))?.name ?? "" })),
+    onReorder(event) {
+      if (event.target.dropPosition === "before") list.moveBefore(event.target.key, event.keys);
+      if (event.target.dropPosition === "after") list.moveAfter(event.target.key, event.keys);
+    },
+  });
+
+  return (
+    <Table allowResize aria-label="Movies" selectionMode="multiple" dragAndDropHooks={dragAndDropHooks}>
+      <TableHeader>
+        <TableColumn className="w-0">#</TableColumn>
+        <TableColumn isRowHeader>Name</TableColumn>
+        <TableColumn>Genre</TableColumn>
+        <TableColumn>Release</TableColumn>
+        <TableColumn>Rating</TableColumn>
+      </TableHeader>
+      <TableBody items={list.items}>
+        {(movie) => (
+          <TableRow id={movie.id}>
+            <TableCell>{movie.id}</TableCell>
+            <TableCell>{movie.name}</TableCell>
+            <TableCell>{movie.genre}</TableCell>
+            <TableCell>{movie.releaseYear}</TableCell>
+            <TableCell>
+              <span className="flex items-center gap-2">
+                <Star aria-hidden className="text-warning size-3.5 fill-current" />
+                {movie.rating.toFixed(1)}
+              </span>
+            </TableCell>
+          </TableRow>
+        )}
+      </TableBody>
+    </Table>
+  );
+}
+
+type Film = (typeof films)[number];
+
+type FilmSortKey = "director" | "release_date";
+
+function getFilmSortValue(film: Film, key: Key) {
+  switch (key) {
+    case "director":
+      return film.director;
+    case "release_date":
+      return film.release_date;
+    default:
+      return "";
+  }
+}
+
+function SortingExample() {
+  const list = useAsyncList<Film>({
+    async load() {
+      return { items: films };
+    },
+    async sort({ items, sortDescriptor }) {
+      const key: FilmSortKey = sortDescriptor.column === "release_date" ? "release_date" : "director";
+      const direction = sortDescriptor.direction === "ascending" ? 1 : -1;
+      return {
+        items: [...items].sort(
+          (left, right) => getFilmSortValue(left, key).localeCompare(getFilmSortValue(right, key)) * direction,
+        ),
+      };
+    },
+  });
+
+  return (
+    <Table aria-label="Movies" sortDescriptor={list.sortDescriptor} onSortChange={list.sort}>
+      <TableHeader>
+        <TableColumn id="title" isRowHeader>
+          Title
+        </TableColumn>
+        <TableColumn id="director" allowsSorting>
+          Director
+        </TableColumn>
+        <TableColumn>Producer</TableColumn>
+        <TableColumn id="release_date" allowsSorting>
+          Release Date
+        </TableColumn>
+      </TableHeader>
+      <TableBody
+        items={list.items}
+        renderEmptyState={() => (
+          <div className="flex justify-center p-6">
+            <Spinner size="sm" label="Loading films" />
+          </div>
+        )}
+      >
+        {(film) => (
+          <TableRow id={film.id}>
+            <TableCell className="whitespace-nowrap">{film.title}</TableCell>
+            <TableCell className="whitespace-nowrap">{film.director}</TableCell>
+            <TableCell className="whitespace-nowrap">{film.producer}</TableCell>
+            <TableCell>{film.release_date}</TableCell>
+          </TableRow>
+        )}
+      </TableBody>
+    </Table>
+  );
+}
+
+function ResizableExample() {
+  return (
+    <Table allowResize aria-label="Vocalists">
+      <TableHeader>
+        <TableColumn className="max-w-10">ID</TableColumn>
+        <TableColumn isRowHeader isResizable>
+          Name
+        </TableColumn>
+        <TableColumn isResizable>Email</TableColumn>
+        <TableColumn>Age</TableColumn>
+        <TableColumn>Role</TableColumn>
+        <TableColumn isResizable>Band</TableColumn>
+        <TableColumn>Status</TableColumn>
+      </TableHeader>
+      <TableBody items={vocalists}>
+        {(vocalist) => (
+          <TableRow id={vocalist.id}>
+            <TableCell>{vocalist.id}</TableCell>
+            <TableCell>{vocalist.name}</TableCell>
+            <TableCell>{vocalist.email}</TableCell>
+            <TableCell>{vocalist.age}</TableCell>
+            <TableCell>{vocalist.role}</TableCell>
+            <TableCell>{vocalist.band}</TableCell>
+            <TableCell>{vocalist.status}</TableCell>
+          </TableRow>
+        )}
+      </TableBody>
+    </Table>
+  );
+}
+
+function InfiniteScrollingExample() {
+  const list = useAsyncList<Project>({
+    async load({ cursor }) {
+      const start = Number(cursor ?? 0);
+      const end = start + 6;
+      return {
+        items: loadableProjects.slice(start, end),
+        cursor: end < loadableProjects.length ? String(end) : undefined,
+      };
+    },
+  });
+
+  return (
+    <div className="max-h-72 overflow-auto">
+      <Table aria-label="Projects loaded while scrolling">
+        <TableHeader>
+          <TableColumn isRowHeader>Project</TableColumn>
+          <TableColumn>Owner</TableColumn>
+          <TableColumn>Status</TableColumn>
+        </TableHeader>
+        <TableBody
+          renderEmptyState={() => (
+            <div className="flex justify-center p-6">
+              <Spinner size="sm" label="Loading projects" />
+            </div>
+          )}
+        >
+          <Collection items={list.items}>
+            {(project) => (
+              <TableRow id={project.id}>
+                <TableCell>{project.name}</TableCell>
+                <TableCell>{project.owner}</TableCell>
+                <TableCell>
+                  <ProjectStatus status={project.status} />
+                </TableCell>
+              </TableRow>
+            )}
+          </Collection>
+          <TableLoadMoreItem onLoadMore={list.loadMore} isLoading={list.loadingState === "loadingMore"}>
+            {list.loadingState === "loadingMore" ? "Loading more projects…" : "Scroll to load more"}
+          </TableLoadMoreItem>
+        </TableBody>
+      </Table>
+    </div>
+  );
+}
+
+function LinkRowsExample() {
+  return (
+    <div className="space-y-3">
+      <Table aria-label="Open a project">
+        <TableHeader>
+          <TableColumn isRowHeader>Project</TableColumn>
+          <TableColumn>Owner</TableColumn>
+          <TableColumn>Status</TableColumn>
+        </TableHeader>
+        <TableBody items={initialProjects.slice(0, 3)}>
+          {(project) => (
+            <TableRow id={project.id} href={`/docs/components/collections/table?project=${project.id}`}>
+              <TableCell>{project.name}</TableCell>
+              <TableCell>{project.owner}</TableCell>
+              <TableCell>
+                <ProjectStatus status={project.status} />
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+      <p className="text-muted-foreground text-xs">
+        Each row uses <code>href</code> for navigation; use <code>onAction</code> when navigation is handled in the
+        client.
+      </p>
+    </div>
+  );
+}
+
+function BleedExample() {
+  return (
+    <div className="w-full rounded-lg border p-4">
+      <Table aria-label="Projects with bleed" bleed className="[--gutter:--spacing(6)] sm:[--gutter:--spacing(4)]">
+        <TableHeader>
+          <TableColumn isRowHeader>Project</TableColumn>
+          <TableColumn>Owner</TableColumn>
+          <TableColumn>Status</TableColumn>
+        </TableHeader>
+        <TableBody items={initialProjects.slice(0, 3)}>
+          {(project) => (
+            <TableRow id={project.id}>
+              <TableCell>{project.name}</TableCell>
+              <TableCell>{project.owner}</TableCell>
+              <TableCell>
+                <ProjectStatus status={project.status} />
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+    </div>
+  );
+}
+
+function WithCardExample() {
+  return (
+    <Card className="w-full">
+      <CardHeader>
+        <CardTitle>Recent projects</CardTitle>
+      </CardHeader>
+      <CardContent className="px-0">
+        <Table aria-label="Recent projects" bleed className="[--gutter:var(--card-spacing)]">
+          <TableHeader>
+            <TableColumn isRowHeader>Project</TableColumn>
+            <TableColumn>Owner</TableColumn>
+            <TableColumn>Status</TableColumn>
+          </TableHeader>
+          <TableBody items={initialProjects.slice(0, 3)}>
+            {(project) => (
+              <TableRow id={project.id}>
+                <TableCell>{project.name}</TableCell>
+                <TableCell>{project.owner}</TableCell>
+                <TableCell>
+                  <ProjectStatus status={project.status} />
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </CardContent>
+    </Card>
+  );
+}
+
+export function TableExamples() {
+  return (
+    <div className="space-y-5">
+      <ComponentPreview title="Search" layout="fullStack">
+        <SearchableTableExample />
+      </ComponentPreview>
+      <ComponentPreview title="Expandable Rows" layout="fullStack">
+        <ExpandableRowsExample />
+      </ComponentPreview>
+      <ComponentPreview title="Row Selection and Bulk Actions" layout="fullStack">
+        <BulkActionsExample />
+      </ComponentPreview>
+      <ComponentPreview title="Row Reordering" layout="fullStack">
+        <DragAndDropExample />
+      </ComponentPreview>
+      <ComponentPreview title="Column Sorting" layout="fullStack">
+        <SortingExample />
+      </ComponentPreview>
+      <ComponentPreview title="Resizable Columns" layout="fullStack">
+        <ResizableExample />
+      </ComponentPreview>
+      <ComponentPreview title="Infinite Scrolling" layout="fullStack">
+        <InfiniteScrollingExample />
+      </ComponentPreview>
+      <ComponentPreview title="Linked Cells" layout="fullStack">
+        <LinkRowsExample />
+      </ComponentPreview>
+      <ComponentPreview title="Edge-to-edge Layout" layout="fullStack">
+        <BleedExample />
+      </ComponentPreview>
+      <ComponentPreview title="Card Container" layout="fullStack">
+        <WithCardExample />
+      </ComponentPreview>
     </div>
   );
 }

@@ -1,15 +1,14 @@
 "use client";
 import { type FormEvent, useState } from "react";
 
-import { IconBulb, IconPencil } from "@tabler/icons-react";
+import { Lightbulb as IconBulb, Pencil as IconPencil } from "lucide-react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { ComponentPreview } from "@/examples/component-preview";
+import { TextArea } from "@/components/ui/text-area";
 
 export function TextareaExamples() {
-  const [bio, setBio] = useState("Design engineer. I build dashboards for a living.");
   const [reply, setReply] = useState("");
   const [replyStatus, setReplyStatus] = useState("");
 
@@ -23,15 +22,15 @@ export function TextareaExamples() {
 
   return (
     <>
-      <ComponentPreview title="Textarea Sizes" span={2} layout="panel">
+      <ComponentPreview title="TextArea Sizes" span={2} layout="panel">
         <div className="grid w-full max-w-3xl gap-5 sm:grid-cols-2">
           <div className="grid gap-2">
             <Label htmlFor="notes">Description</Label>
-            <Textarea id="notes" rows={3} autoResize={false} placeholder="Tell us about this workspace" />
+            <TextArea id="notes" rows={3} autoResize={false} placeholder="Tell us about this workspace" />
           </div>
           <div className="grid gap-2">
             <Label htmlFor="short-notes">Description</Label>
-            <Textarea
+            <TextArea
               id="short-notes"
               size="sm"
               rows={3}
@@ -51,11 +50,11 @@ export function TextareaExamples() {
                 aria-hidden="true"
                 className="pointer-events-none absolute left-3 top-3 size-4 text-muted-foreground"
               />
-              <Textarea
+              <TextArea
                 id="note-with-icon"
                 rows={3}
                 autoResize={false}
-                className="pl-9"
+                className="ps-9"
                 placeholder="Write a private note"
               />
             </div>
@@ -67,11 +66,11 @@ export function TextareaExamples() {
                 aria-hidden="true"
                 className="pointer-events-none absolute right-3 top-3 size-4 text-muted-foreground"
               />
-              <Textarea
+              <TextArea
                 id="idea-with-icon"
                 rows={3}
                 autoResize={false}
-                className="pr-9"
+                className="pe-9"
                 placeholder="Describe your idea"
               />
             </div>
@@ -82,7 +81,7 @@ export function TextareaExamples() {
       <ComponentPreview title="Auto Resize">
         <div className="grid w-full max-w-md gap-2">
           <Label htmlFor="release-notes">Message</Label>
-          <Textarea
+          <TextArea
             id="release-notes"
             rows={2}
             maxRows={8}
@@ -96,24 +95,6 @@ export function TextareaExamples() {
         </div>
       </ComponentPreview>
 
-      <ComponentPreview title="Character Count">
-        <div className="grid w-full max-w-md gap-2">
-          <Label htmlFor="bio">Bio</Label>
-          <Textarea
-            id="bio"
-            rows={3}
-            value={bio}
-            maxLength={160}
-            onChange={(event) => setBio(event.currentTarget.value)}
-            placeholder="Write a short bio"
-          />
-          <div className="flex justify-between gap-4 text-xs text-muted-foreground">
-            <span>Appears on your public profile.</span>
-            <span className="shrink-0 tabular-nums">{bio.length}/160</span>
-          </div>
-        </div>
-      </ComponentPreview>
-
       <ComponentPreview title="Required Empty Field">
         <div className="grid w-full max-w-md gap-2">
           <Label htmlFor="cover-letter-empty">
@@ -122,7 +103,7 @@ export function TextareaExamples() {
               *
             </span>
           </Label>
-          <Textarea id="cover-letter-empty" rows={3} required placeholder="Why are you a good fit?" />
+          <TextArea id="cover-letter-empty" rows={3} required placeholder="Why are you a good fit?" />
         </div>
       </ComponentPreview>
 
@@ -134,7 +115,7 @@ export function TextareaExamples() {
               *
             </span>
           </Label>
-          <Textarea
+          <TextArea
             id="cover-letter-filled"
             rows={3}
             required
@@ -153,7 +134,7 @@ export function TextareaExamples() {
             <Label htmlFor="optional-notes">Additional notes</Label>
             <span className="text-xs text-muted-foreground">Optional</span>
           </div>
-          <Textarea
+          <TextArea
             id="optional-notes"
             rows={3}
             placeholder="Add details if they help"
@@ -165,7 +146,7 @@ export function TextareaExamples() {
         </div>
       </ComponentPreview>
 
-      <ComponentPreview title="Disabled Textarea">
+      <ComponentPreview title="Disabled TextArea">
         <div className="grid w-full max-w-md gap-2">
           <Label htmlFor="disabled-textarea">
             Cover letter{" "}
@@ -173,7 +154,7 @@ export function TextareaExamples() {
               *
             </span>
           </Label>
-          <Textarea
+          <TextArea
             id="disabled-textarea"
             rows={3}
             required
@@ -187,7 +168,7 @@ export function TextareaExamples() {
         </div>
       </ComponentPreview>
 
-      <ComponentPreview title="Invalid Textarea">
+      <ComponentPreview title="Invalid TextArea">
         <div className="grid w-full max-w-md gap-2">
           <Label htmlFor="invalid-textarea">
             Cover letter{" "}
@@ -195,7 +176,7 @@ export function TextareaExamples() {
               *
             </span>
           </Label>
-          <Textarea
+          <TextArea
             id="invalid-textarea"
             rows={3}
             required
@@ -209,10 +190,10 @@ export function TextareaExamples() {
         </div>
       </ComponentPreview>
 
-      <ComponentPreview title="Read-only Textarea">
+      <ComponentPreview title="Read-only TextArea">
         <div className="grid w-full max-w-md gap-2">
           <Label htmlFor="published-summary">Published summary</Label>
-          <Textarea
+          <TextArea
             id="published-summary"
             rows={3}
             readOnly
@@ -224,7 +205,7 @@ export function TextareaExamples() {
       <ComponentPreview title="Reply Composer">
         <form className="grid w-full max-w-md gap-2" onSubmit={submitReply}>
           <Label htmlFor="textarea-reply">Reply</Label>
-          <Textarea
+          <TextArea
             id="textarea-reply"
             rows={3}
             maxLength={500}
@@ -238,7 +219,7 @@ export function TextareaExamples() {
             <p id="textarea-reply-hint" className="text-xs text-muted-foreground">
               Up to 500 characters.
             </p>
-            <Button type="submit" size="sm" disabled={!reply.trim()}>
+            <Button type="submit" size="sm" isDisabled={!reply.trim()}>
               Post reply
             </Button>
           </div>

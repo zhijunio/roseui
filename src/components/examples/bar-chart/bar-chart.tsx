@@ -1,144 +1,316 @@
-import { BarChart, type BarChartSeries, type MetricBarDatum } from "@/components/ui/bar-chart";
-import { ComponentPreview } from "@/examples/component-preview";
+"use client";
+import { type ComponentProps, useState } from "react";
 
-const accent = "var(--primary)";
+import { Bar, BarChart, CartesianGrid, Cell, Rectangle, ReferenceLine, XAxis, YAxis } from "recharts";
 
-const weeklyActivity = [
-  { key: "mon", label: "Monday", axisLabel: "Mon", values: { activity: 32 } },
-  { key: "tue", label: "Tuesday", axisLabel: "Tue", values: { activity: 48 } },
-  { key: "wed", label: "Wednesday", axisLabel: "Wed", values: { activity: 27 } },
-  { key: "thu", label: "Thursday", axisLabel: "Thu", values: { activity: 56 } },
-  { key: "fri", label: "Friday", axisLabel: "Fri", values: { activity: 42 } },
-  { key: "sat", label: "Saturday", axisLabel: "Sat", values: { activity: 18 } },
-  { key: "sun", label: "Sunday", axisLabel: "Sun", values: { activity: 24 } },
-] satisfies readonly MetricBarDatum[];
+import { ComponentPreview } from "@/components/docs/component-preview";
+import { ChartExample, monthlyData } from "@/components/examples/chart/chart-example";
+import { ChartSeriesControls } from "@/components/examples/chart/chart-series-controls";
+import { BarChart as ConfigBarChart } from "@/components/ui/bar-chart";
+import {
+  type ChartConfig,
+  ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
+import { SegmentedControl, SegmentedControlItem } from "@/components/ui/segmented-control";
 
-const revenue = [
-  { key: "jan", label: "January", axisLabel: "Jan", values: { recurring: 42, expansion: 18 } },
-  { key: "feb", label: "February", axisLabel: "Feb", values: { recurring: 48, expansion: 21 } },
-  { key: "mar", label: "March", axisLabel: "Mar", values: { recurring: 55, expansion: 24 } },
-  { key: "apr", label: "April", axisLabel: "Apr", values: { recurring: 52, expansion: 29 } },
-  { key: "may", label: "May", axisLabel: "May", values: { recurring: 64, expansion: 33 } },
-  { key: "jun", label: "June", axisLabel: "Jun", values: { recurring: 71, expansion: 38 } },
-] satisfies readonly MetricBarDatum[];
+function DepthBar({ x, y, width, height, fill, ...props }: ComponentProps<typeof Rectangle>) {
+  const left = Number(x),
+    top = Number(y),
+    w = Number(width),
+    h = Number(height);
+  return (
+    <g>
+      <Rectangle {...props} x={left} y={top} width={w} height={h} fill={fill} />
+      <path d={`M${left},${top} l8,-6 h${w} l-8,6 Z`} fill={fill} opacity={0.65} />
+      <path d={`M${left + w},${top} l8,-6 v${h} l-8,6 Z`} fill={fill} opacity={0.45} />
+    </g>
+  );
+}
 
-const pipeline = [
-  {
-    key: "qualified",
-    label: "Qualified",
-    axisLabel: "Qualified",
-    values: { inbound: 480, outbound: 260, partner: 150 },
-  },
-  {
-    key: "discovery",
-    label: "Discovery",
-    axisLabel: "Discovery",
-    values: { inbound: 290, outbound: 190, partner: 104 },
-  },
-  { key: "proposal", label: "Proposal", axisLabel: "Proposal", values: { inbound: 180, outbound: 122, partner: 70 } },
-  { key: "won", label: "Won", axisLabel: "Won", values: { inbound: 86, outbound: 54, partner: 38 } },
-] satisfies readonly MetricBarDatum[];
+const axisProps = { tickLine: false, axisLine: false, tickMargin: 8 } as const;
+const chartClass = "!aspect-auto h-[260px] w-full sm:h-[360px]";
 
-const change = [
-  { key: "onboarding", label: "Onboarding", axisLabel: "Onboarding", values: { change: 18 } },
-  { key: "billing", label: "Billing", axisLabel: "Billing", values: { change: -7 } },
-  { key: "reporting", label: "Reporting", axisLabel: "Reporting", values: { change: 12 } },
-  { key: "permissions", label: "Permissions", axisLabel: "Permissions", values: { change: -14 } },
-  { key: "integrations", label: "Integrations", axisLabel: "Integrations", values: { change: 8 } },
-] satisfies readonly MetricBarDatum[];
+const lastYearVisitors = [160, 250, 220, 190, 175, 198];
 
-const responseTime = [
-  { key: "critical", label: "Critical", axisLabel: "Critical", values: { minutes: 8 } },
-  { key: "high", label: "High", axisLabel: "High", values: { minutes: 24 } },
-  { key: "normal", label: "Normal", axisLabel: "Normal", values: { minutes: 52 } },
-  { key: "low", label: "Low", axisLabel: "Low", values: { minutes: 96 } },
-] satisfies readonly MetricBarDatum[];
-
-const activitySeries = [{ key: "activity", label: "Active minutes", color: accent }] satisfies readonly [
-  BarChartSeries,
-  ...BarChartSeries[],
+const weekVisitors = [
+  { label: "Mon", desktop: 32, mobile: 20 },
+  { label: "Tue", desktop: 41, mobile: 22 },
+  { label: "Wed", desktop: 28, mobile: 15 },
+  { label: "Thu", desktop: 36, mobile: 18 },
+  { label: "Fri", desktop: 44, mobile: 25 },
+  { label: "Sat", desktop: 18, mobile: 30 },
+  { label: "Sun", desktop: 12, mobile: 16 },
 ];
-const revenueSeries = [
-  { key: "recurring", label: "Recurring", color: accent },
-  { key: "expansion", label: "Expansion", color: "var(--chart-2)" },
-] satisfies readonly [BarChartSeries, ...BarChartSeries[]];
-const pipelineSeries = [
-  { key: "inbound", label: "Inbound", color: accent },
-  { key: "outbound", label: "Outbound", color: "var(--chart-2)" },
-  { key: "partner", label: "Partner", color: "var(--chart-3)" },
-] satisfies readonly [BarChartSeries, ...BarChartSeries[]];
-const changeSeries = [{ key: "change", label: "Net change", color: accent }] satisfies readonly [
-  BarChartSeries,
-  ...BarChartSeries[],
-];
-const responseSeries = [{ key: "minutes", label: "Median response", color: accent }] satisfies readonly [
-  BarChartSeries,
-  ...BarChartSeries[],
-];
+
+export function PeriodChart() {
+  const [period, setPeriod] = useState<"week" | "month">("week");
+  const data =
+    period === "week"
+      ? weekVisitors
+      : monthlyData("en-US").map((row) => ({ label: row.month, desktop: row.desktop, mobile: row.mobile }));
+  const config: ChartConfig = {
+    desktop: { label: "Desktop", color: "var(--chart-1)" },
+    mobile: { label: "Mobile", color: "var(--chart-2)" },
+  };
+  return (
+    <div className="grid w-full gap-3">
+      <SegmentedControl
+        aria-label="Chart period"
+        value={period}
+        onValueChange={(value) => setPeriod(value === "month" ? "month" : "week")}
+        className="w-fit"
+      >
+        <SegmentedControlItem value="week">Week</SegmentedControlItem>
+        <SegmentedControlItem value="month">Month</SegmentedControlItem>
+      </SegmentedControl>
+      <ChartContainer
+        config={config}
+        className={chartClass}
+        aria-label={period === "week" ? "Visitors this week" : "Visitors by month"}
+      >
+        <BarChart accessibilityLayer data={data} margin={{ top: 12, right: 12 }}>
+          <CartesianGrid vertical={false} />
+          <XAxis dataKey="label" {...axisProps} />
+          <ChartTooltip
+            cursor={false}
+            content={
+              <ChartTooltipContent
+                formatter={(value) => (typeof value === "number" ? `${value.toLocaleString("en-US")} visitors` : value)}
+              />
+            }
+          />
+          <ChartLegend content={<ChartLegendContent />} />
+          <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} isAnimationActive={false} />
+          <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} isAnimationActive={false} />
+        </BarChart>
+      </ChartContainer>
+    </div>
+  );
+}
+
+export function StackedBarChart() {
+  const data = monthlyData("en-US");
+  const config: ChartConfig = {
+    desktop: { label: "Desktop", color: "var(--chart-1)" },
+    mobile: { label: "Mobile", color: "var(--chart-2)" },
+  };
+  return (
+    <ChartContainer config={config} className={chartClass} aria-label="Stacked desktop and mobile visitors">
+      <BarChart accessibilityLayer data={data} margin={{ top: 12, right: 12 }}>
+        <CartesianGrid vertical={false} />
+        <XAxis dataKey="month" {...axisProps} />
+        <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+        <ChartLegend content={<ChartLegendContent />} />
+        <Bar
+          dataKey="desktop"
+          stackId="visitors"
+          fill="var(--color-desktop)"
+          radius={[0, 0, 4, 4]}
+          isAnimationActive={false}
+        />
+        <Bar
+          dataKey="mobile"
+          stackId="visitors"
+          fill="var(--color-mobile)"
+          radius={[4, 4, 0, 0]}
+          isAnimationActive={false}
+        />
+      </BarChart>
+    </ChartContainer>
+  );
+}
+
+export function DivergingBarChart() {
+  const data = monthlyData("en-US").map((row, index) => ({
+    month: row.month,
+    change: row.desktop - lastYearVisitors[index],
+  }));
+  const config: ChartConfig = {
+    change: { label: "Change", color: "var(--chart-1)" },
+    increase: { label: "Increase", color: "var(--chart-1)" },
+    decrease: { label: "Decrease", color: "var(--chart-3)" },
+  };
+  return (
+    <ChartContainer config={config} className={chartClass} aria-label="Change in desktop visitors from last year">
+      <BarChart accessibilityLayer data={data} margin={{ top: 12, right: 12 }}>
+        <CartesianGrid vertical={false} />
+        <XAxis dataKey="month" {...axisProps} />
+        <YAxis tickLine={false} axisLine={false} width={32} />
+        <ReferenceLine y={0} stroke="var(--border)" />
+        <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+        <Bar dataKey="change" radius={4} isAnimationActive={false}>
+          {data.map((row) => (
+            <Cell key={row.month} fill={row.change >= 0 ? "var(--color-increase)" : "var(--color-decrease)"} />
+          ))}
+        </Bar>
+      </BarChart>
+    </ChartContainer>
+  );
+}
+
+function LollipopBar({ x, y, width, height, fill, ...props }: ComponentProps<typeof Rectangle>) {
+  const left = Number(x),
+    top = Number(y),
+    barWidth = Number(width),
+    barHeight = Number(height);
+  const stem = Math.max(2, barWidth * 0.16);
+  return (
+    <g>
+      <Rectangle
+        {...props}
+        x={left + (barWidth - stem) / 2}
+        y={top}
+        width={stem}
+        height={barHeight}
+        fill={fill}
+        radius={0}
+      />
+      <circle cx={left + barWidth / 2} cy={top} r={5} fill={fill} />
+    </g>
+  );
+}
+
+export function DepthBarChart() {
+  const data = monthlyData("en-US");
+  const config: ChartConfig = { desktop: { label: "Desktop", color: "var(--chart-1)" } };
+  return (
+    <ChartContainer config={config} className={chartClass} aria-label="Desktop visitors as depth bars">
+      <BarChart accessibilityLayer data={data} margin={{ top: 16, right: 20 }}>
+        <CartesianGrid vertical={false} />
+        <XAxis dataKey="month" {...axisProps} />
+        <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+        <Bar dataKey="desktop" fill="var(--color-desktop)" shape={<DepthBar />} isAnimationActive={false} />
+      </BarChart>
+    </ChartContainer>
+  );
+}
+
+export function LollipopChart() {
+  const data = monthlyData("en-US");
+  const config: ChartConfig = { desktop: { label: "Desktop", color: "var(--chart-1)" } };
+  return (
+    <ChartContainer config={config} className={chartClass} aria-label="Desktop visitors as lollipop bars">
+      <BarChart accessibilityLayer data={data} margin={{ top: 12, right: 12 }}>
+        <CartesianGrid vertical={false} />
+        <XAxis dataKey="month" {...axisProps} />
+        <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+        <Bar dataKey="desktop" fill="var(--color-desktop)" shape={<LollipopBar />} isAnimationActive={false} />
+      </BarChart>
+    </ChartContainer>
+  );
+}
 
 export function BarChartExamples() {
   return (
     <>
-      <ComponentPreview title="Weekly activity" layout="panel" density="chart">
-        <BarChart
-          data={weeklyActivity}
-          series={activitySeries}
-          label="Active minutes by day"
-          period="This week"
-          unit="min"
-        />
+      <ComponentPreview title="Controlled series and currency tooltip" layout="panel" density="chart">
+        <InteractiveRevenueBarChart />
       </ComponentPreview>
-      <ComponentPreview title="Grouped revenue" layout="panel" density="chart">
-        <BarChart
-          data={revenue}
-          series={revenueSeries}
-          variant="grouped"
-          label="Revenue by month"
-          period="First half"
-          unit="k"
-        />
+      <ComponentPreview title="Single series" layout="panel" density="chart">
+        <ChartExample variant="bar-single" />
       </ComponentPreview>
-      <ComponentPreview title="Stacked pipeline" layout="panel" density="chart">
-        <BarChart
-          data={pipeline}
-          series={pipelineSeries}
-          variant="stacked"
-          label="Pipeline by stage"
-          period="Current quarter"
-          unit="deals"
-        />
+      <ComponentPreview title="Grouped series" layout="panel" density="chart">
+        <ChartExample variant="bar-grouped" />
       </ComponentPreview>
-      <ComponentPreview title="Net change" layout="panel" density="chart">
-        <BarChart
-          data={change}
-          series={changeSeries}
-          variant="diverging"
-          label="Net change by area"
-          period="Last 30 days"
-          valueFormat="signed"
-        />
+      <ComponentPreview title="Stacked bars" layout="panel" density="chart">
+        <StackedBarChart />
       </ComponentPreview>
-      <ComponentPreview title="Horizontal comparison" layout="panel" density="chart">
-        <BarChart
-          data={responseTime}
-          series={responseSeries}
-          orientation="horizontal"
-          label="Median response time"
-          period="Last 7 days"
-          unit="min"
-          height={240}
-        />
+      <ComponentPreview title="Positive and negative values" layout="panel" density="chart">
+        <DivergingBarChart />
       </ComponentPreview>
-      <ComponentPreview title="Lollipop marks" layout="panel" density="chart">
-        <BarChart
-          data={weeklyActivity}
-          series={activitySeries}
-          mark="lollipop"
-          label="Active minutes with lollipop marks"
-          period="Work week"
-          unit="min"
-        />
+      <ComponentPreview title="Horizontal bars" layout="panel" density="chart">
+        <ChartExample variant="bar-horizontal" />
+      </ComponentPreview>
+      <ComponentPreview title="Change the displayed period" layout="panel" density="chart">
+        <PeriodChart />
+      </ComponentPreview>
+      <ComponentPreview title="Depth bars" layout="panel" density="chart">
+        <DepthBarChart />
+      </ComponentPreview>
+      <ComponentPreview title="Lollipop bars" layout="panel" density="chart">
+        <LollipopChart />
       </ComponentPreview>
     </>
+  );
+}
+
+function InteractiveRevenueBarChart() {
+  const data = [
+    { quarter: "Q1", online: 48200, retail: 36100 },
+    { quarter: "Q2", online: 53700, retail: 39800 },
+    { quarter: "Q3", online: 61400, retail: 42700 },
+    { quarter: "Q4", online: 72800, retail: 50300 },
+  ];
+  const config: ChartConfig = {
+    online: { label: "Online", color: "var(--chart-1)" },
+    retail: { label: "Retail", color: "var(--chart-2)" },
+  };
+  const series = [
+    { key: "online", label: "Online", color: "var(--chart-1)" },
+    { key: "retail", label: "Retail", color: "var(--chart-2)" },
+  ];
+  const [visible, setVisible] = useState(new Set(series.map((item) => item.key)));
+  const currencyFormat = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: 0,
+  });
+  const axisFormat = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    notation: "compact",
+    maximumFractionDigits: 0,
+  });
+  const toggleSeries = (key: string) => {
+    setVisible((current) => {
+      const next = new Set(current);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+  };
+
+  return (
+    <div className="grid w-full gap-3">
+      <ConfigBarChart
+        config={config}
+        data={data}
+        dataKey="quarter"
+        legend={false}
+        valueFormatter={axisFormat.format}
+        tooltip={
+          <ChartTooltipContent
+            formatter={(value, name) => (
+              <span className="font-mono tabular-nums">
+                {String(name)}: {currencyFormat.format(Number(value))}
+              </span>
+            )}
+          />
+        }
+        className={chartClass}
+        aria-label="Quarterly revenue by channel"
+      >
+        {series.map((item) => (
+          <Bar
+            key={item.key}
+            dataKey={item.key}
+            name={item.label}
+            fill={item.color}
+            radius={4}
+            hide={!visible.has(item.key)}
+          />
+        ))}
+      </ConfigBarChart>
+      <ChartSeriesControls
+        label="Visible revenue channels"
+        series={series}
+        selected={visible}
+        onToggle={toggleSeries}
+      />
+    </div>
   );
 }

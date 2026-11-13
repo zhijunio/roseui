@@ -2,49 +2,88 @@
 import * as React from "react";
 
 import {
-  IconBell,
-  IconBold,
-  IconBookmark,
-  IconCheck,
-  IconHeart,
-  IconItalic,
-  IconPin,
-  IconRepeat,
-  IconShare,
-  IconStrikethrough,
-  IconThumbUp,
-  IconUnderline,
-  IconVolume,
-  IconVolumeOff,
-} from "@tabler/icons-react";
+  Bell as IconBell,
+  Bold as IconBold,
+  Bookmark as IconBookmark,
+  Check as IconCheck,
+  Heart as IconHeart,
+  Italic as IconItalic,
+  Pin as IconPin,
+  Repeat as IconRepeat,
+  Share as IconShare,
+  Strikethrough as IconStrikethrough,
+  ThumbsUp as IconThumbUp,
+  Underline as IconUnderline,
+  Volume as IconVolume,
+  VolumeOff as IconVolumeOff,
+} from "lucide-react";
+import { Focusable } from "react-aria-components/Focusable";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Toggle } from "@/components/ui/toggle";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { ComponentPreview } from "@/examples/component-preview";
+import { Tooltip, TooltipTrigger } from "@/components/ui/tooltip";
 
-const examples = [
-  "Basic toggle",
-  "Toggle buttons with outline variant",
-  "Toggle buttons in different sizes",
-  "Toggle with button and icon",
-  "Disabled toggle",
-  "Toggle with icon",
-  "Toggle with notification count badge",
-  "Toggle size variants showcase",
-  "Toggle with icon swap on press",
-  "Toggle with text label that changes",
-  "Social media reaction toggles",
-  "Toggle with tooltip",
-  "Disabled toggle states",
-  "Toggle as mute/unmute button",
-  "Icon-only sizing",
-  "Async state change with retry",
-];
+const exampleGroups = [
+  {
+    title: "Variants",
+    examples: [
+      { title: "Default", index: 0 },
+      { title: "Outline", index: 1 },
+    ],
+  },
+  {
+    title: "Sizes",
+    examples: [
+      { title: "Text sizes", index: 2 },
+      { title: "Icon sizes", index: 14 },
+    ],
+  },
+  {
+    title: "Content",
+    examples: [
+      { title: "With icon", index: 5 },
+      { title: "With badge", index: 6 },
+    ],
+  },
+  {
+    title: "Selection state",
+    examples: [
+      { title: "Controlled label", index: 9 },
+      { title: "Icon swap", index: 8 },
+    ],
+  },
+  {
+    title: "Disabled",
+    examples: [
+      { title: "Disabled", index: 4 },
+      { title: "Disabled states", index: 12 },
+    ],
+  },
+  {
+    title: "Async update",
+    examples: [{ title: "Async update", index: 15 }],
+  },
+  {
+    title: "With other actions",
+    examples: [
+      { title: "With buttons", index: 3 },
+      { title: "Reaction group", index: 10 },
+    ],
+  },
+  {
+    title: "With tooltip",
+    examples: [{ title: "With tooltip", index: 11 }],
+  },
+  {
+    title: "Mute toggle",
+    examples: [{ title: "Mute toggle", index: 13 }],
+  },
+] as const;
 
 function ToggleDemo({ index }: { index: number }) {
-  const [bookmarked, setBookmarked] = React.useState(false);
+  const [pinned, setPinned] = React.useState(false);
   const [hearted, setHearted] = React.useState(false);
   const [muted, setMuted] = React.useState(false);
   const [subscribed, setSubscribed] = React.useState(false);
@@ -58,7 +97,7 @@ function ToggleDemo({ index }: { index: number }) {
   if (index === 0)
     return (
       <div className="flex flex-wrap gap-1">
-        <Toggle defaultPressed aria-label="Bold">
+        <Toggle defaultSelected={true} aria-label="Bold">
           <IconBold />
         </Toggle>
         <Toggle aria-label="Italic">
@@ -86,8 +125,8 @@ function ToggleDemo({ index }: { index: number }) {
     return (
       <div className="flex flex-wrap items-center gap-3">
         {(["sm", "default", "lg"] as const).map((size) => (
-          <Toggle key={size} variant="outline" size={size}>
-            {size === "sm" ? "Small" : size === "lg" ? "Large" : "Default"}
+          <Toggle key={size} variant="outline" size={size} isIconOnly aria-label={`Bookmark ${size}`}>
+            <IconBookmark />
           </Toggle>
         ))}
       </div>
@@ -117,8 +156,8 @@ function ToggleDemo({ index }: { index: number }) {
   if (index === 4)
     return (
       <div className="flex flex-wrap gap-3">
-        <Toggle disabled>Default</Toggle>
-        <Toggle disabled variant="outline">
+        <Toggle isDisabled>Default</Toggle>
+        <Toggle isDisabled variant="outline">
           Outline
         </Toggle>
       </div>
@@ -142,26 +181,11 @@ function ToggleDemo({ index }: { index: number }) {
         </Badge>
       </Toggle>
     );
-  if (index === 7)
-    return (
-      <div className="grid w-full max-w-xs gap-3">
-        {(["sm", "default", "lg"] as const).map((size) => (
-          <div key={size} className="flex items-center gap-3">
-            <span className="w-16 text-xs text-muted-foreground">
-              {size === "default" ? "Default" : size.toUpperCase()}
-            </span>
-            <Toggle size={size} variant="outline" aria-label={`Bookmark ${size}`}>
-              <IconBookmark />
-            </Toggle>
-          </div>
-        ))}
-      </div>
-    );
   if (index === 8)
     return (
       <Toggle
-        pressed={hearted}
-        onPressedChange={setHearted}
+        isSelected={hearted}
+        onChange={setHearted}
         aria-label={hearted ? "Remove like" : "Like"}
         className={hearted ? "text-destructive" : ""}
       >
@@ -170,9 +194,9 @@ function ToggleDemo({ index }: { index: number }) {
     );
   if (index === 9)
     return (
-      <Toggle variant="outline" pressed={bookmarked} onPressedChange={setBookmarked}>
-        <IconBookmark />
-        {bookmarked ? "Bookmarked" : "Bookmark"}
+      <Toggle variant="outline" isSelected={pinned} onChange={setPinned} aria-label={pinned ? "Unpin" : "Pin"}>
+        <IconPin />
+        {pinned ? "Unpin" : "Pin"}
       </Toggle>
     );
   if (index === 10)
@@ -188,8 +212,8 @@ function ToggleDemo({ index }: { index: number }) {
             <Toggle
               variant="outline"
               size="sm"
-              pressed={reactions[key as keyof typeof reactions]}
-              onPressedChange={() => changeReaction(key as keyof typeof reactions)}
+              isSelected={reactions[key as keyof typeof reactions]}
+              onChange={() => changeReaction(key as keyof typeof reactions)}
               aria-label={label}
             >
               <Icon />
@@ -203,22 +227,22 @@ function ToggleDemo({ index }: { index: number }) {
     );
   if (index === 11)
     return (
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
+      <>
+        <TooltipTrigger delay={0}>
+          <Focusable>
             <Toggle variant="outline" aria-label="Pin to sidebar">
               <IconPin />
             </Toggle>
-          </TooltipTrigger>
-          <TooltipContent>Pin to sidebar</TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+          </Focusable>
+          <Tooltip>Pin to sidebar</Tooltip>
+        </TooltipTrigger>
+      </>
     );
   if (index === 12)
     return (
       <div className="flex flex-wrap gap-3">
         <div className="flex gap-1">
-          <Toggle defaultPressed aria-label="Bold">
+          <Toggle defaultSelected={true} aria-label="Bold">
             <IconBold />
           </Toggle>
           <Toggle aria-label="Italic">
@@ -233,10 +257,10 @@ function ToggleDemo({ index }: { index: number }) {
             <IconStrikethrough />
           </Toggle>
         </div>
-        <Toggle disabled aria-label="Disabled bold">
+        <Toggle isDisabled aria-label="Disabled bold">
           <IconBold />
         </Toggle>
-        <Toggle disabled variant="outline" aria-label="Disabled italic">
+        <Toggle isDisabled variant="outline" aria-label="Disabled italic">
           <IconItalic />
         </Toggle>
       </div>
@@ -246,8 +270,8 @@ function ToggleDemo({ index }: { index: number }) {
       <Toggle
         variant="outline"
         size="lg"
-        pressed={muted}
-        onPressedChange={setMuted}
+        isSelected={muted}
+        onChange={setMuted}
         aria-label={muted ? "Unmute audio" : "Mute audio"}
       >
         {muted ? <IconVolumeOff /> : <IconVolume />}
@@ -265,14 +289,14 @@ function ToggleDemo({ index }: { index: number }) {
       </div>
     );
   return (
-    <div className="space-y-3">
+    <div className="flex flex-wrap items-center gap-3">
       <Toggle
         variant="outline"
-        pressed={subscribed}
+        isSelected={subscribed}
         aria-label="Subscribe to release updates"
         aria-busy={subscriptionPending}
         aria-disabled={subscriptionPending}
-        onPressedChange={(next) => {
+        onChange={(next) => {
           if (subscriptionPendingRef.current) return;
           subscriptionPendingRef.current = true;
           setSubscriptionPending(true);
@@ -306,10 +330,11 @@ function ToggleDemo({ index }: { index: number }) {
 export function ToggleExamples() {
   return (
     <>
-      {examples.map((title, index) => (
-        <ComponentPreview key={title} title={title} layout="anchor">
-          {" "}
-          <ToggleDemo index={index} />
+      {exampleGroups.map((group) => (
+        <ComponentPreview key={group.title} title={group.title} layout="inline">
+          {group.examples.map((example) => (
+            <ToggleDemo key={example.title} index={example.index} />
+          ))}
         </ComponentPreview>
       ))}
     </>

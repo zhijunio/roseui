@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Filters, type FiltersLabels } from "@/components/ui/filters";
 import { type FilterField, type FilterQuery, matchesFilterQuery } from "@/components/ui/filters-query";
-import { ComponentPreview } from "@/examples/component-preview";
 
 const fields: FilterField[] = [
   {
@@ -67,7 +67,7 @@ export function FilterExamples() {
   const appliedRecords = records.filter((record) => matchesFilterQuery(record, appliedQuery, fields));
   return (
     <div className="grid min-w-0 items-start gap-5 [&>*]:min-w-0">
-      <ComponentPreview title="Filter Records" layout="stack">
+      <ComponentPreview title="Nested Filter Rules" layout="stack">
         <Filters fields={fields} value={query} onChange={setQuery} labels={labels} nested />
         <div className="space-y-2">
           <p aria-live="polite" className="text-xs text-muted-foreground">

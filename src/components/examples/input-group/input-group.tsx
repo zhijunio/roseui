@@ -2,29 +2,30 @@
 import * as React from "react";
 
 import {
-  IconArrowRight,
-  IconBell,
-  IconCheck,
-  IconCopy,
-  IconEye,
-  IconEyeOff,
-  IconFilter,
-  IconLoader2,
-  IconLock,
-  IconMail,
-  IconMicrophone,
-  IconDotsVertical as IconMore,
-  IconPlus,
-  IconSearch,
-  IconSend,
-  IconShieldCheck,
-  IconSparkles,
-  IconWorld,
-} from "@tabler/icons-react";
+  ArrowRight as IconArrowRight,
+  Bell as IconBell,
+  Check as IconCheck,
+  Copy as IconCopy,
+  Eye as IconEye,
+  EyeOff as IconEyeOff,
+  Filter as IconFilter,
+  Loader2 as IconLoader2,
+  Lock as IconLock,
+  Mail as IconMail,
+  Mic as IconMicrophone,
+  EllipsisVertical as IconMore,
+  Plus as IconPlus,
+  Search as IconSearch,
+  Send as IconSend,
+  ShieldCheck as IconShieldCheck,
+  Sparkles as IconSparkles,
+  Globe as IconWorld,
+} from "lucide-react";
 import { toast } from "sonner";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { Button } from "@/components/ui/button";
-import { ButtonGroup, ButtonGroupText } from "@/components/ui/composite-button-group";
+import { ButtonGroup, ButtonGroupText } from "@/components/ui/button-group";
 import {
   InputGroup,
   InputGroupAddon,
@@ -32,15 +33,10 @@ import {
   InputGroupInput,
   InputGroupText,
   InputGroupTextarea,
-} from "@/components/ui/composite-input-group";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/components/ui/input-group";
 import { InputPhone } from "@/components/ui/input-phone";
 import { Kbd } from "@/components/ui/kbd";
+import { Menu, MenuItem, MenuTrigger } from "@/components/ui/menu";
 import {
   Popover,
   PopoverContent,
@@ -50,7 +46,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { VerificationCodeForm } from "@/components/ui/verification-code-form";
-import { ComponentPreview } from "@/examples/component-preview";
 
 const examples = [
   "Basic input group",
@@ -178,7 +173,7 @@ function GroupDemo({ index }: { index: number }) {
                   </InputGroupButton>
                 </>
               )}
-              <InputGroupButton size="icon-xs" aria-label="Send message" onClick={submit}>
+              <InputGroupButton size="icon-xs" aria-label="Send message" onPress={submit}>
                 <IconSend />
               </InputGroupButton>
             </div>
@@ -186,10 +181,10 @@ function GroupDemo({ index }: { index: number }) {
         </InputGroup>
         {index === 18 && (
           <div className="flex gap-2 text-xs text-muted-foreground">
-            <Button size="xs" variant="outline" onClick={() => setText(`${text} [quarterly-report.pdf]`)}>
+            <Button size="xs" variant="outline" onPress={() => setText(`${text} [quarterly-report.pdf]`)}>
               Attach report
             </Button>
-            <Button size="xs" variant="outline" onClick={() => setText(`${text} [workspace context]`)}>
+            <Button size="xs" variant="outline" onPress={() => setText(`${text} [workspace context]`)}>
               Add context
             </Button>
           </div>
@@ -237,7 +232,7 @@ function GroupDemo({ index }: { index: number }) {
         <InputGroupInput defaultValue="Q4 Product Launch" />
         <InputGroupAddon align="inline-end">
           <span className="text-xs text-muted-foreground">Saved</span>
-          <InputGroupButton size="icon-xs" aria-label="Save" onClick={submit}>
+          <InputGroupButton size="icon-xs" aria-label="Save" onPress={submit}>
             <IconCheck />
           </InputGroupButton>
         </InputGroupAddon>
@@ -258,7 +253,7 @@ function GroupDemo({ index }: { index: number }) {
           <InputGroupButton
             size="icon-sm"
             aria-label={passwordVisible ? "Hide password" : "Show password"}
-            onClick={() => setPasswordVisible(!passwordVisible)}
+            onPress={() => setPasswordVisible(!passwordVisible)}
           >
             {passwordVisible ? <IconEyeOff /> : <IconEye />}
           </InputGroupButton>
@@ -283,7 +278,7 @@ function GroupDemo({ index }: { index: number }) {
         </InputGroupAddon>
         <InputGroupInput defaultValue="/api/v1/projects" aria-label="Request path" />
         <InputGroupAddon align="inline-end">
-          <InputGroupButton size="xs" onClick={submit}>
+          <InputGroupButton size="xs" onPress={submit}>
             {busy ? <IconLoader2 className="motion-safe:animate-spin" /> : <IconSend />}Send
           </InputGroupButton>
         </InputGroupAddon>
@@ -318,7 +313,7 @@ function GroupDemo({ index }: { index: number }) {
             <option>Anyone</option>
             <option>Team only</option>
           </select>
-          <InputGroupButton size="icon-xs" aria-label="Copy share link" onClick={copy}>
+          <InputGroupButton size="icon-xs" aria-label="Copy share link" onPress={copy}>
             {copied ? <IconCheck /> : <IconCopy />}
           </InputGroupButton>
         </InputGroupAddon>
@@ -335,7 +330,7 @@ function GroupDemo({ index }: { index: number }) {
           <InputGroupButton size="icon-sm" aria-label="Voice input">
             <IconMicrophone />
           </InputGroupButton>
-          <InputGroupButton size="icon-sm" aria-label="Send prompt" onClick={submit}>
+          <InputGroupButton size="icon-sm" aria-label="Send prompt" onPress={submit}>
             <IconSend />
           </InputGroupButton>
         </InputGroupAddon>
@@ -382,7 +377,7 @@ function GroupDemo({ index }: { index: number }) {
     return (
       <ButtonGroup aria-label="Project URL" className="w-full">
         <ButtonGroupText>https://</ButtonGroupText>
-        <InputGroup className="min-w-0 flex-1 rounded-none border-0 shadow-none">
+        <InputGroup className="min-w-0 flex-1 shadow-none">
           <InputGroupInput placeholder="project-name" />
           <InputGroupAddon align="inline-end">
             <InputGroupButton size="icon-xs" aria-label="URL help">
@@ -432,7 +427,7 @@ function GroupDemo({ index }: { index: number }) {
               <IconBell />
             </span>
           ) : index === 22 ? (
-            <Button size="xs" variant="outline" onClick={submit}>
+            <Button size="xs" variant="outline" onPress={submit}>
               <IconSparkles /> Ask AI <Kbd>⌘ ⇧ P</Kbd>
             </Button>
           ) : index === 23 ? (
@@ -442,45 +437,43 @@ function GroupDemo({ index }: { index: number }) {
           ) : index === 24 ? (
             <span className="text-xs text-muted-foreground">{text ? `12 results for “${text}”` : "12 results"}</span>
           ) : index === 27 ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <InputGroupButton size="icon-xs" aria-label="More actions">
-                  <IconMore />
-                </InputGroupButton>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onSelect={() => setChoice("Renamed")}>Rename</DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => setChoice("Duplicated")}>Duplicate</DropdownMenuItem>
-                <DropdownMenuItem variant="destructive" onSelect={() => setChoice("Deleted")}>
+            <MenuTrigger>
+              <InputGroupButton size="icon-xs" aria-label="More actions">
+                <IconMore />
+              </InputGroupButton>
+
+              <Menu placement="bottom end">
+                <MenuItem onAction={() => setChoice("Renamed")}>Rename</MenuItem>
+                <MenuItem onAction={() => setChoice("Duplicated")}>Duplicate</MenuItem>
+                <MenuItem intent="danger" onAction={() => setChoice("Deleted")}>
                   Delete
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+                </MenuItem>
+              </Menu>
+            </MenuTrigger>
           ) : index === 38 ? (
             <>
               <InputGroupButton
                 size="icon-xs"
                 aria-label="Filter contacts"
-                onClick={() => setChoice(choice === "Filtered" ? "All contacts" : "Filtered")}
+                onPress={() => setChoice(choice === "Filtered" ? "All contacts" : "Filtered")}
               >
                 <IconFilter />
               </InputGroupButton>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <InputGroupButton size="icon-xs" aria-label="More actions">
-                    <IconMore />
-                  </InputGroupButton>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem onSelect={() => setChoice("Contact invited")}>Invite contact</DropdownMenuItem>
-                  <DropdownMenuItem onSelect={() => setChoice("Exported")}>Export results</DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <MenuTrigger>
+                <InputGroupButton size="icon-xs" aria-label="More actions">
+                  <IconMore />
+                </InputGroupButton>
+
+                <Menu placement="bottom end">
+                  <MenuItem onAction={() => setChoice("Contact invited")}>Invite contact</MenuItem>
+                  <MenuItem onAction={() => setChoice("Exported")}>Export results</MenuItem>
+                </Menu>
+              </MenuTrigger>
             </>
           ) : index === 5 ? (
             <IconArrowRight />
           ) : (
-            <InputGroupButton size="icon-xs" aria-label="Search" onClick={submit}>
+            <InputGroupButton size="icon-xs" aria-label="Search" onPress={submit}>
               <IconSearch />
             </InputGroupButton>
           )}
@@ -488,14 +481,14 @@ function GroupDemo({ index }: { index: number }) {
       )}
       {index === 9 && (
         <InputGroupAddon align="inline-end">
-          <InputGroupButton size="xs" onClick={submit}>
+          <InputGroupButton size="xs" onPress={submit}>
             {busy ? <IconLoader2 className="motion-safe:animate-spin" /> : "Search"}
           </InputGroupButton>
         </InputGroupAddon>
       )}
       {index === 10 && (
         <InputGroupAddon align="inline-end">
-          <InputGroupButton size="icon-sm" aria-label="Copy value" onClick={copy}>
+          <InputGroupButton size="icon-sm" aria-label="Copy value" onPress={copy}>
             {copied ? <IconCheck /> : <IconCopy />}
           </InputGroupButton>
         </InputGroupAddon>

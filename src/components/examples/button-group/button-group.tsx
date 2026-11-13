@@ -2,47 +2,36 @@
 
 import { type ReactNode, useState } from "react";
 
-import Link from "next/link";
-
 import {
-  IconArrowLeft,
-  IconArrowRight,
-  IconChevronDown,
-  IconCopy,
-  IconDownload,
-  IconLayoutGrid,
-  IconList,
-  IconMinus,
-  IconPlayerPause,
-  IconPlayerPlay,
-  IconPlayerSkipBack,
-  IconPlayerSkipForward,
-  IconPlus,
-  IconSearch,
-  IconShare,
-  IconStar,
-  IconThumbUp,
-  IconX,
-} from "@tabler/icons-react";
+  ArrowLeft as IconArrowLeft,
+  ArrowRight as IconArrowRight,
+  ChevronDown as IconChevronDown,
+  Copy as IconCopy,
+  Download as IconDownload,
+  LayoutGrid as IconLayoutGrid,
+  List as IconList,
+  Minus as IconMinus,
+  Pause as IconPlayerPause,
+  Play as IconPlayerPlay,
+  SkipBack as IconPlayerSkipBack,
+  SkipForward as IconPlayerSkipForward,
+  Plus as IconPlus,
+  Search as IconSearch,
+  Share as IconShare,
+  Star as IconStar,
+  ThumbsUp as IconThumbUp,
+  X as IconX,
+} from "lucide-react";
 
+import { ComponentPreview, type ComponentPreviewLayout } from "@/components/docs/component-preview";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  ButtonGroup,
-  ButtonGroupItem,
-  ButtonGroupSeparator,
-  ButtonGroupText,
-} from "@/components/ui/composite-button-group";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { buttonVariants } from "@/components/ui/button";
+import { ButtonGroup, ButtonGroupItem, ButtonGroupSeparator, ButtonGroupText } from "@/components/ui/button-group";
 import { Input } from "@/components/ui/input";
+import { Menu, MenuItem, MenuTrigger } from "@/components/ui/menu";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { StatusDot } from "@/components/ui/status-dot";
 import { users } from "@/data/user";
-import { ComponentPreview, type ComponentPreviewLayout } from "@/examples/component-preview";
 
 type ExampleSection = {
   title: string;
@@ -55,23 +44,27 @@ type ExampleSection = {
 };
 
 const sections: ExampleSection[] = [
-  { title: "Groups", layout: "wide" as const, span: 2 as const, examples: [1, 5, 6, 23] },
-  { title: "With Field", layout: "wide" as const, span: 2 as const, examples: [2, 16, 19, 20, 56] },
-  { title: "Menu", layout: "wide" as const, span: 2 as const, examples: [4, 15, 17, 21, 51] },
-  { title: "Split", layout: "wide" as const, span: 2 as const, examples: [18, 39] },
+  { title: "Basic", layout: "wide" as const, span: 2 as const, examples: [1, 6, 9, 22, 23, 31, 38, 58] },
+  { title: "Orientation", layout: "wide" as const, span: 2 as const, examples: [13, 14] },
+  {
+    title: "Group with menu",
+    layout: "wide" as const,
+    span: 2 as const,
+    examples: [4, 15, 18, 20, 21, 44, 48, 53, 57],
+  },
+  {
+    title: "Group with text",
+    layout: "wide" as const,
+    span: 2 as const,
+    examples: [3, 5, 7, 8, 28, 41, 45, 55, 56],
+  },
+  { title: "With field", layout: "wide" as const, span: 2 as const, examples: [2, 16, 26, 54] },
   {
     title: "Selection",
     layout: "wide" as const,
     span: 2 as const,
-    examples: [12, 24, 25, 26, 27, 32, 33, 34, 36, 41, 42, 43, 44, 45, 46, 54, 57],
+    examples: [10, 11, 12, 24, 25, 43],
   },
-  { title: "Orientation", layout: "wide" as const, span: 2 as const, examples: [13, 14, 40, 49] },
-  { title: "Adornments", layout: "wide" as const, span: 2 as const, examples: [3, 7, 8, 29, 30, 31] },
-  { title: "Pagination", layout: "wide" as const, span: 2 as const, examples: [10, 11, 35] },
-  { title: "Nested", layout: "wide" as const, span: 2 as const, examples: [9] },
-  { title: "States", layout: "wide" as const, span: 2 as const, examples: [22] },
-  { title: "Toolbars", layout: "wide" as const, span: 2 as const, examples: [28, 37, 38, 47, 48, 50, 52, 53, 55] },
-  { title: "Full Width", stack: true, layout: "field" as const, examples: [58] },
 ];
 
 export function ButtonGroupExamples() {
@@ -123,21 +116,20 @@ type GroupMenuProps = {
 
 function GroupMenu({ label, options, onSelect, iconOnly }: GroupMenuProps) {
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <ButtonGroupItem variant="outline" size={iconOnly ? "icon" : "default"} aria-label={label}>
-          {!iconOnly && label}
-          <IconChevronDown aria-hidden />
-        </ButtonGroupItem>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
+    <MenuTrigger>
+      <ButtonGroupItem variant="outline" size={iconOnly ? "icon" : "default"} aria-label={label}>
+        {!iconOnly && label}
+        <IconChevronDown aria-hidden />
+      </ButtonGroupItem>
+
+      <Menu>
         {options.map((option) => (
-          <DropdownMenuItem key={option.value} onSelect={() => onSelect(option.value, option.label)}>
+          <MenuItem key={option.value} onAction={() => onSelect(option.value, option.label)}>
             {option.label}
-          </DropdownMenuItem>
+          </MenuItem>
         ))}
-      </DropdownMenuContent>
-    </DropdownMenu>
+      </Menu>
+    </MenuTrigger>
   );
 }
 
@@ -146,7 +138,7 @@ export function ButtonGroupExample({ example }: { example: number }) {
   const [selectedLabel, setSelectedLabel] = useState("");
   const [secondary, setSecondary] = useState("");
   const [query, setQuery] = useState("");
-  const [number, setNumber] = useState(example === 37 ? 100 : example === 28 ? 60 : 1);
+  const [number, setNumber] = useState(example === 28 ? 60 : 1);
   const [pressed, setPressed] = useState(false);
   const [feedback, setFeedback] = useState("");
   const choose = (key: string, label: string) => {
@@ -155,81 +147,62 @@ export function ButtonGroupExample({ example }: { example: number }) {
     setFeedback(label);
   };
   const item = (key: string, label: string, icon?: ReactNode) => (
-    <ButtonGroupItem key={key} variant="outline" onClick={() => setFeedback(label)}>
+    <ButtonGroupItem key={key} variant="outline" onPress={() => setFeedback(label)}>
       {icon}
       {label}
     </ButtonGroupItem>
   );
-  const label = [
-    "Two Buttons",
-    "Button & Input",
-    "Buttons & Badge",
-    "Dropdown Menu",
-    "Team Activity",
-    "Icon Actions",
-    "Status Indicator",
-    "Like Counter",
-    "Nested Groups",
-    "Basic Pagination",
-    "Split Pagination",
-    "Text Alignment",
-    "Vertical Orientation",
-    "Vertical Tool Palette",
-    "Star With Dropdown",
-    "Search Filter Clear",
-    "Conversation Menu",
-    "Git Split Button",
-    "Search With Menu",
-    "Search With Button",
-    "File Name Menu",
-    "Disabled Button",
-    "Separated Buttons",
-    "Dashboard Views",
-    "Rating Scale",
-    "User Selection",
-    "Status Select",
-    "Volume Control",
-    "Follower Count",
-    "Active Count",
-    "Share Caption",
-    "Sort & View",
-    "Select Controls",
-    "Segmented Control",
-    "Numbered Pagination",
-    "View Switcher",
-    "Zoom Controls",
-    "Media Controls",
-    "Split Button",
-    "Vertical List",
-    "Model Selector",
-    "Order Type",
-    "Buy Sell Hold",
-    "Pipeline Stage",
-    "Environment Switcher",
-    "Time Interval",
-    "Review Actions",
-    "Export Toolbar",
-    "Vertical Nav",
-    "Filter Sort More",
-    "Create Menu",
-    "Dashboard Actions",
-    "Publish Controls",
-    "Service Selectors",
-    "Payout Release",
-    "File Attachment",
-    "Agent Mode",
-    "Full Width",
-  ][example - 1];
+  const labels: Record<number, string> = {
+    1: "Two Buttons",
+    2: "Button & Input",
+    3: "Buttons & Badge",
+    4: "Dropdown Menu",
+    5: "Team Activity",
+    6: "Icon Actions",
+    7: "Status Indicator",
+    8: "Like Counter",
+    9: "Nested Groups",
+    10: "Basic Pagination",
+    11: "Split Pagination",
+    12: "Text Alignment",
+    13: "Vertical Orientation",
+    14: "Vertical Tool Palette",
+    15: "Star With Dropdown",
+    16: "Search Filter Clear",
+    18: "Git Split Button",
+    20: "Search With Button",
+    21: "File Name Menu",
+    22: "Disabled Button",
+    23: "Separated Buttons",
+    24: "Dashboard Views",
+    25: "Rating Scale",
+    26: "User Selection",
+    28: "Volume Control",
+    31: "Share Caption",
+    38: "Media Controls",
+    41: "Model Selector",
+    43: "Buy Sell Hold",
+    44: "Pipeline Stage",
+    45: "Environment Switcher",
+    48: "Export Toolbar",
+    53: "Publish Controls",
+    54: "Service Selectors",
+    55: "Payout Release",
+    56: "File Attachment",
+    57: "Agent Mode",
+    58: "Full Width",
+  };
+  const label = labels[example];
   let content: ReactNode;
   let vertical = false;
-  if ([10, 11, 35].includes(example))
+  if ([10, 11].includes(example))
     content = (
       <>
         <ButtonGroupItem
           variant="outline"
           aria-label={"Previous"}
-          disabled={number === 1}
-          onClick={() => setNumber(number - 1)}
+          isDisabled={number === 1}
+          onPress={() => setNumber(number - 1)}
         >
           <IconArrowLeft aria-hidden />
           {example === 10 && "Previous"}
@@ -241,7 +214,7 @@ export function ButtonGroupExample({ example }: { example: number }) {
               variant="outline"
               selected={number === page}
               aria-current={number === page ? "page" : undefined}
-              onClick={() => setNumber(page)}
+              onPress={() => setNumber(page)}
             >
               {page}
             </ButtonGroupItem>
@@ -252,20 +225,20 @@ export function ButtonGroupExample({ example }: { example: number }) {
         <ButtonGroupItem
           variant="outline"
           aria-label={"Next"}
-          disabled={number === 3}
-          onClick={() => setNumber(number + 1)}
+          isDisabled={number === 3}
+          onPress={() => setNumber(number + 1)}
         >
           {example === 10 && "Next"}
           <IconArrowRight aria-hidden />
         </ButtonGroupItem>
       </>
     );
-  else if ([8, 15, 29, 30].includes(example))
+  else if ([8, 15].includes(example))
     content = (
       <>
-        <ButtonGroupItem variant="outline" selected={pressed} onClick={() => setPressed(!pressed)}>
+        <ButtonGroupItem variant="outline" selected={pressed} onPress={() => setPressed(!pressed)}>
           {example === 8 ? <IconThumbUp aria-hidden /> : <IconStar aria-hidden />}
-          {example === 8 ? "Like" : example === 29 ? "Follow" : "Star"}
+          {example === 8 ? "Like" : "Star"}
         </ButtonGroupItem>
         <ButtonGroupText aria-live="polite">{1200 + (pressed ? 1 : 0)}</ButtonGroupText>
         {example === 15 && (
@@ -282,31 +255,29 @@ export function ButtonGroupExample({ example }: { example: number }) {
         )}
       </>
     );
-  else if ([28, 37].includes(example))
+  else if (example === 28)
     content = (
       <>
         <ButtonGroupItem
           variant="outline"
           aria-label={"Decrease"}
-          disabled={number <= 0}
-          onClick={() => setNumber(Math.max(0, number - 10))}
+          isDisabled={number <= 0}
+          onPress={() => setNumber(Math.max(0, number - 10))}
         >
           <IconMinus aria-hidden />
         </ButtonGroupItem>
-        <ButtonGroupText aria-live="polite">
-          {(example === 28 ? "Volume {number}%" : "Zoom {number}%").replace("{number}", String(number))}
-        </ButtonGroupText>
+        <ButtonGroupText aria-live="polite">{`Volume ${number}%`}</ButtonGroupText>
         <ButtonGroupItem
           variant="outline"
           aria-label={"Increase"}
-          disabled={number >= (example === 28 ? 100 : 200)}
-          onClick={() => setNumber(number + 10)}
+          isDisabled={number >= 100}
+          onPress={() => setNumber(number + 10)}
         >
           <IconPlus aria-hidden />
         </ButtonGroupItem>
       </>
     );
-  else if ([12, 24, 25, 36, 41, 42, 43, 45, 46, 57].includes(example)) {
+  else if ([12, 24, 25, 41, 43, 45, 57].includes(example)) {
     const optionsForExample =
       example === 12
         ? [
@@ -314,7 +285,7 @@ export function ButtonGroupExample({ example }: { example: number }) {
             { value: "center", label: "Center" },
             { value: "right", label: "Right" },
           ]
-        : [24, 36].includes(example)
+        : example === 24
           ? [
               { value: "grid", label: "Grid" },
               { value: "list", label: "List" },
@@ -327,31 +298,23 @@ export function ButtonGroupExample({ example }: { example: number }) {
                   { value: "balanced", label: "Balanced" },
                   { value: "advanced", label: "Advanced" },
                 ]
-              : example === 42
+              : example === 43
                 ? [
-                    { value: "market", label: "Market" },
-                    { value: "limit", label: "Limit" },
-                    { value: "stop", label: "Stop" },
+                    { value: "buy", label: "Buy" },
+                    { value: "hold", label: "Hold" },
+                    { value: "sell", label: "Sell" },
                   ]
-                : example === 43
+                : example === 45
                   ? [
-                      { value: "buy", label: "Buy" },
-                      { value: "hold", label: "Hold" },
-                      { value: "sell", label: "Sell" },
+                      { value: "development", label: "Development" },
+                      { value: "staging", label: "Staging" },
+                      { value: "production", label: "Production" },
                     ]
-                  : example === 45
-                    ? [
-                        { value: "development", label: "Development" },
-                        { value: "staging", label: "Staging" },
-                        { value: "production", label: "Production" },
-                      ]
-                    : example === 46
-                      ? ["1H", "4H", "1D", "1W"].map((value) => ({ value, label: value }))
-                      : [
-                          { value: "assist", label: "Assist" },
-                          { value: "review", label: "Review" },
-                          { value: "auto", label: "Auto" },
-                        ];
+                  : [
+                      { value: "assist", label: "Assist" },
+                      { value: "review", label: "Review" },
+                      { value: "auto", label: "Auto" },
+                    ];
     content = (
       <>
         {optionsForExample.map(({ value, label: optionLabel }, index) => (
@@ -359,12 +322,12 @@ export function ButtonGroupExample({ example }: { example: number }) {
             key={value}
             variant="outline"
             selected={(selected || optionsForExample[0].value) === value}
-            onClick={() => {
+            onPress={() => {
               setSelected(value);
               setSelectedLabel(optionLabel);
             }}
           >
-            {[24, 36].includes(example) && (index === 0 ? <IconLayoutGrid aria-hidden /> : <IconList aria-hidden />)}
+            {example === 24 && (index === 0 ? <IconLayoutGrid aria-hidden /> : <IconList aria-hidden />)}
             {optionLabel}
           </ButtonGroupItem>
         ))}
@@ -379,12 +342,12 @@ export function ButtonGroupExample({ example }: { example: number }) {
           <GroupMenu
             label={secondary || "10K credits"}
             options={["2K", "10K", "50K"].map((value) => ({ value, label: value }))}
-            onSelect={setSecondary}
+            onSelect={(value) => setSecondary(value)}
           />
         )}
       </>
     );
-  } else if ([2, 16, 19, 20, 21].includes(example))
+  } else if ([2, 16, 20, 21].includes(example))
     content = (
       <>
         {example === 2 ? (
@@ -405,10 +368,10 @@ export function ButtonGroupExample({ example }: { example: number }) {
           placeholder={"Search"}
           value={query}
           onChange={(event) => setQuery(event.target.value)}
-          className="bg-background w-36 min-w-0 rounded-none border-0 shadow-none focus-visible:ring-inset"
+          className="bg-background w-36 min-w-0 shadow-none focus-visible:ring-inset"
         />
         {[16, 20].includes(example) && (
-          <ButtonGroupItem variant="outline" size="icon" aria-label={"Clear search"} onClick={() => setQuery("")}>
+          <ButtonGroupItem variant="outline" size="icon" aria-label={"Clear search"} onPress={() => setQuery("")}>
             <IconX aria-hidden />
           </ButtonGroupItem>
         )}
@@ -437,42 +400,36 @@ export function ButtonGroupExample({ example }: { example: number }) {
             aria-label={"Search"}
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            className="bg-background w-32 rounded-none border-0"
+            className="bg-background w-32"
           />
           {item("send", "Send", <IconArrowRight aria-hidden />)}
         </ButtonGroup>
       </>
     );
-  } else if ([13, 40, 49].includes(example)) {
+  } else if (example === 13) {
     vertical = true;
     content = [
-      { value: "components", label: "Components", href: "/components/accordion" },
-      { value: "analytics", label: "Analytics", href: "/components/donut-chart" },
-      { value: "settings", label: "Settings", href: "/components/select" },
-      { value: "help", label: "Help", href: "/components/command" },
-    ].map(({ value, label, href }) =>
-      example === 49 ? (
-        <ButtonGroupItem key={value} variant="outline" asChild>
-          <Link href={href}>{label}</Link>
-        </ButtonGroupItem>
-      ) : (
-        <ButtonGroupItem
-          key={value}
-          variant="outline"
-          selected={(selected || "components") === value}
-          onClick={() => {
-            setSelected(value);
-            setSelectedLabel(label);
-          }}
-        >
-          {label}
-        </ButtonGroupItem>
-      ),
-    );
+      { value: "components", label: "Components" },
+      { value: "analytics", label: "Analytics" },
+      { value: "settings", label: "Settings" },
+      { value: "help", label: "Help" },
+    ].map(({ value, label }) => (
+      <ButtonGroupItem
+        key={value}
+        variant="outline"
+        selected={(selected || "components") === value}
+        onPress={() => {
+          setSelected(value);
+          setSelectedLabel(label);
+        }}
+      >
+        {label}
+      </ButtonGroupItem>
+    ));
   } else if (example === 38)
     content = (
       <>
-        <ButtonGroupItem variant="outline" size="icon" aria-label={"Previous"} onClick={() => setFeedback("Previous")}>
+        <ButtonGroupItem variant="outline" size="icon" aria-label={"Previous"} onPress={() => setFeedback("Previous")}>
           <IconPlayerSkipBack aria-hidden />
         </ButtonGroupItem>
         <ButtonGroupItem
@@ -480,16 +437,16 @@ export function ButtonGroupExample({ example }: { example: number }) {
           size="icon"
           aria-label={pressed ? "Pause" : "Play"}
           selected={pressed}
-          onClick={() => setPressed(!pressed)}
+          onPress={() => setPressed(!pressed)}
         >
           {pressed ? <IconPlayerPause aria-hidden /> : <IconPlayerPlay aria-hidden />}
         </ButtonGroupItem>
-        <ButtonGroupItem variant="outline" size="icon" aria-label={"Next"} onClick={() => setFeedback("Next")}>
+        <ButtonGroupItem variant="outline" size="icon" aria-label={"Next"} onPress={() => setFeedback("Next")}>
           <IconPlayerSkipForward aria-hidden />
         </ButtonGroupItem>
       </>
     );
-  else if ([26, 27, 33, 54].includes(example)) {
+  else if ([26, 54].includes(example)) {
     const fields =
       example === 54
         ? [
@@ -497,14 +454,7 @@ export function ButtonGroupExample({ example }: { example: number }) {
             ["development", "production"],
             ["v1", "v2"],
           ]
-        : example === 26
-          ? [users.map((person) => person.id)]
-          : example === 27
-            ? [["active", "pending", "archived"]]
-            : [
-                ["observability", "analytics"],
-                ["basic", "pro"],
-              ];
+        : [users.map((person) => person.id)];
     content = (
       <>
         {example === 26 && <ButtonGroupText>{"Team"}</ButtonGroupText>}
@@ -518,7 +468,7 @@ export function ButtonGroupExample({ example }: { example: number }) {
               aria-label={
                 example === 26 ? "Member" : example === 54 ? ["Service", "Environment", "Version"][index] : "Option"
               }
-              className="bg-background rounded-none border-0"
+              className="bg-background"
             >
               <SelectValue placeholder={"Choose"} />
             </SelectTrigger>
@@ -544,9 +494,9 @@ export function ButtonGroupExample({ example }: { example: number }) {
       <>
         <ButtonGroupItem
           variant="outline"
-          disabled={number === 0}
+          isDisabled={number === 0}
           aria-label={"Previous"}
-          onClick={() => setNumber(number - 1)}
+          onPress={() => setNumber(number - 1)}
         >
           <IconArrowLeft aria-hidden />
         </ButtonGroupItem>
@@ -557,9 +507,9 @@ export function ButtonGroupExample({ example }: { example: number }) {
         />
         <ButtonGroupItem
           variant="outline"
-          disabled={number === 3}
+          isDisabled={number === 3}
           aria-label={"Next"}
-          onClick={() => setNumber(number + 1)}
+          onPress={() => setNumber(number + 1)}
         >
           <IconArrowRight aria-hidden />
         </ButtonGroupItem>
@@ -592,7 +542,7 @@ export function ButtonGroupExample({ example }: { example: number }) {
         <GroupMenu
           label={selected || "main"}
           options={["main", "develop", "feature/auth"].map((value) => ({ value, label: value }))}
-          onSelect={setSelected}
+          onSelect={(value) => setSelected(value)}
         />
         <ButtonGroupText>
           <StatusDot color="success" />
@@ -616,7 +566,7 @@ export function ButtonGroupExample({ example }: { example: number }) {
       { key: "share", icon: <IconShare aria-hidden /> },
       { key: "download", icon: <IconDownload aria-hidden /> },
     ].map(({ key, icon }) => (
-      <ButtonGroupItem key={key} variant="outline" size="icon" aria-label={key} onClick={() => setFeedback(key)}>
+      <ButtonGroupItem key={key} variant="outline" size="icon" aria-label={key} onPress={() => setFeedback(key)}>
         {icon}
       </ButtonGroupItem>
     ));
@@ -626,7 +576,7 @@ export function ButtonGroupExample({ example }: { example: number }) {
         {item("files", "Files")}
         {example === 23 && <ButtonGroupSeparator />}
         {item("folder", "Folder")}
-        <ButtonGroupItem variant="outline" disabled={example === 22}>
+        <ButtonGroupItem variant="outline" isDisabled={example === 22}>
           {"Trash"}
         </ButtonGroupItem>
       </>
@@ -634,7 +584,7 @@ export function ButtonGroupExample({ example }: { example: number }) {
   else if (example === 31)
     content = (
       <>
-        <ButtonGroupItem onClick={() => setFeedback("Share")}>{"Share"}</ButtonGroupItem>
+        <ButtonGroupItem onPress={() => setFeedback("Share")}>{"Share"}</ButtonGroupItem>
         {item("copy", "Copy", <IconCopy aria-hidden />)}
       </>
     );
@@ -642,24 +592,24 @@ export function ButtonGroupExample({ example }: { example: number }) {
     content = (
       <>
         <ButtonGroupText>roadmap.txt</ButtonGroupText>
-        <ButtonGroupItem variant="outline" asChild>
-          <a
-            href="data:text/plain;charset=utf-8,RoseUI%20roadmap%0APlan%20Build%20Review"
-            download="roadmap.txt"
-            aria-label={"Download attachment"}
-          >
-            <IconDownload aria-hidden />
-          </a>
-        </ButtonGroupItem>
+        <a
+          href="data:text/plain;charset=utf-8,RoseUI%20roadmap%0APlan%20Build%20Review"
+          download="roadmap.txt"
+          aria-label={"Download attachment"}
+          data-slot="button"
+          className={buttonVariants({ variant: "outline" })}
+        >
+          <IconDownload aria-hidden />
+        </a>
       </>
     );
   else if (example === 58)
     content = (
       <>
-        <ButtonGroupItem variant="outline" onClick={() => setFeedback("Cancelled")}>
+        <ButtonGroupItem variant="outline" onPress={() => setFeedback("Cancelled")}>
           Cancel
         </ButtonGroupItem>
-        <ButtonGroupItem onClick={() => setFeedback("Continued")}>Continue</ButtonGroupItem>
+        <ButtonGroupItem onPress={() => setFeedback("Continued")}>Continue</ButtonGroupItem>
       </>
     );
   else {
@@ -676,16 +626,6 @@ export function ButtonGroupExample({ example }: { example: number }) {
           { value: "development", label: "Development" },
         ],
       },
-      17: {
-        action: { label: "Conversation" },
-        menu: [
-          { value: "mute", label: "Mute" },
-          { value: "markRead", label: "Mark as read" },
-          { value: "share", label: "Share" },
-          { value: "copyLink", label: "Copy link" },
-          { value: "delete", label: "Delete" },
-        ],
-      },
       18: {
         action: { label: "Commit" },
         menu: [
@@ -695,37 +635,6 @@ export function ButtonGroupExample({ example }: { example: number }) {
         ],
         before: [{ key: "branch", label: "Branch" }],
       },
-      32: {
-        action: { label: "Newest" },
-        menu: [
-          { value: "oldest", label: "Oldest" },
-          { value: "updated", label: "Recently updated" },
-          { value: "newProject", label: "New project" },
-        ],
-      },
-      34: {
-        action: { label: "Filter" },
-        menu: [
-          { value: "group", label: "Group" },
-          { value: "sort", label: "Sort" },
-          { value: "export", label: "Export" },
-        ],
-      },
-      39: {
-        action: { label: "Save" },
-        menu: [
-          { value: "publish", label: "Publish" },
-          { value: "draft", label: "Save as draft" },
-          { value: "exit", label: "Save and exit" },
-        ],
-      },
-      47: {
-        action: { label: "Approve" },
-        menu: [
-          { value: "requestChanges", label: "Request changes" },
-          { value: "comment", label: "Comment" },
-        ],
-      },
       48: {
         action: { label: "Filter" },
         menu: [
@@ -733,30 +642,6 @@ export function ButtonGroupExample({ example }: { example: number }) {
           { value: "list", label: "List" },
         ],
         before: [{ key: "export", label: "Export" }],
-      },
-      50: {
-        action: { label: "Filter" },
-        menu: [
-          { value: "sort", label: "Sort" },
-          { value: "export", label: "Export" },
-        ],
-        before: [{ key: "sort", label: "Sort" }],
-      },
-      51: {
-        action: { label: "New" },
-        menu: [
-          { value: "newFile", label: "New file" },
-          { value: "newFolder", label: "New folder" },
-          { value: "workspace", label: "New workspace" },
-        ],
-      },
-      52: {
-        action: { label: "Refresh" },
-        menu: [
-          { value: "export", label: "Export" },
-          { value: "copyLink", label: "Copy link" },
-        ],
-        before: [{ key: "share", label: "Share" }],
       },
       53: {
         action: { label: "Publish" },
@@ -786,7 +671,7 @@ export function ButtonGroupExample({ example }: { example: number }) {
       <>
         {example === 55 && <ButtonGroupText>$12,480</ButtonGroupText>}
         {config.before?.map(({ key, label }) => item(key, label))}
-        <ButtonGroupItem variant="outline" onClick={() => setFeedback(config.action.label)}>
+        <ButtonGroupItem variant="outline" onPress={() => setFeedback(config.action.label)}>
           {config.action.label}
         </ButtonGroupItem>
         {config.menu.length > 0 && (

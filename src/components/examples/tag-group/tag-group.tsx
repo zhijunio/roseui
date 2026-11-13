@@ -1,53 +1,80 @@
 "use client";
+
 import { useState } from "react";
 
-import { TagGroup } from "@/components/ui/tag-group";
-import { ComponentPreview } from "@/examples/component-preview";
+import type { Key, Selection } from "react-aria-components/TagGroup";
+
+import { ComponentPreview } from "@/components/docs/component-preview";
+import { Tag, TagGroup, TagList } from "@/components/ui/tag-group";
+
+const tagItems = (values: string[]) => values.map((name) => ({ id: name, name }));
+
+function keysFromSelection(selection: Selection) {
+  return selection === "all" ? [] : [...selection].map(String);
+}
 
 export function TagGroupExamples() {
   const [filters, setFilters] = useState(["Active", "Enterprise", "US West"]);
-  const [priority, setPriority] = useState(["Standard"]);
-  const [categories, setCategories] = useState(["Design"]);
+  const [priority, setPriority] = useState<Selection>(new Set(["Standard"]));
+  const [categories, setCategories] = useState<Selection>(new Set(["Design"]));
+
+  function removeFilter(keys: Set<Key>) {
+    setFilters((current) => current.filter((filter) => !keys.has(filter)));
+  }
 
   return (
     <>
       <ComponentPreview title="Removable Filters">
         <div className="w-full space-y-3">
-          <TagGroup aria-label="Active filters" values={filters} onValuesChange={setFilters} />
+          <TagGroup aria-label="Active filters" onRemove={removeFilter}>
+            <TagList items={tagItems(filters)}>{(item) => <Tag id={item.id}>{item.name}</Tag>}</TagList>
+          </TagGroup>
           {filters.length === 0 && <p className="text-sm text-muted-foreground">No filters selected.</p>}
         </div>
       </ComponentPreview>
       <ComponentPreview title="Read-only Tags">
-        <TagGroup aria-label="Customer segments" values={["Healthcare", "Priority", "Renewal"]} />
+        <TagGroup aria-label="Customer segments">
+          <TagList items={tagItems(["Healthcare", "Priority", "Renewal"])}>
+            {(item) => <Tag id={item.id}>{item.name}</Tag>}
+          </TagList>
+        </TagGroup>
       </ComponentPreview>
       <ComponentPreview title="Color Variants">
-        <div className="grid w-full gap-4">
-          <TagGroup aria-label="Lime tags" values={["Active", "Verified", "Healthy"]} color="lime" />
-          <TagGroup aria-label="Rose tags" values={["Past due", "Blocked", "Review"]} color="rose" />
-          <TagGroup aria-label="Neutral tags" values={["Draft", "Pending", "Archived"]} color="gray" />
-        </div>
+        <TagGroup aria-label="Project status">
+          <TagList items={tagItems(["Active", "Past due", "Draft"])}>
+            {(item) => (
+              <Tag
+                id={item.id}
+                className={
+                  item.name === "Active"
+                    ? "border-success/30 bg-success/10 text-success"
+                    : item.name === "Past due"
+                      ? "border-destructive/30 bg-destructive/10 text-destructive"
+                      : "border-border bg-muted text-muted-foreground"
+                }
+              >
+                {item.name}
+              </Tag>
+            )}
+          </TagList>
+        </TagGroup>
       </ComponentPreview>
-      <ComponentPreview title="Tag Sizes">
-        <div className="grid w-full gap-4">
-          <TagGroup aria-label="Small cyan tags" values={["New", "Review"]} color="cyan" size="sm" />
-          <TagGroup aria-label="Medium cyan tags" values={["New", "Review"]} color="cyan" size="default" />
-        </div>
-      </ComponentPreview>
-      <ComponentPreview title="Selection">
-        <div className="grid w-full gap-4">
+      <ComponentPreview title="Selection" layout="panel">
+        <div className="grid w-full gap-5 sm:grid-cols-2">
           <div className="grid gap-2">
             <p className="text-sm font-medium">Priority</p>
             <TagGroup
               aria-label="Priority"
               selectionMode="single"
-              options={["Low", "Standard", "Urgent"]}
-              values={priority}
-              onValuesChange={setPriority}
-              color="cyan"
-              size="sm"
-            />
+              selectedKeys={priority}
+              onSelectionChange={setPriority}
+            >
+              <TagList items={tagItems(["Low", "Standard", "Urgent"])}>
+                {(item) => <Tag id={item.id}>{item.name}</Tag>}
+              </TagList>
+            </TagGroup>
             <p className="text-xs text-muted-foreground" aria-live="polite">
-              Selected: {priority[0] ?? "None"}
+              Selected: {keysFromSelection(priority)[0] ?? "None"}
             </p>
           </div>
           <div className="grid gap-2">
@@ -55,28 +82,17 @@ export function TagGroupExamples() {
             <TagGroup
               aria-label="Categories"
               selectionMode="multiple"
-              options={["Design", "Engineering", "Research"]}
-              values={categories}
-              onValuesChange={setCategories}
-              color="cyan"
-            />
+              selectedKeys={categories}
+              onSelectionChange={setCategories}
+            >
+              <TagList items={tagItems(["Design", "Engineering", "Research"])}>
+                {(item) => <Tag id={item.id}>{item.name}</Tag>}
+              </TagList>
+            </TagGroup>
             <p className="text-xs text-muted-foreground" aria-live="polite">
-              Selected: {categories.join(", ") || "None"}
+              Selected: {keysFromSelection(categories).join(", ") || "None"}
             </p>
           </div>
-        </div>
-      </ComponentPreview>
-      <ComponentPreview title="Disabled">
-        <div className="grid w-full gap-3">
-          <TagGroup aria-label="Locked filters" values={["Active", "Enterprise"]} onValuesChange={() => {}} disabled />
-          <TagGroup
-            aria-label="Locked priorities"
-            selectionMode="single"
-            options={["Low", "Standard", "Urgent"]}
-            values={["Standard"]}
-            onValuesChange={() => {}}
-            disabled
-          />
         </div>
       </ComponentPreview>
     </>

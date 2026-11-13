@@ -2,10 +2,16 @@
 
 import * as React from "react";
 
-import { IconArchive, IconBellOff, IconCheck, IconStar, IconTrash } from "@tabler/icons-react";
+import {
+  Archive as IconArchive,
+  BellOff as IconBellOff,
+  Check as IconCheck,
+  Star as IconStar,
+  Trash as IconTrash,
+} from "lucide-react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import { SwipeActions } from "@/components/ui/swipe-actions";
-import { ComponentPreview } from "@/examples/component-preview";
 
 function InboxExample() {
   const [status, setStatus] = React.useState("Swipe a row or use its actions button.");
@@ -70,10 +76,10 @@ function TaskExample() {
 export function SwipeActionsExamples() {
   return (
     <>
-      <ComponentPreview title="Inbox rows" exampleLabels={["Archive", "Mark read", "Mute", "Delete"]}>
+      <ComponentPreview title="Leading and Trailing Actions" exampleLabels={["Archive", "Mark read", "Mute", "Delete"]}>
         <InboxExample />
       </ComponentPreview>
-      <ComponentPreview title="Task row" exampleLabels={["Star", "Archive"]}>
+      <ComponentPreview title="Action Variants" exampleLabels={["Star", "Archive"]}>
         <TaskExample />
       </ComponentPreview>
     </>

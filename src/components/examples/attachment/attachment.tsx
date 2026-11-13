@@ -5,21 +5,22 @@ import { useId, useRef, useState } from "react";
 import Image from "next/image";
 
 import {
-  IconAlertTriangle,
-  IconArrowUp,
-  IconCheck,
-  IconClock,
-  IconCode,
-  IconDownload,
-  IconFileSpreadsheet,
-  IconFileText,
-  IconPaperclip,
-  IconPhoto,
-  IconRefresh,
-  IconUpload,
-  IconX,
-} from "@tabler/icons-react";
+  AlertTriangle as IconAlertTriangle,
+  ArrowUp as IconArrowUp,
+  Check as IconCheck,
+  Clock as IconClock,
+  Code as IconCode,
+  Download as IconDownload,
+  FileSpreadsheet as IconFileSpreadsheet,
+  FileText as IconFileText,
+  Paperclip as IconPaperclip,
+  Image as IconPhoto,
+  RefreshCw as IconRefresh,
+  Upload as IconUpload,
+  X as IconX,
+} from "lucide-react";
 
+import { ComponentPreview } from "@/components/docs/component-preview";
 import {
   Attachment,
   AttachmentAction,
@@ -31,15 +32,10 @@ import {
   type AttachmentState,
   AttachmentTitle,
   AttachmentTrigger,
-} from "@/components/ui/composite-attachment";
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupButton,
-  InputGroupTextarea,
-} from "@/components/ui/composite-input-group";
+} from "@/components/ui/attachment";
+import { buttonVariants } from "@/components/ui/button";
+import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupTextarea } from "@/components/ui/input-group";
 import { Spinner } from "@/components/ui/spinner";
-import { ComponentPreview } from "@/examples/component-preview";
 
 const filePool = [
   { id: "report", name: "Quarterly summary.pdf", type: "PDF", size: "1.9 MB", icon: IconFileText },
@@ -123,11 +119,15 @@ export function SingleAttachmentExample() {
           </AttachmentDescription>
         </AttachmentContent>
         <AttachmentActions>
-          <AttachmentAction asChild size="icon-sm" variant="secondary">
-            <a href={imageShots[0].src} download aria-label="Download project snapshot">
-              <IconDownload />
-            </a>
-          </AttachmentAction>
+          <a
+            href={imageShots[0].src}
+            download
+            aria-label="Download project snapshot"
+            data-slot="attachment-action"
+            className={buttonVariants({ variant: "secondary", size: "icon-sm" })}
+          >
+            <IconDownload />
+          </a>
         </AttachmentActions>
       </Attachment>
     </div>
@@ -165,7 +165,7 @@ export function ComposerTrayExample() {
                         <AttachmentAction
                           type="button"
                           aria-label={`Remove ${file.name}`}
-                          onClick={() => setAttachedIds((current) => current.filter((value) => value !== file.id))}
+                          onPress={() => setAttachedIds((current) => current.filter((value) => value !== file.id))}
                         >
                           <IconX />
                         </AttachmentAction>
@@ -186,8 +186,8 @@ export function ComposerTrayExample() {
               type="button"
               size="icon-sm"
               aria-label="Attach a file"
-              disabled={!next}
-              onClick={() => next && setAttachedIds((current) => [...current, next.id])}
+              isDisabled={!next}
+              onPress={() => next && setAttachedIds((current) => [...current, next.id])}
             >
               <IconPaperclip />
             </InputGroupButton>
@@ -336,7 +336,7 @@ export function UploadQueueExample() {
               <AttachmentAction
                 type="button"
                 aria-label={`Retry ${row.name}`}
-                onClick={() =>
+                onPress={() =>
                   setRows((current) =>
                     current.map((item) =>
                       item.id === row.id ? { ...item, state: "done", note: "Uploaded", detail: "640 KB" } : item,
@@ -352,7 +352,7 @@ export function UploadQueueExample() {
               aria-label={
                 row.state === "uploading" || row.state === "processing" ? `Cancel ${row.name}` : `Remove ${row.name}`
               }
-              onClick={() => setRows((current) => current.filter((item) => item.id !== row.id))}
+              onPress={() => setRows((current) => current.filter((item) => item.id !== row.id))}
             >
               <IconX />
             </AttachmentAction>
@@ -439,7 +439,7 @@ export function FilePickerExample() {
                 <AttachmentAction
                   type="button"
                   aria-label={`Remove ${file.name}`}
-                  onClick={() => setFiles((current) => current.filter((item) => item !== file))}
+                  onPress={() => setFiles((current) => current.filter((item) => item !== file))}
                 >
                   <IconX />
                 </AttachmentAction>
@@ -459,7 +459,7 @@ export function FilePickerExample() {
 export function AttachmentExamples() {
   return (
     <>
-      <ComponentPreview title="Single File">
+      <ComponentPreview title="Single Attachment">
         <SingleAttachmentExample />
       </ComponentPreview>
       <ComponentPreview title="Composer Tray">
@@ -474,7 +474,7 @@ export function AttachmentExamples() {
       <ComponentPreview title="Upload States">
         <UploadQueueExample />
       </ComponentPreview>
-      <ComponentPreview title="File Picker Tray">
+      <ComponentPreview title="Trigger and Attachment List">
         <FilePickerExample />
       </ComponentPreview>
     </>
