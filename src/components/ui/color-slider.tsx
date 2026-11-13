@@ -14,5 +14,5 @@ export function ColorSliderTrack({ className, ...props }: ComponentProps<typeof 
 }
 
 export function ColorSliderThumb({ className, ...props }: ComponentProps<typeof ColorThumb>) {
-  return <ColorThumb data-slot="color-slider-thumb" className={cn("size-4 rounded-full border-2 border-white shadow-md outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 data-[disabled]:opacity-50", className)} {...props} />;
+  return <ColorThumb data-slot="color-slider-thumb" className={cn("size-4 rounded-full border-2 border-white shadow-md outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50", className)} {...props} />;
 }

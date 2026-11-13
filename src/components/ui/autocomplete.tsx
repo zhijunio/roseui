@@ -1,12 +1,32 @@
 "use client";
 
-import { useId, useMemo, useRef, useState } from "react";
+import { useContext, useEffect, useId, useMemo, useRef, useState } from "react";
 
-import { IconChevronDown, IconLoader2, IconX } from "@tabler/icons-react";
+import { ChevronDown as IconChevronDown, Loader2 as IconLoader2, X as IconX } from "lucide-react";
+import { Button } from "react-aria-components/Button";
+import { ComboBoxStateContext } from "react-aria-components/ComboBox";
+import { ListBoxItem } from "react-aria-components/ListBox";
 
-import { Input } from "@/components/ui/input";
-import { Popover, PopoverAnchor, PopoverContent } from "@/components/ui/popover";
+import {
+  ComboBox,
+  ComboBoxContent,
+  ComboBoxInput,
+} from "@/components/ui/combo-box";
 import { cn } from "@/lib/utils";
+
+function AutoHighlight({ itemKey, value, enabled }: { itemKey?: string; value: string; enabled: boolean }) {
+  const state = useContext(ComboBoxStateContext);
+  const previous = useRef<{ value: string; isOpen: boolean } | null>(null);
+
+  useEffect(() => {
+    const isOpen = state?.isOpen ?? false;
+    const shouldFocus = isOpen && (!previous.current?.isOpen || previous.current.value !== value);
+    if (enabled && itemKey && shouldFocus) state?.selectionManager.setFocusedKey(itemKey);
+    previous.current = { value, isOpen };
+  }, [enabled, itemKey, state, value]);
+
+  return null;
+}
 
 export type AutocompleteItem = {
   value: string;
@@ -63,216 +83,122 @@ export function Autocomplete({
 }) {
   const generatedId = useId();
   const id = providedId ?? generatedId;
-  const inputRef = useRef<HTMLInputElement>(null);
-  const [open, setOpen] = useState(false);
-  const [uncontrolledValue, setUncontrolledValue] = useState(defaultValue);
-  const [activeIndex, setActiveIndex] = useState(-1);
-  const [moved, setMoved] = useState(false);
-  const currentValue = value ?? uncontrolledValue;
+  const [internalValue, setInternalValue] = useState(defaultValue);
+  const currentValue = value ?? internalValue;
   const filteredItems = useMemo(() => {
     const query = currentValue.trim().toLocaleLowerCase();
     return items.filter((item) =>
       `${item.label ?? item.value} ${item.group ?? ""} ${item.description ?? ""}`.toLocaleLowerCase().includes(query),
     );
   }, [currentValue, items]);
-  const availableItems = useMemo(() => filteredItems.filter((item) => !item.disabled), [filteredItems]);
-  const navigableItems = loading || error ? [] : availableItems;
-  const groups = useMemo(() => {
-    const result = new Map<string, AutocompleteItem[]>();
-    for (const item of filteredItems) {
-      const group = item.group ?? "";
-      result.set(group, [...(result.get(group) ?? []), item]);
-    }
-    return result;
-  }, [filteredItems]);
+  const itemsWithGroupLabels = useMemo(
+    () =>
+      filteredItems.map((item, index) => ({
+        ...item,
+        groupLabel: item.group && item.group !== filteredItems[index - 1]?.group ? item.group : undefined,
+      })),
+    [filteredItems],
+  );
+  const popoverItems = loading || error ? [] : itemsWithGroupLabels;
 
-  function updateValue(next: string) {
+  function updateValue(nextValue: string) {
     if (disabled) return;
-    if (value === undefined) setUncontrolledValue(next);
-    onValueChange?.(next);
-    setActiveIndex(-1);
-    setMoved(false);
+    if (value === undefined) setInternalValue(nextValue);
+    onValueChange?.(nextValue);
   }
 
-  function choose(item: AutocompleteItem) {
-    if (disabled || item.disabled) return;
-    updateValue(item.value);
-    onSelect?.(item);
-    setOpen(false);
-  }
-
-  function handleKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
-    if (event.key === "ArrowDown" && navigableItems.length) {
-      event.preventDefault();
-      setOpen(true);
-      setMoved(true);
-      setActiveIndex((index) => {
-        return index < 0 ? 0 : (index + 1) % navigableItems.length;
-      });
-    } else if (event.key === "ArrowUp" && navigableItems.length) {
-      event.preventDefault();
-      setOpen(true);
-      setMoved(true);
-      setActiveIndex((index) => {
-        const current = index < 0 && autoHighlight && currentValue.length > 0 ? 0 : index;
-        return current < 0 ? navigableItems.length - 1 : (current - 1 + navigableItems.length) % navigableItems.length;
-      });
-    } else if (event.key === "Enter" && open) {
-      const current = activeIndex < 0 && autoHighlight && currentValue.length > 0 ? 0 : activeIndex;
-      if (current >= 0 && current < navigableItems.length) {
-        event.preventDefault();
-        choose(navigableItems[current]);
-      }
-    } else if (event.key === "Escape") {
-      setOpen(false);
-    }
-  }
-
-  const activeOptionIndex = autoHighlight && !moved && currentValue.length > 0 ? 0 : activeIndex;
-  const activeFilteredIndex =
-    activeOptionIndex >= 0 && activeOptionIndex < navigableItems.length
-      ? filteredItems.indexOf(navigableItems[activeOptionIndex])
-      : -1;
-  const hasListbox = open && !loading && !error && filteredItems.length > 0;
-  const isOpen = open && !disabled;
   return (
-    <Popover open={isOpen} onOpenChange={setOpen}>
-      <PopoverAnchor asChild>
-        <div className={cn("relative w-full", className)}>
-          <Input
-            ref={inputRef}
-            id={id}
-            role="combobox"
-            aria-label={ariaLabel}
-            aria-expanded={isOpen}
-            aria-controls={hasListbox ? `${id}-listbox` : undefined}
-            aria-activedescendant={
-              hasListbox && activeFilteredIndex >= 0 ? `${id}-option-${activeFilteredIndex}` : undefined
-            }
-            aria-autocomplete="list"
-            aria-invalid={invalid || Boolean(error) || undefined}
-            aria-errormessage={error ? `${id}-error` : undefined}
-            aria-describedby={ariaDescribedBy}
-            autoComplete="off"
-            disabled={disabled}
-            name={name}
-            placeholder={placeholder}
-            required={required}
-            value={currentValue}
-            data-size={size}
-            className={cn(
-              "pr-16",
-              size === "sm" && "h-7 text-xs",
-              size === "lg" && "h-9",
-              (clearable || showTrigger) && "pr-16",
-            )}
-            onFocus={() => {
-              if (currentValue || showTrigger) setOpen(true);
-            }}
-            onChange={(event) => {
-              updateValue(event.currentTarget.value);
-              setOpen(true);
-            }}
-            onKeyDown={handleKeyDown}
-          />
-          <div className="absolute inset-y-0 right-1 flex items-center gap-0.5">
-            {clearable && currentValue && (
-              <button
-                type="button"
-                aria-label="Clear input"
-                disabled={disabled}
-                className="rounded p-1 text-muted-foreground hover:text-foreground disabled:pointer-events-none disabled:opacity-50"
-                onClick={() => updateValue("")}
-              >
-                <IconX className="size-4" />
-              </button>
-            )}
-            {showTrigger && (
-              <button
-                type="button"
-                aria-label="Show suggestions"
-                aria-haspopup="listbox"
-                aria-controls={hasListbox ? `${id}-listbox` : undefined}
-                aria-expanded={isOpen}
-                disabled={disabled}
-                className="rounded p-1 text-muted-foreground hover:text-foreground disabled:pointer-events-none disabled:opacity-50"
-                onClick={() => {
-                  const nextOpen = !open;
-                  inputRef.current?.focus();
-                  setOpen(nextOpen);
-                }}
-              >
-                <IconChevronDown className="size-4" />
-              </button>
-            )}
-          </div>
-          <PopoverContent
-            align="start"
-            className="max-h-64 w-(--radix-popover-trigger-width) overflow-auto p-1"
-            onOpenAutoFocus={(event) => event.preventDefault()}
-          >
+    <ComboBox
+      aria-label={ariaLabel}
+      inputValue={currentValue}
+      onInputChange={updateValue}
+      onSelectionChange={(key) => {
+        const selected = filteredItems.find((item) => item.value === String(key));
+        if (!selected) return;
+        updateValue(selected.value);
+        onSelect?.(selected);
+      }}
+      isDisabled={disabled}
+      isInvalid={invalid || Boolean(error)}
+      isRequired={required}
+      allowsEmptyCollection
+      className={cn(
+        "relative w-full min-h-0 rounded-none border-0 bg-transparent p-0 shadow-none focus-visible:ring-0 aria-invalid:border-0",
+        className,
+      )}
+    >
+      <AutoHighlight
+        itemKey={filteredItems.find((item) => !item.disabled)?.value}
+        value={currentValue}
+        enabled={autoHighlight && Boolean(currentValue)}
+      />
+      <ComboBoxInput
+        id={id}
+        name={name}
+        placeholder={placeholder}
+        showTrigger={false}
+        aria-describedby={[ariaDescribedBy, error ? `${id}-error` : undefined].filter(Boolean).join(" ") || undefined}
+        autoComplete="off"
+        className={cn(
+          "h-9 w-full rounded-lg border border-input bg-background px-3 pe-9 text-sm outline-none focus:border-ring/70 focus:ring-2 focus:ring-ring/20",
+          size === "sm" && "h-7 text-xs",
+          size === "lg" && "h-11 text-base",
+          (clearable || loading) && "pe-16",
+        )}
+      />
+      {loading ? (
+        <span role="status" aria-label="Searching" className="pointer-events-none absolute end-10 top-1/2 -translate-y-1/2 text-muted-foreground">
+          <IconLoader2 aria-hidden="true" className="size-4 motion-safe:animate-spin" />
+        </span>
+      ) : null}
+      {clearable && currentValue ? (
+        <Button
+          slot="clear"
+          aria-label="Clear input"
+          className="absolute end-9 top-1/2 -translate-y-1/2 rounded p-1 text-muted-foreground hover:text-foreground disabled:pointer-events-none disabled:opacity-50"
+        >
+          <IconX aria-hidden="true" className="size-4" />
+        </Button>
+      ) : null}
+      {showTrigger ? (
+        <Button
+          aria-label="Show suggestions"
+          className="absolute end-1 top-1/2 -translate-y-1/2 rounded p-1 text-muted-foreground hover:text-foreground disabled:pointer-events-none disabled:opacity-50"
+        >
+          <IconChevronDown aria-hidden="true" className="size-4" />
+        </Button>
+      ) : null}
+      <ComboBoxContent
+        items={popoverItems}
+        className="max-h-64 overflow-auto"
+        renderEmptyState={() => (
+          <div className={cn("px-3 py-3 text-sm", error ? "text-destructive" : "text-muted-foreground")} role={error ? "alert" : "status"}>
             {loading ? (
-              <div role="status" className="flex items-center gap-2 px-3 py-4 text-sm text-muted-foreground">
+              <span className="flex items-center gap-2">
                 <IconLoader2 aria-hidden="true" className="size-4 motion-safe:animate-spin" />
                 Searching…
-              </div>
+              </span>
             ) : error ? (
-              <p id={`${id}-error`} role="alert" className="px-3 py-3 text-sm text-destructive">
-                {error}
-              </p>
-            ) : filteredItems.length === 0 ? (
-              <p role="status" className="px-3 py-3 text-sm text-muted-foreground">
-                {emptyText}
-              </p>
+              <span id={`${id}-error`}>{error}</span>
             ) : (
-              <div id={`${id}-listbox`} role="listbox" aria-label={`${ariaLabel} suggestions`}>
-                {[...groups].map(([group, groupItems]) => (
-                  <div key={group || "ungrouped"} role="group" aria-label={group || undefined}>
-                    {group && (
-                      <div className="sticky top-0 bg-popover px-2 py-1.5 text-xs font-medium text-muted-foreground">
-                        {group}
-                      </div>
-                    )}
-                    {groupItems.map((item) => {
-                      const filteredIndex = filteredItems.indexOf(item);
-                      const index = availableItems.indexOf(item);
-                      const highlighted = index >= 0 && index === activeOptionIndex;
-                      return (
-                        <div
-                          key={`${group}:${item.value}`}
-                          id={`${id}-option-${filteredIndex}`}
-                          role="option"
-                          aria-selected={highlighted}
-                          aria-disabled={item.disabled || undefined}
-                          tabIndex={-1}
-                          className={cn(
-                            "flex w-full flex-col rounded-md px-2 py-1.5 text-left text-sm outline-none hover:bg-accent",
-                            highlighted && "bg-accent",
-                            item.disabled && "pointer-events-none opacity-50",
-                          )}
-                          onMouseEnter={() => {
-                            if (!item.disabled) {
-                              setMoved(true);
-                              setActiveIndex(index);
-                            }
-                          }}
-                          onMouseDown={(event) => event.preventDefault()}
-                          onClick={() => choose(item)}
-                        >
-                          <span>{item.label ?? item.value}</span>
-                          {item.description && (
-                            <span className="text-xs text-muted-foreground">{item.description}</span>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                ))}
-              </div>
+              emptyText
             )}
-          </PopoverContent>
-        </div>
-      </PopoverAnchor>
-    </Popover>
+          </div>
+        )}
+      >
+        {(item) => (
+          <ListBoxItem
+            id={item.value}
+            textValue={item.label ?? item.value}
+            isDisabled={item.disabled || loading || Boolean(error)}
+            className="flex w-full flex-col items-start gap-1 rounded-md px-2 py-2 text-left text-sm text-foreground outline-none hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground selected:bg-accent selected:text-accent-foreground disabled:pointer-events-none disabled:opacity-50"
+          >
+            {item.groupLabel ? <span className="w-full text-xs font-medium text-muted-foreground">{item.groupLabel}</span> : null}
+            <span>{item.label ?? item.value}</span>
+            {item.description ? <span className="text-xs text-muted-foreground">{item.description}</span> : null}
+          </ListBoxItem>
+        )}
+      </ComboBoxContent>
+    </ComboBox>
   );
 }

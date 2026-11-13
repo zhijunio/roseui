@@ -1,9 +1,10 @@
 "use client"
 
 import * as React from "react"
-import { IconCheck, IconChevronDown, IconChevronRight, IconCopy, IconDots, IconSearch } from "@tabler/icons-react"
+import { ChevronDown as IconChevronDown, ChevronRight as IconChevronRight, Ellipsis as IconDots, Search as IconSearch } from "lucide-react";
 
 import { Button } from "@/components/ui/button"
+import { CopyButton } from "@/components/ui/copy-button"
 import { cn } from "@/lib/utils"
 
 function stripAnsi(value: string) { return value.replace(/\u001b\[[0-9;]*m/g, "") }
@@ -61,7 +62,6 @@ function CodeBlock({
   onLineSelect?: (line: number) => void
   onLineAction?: (line: number) => void
 }) {
-  const [copied, setCopied] = React.useState(false)
   const [expanded, setExpanded] = React.useState(initialExpanded)
   const [query, setQuery] = React.useState("")
   const [selectedLines, setSelectedLines] = React.useState<number[]>([])
@@ -70,9 +70,6 @@ function CodeBlock({
   const visibleCount = expandable && !expanded ? Math.min(8, lines.length) : lines.length
   const matches = query ? lines.map((line, index) => line.toLowerCase().includes(query.toLowerCase()) ? index : -1).filter((index) => index >= 0) : []
 
-  async function copyCode() {
-    try { await navigator.clipboard.writeText(code); setCopied(true); window.setTimeout(() => setCopied(false), 1400) } catch { setCopied(false) }
-  }
   function renderWords(line: string) {
     if (query && line.toLowerCase().includes(query.toLowerCase())) {
       const index = line.toLowerCase().indexOf(query.toLowerCase())
@@ -97,7 +94,7 @@ function CodeBlock({
       {terminal && <span aria-hidden="true" className="flex gap-1"><i className="size-2 rounded-full bg-destructive" /><i className="size-2 rounded-full bg-muted" /><i className="size-2 rounded-full bg-primary" /></span>}
       <div className="flex min-w-0 flex-1 items-center gap-2 text-xs"><span className="truncate font-medium">{fileName ?? (terminal ? "Terminal" : language)}</span>{language && <span className="shrink-0 rounded bg-muted px-1.5 py-0.5 text-[10px] uppercase text-muted-foreground">{language}</span>}</div>
       {searchable && <label className="flex h-7 items-center gap-1 rounded-md border border-input px-1.5"><IconSearch className="size-3.5 text-muted-foreground" /><input aria-label="Search code" value={query} onChange={(event) => setQuery(event.currentTarget.value)} placeholder="Find" className="w-20 bg-transparent text-xs outline-none" />{query && <span className="text-[10px] text-muted-foreground">{matches.length ? `${matches[0] + startLine}/${matches.length}` : "0/0"}</span>}</label>}
-      {showCopy && <Button type="button" variant="ghost" size="icon-sm" aria-label={copied ? "Copied code" : "Copy code"} onClick={() => void copyCode()}>{copied ? <IconCheck /> : <IconCopy />}</Button>}
+      {showCopy && <CopyButton value={code} iconOnly copyLabel="Copy code" copiedLabel="Copied code" errorMessage="Unable to copy code. Try again." variant="ghost" size="icon-sm" />}
     </header>
     <div className={cn("max-h-80 overflow-auto bg-muted/10 py-2 font-mono text-xs leading-6", dark && "bg-zinc-950", terminal && "bg-zinc-950 text-zinc-100", wrap && "[&_code]:whitespace-pre-wrap")}>
       <pre className={cn("min-w-max", wrap && "min-w-0 whitespace-pre-wrap")}><code>{lines.slice(0, visibleCount).map((line, index) => {
@@ -118,7 +115,7 @@ function CodeBlock({
         </div>{fold && folded.includes(lineNumber) && <button type="button" onClick={() => setFolded((current) => current.filter((value) => value !== lineNumber))} className="flex h-6 items-center gap-2 px-3 text-[10px] text-muted-foreground hover:text-foreground"><IconChevronRight className="size-3" />{fold.label ?? `${fold.end - fold.start} lines folded`}</button>}</React.Fragment>
       })}</code></pre>
     </div>
-    {expandable && lines.length > 8 && <Button type="button" variant="ghost" size="sm" className="w-full rounded-none border-t" onClick={() => setExpanded((current) => !current)}>{expanded ? "Show less" : `Show all ${lines.length} lines`}</Button>}
+    {expandable && lines.length > 8 && <Button type="button" variant="ghost" size="sm" className="w-full rounded-none border-t" onPress={() => setExpanded((current) => !current)}>{expanded ? "Show less" : `Show all ${lines.length} lines`}</Button>}
   </section>
 }
 

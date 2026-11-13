@@ -1,189 +1,158 @@
-"use client";
+"use client"
 
-import * as React from "react";
+import { Children, isValidElement, useMemo, useRef } from "react"
+import { Autocomplete, useFilter } from "react-aria-components/Autocomplete"
+import { ListBox } from "react-aria-components/ListBox"
+import { Select, type SelectProps, SelectValue } from "react-aria-components/Select"
+import { Tag, TagGroup, TagList } from "./tag-group"
+import { PopoverPanel as Popover } from "./popover"
+import { SearchField } from "react-aria-components/SearchField"
+import { Input as SearchInput } from "react-aria-components/Input"
+import { cn as cx } from "@/lib/utils"
+import { Button } from "./button"
+import { ListBoxItem } from "./list-box"
 
-import { IconChevronDown, IconX } from "@tabler/icons-react";
-
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { ListBox, ListBoxItem } from "@/components/ui/list-box";
-import { Popover, PopoverAnchor, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
-
-export type MultiSelectOption = {
-  value: string;
-  label: string;
-  disabled?: boolean;
-};
-
-type MultiSelectProps = {
-  label: string;
-  options: MultiSelectOption[];
-  value?: string[];
-  defaultValue?: string[];
-  onValueChange?: (value: string[]) => void;
-  placeholder?: string;
-  description?: string;
-  maxVisible?: number;
-  disabled?: boolean;
-  id?: string;
-  className?: string;
-};
-
-function MultiSelect({
-  label,
-  options,
-  value,
-  defaultValue = [],
-  onValueChange,
-  placeholder = "Select options",
-  description,
-  maxVisible = 2,
-  disabled,
-  id: providedId,
-  className,
-}: MultiSelectProps) {
-  const generatedId = React.useId();
-  const id = providedId ?? generatedId;
-  const labelId = `${id}-label`;
-  const descriptionId = `${id}-description`;
-  const listId = `${id}-listbox`;
-  const [internalValue, setInternalValue] = React.useState(defaultValue);
-  const [open, setOpen] = React.useState(false);
-  const [announcement, setAnnouncement] = React.useState("");
-  const selectedValues = value ?? internalValue;
-  const selectedOptions = options.filter((option) => selectedValues.includes(option.value));
-  const visibleCount = Math.max(0, maxVisible);
-  const visibleOptions = selectedOptions.slice(0, visibleCount);
-  const hiddenCount = Math.max(0, selectedOptions.length - visibleOptions.length);
-  const accessibleSelection = selectedOptions.length
-    ? selectedOptions.map((option) => option.label).join(", ")
-    : "none selected";
-
-  function update(next: string[]) {
-    if (value === undefined) setInternalValue(next);
-    onValueChange?.(next);
-    setAnnouncement(`${next.length} ${next.length === 1 ? "option" : "options"} selected.`);
-  }
-
-  function remove(valueToRemove: string) {
-    update(selectedValues.filter((item) => item !== valueToRemove));
-  }
-
-  function handleSelectionChange(selection: "all" | Set<React.Key>) {
-    const keys =
-      selection === "all"
-        ? options.filter((option) => !option.disabled).map((option) => option.value)
-        : Array.from(selection).filter((key): key is string => typeof key === "string");
-    update(options.filter((option) => keys.includes(option.value)).map((option) => option.value));
-  }
-
-  return (
-    <div className={cn("grid min-w-0 gap-2", className)}>
-      <Label id={labelId} htmlFor={`${id}-trigger`} isDisabled={disabled}>
-        {label}
-      </Label>
-      <Popover open={open} onOpenChange={setOpen}>
-        <PopoverAnchor asChild>
-          <div
-            role="group"
-            aria-labelledby={labelId}
-            aria-describedby={description ? descriptionId : undefined}
-            className={cn(
-              "flex min-h-9 min-w-0 items-center gap-1.5 rounded-[var(--radius)] border border-input bg-background p-1.5",
-              "focus-within:ring-3 focus-within:ring-ring/50",
-              disabled && "bg-input/50 opacity-60",
-            )}
-          >
-            <div className="flex min-w-0 flex-1 flex-wrap items-center gap-1.5">
-              {visibleOptions.length === 0 ? (
-                <span className="px-1.5 text-sm text-muted-foreground">{placeholder}</span>
-              ) : (
-                visibleOptions.map((option) => (
-                  <span
-                    key={option.value}
-                    className="inline-flex max-w-36 items-center gap-1 rounded-md bg-secondary px-2 py-1 text-xs text-secondary-foreground"
-                  >
-                    <span className="truncate">{option.label}</span>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon-xs"
-                      aria-label={`Remove ${option.label}`}
-                      disabled={disabled}
-                      onClick={() => remove(option.value)}
-                      className="-mr-1 size-5 text-muted-foreground"
-                    >
-                      <IconX aria-hidden="true" />
-                    </Button>
-                  </span>
-                ))
-              )}
-              {hiddenCount > 0 && (
-                <span className="rounded-md bg-muted px-2 py-1 text-xs text-muted-foreground" aria-hidden="true">
-                  +{hiddenCount}
-                </span>
-              )}
-            </div>
-            {selectedOptions.length > 0 && (
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon-xs"
-                aria-label={`Clear ${label}`}
-                disabled={disabled}
-                onClick={() => update([])}
-                className="size-7 shrink-0 text-muted-foreground"
-              >
-                <IconX aria-hidden="true" />
-              </Button>
-            )}
-            <PopoverTrigger asChild>
-              <Button
-                id={`${id}-trigger`}
-                type="button"
-                variant="ghost"
-                size="icon-xs"
-                aria-label={`${label}: ${accessibleSelection}`}
-                aria-haspopup="listbox"
-                aria-controls={listId}
-                aria-expanded={open}
-                aria-describedby={description ? descriptionId : undefined}
-                disabled={disabled}
-                className="size-7 shrink-0 text-muted-foreground"
-              >
-                <IconChevronDown aria-hidden="true" />
-              </Button>
-            </PopoverTrigger>
-          </div>
-        </PopoverAnchor>
-        <PopoverContent align="start" className="w-(--radix-popover-trigger-width) min-w-56 p-1.5">
-          <ListBox
-            id={listId}
-            aria-label={label}
-            selectionMode="multiple"
-            selectedKeys={selectedValues}
-            onSelectionChange={handleSelectionChange}
-            className="max-h-64 border-0 bg-transparent p-0 shadow-none"
-          >
-            {options.map((option) => (
-              <ListBoxItem key={option.value} id={option.value} isDisabled={disabled || option.disabled}>
-                <span className="min-w-0 flex-1 truncate">{option.label}</span>
-              </ListBoxItem>
-            ))}
-          </ListBox>
-        </PopoverContent>
-      </Popover>
-      {description && (
-        <p id={descriptionId} className="text-xs text-muted-foreground">
-          {description}
-        </p>
-      )}
-      <p role="status" aria-live="polite" className="sr-only">
-        {announcement}
-      </p>
-    </div>
-  );
+export interface OptionBase {
+  id: string | number
+  name: string
 }
 
-export { MultiSelect, type MultiSelectProps };
+export interface MultiSelectProps<T extends OptionBase> extends Omit<
+  SelectProps<T, "multiple">,
+  "selectionMode" | "children"
+> {
+  placeholder?: string
+  className?: string
+  children?: React.ReactNode
+  name?: string
+  searchPlaceholder?: string
+  searchValue?: string
+  onSearchChange?: (value: string) => void
+}
+
+export interface MultiSelectContentProps<T extends OptionBase> {
+  items: Iterable<T>
+  children: (item: T) => React.ReactNode
+}
+
+export function MultiSelectContent<T extends OptionBase>(_props: MultiSelectContentProps<T>) {
+  return null
+}
+
+export function MultiSelect<T extends OptionBase>({
+  placeholder = "No selected items",
+  className,
+  children,
+  name,
+  searchPlaceholder,
+  searchValue,
+  onSearchChange,
+  ...props
+}: MultiSelectProps<T>) {
+  const triggerRef = useRef<HTMLDivElement | null>(null)
+  const { contains } = useFilter({ sensitivity: "base" })
+
+  const { before, after, list } = useMemo(() => {
+    const arr = Children.toArray(children)
+    const content = arr.find(
+      (child): child is React.ReactElement<MultiSelectContentProps<T>> =>
+        isValidElement<MultiSelectContentProps<T>>(child) && child.type === MultiSelectContent,
+    )
+    if (!content) {
+      return { before: arr, after: [], list: null as null | MultiSelectContentProps<T> }
+    }
+    const idx = arr.indexOf(content)
+    return { before: arr.slice(0, idx), after: arr.slice(idx + 1), list: content.props }
+  }, [children])
+
+  return (
+    <Select
+      name={name}
+      data-slot="control"
+      className={cx("flex w-full min-w-0 flex-col gap-1.5", className)}
+      selectionMode="multiple"
+      {...props}
+    >
+      {before}
+      {list && (
+        <>
+          <div
+            data-slot="control"
+            ref={triggerRef}
+            className="flex min-h-9 w-full min-w-0 items-center gap-2 rounded-lg border border-input bg-(--control-bg,transparent) p-1 shadow-sm"
+          >
+            <SelectValue<T> className="min-w-0 flex-1">
+              {({ selectedItems, state }) => (
+                <TagGroup
+                  aria-label="Selected items"
+                  className="min-w-0"
+                  onRemove={(keys) => {
+                    if (Array.isArray(state.value)) {
+                      state.setValue(state.value.filter((k) => !keys.has(k)))
+                    }
+                  }}
+                >
+                  <TagList
+                    className="min-w-0"
+                    items={selectedItems.filter((i) => i != null)}
+                    renderEmptyState={() => (
+                      <i className="ps-2 text-sm text-muted-foreground">{placeholder}</i>
+                    )}
+                  >
+                    {(item) => <Tag className="rounded-md">{item.name}</Tag>}
+                  </TagList>
+                </TagGroup>
+              )}
+            </SelectValue>
+            <Button
+              variant="secondary"
+              size="icon-xs"
+              className="shrink-0 self-center rounded-[calc(var(--radius-lg)-(--spacing(1)))]"
+            >
+              <svg
+                data-slot="icon"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </Button>
+          </div>
+          <Popover
+            triggerRef={triggerRef}
+            placement="bottom"
+            className="flex w-full min-w-(--trigger-width) flex-col overflow-hidden *:data-[slot=popover-inner]:flex *:data-[slot=popover-inner]:flex-col *:data-[slot=popover-inner]:overflow-hidden"
+          >
+            <Autocomplete filter={contains}>
+              <SearchField
+                autoFocus
+                className="rounded-none py-0.5 outline-hidden"
+                value={searchValue}
+                onChange={onSearchChange}
+              >
+                <SearchInput
+                  className="border-none outline-hidden focus:ring-0"
+                  placeholder={searchPlaceholder}
+                />
+              </SearchField>
+              <ListBox
+                className="grid min-h-0 w-full flex-1 grid-cols-[auto_1fr] gap-y-1 overflow-y-auto border-t p-1 outline-hidden *:[[role='group']+[role=group]]:mt-4 *:[[role='group']+[role=separator]]:mt-1"
+                items={list.items}
+              >
+                {list.children}
+              </ListBox>
+            </Autocomplete>
+          </Popover>
+        </>
+      )}
+      {after}
+    </Select>
+  )
+}
+
+export const MultiSelectItem = ListBoxItem

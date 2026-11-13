@@ -1,14 +1,14 @@
 import type { CSSProperties } from "react";
 
 import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import { cookies } from "next/headers";
 
 import type { Metadata } from "next";
-import { ThemeProvider as NextThemesProvider } from "next-themes";
 
-import { ThemePreferencesProvider } from "@/components/site/theme-preferences";
+import { ThemePreferencesProvider } from "@/components/docs/theme-preferences";
+import { ThemeProvider } from "@/components/docs/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
 import { PROJECT_CONFIG } from "@/data/site";
 import {
   DEFAULT_THEME_MODE,
@@ -33,6 +33,22 @@ type ThemeColorStyle = CSSProperties &
 const geistSans = Geist({
   variable: "--font-geist",
   subsets: ["latin"],
+});
+
+const interSans = localFont({
+  src: [
+    {
+      path: "./fonts/InterVariable.woff2",
+      weight: "100 900",
+      style: "normal",
+    },
+    {
+      path: "./fonts/InterVariable-Italic.woff2",
+      weight: "100 900",
+      style: "italic",
+    },
+  ],
+  variable: "--font-inter",
 });
 
 const geistMono = Geist_Mono({
@@ -69,7 +85,7 @@ export default async function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${interSans.variable} ${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       data-theme-color={initialPreferences.themeColor}
       data-content-layout={initialPreferences.contentLayout}
       data-navbar-style={initialPreferences.navbarStyle}
@@ -78,14 +94,12 @@ export default async function RootLayout({
       style={themeColorStyle}
     >
       <body className="min-h-full" suppressHydrationWarning>
-        <NextThemesProvider attribute="class" defaultTheme={DEFAULT_THEME_MODE} enableSystem disableTransitionOnChange>
+        <ThemeProvider attribute="class" defaultTheme={DEFAULT_THEME_MODE} enableSystem disableTransitionOnChange>
           <ThemePreferencesProvider initialPreferences={initialPreferences}>
-            <TooltipProvider>
-              {children}
-              <Toaster />
-            </TooltipProvider>
+            {children}
+            <Toaster />
           </ThemePreferencesProvider>
-        </NextThemesProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

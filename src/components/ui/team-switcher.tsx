@@ -2,22 +2,22 @@
 
 import * as React from "react";
 
-import { type Icon, IconCheck, IconPlus, IconSelector } from "@tabler/icons-react";
+import { Check, ChevronsUpDown, Plus } from "lucide-react";
 
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar";
+  MenuTrigger,
+  Menu,
+  MenuItem,
+  MenuHeader,
+  MenuSeparator,
+} from "@/components/ui/menu";
+import { Button } from "@/components/ui/button";
+import { LogoMark } from "@/components/ui/logo-mark";
+import { SidebarSection, SidebarSectionGroup, useSidebar } from "@/components/ui/sidebar";
 
 export type TeamSwitcherWorkspace = {
   name: string;
   plan?: string;
-  icon: Icon;
 };
 
 export type TeamSwitcherProps = {
@@ -47,59 +47,64 @@ export function TeamSwitcher({
   };
 
   return (
-    <SidebarMenu>
-      <SidebarMenuItem>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <SidebarMenuButton
-              size="lg"
-              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground group-data-[collapsible=icon]:justify-center"
+    <SidebarSectionGroup>
+      <SidebarSection className="p-2">
+        <MenuTrigger>
+
+            <Button
+              variant="ghost"
+              className="h-12 w-full justify-start gap-2 px-2 data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground group-data-[collapsible=dock]:justify-center"
             >
-              <div className="flex aspect-square size-9 items-center justify-center rounded-lg bg-primary text-primary-foreground group-data-[collapsible=icon]:size-8">
-                <active.icon className="size-5" />
+              <div className="size-9 shrink-0 group-data-[collapsible=dock]:size-8">
+                <LogoMark size="100%" />
               </div>
-              <div className="grid flex-1 text-left leading-tight group-data-[collapsible=icon]:hidden">
+              <div className="grid flex-1 text-left leading-tight group-data-[collapsible=dock]:hidden">
                 <span className="truncate font-semibold tracking-tight">{active.name}</span>
                 {active.plan ? <span className="truncate text-xs text-muted-foreground">{active.plan}</span> : null}
               </div>
-              <IconSelector className="ml-auto size-4 text-muted-foreground group-data-[collapsible=icon]:hidden" />
-            </SidebarMenuButton>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            className="w-(--radix-dropdown-menu-trigger-width) min-w-60 !rounded-none !border-0 !bg-card !p-0 !shadow-none !ring-0"
-            align="start"
-            side={isMobile ? "bottom" : "right"}
-            sideOffset={4}
+              <ChevronsUpDown className="ml-auto size-4 text-muted-foreground group-data-[collapsible=dock]:hidden" />
+            </Button>
+
+          <Menu
+            className="w-(--trigger-width) min-w-60 !rounded-none !border-0 !bg-card !p-0 !shadow-none !ring-0"
+            placement={isMobile ? "bottom start" : "right top"}
+            popover={{ offset: 4 }}
           >
-            <DropdownMenuLabel className="text-xs text-muted-foreground">Workspaces</DropdownMenuLabel>
+            <MenuHeader className="text-xs text-muted-foreground">Workspaces</MenuHeader>
             {workspaces.map((workspace) => (
-              <DropdownMenuItem key={workspace.name} onClick={() => selectWorkspace(workspace)} className="gap-2 p-2">
-                <div className="flex size-6 items-center justify-center rounded-md border">
-                  <workspace.icon className="size-3.5 shrink-0" />
+              <MenuItem
+                key={workspace.name}
+                onClick={() => selectWorkspace(workspace)}
+                className="grid grid-cols-[1.5rem_minmax(0,1fr)_1rem] items-center gap-x-3 gap-y-0 p-2"
+              >
+                <div className="col-start-1 row-span-2 flex size-6 items-center justify-center">
+                  <LogoMark size={24} />
                 </div>
-                <div className="grid flex-1 leading-tight">
-                  <span className="truncate text-sm font-medium">{workspace.name}</span>
+                <div className="col-start-2 row-span-2 flex min-w-0 flex-col justify-center leading-tight">
+                  <div className="flex min-w-0 items-center gap-2">
+                    <span className="truncate text-sm font-medium">{workspace.name}</span>
+                    {active.name === workspace.name ? <Check className="ml-auto size-4 shrink-0" /> : null}
+                  </div>
                   {workspace.plan ? (
                     <span className="truncate text-xs text-muted-foreground">{workspace.plan}</span>
                   ) : null}
                 </div>
-                {active.name === workspace.name ? <IconCheck className="size-4 shrink-0" /> : null}
-              </DropdownMenuItem>
+              </MenuItem>
             ))}
             {onCreateWorkspace ? (
               <>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem className="gap-2 p-2" onClick={onCreateWorkspace}>
+                <MenuSeparator />
+                <MenuItem className="gap-2 p-2" onClick={onCreateWorkspace}>
                   <div className="flex size-6 items-center justify-center rounded-md border bg-transparent">
-                    <IconPlus className="size-4" />
+                    <Plus className="size-4" />
                   </div>
                   <span className="font-medium text-muted-foreground">Add workspace</span>
-                </DropdownMenuItem>
+                </MenuItem>
               </>
             ) : null}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </SidebarMenuItem>
-    </SidebarMenu>
+          </Menu>
+        </MenuTrigger>
+      </SidebarSection>
+    </SidebarSectionGroup>
   );
 }

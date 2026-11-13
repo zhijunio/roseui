@@ -17,7 +17,7 @@ function Card({
       data-size={size}
       data-variant={variant}
       className={cn(
-        "group/card flex flex-col gap-(--card-spacing) overflow-hidden rounded-[var(--radius)] border border-border/70 py-(--card-spacing) text-sm text-card-foreground [--card-spacing:--spacing(3)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(2.5)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-[var(--radius)] *:[img:last-child]:rounded-b-[var(--radius)]",
+        "group/card flex flex-col gap-(--card-spacing) overflow-hidden rounded-[var(--radius)] border border-border/70 py-(--card-spacing) text-sm text-card-foreground [--card-spacing:--spacing(3)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 has-[table]:gap-0 has-[table]:not-has-data-[slot=card-footer]:pb-0 data-[size=sm]:[--card-spacing:--spacing(2.5)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-[var(--radius)] *:[img:last-child]:rounded-b-[var(--radius)] **:data-[slot=table-header]:bg-muted/50 **:data-[slot=table-container]:rounded-none",
         variant === "default" && "bg-card",
         variant === "secondary" && "bg-muted/50",
         variant === "tertiary" && "bg-muted",
@@ -82,7 +82,7 @@ function CardContent({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card-content"
-      className={cn("px-(--card-spacing)", className)}
+      className={cn("px-(--card-spacing) has-[table]:border-t", className)}
       {...props}
     />
   )

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-import { IconChevronDown, IconClock } from "@tabler/icons-react";
+import { ChevronDown as IconChevronDown, Clock as IconClock } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -311,10 +311,10 @@ export function TimePicker({
             <Button
               size="xs"
               variant="ghost"
-              disabled={
+              isDisabled={
                 disabled || isTimeUnavailable(new Date().getHours(), new Date().getMinutes(), new Date().getSeconds())
               }
-              onClick={() => {
+              onPress={() => {
                 const now = new Date();
                 setPendingClear(false);
                 setHour(now.getHours());
@@ -330,8 +330,8 @@ export function TimePicker({
             <Button
               size="xs"
               variant="ghost"
-              disabled={disabled}
-              onClick={() => {
+              isDisabled={disabled}
+              onPress={() => {
                 if (confirm) {
                   setPendingClear(true);
                   return;
@@ -348,7 +348,7 @@ export function TimePicker({
           <Button
             size="sm"
             variant="outline"
-            onClick={() => {
+            onPress={() => {
               setPendingClear(false);
               setOpen(false);
             }}
@@ -358,8 +358,8 @@ export function TimePicker({
         )}
         <Button
           size="sm"
-          disabled={disabled || (!pendingClear && isTimeUnavailable(hour, minute, second))}
-          onClick={apply}
+          isDisabled={disabled || (!pendingClear && isTimeUnavailable(hour, minute, second))}
+          onPress={apply}
         >
           {copy.apply}
         </Button>
@@ -413,10 +413,10 @@ export function TimePicker({
               size="icon-xs"
               variant="ghost"
               type="button"
-              disabled={disabled}
+              isDisabled={disabled}
               aria-label={`Choose time (${formatted})`}
               aria-expanded={open || inline}
-              onClick={() => {
+              onPress={() => {
                 const parsed = parts(current);
                 setHour(parsed.hour);
                 setMinute(parsed.minute);

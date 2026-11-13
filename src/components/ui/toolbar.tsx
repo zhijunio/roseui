@@ -1,7 +1,7 @@
 "use client";
 
 import type { ComponentProps } from "react";
-import { Toolbar as ToolbarPrimitive } from "radix-ui";
+import { Toolbar as ToolbarPrimitive } from "react-aria-components/Toolbar";
 import { cn } from "@/lib/utils";
 
 type ToolbarLabel =
@@ -14,7 +14,7 @@ export function Toolbar({
   isAttached = false,
   ...props
 }: Omit<
-  ComponentProps<typeof ToolbarPrimitive.Root>,
+  ComponentProps<typeof ToolbarPrimitive>,
   "aria-label" | "aria-labelledby" | "className"
 > &
   ToolbarLabel & {
@@ -22,7 +22,7 @@ export function Toolbar({
     isAttached?: boolean;
   }) {
   return (
-    <ToolbarPrimitive.Root
+    <ToolbarPrimitive
       {...props}
       orientation={orientation}
       data-slot="toolbar"

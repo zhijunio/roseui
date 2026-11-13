@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-import { IconCheck, IconChevronDown, IconChevronRight, IconSearch, IconX } from "@tabler/icons-react";
+import { Check as IconCheck, ChevronDown as IconChevronDown, ChevronRight as IconChevronRight, Search as IconSearch, X as IconX } from "lucide-react";
 
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";

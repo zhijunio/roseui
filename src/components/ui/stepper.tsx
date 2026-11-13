@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-import { IconCheck, IconLoader2 } from "@tabler/icons-react";
+import { Check as IconCheck, Loader2 as IconLoader2 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 

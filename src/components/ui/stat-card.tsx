@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { IconTrendingDown, IconTrendingUp } from "@tabler/icons-react";
+import { TrendingDown as IconTrendingDown, TrendingUp as IconTrendingUp } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 

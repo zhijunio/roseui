@@ -2,7 +2,7 @@
 
 import type { ReactNode } from "react";
 
-import { IconCheck } from "@tabler/icons-react";
+import { Check as IconCheck } from "lucide-react";
 import {
   GridList as AriaGridList,
   GridListItem as AriaGridListItem,
@@ -46,8 +46,8 @@ export function ListViewItem<T extends object>({ className, children, ...props }
       data-slot="list-view-item"
       className={cn(
         "group/list-view-item flex min-w-0 items-center gap-3 rounded-lg px-3 py-2.5 text-sm outline-none transition-colors",
-        "hover:bg-accent/60 focus-visible:ring-2 focus-visible:ring-ring/50 data-[selected=true]:bg-accent/70",
-        "data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
+        "hover:bg-accent/60 focus-visible:ring-2 focus-visible:ring-ring/50 selected:bg-accent/70",
+        "disabled:pointer-events-none disabled:opacity-50",
         className,
       )}
       {...props}
@@ -55,9 +55,9 @@ export function ListViewItem<T extends object>({ className, children, ...props }
       <span
         aria-hidden="true"
         data-slot="list-view-selection-cell"
-        className="hidden size-5 shrink-0 items-center justify-center rounded border border-input text-primary group-data-[selection-mode=multiple]/list-view:inline-flex group-data-[selection-mode=single]/list-view:rounded-full group-data-[selected=true]/list-view-item:border-primary group-data-[selected=true]/list-view-item:bg-primary/10"
+        className="hidden size-5 shrink-0 items-center justify-center rounded border border-input text-primary group-selection-multiple/list-view:inline-flex group-selection-single/list-view:rounded-full group-selected/list-view-item:border-primary group-selected/list-view-item:bg-primary/10"
       >
-        <IconCheck className="size-3 opacity-0 group-data-[selected=true]/list-view-item:opacity-100" />
+        <IconCheck className="size-3 opacity-0 group-selected/list-view-item:opacity-100" />
       </span>
       {children}
     </AriaGridListItem>

@@ -2,7 +2,7 @@
 
 import { type ComponentType, type ReactNode, useEffect } from "react";
 
-import { IconAlertTriangle, IconCircleCheck, IconInfoCircle, IconX } from "@tabler/icons-react";
+import { AlertTriangle as IconAlertTriangle, CircleCheck as IconCircleCheck, Info as IconInfoCircle, X as IconX } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -78,7 +78,7 @@ function Notification({
         ease: "easeOut",
       }}
       className={cn(
-        "relative w-full overflow-hidden rounded-xl border bg-popover p-4 text-popover-foreground shadow-lg",
+        "relative w-full overflow-hidden rounded-xl border border-border bg-background p-4 text-foreground shadow-lg",
         className,
       )}
     >
@@ -93,7 +93,7 @@ function Notification({
               <span
                 aria-label={avatar.presence}
                 className={cn(
-                  "absolute -bottom-0.5 -right-0.5 size-3 rounded-full border-2 border-popover",
+                  "absolute -bottom-0.5 -right-0.5 size-3 rounded-full border-2 border-background",
                   avatar.presence === "online" ? "bg-success" : avatar.presence === "busy" ? "bg-warning" : "bg-muted",
                 )}
               />
@@ -111,7 +111,7 @@ function Notification({
           {actions.length > 0 && (
             <div className="mt-3 flex flex-wrap gap-2">
               {actions.map((action) => (
-                <Button key={action.label} size="sm" variant={actionVariants[action.variant]} onClick={action.onClick}>
+                <Button key={action.label} size="sm" variant={actionVariants[action.variant]} onPress={action.onClick}>
                   {action.label}
                 </Button>
               ))}
@@ -124,7 +124,7 @@ function Notification({
             size="icon-xs"
             className="-mr-1 -mt-1 text-muted-foreground"
             aria-label="Dismiss notification"
-            onClick={onDismiss}
+            onPress={onDismiss}
           >
             <IconX className="size-4" />
           </Button>

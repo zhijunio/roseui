@@ -2,12 +2,12 @@
 
 import { type ReactNode, useId, useMemo, useState } from "react";
 
-import { IconCheck, IconSelector, IconX } from "@tabler/icons-react";
+import { Check as IconCheck, ChevronsUpDown as IconSelector, X as IconX } from "lucide-react";
 
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 
-export type ComboboxOption = {
+export type SearchSelectOption = {
   value: string;
   label: string;
   disabled?: boolean;
@@ -16,7 +16,7 @@ export type ComboboxOption = {
   description?: string;
 };
 
-export function Combobox({
+export function SearchSelect({
   options,
   value,
   defaultValue,
@@ -37,7 +37,7 @@ export function Combobox({
   className,
   "aria-label": ariaLabel,
 }: {
-  options: ComboboxOption[];
+  options: SearchSelectOption[];
   value?: string | string[];
   defaultValue?: string | string[];
   onValueChange?: (value: string | string[]) => void;
@@ -53,7 +53,7 @@ export function Combobox({
   displayValue?: ReactNode;
   leadingIcon?: ReactNode;
   triggerIcon?: ReactNode;
-  renderOption?: (option: ComboboxOption, selected: boolean) => ReactNode;
+  renderOption?: (option: SearchSelectOption, selected: boolean) => ReactNode;
   className?: string;
   "aria-label": string;
 }) {
@@ -71,7 +71,7 @@ export function Combobox({
     );
   }, [options, query]);
   const groups = useMemo(() => {
-    const map = new Map<string, ComboboxOption[]>();
+    const map = new Map<string, SearchSelectOption[]>();
     for (const option of filtered) {
       const group = option.group ?? "";
       map.set(group, [...(map.get(group) ?? []), option]);

@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "shadcn/tailwind.css";
+@import "../styles/shadcn.css";
+@plugin "tailwindcss-react-aria-components";
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -61,7 +62,8 @@
   --color-sidebar-ring: var(--sidebar-ring);
   --font-heading: var(--font-sans);
   --font-sans:
-    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    var(--font-inter), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
@@ -104,10 +106,10 @@
   --overlay: #00000066;
   --accent-strong: var(--primary);
   --chart-1: #2563eb;
-  --chart-2: #3b82f6;
-  --chart-3: #60a5fa;
-  --chart-4: #93c5fd;
-  --chart-5: #bfdbfe;
+  --chart-2: #d97706;
+  --chart-3: #059669;
+  --chart-4: #7c3aed;
+  --chart-5: #db2777;
   --series-1: var(--chart-1);
   --series-2: var(--chart-2);
   --series-3: var(--chart-3);
@@ -121,7 +123,8 @@
   --sidebar-border: #e4e4e7;
   --sidebar-ring: var(--ring);
   --font-sans:
-    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    var(--font-inter), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
   --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
   --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
   --shadow-2xs: 0 1px 2px 0 #00000008;
@@ -176,11 +179,11 @@
   --ring: #60a5fa;
   --overlay: #00000066;
   --accent-strong: var(--primary);
-  --chart-1: #3b82f6;
-  --chart-2: #60a5fa;
-  --chart-3: #93c5fd;
-  --chart-4: #bfdbfe;
-  --chart-5: #dbeafe;
+  --chart-1: #60a5fa;
+  --chart-2: #fbbf24;
+  --chart-3: #34d399;
+  --chart-4: #a78bfa;
+  --chart-5: #fb7185;
   --series-1: var(--chart-1);
   --series-2: var(--chart-2);
   --series-3: var(--chart-3);
@@ -194,7 +197,8 @@
   --sidebar-border: #3f3f46;
   --sidebar-ring: var(--ring);
   --font-sans:
-    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    var(--font-inter), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
   --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
   --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
   --shadow-2xs: 0 1px 2px 0 #00000008;

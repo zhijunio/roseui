@@ -1,5 +1,5 @@
 import type { ComponentProps, ReactNode } from "react"
-import { IconArrowDownRight, IconArrowUpRight } from "@tabler/icons-react"
+import { ArrowDownRight as IconArrowDownRight, ArrowUpRight as IconArrowUpRight } from "lucide-react";
 import { Chip, type ChipSize, type ChipVariant } from "@/components/ui/chip"
 
 export type TrendDirection = "up" | "down" | "neutral"

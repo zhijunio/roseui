@@ -3,6 +3,14 @@ import type { ComponentProps, ReactNode } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 
+export type AvatarButtonProps = {
+  label: ReactNode;
+  src?: string;
+  alt?: string;
+  fallback?: ReactNode;
+  avatarSize?: ComponentProps<typeof Avatar>["size"];
+} & Omit<ComponentProps<typeof Button>, "children">;
+
 export function AvatarButton({
   label,
   src,
@@ -11,13 +19,7 @@ export function AvatarButton({
   avatarSize = "xs",
   variant = "outline",
   ...buttonProps
-}: {
-  label: ReactNode;
-  src?: string;
-  alt?: string;
-  fallback?: ReactNode;
-  avatarSize?: ComponentProps<typeof Avatar>["size"];
-} & Omit<ComponentProps<typeof Button>, "children">) {
+}: AvatarButtonProps) {
   return (
     <Button {...buttonProps} variant={variant}>
       <Avatar size={avatarSize}>

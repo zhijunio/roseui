@@ -8,9 +8,9 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-000000)](LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/zhijunio/roseui?style=flat)](https://github.com/zhijunio/roseui)
 
-A shadcn/ui-compatible component library and Next.js showcase with reusable primitives, composite components, and page blocks.
+A Next.js component showcase with reusable primitives, composite components, and page blocks.
 
-The template keeps route entries in `src/app` and demo UI in `src/examples`. Shared application chrome stays in `src/components/site`, and reusable shadcn/ui primitives stay in `src/components/ui`.
+The template keeps route entries in `src/app`, component demos in `src/components/examples`, and block implementations in `src/app/pre-blocks`. Shared application chrome stays in `src/components/docs`, and reusable UI primitives stay in `src/components/ui`.
 
 ## Stack
 
@@ -18,20 +18,19 @@ The template keeps route entries in `src/app` and demo UI in `src/examples`. Sha
 - React 19
 - TypeScript
 - Tailwind CSS
-- Shadcn UI
 - React Hook Form and Zod
 - Recharts
 - Biome
 
 ## Project goal
 
-This repository is a starter template, not a finished business application. It gives you a working foundation for building a modular Next.js product with TypeScript, Shadcn UI, and the App Router.
+This repository is a starter template, not a finished business application. It gives you a working foundation for building a modular Next.js product with TypeScript and the App Router.
 
 The example application includes:
 
 - An overview page at `/`.
-- Component demos under `/components/*`.
-- Page and form blocks under `/blocks/*`.
+- Component demos under `/docs/components/*`.
+- Page blocks under `/docs/blocks/*`.
 - An application shell with a sidebar, header, theme controls, and user menu.
 - Static data that you can replace with a database or API.
 
@@ -55,40 +54,40 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Available commands
 
-| Command                  | Purpose                                  |
-| ------------------------ | ---------------------------------------- |
-| `npm run dev`            | Start the development server.            |
-| `npm run build`          | Create a production build.               |
-| `npm run start`          | Start the production server.             |
-| `npm run check`          | Run Biome formatting and lint checks.    |
-| `npm run check:fix`      | Apply Biome fixes.                       |
-| `npm run registry:build` | Generate `registry.json` and `public/r`. |
+| Command             | Purpose                               |
+| ------------------- | ------------------------------------- |
+| `npm run dev`       | Start the development server.         |
+| `npm run build`     | Create a production build.            |
+| `npm run start`     | Start the production server.          |
+| `npm run check`     | Run Biome formatting and lint checks. |
+| `npm run check:fix` | Apply Biome fixes.                    |
 
 ## Routes
 
-| URL                         | Route entry                                       | Demo source                              |
-| --------------------------- | ------------------------------------------------- | ---------------------------------------- |
-| `/`                         | `src/app/(external)/page.tsx`                     | Application overview                     |
-| `/components/<name>`        | `src/app/(app)/components/<name>/page.tsx`        | `src/examples/components/<name>/`        |
-| `/blocks/<category>/<name>` | `src/app/(app)/blocks/<category>/<name>/page.tsx` | `src/examples/blocks/<category>/<name>/` |
+| URL                              | Route entry                                             | Demo source                             |
+| -------------------------------- | ------------------------------------------------------- | --------------------------------------- |
+| `/`                              | `src/app/(home)/page.tsx`                               | Application overview                    |
+| `/docs/components/<name>`        | `src/app/(docs)/docs/components/<name>/page.tsx`        | `src/components/examples/<name>/`       |
+| `/docs/blocks/<category>/<name>` | `src/app/(docs)/docs/blocks/<category>/<name>/page.tsx` | `src/app/pre-blocks/<category>/<name>/` |
+| `/pre-blocks/<category>/<name>`  | `src/app/pre-blocks/<category>/<name>/page.tsx`         | Full-screen block preview               |
 
-Route groups such as `(app)` and `(external)` organize the source tree without changing the URL.
+Route groups such as `(docs)` and `(home)` organize the source tree without changing the URL.
 
 ## Project structure
 
 ```text
 src/
 ├── app/
-│   ├── (app)/                    # Component and block route entries
-│   ├── (external)/page.tsx       # Overview route entry
+│   ├── (docs)/docs/              # Component documentation routes
+│   ├── (docs)/docs/blocks/       # Page block routes
+│   ├── (home)/page.tsx           # Overview route entry
+│   ├── pre-blocks/               # Full-screen block preview routes and implementations
 │   ├── globals.css
 │   └── layout.tsx                # Root layout and providers
-├── examples/                     # Demo UI and local demo data
-│   ├── blocks/                    # Page and form block demos
-│   └── components/                # Component demos
 ├── components/
-│   ├── site/                     # App shell, navigation, branding, and theme
-│   └── ui/                       # Reusable Shadcn UI primitives
+│   ├── examples/                 # Component demos
+│   ├── docs/                     # Documentation shell and showcase helpers
+│   └── ui/                       # Reusable UI primitives
 ├── data/
 │   ├── nav.ts                    # Sidebar menu data
 │   ├── site.ts                   # Project metadata
@@ -99,11 +98,11 @@ src/
 
 ## Structure rules
 
-Keep route-specific demo code and local demo data under `src/examples`. Use `src/examples/components/<name>/` for component demos and `src/examples/blocks/<category>/<name>/` for block demos.
+Keep component documentation pages under `src/app/(docs)/docs/components/<name>/page.tsx`. Each page may contain its complete page composition, route-specific UI, documentation content, and local data. Use `src/components/examples/<name>/` for demo modules shared by the page and other consumers. Use `src/app/pre-blocks/<category>/<name>/page.tsx` for a block's full-screen preview route and export its named example from that module when the docs page also embeds it.
 
-Keep route entries in `src/app` thin. Do not put route business code in a private `_components` folder. Put code shared by several routes in `src/components/site` or `src/components/ui` only when it is genuinely shared.
+Keep component documentation routes explicit instead of introducing a dynamic `[slug]` route or thin wrapper. Do not create a private `_components` folder solely to hide page-specific code. Put code shared by several routes in `src/components/docs`, `src/components/ui`, `src/data`, or `src/lib` only when it is genuinely shared.
 
-Application pages share the shell in `src/components/site/app-layout.tsx`. Keep navigation and user records in `src/data`.
+Application pages share the shell in `src/components/docs/app-layout.tsx`. Keep navigation and user records in `src/data`.
 
 Use `"use client"` only at the interactive leaf. Interactive demos use client components when they manage browser state or events. Keep route entries server components when they do not need client behavior.
 
@@ -134,23 +133,8 @@ The root layout reads these values from cookies on the server. The preferences p
 
 `ThemePreferencesProvider` applies every entry in the selected token set to the document root. Keep the fallback token sets in `src/app/globals.css` aligned with the default blue theme.
 
-## Build the shadcn registry
-
-`src/components/ui` is the source directory for installable registry items. `src/examples` contains demos and is not part of the registry.
-
-`components.json` defines the shadcn/ui aliases and points the CLI to `src/app/globals.css`. The registry generator scans the `.tsx` files in `src/components/ui`, detects dependencies on other registered UI components, and writes `registry.json`. The `shadcn build` step then writes the generated registry files to `public/r`.
-
-To add an installable component:
-
-1. Add its source file under `src/components/ui`.
-2. Add any supporting files to `scripts/generate-registry.mjs` when the component needs them.
-3. Add the file to `compositeSourceFiles` when it should use the `registry:component` type.
-4. Run `npm run registry:build`.
-
-Keep demo-only imports such as `@/examples/component-preview` out of installable registry components. The generator only records UI, hook, and utility dependencies that it can resolve from the registry source directories.
-
 ## Extending the template
 
-To add a demo feature, create a thin `page.tsx` under the appropriate route group and put its UI and local data under the matching directory in `src/examples`. Do not create a `_components` folder for route business code. Move code to `src/components/site`, `src/components/ui`, `src/data`, or `src/lib` only when it is genuinely shared.
+To add a component documentation page, create an explicit `page.tsx` under `src/app/(docs)/docs/components/<name>/`. The page can own its complete presentation and local data; extract reusable demo modules to `src/components/examples/<name>/` when they are genuinely shared. For a page block, create its docs route under `src/app/(docs)/docs/blocks/<category>/<name>/` and its full-screen preview implementation under `src/app/pre-blocks/<category>/<name>/page.tsx`.
 
 Replace the example data in `src/data` and the route-local data files with your application data source. Add authentication and persistence when you connect the template to a real backend.

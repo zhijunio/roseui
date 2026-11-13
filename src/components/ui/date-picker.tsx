@@ -2,8 +2,8 @@
 
 import { type ReactNode, useId, useState } from "react";
 
-import { CalendarDate, fromDate, getLocalTimeZone } from "@internationalized/date";
-import { IconCalendarEvent } from "@tabler/icons-react";
+import { CalendarDate, getLocalTimeZone, type DateValue } from "@internationalized/date";
+import { CalendarDays as IconCalendarEvent } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -11,11 +11,10 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { cn } from "@/lib/utils";
 
 const triggerButtonClassName =
-  "inline-flex min-h-10 cursor-pointer items-center gap-2 rounded-md border border-input bg-background px-3 py-2 text-left text-sm shadow-sm outline-none transition-colors hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50";
+  "inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-md border border-input bg-background px-3 py-2 text-left text-sm shadow-sm outline-none transition-colors hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 disabled:text-[GrayText] forced-colors:border-[ButtonBorder] md:min-h-10";
 
-function toCalendarDate(date: Date) {
-  const zoned = fromDate(date, getLocalTimeZone());
-  return new CalendarDate(zoned.calendar, zoned.era, zoned.year, zoned.month, zoned.day);
+function toCalendarDate(date: DateValue) {
+  return new CalendarDate(date.calendar, date.era, date.year, date.month, date.day);
 }
 
 function formatTriggerDate(date: CalendarDate, locale: string) {
@@ -143,7 +142,7 @@ export function DatePicker({
   const committed = controlled ? (value ?? null) : internal;
   const [pending, setPending] = useState<CalendarDate | null>(committed);
   const [open, setOpen] = useState(false);
-  const [month, setMonth] = useState(
+  const [focusedDate, setFocusedDate] = useState(
     () => committed ?? new CalendarDate(new Date().getFullYear(), new Date().getMonth() + 1, 1),
   );
 
@@ -169,7 +168,7 @@ export function DatePicker({
           setOpen(nextOpen);
           if (nextOpen) {
             setPending(committed);
-            setMonth(committed ?? new CalendarDate(new Date().getFullYear(), new Date().getMonth() + 1, 1));
+            setFocusedDate(committed ?? new CalendarDate(new Date().getFullYear(), new Date().getMonth() + 1, 1));
           }
         }}
       >
@@ -197,20 +196,19 @@ export function DatePicker({
         </PopoverTrigger>
         <PopoverContent
           align="start"
-          className="max-h-[var(--radix-popper-available-height)] w-auto max-w-[calc(100vw-1rem)] overflow-y-auto p-0"
+          className="max-h-[min(24rem,calc(100dvh-2rem))] w-auto max-w-[calc(100vw-1rem)] overflow-y-auto p-0"
         >
           <div className="p-3">
-            <Calendar
-              mode="single"
-              month={month.toDate(getLocalTimeZone())}
-              onMonthChange={(date) => setMonth(toCalendarDate(date))}
-              selected={pending?.toDate(getLocalTimeZone())}
-              onSelect={(date) => {
+            <Calendar<CalendarDate>
+              aria-label="Choose date"
+              focusedValue={focusedDate}
+              onFocusChange={setFocusedDate}
+              value={pending}
+              onChange={(date) => {
                 if (date) commitPendingDate(toCalendarDate(date));
               }}
-              disabled={
-                disabled || ((date) => !isDateSelectable(toCalendarDate(date), minValue, maxValue, isDateUnavailable))
-              }
+              isDisabled={disabled}
+              isDateUnavailable={(date) => !isDateSelectable(toCalendarDate(date), minValue, maxValue, isDateUnavailable)}
               dir={dir}
             />
             <div className="mt-3 flex items-center justify-between gap-3 border-t pt-3">
@@ -220,13 +218,13 @@ export function DatePicker({
                 )}
               </div>
               <div className="flex gap-2">
-                <Button variant="ghost" size="sm" disabled={disabled || !pending} onClick={() => setPending(null)}>
+                <Button variant="ghost" size="sm" isDisabled={disabled || !pending} onPress={() => setPending(null)}>
                   Clear
                 </Button>
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => {
+                  onPress={() => {
                     setPending(committed);
                     setOpen(false);
                   }}
@@ -235,8 +233,8 @@ export function DatePicker({
                 </Button>
                 <Button
                   size="sm"
-                  disabled={disabled || sameDate(pending, committed)}
-                  onClick={() => {
+                  isDisabled={disabled || sameDate(pending, committed)}
+                  onPress={() => {
                     commit(pending);
                     setOpen(false);
                   }}

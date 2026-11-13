@@ -10,7 +10,7 @@ import {
   type ListBoxProps as AriaListBoxProps,
   type ListBoxSectionProps as AriaListBoxSectionProps,
 } from "react-aria-components"
-import { IconCheck } from "@tabler/icons-react"
+import { Check as IconCheck } from "lucide-react";
 
 import { cn } from "@/lib/utils"
 
@@ -53,8 +53,8 @@ function ListBoxItem<T extends object>({
       data-slot="list-box-item"
       data-variant={variant}
       className={cn(
-        "group/list-box-item relative flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm outline-none motion-safe:transition-colors hover:bg-accent hover:text-secondary-foreground focus-visible:bg-accent focus-visible:text-secondary-foreground data-[selected=true]:bg-accent data-[selected=true]:text-secondary-foreground data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50",
-        variant === "danger" && "text-destructive hover:bg-destructive/10 hover:text-destructive focus-visible:bg-destructive/10 focus-visible:text-destructive data-[selected=true]:bg-destructive/10 data-[selected=true]:text-destructive",
+        "group/list-box-item relative flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm outline-none motion-safe:transition-colors hover:bg-accent hover:text-secondary-foreground focus-visible:bg-accent focus-visible:text-secondary-foreground selected:bg-accent selected:text-secondary-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50",
+        variant === "danger" && "text-destructive hover:bg-destructive/10 hover:text-destructive focus-visible:bg-destructive/10 focus-visible:text-destructive selected:bg-destructive/10 selected:text-destructive",
         className,
       )}
       {...props}
@@ -63,7 +63,7 @@ function ListBoxItem<T extends object>({
       <span
         aria-hidden="true"
         data-slot="list-box-item-indicator"
-        className="ml-auto inline-flex shrink-0 opacity-0 group-data-[selected=true]/list-box-item:opacity-100"
+        className="ml-auto inline-flex shrink-0 opacity-0 group-selected/list-box-item:opacity-100"
       >
         {indicator}
       </span>

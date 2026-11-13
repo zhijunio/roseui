@@ -97,6 +97,10 @@ function parseOptionValue<const Options extends ThemeOptions>(
   return isOptionValue(options, value) ? value : fallback;
 }
 
+function withAlpha(color: string, alpha: string): string {
+  return /^#[\da-f]{6}$/i.test(color) ? `${color}${alpha}` : color;
+}
+
 function createThemeColor<const Value extends string>({
   label,
   value,
@@ -110,12 +114,23 @@ function createThemeColor<const Value extends string>({
   light?: ThemeTokenOverrides;
   dark?: ThemeTokenOverrides;
 }): ThemeColorOption & { readonly value: Value } {
+  const lightTokens = createThemeTokens(LIGHT_THEME_TOKENS, light);
+  const darkTokens = createThemeTokens(DARK_THEME_TOKENS, dark);
+
   return {
     label,
     value,
     swatch,
-    light: createThemeTokens(LIGHT_THEME_TOKENS, light),
-    dark: createThemeTokens(DARK_THEME_TOKENS, dark),
+    light: {
+      ...lightTokens,
+      "--sidebar-primary": withAlpha(lightTokens["--primary"], "26"),
+      "--sidebar-primary-foreground": lightTokens["--ring"],
+    },
+    dark: {
+      ...darkTokens,
+      "--sidebar-primary": withAlpha(darkTokens["--primary"], "1a"),
+      "--sidebar-primary-foreground": darkTokens["--ring"],
+    },
   };
 }
 
@@ -156,18 +171,18 @@ const LIGHT_THEME_TOKENS = {
   "--overlay": "#00000066",
   "--accent-strong": "var(--primary)",
   "--chart-1": "#2563eb",
-  "--chart-2": "#3b82f6",
-  "--chart-3": "#60a5fa",
-  "--chart-4": "#93c5fd",
-  "--chart-5": "#bfdbfe",
+  "--chart-2": "#d97706",
+  "--chart-3": "#059669",
+  "--chart-4": "#7c3aed",
+  "--chart-5": "#db2777",
   "--series-1": "var(--chart-1)",
   "--series-2": "var(--chart-2)",
   "--series-3": "var(--chart-3)",
   "--series-4": "var(--chart-4)",
   "--sidebar": "#fafafa",
   "--sidebar-foreground": "#18181b",
-  "--sidebar-primary": "#2563eb",
-  "--sidebar-primary-foreground": "#ffffff",
+  "--sidebar-primary": "#2563eb26",
+  "--sidebar-primary-foreground": "#2563eb",
   "--sidebar-accent": "#f4f4f5",
   "--sidebar-accent-foreground": "#18181b",
   "--sidebar-border": "#e4e4e7",
@@ -225,15 +240,15 @@ const DARK_THEME_TOKENS = {
   "--ring": "#60a5fa",
   "--overlay": "#00000066",
   "--accent-strong": "var(--primary)",
-  "--chart-1": "#3b82f6",
-  "--chart-2": "#60a5fa",
-  "--chart-3": "#93c5fd",
-  "--chart-4": "#bfdbfe",
-  "--chart-5": "#dbeafe",
+  "--chart-1": "#60a5fa",
+  "--chart-2": "#fbbf24",
+  "--chart-3": "#34d399",
+  "--chart-4": "#a78bfa",
+  "--chart-5": "#fb7185",
   "--sidebar": "#18181b",
   "--sidebar-foreground": "#fafafa",
-  "--sidebar-primary": "#2563eb",
-  "--sidebar-primary-foreground": "#ffffff",
+  "--sidebar-primary": "#2563eb1a",
+  "--sidebar-primary-foreground": "#60a5fa",
   "--sidebar-accent": "#3f3f46",
   "--sidebar-accent-foreground": "#fafafa",
   "--sidebar-border": "#3f3f46",
@@ -241,7 +256,8 @@ const DARK_THEME_TOKENS = {
 } satisfies ThemeTokenSet;
 
 function createThemeTokens(base: ThemeTokenSet, overrides: ThemeTokenOverrides): ThemeTokenSet {
-  const tokens = { ...base, ...overrides };
+  const chartPalette = base === DARK_THEME_TOKENS ? DARK_CHART_PALETTE : LIGHT_CHART_PALETTE;
+  const tokens = { ...base, ...overrides, ...chartPalette };
 
   return {
     ...tokens,
@@ -253,6 +269,22 @@ function createThemeTokens(base: ThemeTokenSet, overrides: ThemeTokenOverrides):
     "--series-4": "var(--chart-4)",
   };
 }
+
+const LIGHT_CHART_PALETTE = {
+  "--chart-1": "#2563eb",
+  "--chart-2": "#d97706",
+  "--chart-3": "#059669",
+  "--chart-4": "#7c3aed",
+  "--chart-5": "#db2777",
+} satisfies Pick<ThemeTokenSet, "--chart-1" | "--chart-2" | "--chart-3" | "--chart-4" | "--chart-5">;
+
+const DARK_CHART_PALETTE = {
+  "--chart-1": "#60a5fa",
+  "--chart-2": "#fbbf24",
+  "--chart-3": "#34d399",
+  "--chart-4": "#a78bfa",
+  "--chart-5": "#fb7185",
+} satisfies Pick<ThemeTokenSet, "--chart-1" | "--chart-2" | "--chart-3" | "--chart-4" | "--chart-5">;
 
 export const THEME_COLOR_OPTIONS = [
   createThemeColor({
@@ -832,14 +864,14 @@ export const NAVBAR_STYLE_OPTIONS = [
 ] as const satisfies ThemeOptions;
 
 export const SIDEBAR_VARIANT_OPTIONS = [
-  { label: "Sidebar", value: "sidebar" },
+  { label: "Default", value: "default" },
+  { label: "Floating", value: "float" },
   { label: "Inset", value: "inset" },
-  { label: "Floating", value: "floating" },
 ] as const satisfies ThemeOptions;
 
 export const SIDEBAR_COLLAPSIBLE_OPTIONS = [
-  { label: "Icon", value: "icon" },
-  { label: "Offcanvas", value: "offcanvas" },
+  { label: "Hidden", value: "hidden" },
+  { label: "Dock", value: "dock" },
 ] as const satisfies ThemeOptions;
 
 export type FontOption = ThemeOption<string> & {
@@ -848,15 +880,14 @@ export type FontOption = ThemeOption<string> & {
 
 export const FONT_OPTIONS = [
   {
+    label: "Inter",
+    value: "inter",
+    stack: "var(--font-inter), ui-sans-serif, system-ui, sans-serif",
+  },
+  {
     label: "Geist",
     value: "geist",
     stack: "var(--font-geist), ui-sans-serif, system-ui, sans-serif",
-  },
-  {
-    label: "System",
-    value: "system",
-    stack:
-      "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
   },
   {
     label: "Serif",
@@ -902,11 +933,11 @@ export type ThemePreferences = {
 
 export const DEFAULT_THEME_PREFERENCES = {
   themeColor: "blue",
-  font: "system",
+  font: "inter",
   contentLayout: "centered",
   navbarStyle: "sticky",
-  sidebarVariant: "floating",
-  sidebarCollapsible: "icon",
+  sidebarVariant: "default",
+  sidebarCollapsible: "hidden",
 } satisfies ThemePreferences;
 
 export function isThemeColor(value: string | undefined): value is ThemeColor {
@@ -962,9 +993,11 @@ export function parseNavbarStyle(value: string | undefined): NavbarStyle {
 }
 
 export function parseSidebarVariant(value: string | undefined): SidebarVariant {
-  return parseOptionValue(SIDEBAR_VARIANT_OPTIONS, value, DEFAULT_THEME_PREFERENCES.sidebarVariant);
+  const migratedValue = value === "sidebar" ? "default" : value === "floating" ? "float" : value;
+  return parseOptionValue(SIDEBAR_VARIANT_OPTIONS, migratedValue, DEFAULT_THEME_PREFERENCES.sidebarVariant);
 }
 
 export function parseSidebarCollapsible(value: string | undefined): SidebarCollapsible {
-  return parseOptionValue(SIDEBAR_COLLAPSIBLE_OPTIONS, value, DEFAULT_THEME_PREFERENCES.sidebarCollapsible);
+  const migratedValue = value === "icon" ? "dock" : value === "offcanvas" ? "hidden" : value;
+  return parseOptionValue(SIDEBAR_COLLAPSIBLE_OPTIONS, migratedValue, DEFAULT_THEME_PREFERENCES.sidebarCollapsible);
 }

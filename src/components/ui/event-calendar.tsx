@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-import { IconCalendarEvent, IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
+import { CalendarDays as IconCalendarEvent, ChevronLeft as IconChevronLeft, ChevronRight as IconChevronRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -40,7 +40,6 @@ export type EventCalendarProps = {
 };
 
 const hours = Array.from({ length: 10 }, (_, index) => index + 8);
-const weekDayLabels = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 function sameDay(left: Date, right: Date) {
   return (
@@ -124,10 +123,18 @@ function EventCalendar({
         : event.tone === "destructive"
           ? "border-destructive/30 bg-destructive/10 text-destructive"
           : "border-primary/25 bg-primary/10 text-foreground";
-  const eventsForDay = (day: Date, resourceId?: string) =>
-    events
-      .filter((event) => sameDay(event.start, day) && (!resourceId || event.resourceId === resourceId))
+  const eventsForDay = (day: Date, resourceId?: string) => {
+    const dayStart = new Date(day);
+    dayStart.setHours(0, 0, 0, 0);
+    const dayEnd = addDays(dayStart, 1);
+    return events
+      .filter(
+        (event) =>
+          event.start < dayEnd && event.end > dayStart &&
+          (resourceId === undefined || event.resourceId === resourceId),
+      )
       .sort((a, b) => a.start.getTime() - b.start.getTime());
+  };
 
   function navigate(direction: number) {
     const next = new Date(date);
@@ -196,13 +203,13 @@ function EventCalendar({
       {showToolbar && (
         <header className="flex flex-wrap items-center gap-2 border-b p-3">
           <div className="flex min-w-max flex-1 items-center gap-2">
-            <Button size="icon-sm" variant="ghost" aria-label="Previous period" onClick={() => navigate(-1)}>
+            <Button size="icon-sm" variant="ghost" aria-label="Previous period" onPress={() => navigate(-1)}>
               <IconChevronLeft />
             </Button>
-            <Button size="sm" variant="outline" onClick={() => setDate(new Date())}>
+            <Button size="sm" variant="outline" onPress={() => setDate(new Date())}>
               Today
             </Button>
-            <Button size="icon-sm" variant="ghost" aria-label="Next period" onClick={() => navigate(1)}>
+            <Button size="icon-sm" variant="ghost" aria-label="Next period" onPress={() => navigate(1)}>
               <IconChevronRight />
             </Button>
             <h3 className="ml-1 truncate text-sm font-semibold">
@@ -215,7 +222,7 @@ function EventCalendar({
           </div>
           <div className="flex flex-wrap gap-1" role="group" aria-label="Calendar view">
             {(
-              ["month", "week", "day", "agenda", ...(resources.length ? ["resource" as const] : [])] as CalendarView[]
+                ["month", "week", "three-day", "day", "agenda", ...(resources.length ? ["resource" as const] : [])] as CalendarView[]
             ).map((item) => (
               <Button
                 key={item}
@@ -223,10 +230,10 @@ function EventCalendar({
                 size="sm"
                 variant={view === item ? "secondary" : "ghost"}
                 aria-pressed={view === item}
-                onClick={() => setView(item)}
+                onPress={() => setView(item)}
                 className="capitalize"
               >
-                {item === "resource" ? "Rooms" : item}
+                {item === "resource" ? "Rooms" : item === "three-day" ? "3 days" : item}
               </Button>
             ))}
           </div>
@@ -235,9 +242,11 @@ function EventCalendar({
       {view === "month" ? (
         <div className="p-2">
           <div className="grid grid-cols-7 border-b pb-2 text-center text-xs text-muted-foreground">
-            {(weekStartsOn ? [...weekDayLabels.slice(1), weekDayLabels[0]] : weekDayLabels).map((day) => (
-              <span key={day}>{day}</span>
-            ))}
+            {Array.from({ length: 7 }, (_, index) => {
+              const weekday = (index + weekStartsOn) % 7;
+              const label = new Intl.DateTimeFormat(locale, { weekday: "short" }).format(new Date(2024, 0, 7 + weekday));
+              return <span key={weekday}>{label}</span>;
+            })}
           </div>
           <div className="grid grid-cols-7">
             {monthDays.map((day) => (
@@ -337,7 +346,9 @@ function EventCalendar({
                 {(view === "resource" ? resources : displayedDays).map((item) => {
                   const day = view === "resource" ? date : (item as Date);
                   const resourceId = view === "resource" ? (item as CalendarResource).id : undefined;
-                  const entries = eventsForDay(day, resourceId).filter((event) => event.start.getHours() === hour);
+                  const entries = eventsForDay(day, resourceId).filter(
+                    (event) => (sameDay(event.start, day) ? event.start.getHours() : hours[0]) === hour,
+                  );
                   const isSelected =
                     selection &&
                     sameDay(selection.date, day) &&

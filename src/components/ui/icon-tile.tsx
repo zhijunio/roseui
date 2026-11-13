@@ -1,6 +1,6 @@
-import { Slot } from "radix-ui";
 import { cva, type VariantProps } from "class-variance-authority";
 
+import { Root as SlotRoot } from "@radix-ui/react-slot";
 import { cn } from "@/lib/utils";
 
 const iconTileVariants = cva(
@@ -43,7 +43,7 @@ function IconTile({
   radius?: "default" | "full";
   asChild?: boolean;
 }) {
-  const Component = asChild ? Slot.Root : "span";
+  const Component = asChild ? SlotRoot : "span";
 
   return (
     <Component

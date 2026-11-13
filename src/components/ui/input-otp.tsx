@@ -1,86 +1,178 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { cn } from "@/lib/utils"
-import { OTPInput, OTPInputContext } from "input-otp"
-import { MinusIcon } from "lucide-react"
+import { type ComponentProps, type KeyboardEvent, useRef, useState } from "react";
 
-function InputOTP({
+import { cn } from "@/lib/utils";
+
+const NON_DIGIT = /\D/g;
+
+function normalizeCode(value: string, length: number, allowAlphanumeric: boolean) {
+  const normalized = allowAlphanumeric ? value.replace(/[^a-z0-9]/gi, "") : value.replace(NON_DIGIT, "");
+  return normalized.slice(0, length);
+}
+
+export function InputOTP({
+  length = 6,
+  value,
+  defaultValue = "",
+  onChange,
+  onComplete,
+  disabled = false,
+  invalid = false,
+  groupEvery,
+  allowAlphanumeric = false,
+  inputMode,
+  name,
+  inputClassName,
+  digitAriaLabel = (digit, total) => `Digit ${digit} of ${total}`,
   className,
-  containerClassName,
+  "aria-label": ariaLabel = "One-time code",
+  "aria-describedby": ariaDescribedBy,
+  ref,
   ...props
-}: React.ComponentProps<typeof OTPInput> & {
-  containerClassName?: string
+}: Omit<ComponentProps<"div">, "children" | "onChange" | "aria-invalid"> & {
+  length?: number;
+  value?: string;
+  defaultValue?: string;
+  onChange?: (value: string) => void;
+  onComplete?: (value: string) => void;
+  disabled?: boolean;
+  invalid?: boolean;
+  groupEvery?: number;
+  allowAlphanumeric?: boolean;
+  inputMode?: ComponentProps<"input">["inputMode"];
+  name?: string;
+  inputClassName?: string;
+  digitAriaLabel?: (digit: number, total: number) => string;
 }) {
-  return (
-    <OTPInput
-      data-slot="input-otp"
-      containerClassName={cn(
-        "cn-input-otp flex items-center has-disabled:opacity-50",
-        containerClassName
-      )}
-      spellCheck={false}
-      className={cn("disabled:cursor-not-allowed", className)}
-      {...props}
-    />
-  )
-}
+  const digitCount = Number.isInteger(length) && length > 0 ? length : 6;
+  const [internalValue, setInternalValue] = useState(() => normalizeCode(defaultValue, digitCount, allowAlphanumeric));
+  const inputsRef = useRef<Array<HTMLInputElement | null>>([]);
+  const safeGroupEvery =
+    typeof groupEvery === "number" && Number.isInteger(groupEvery) && groupEvery > 0 ? groupEvery : 0;
+  const controlled = value !== undefined;
+  const code = normalizeCode(controlled ? value : internalValue, digitCount, allowAlphanumeric);
+  const resolvedInputMode = inputMode ?? (allowAlphanumeric ? "text" : "numeric");
 
-function InputOTPGroup({ className, ...props }: React.ComponentProps<"div">) {
+  function commit(nextValue: string) {
+    const next = normalizeCode(nextValue, digitCount, allowAlphanumeric);
+    if (next === code) return;
+
+    if (!controlled) setInternalValue(next);
+    onChange?.(next);
+    if (next.length === digitCount) onComplete?.(next);
+  }
+
+  function focusBox(index: number) {
+    const safeIndex = Math.max(0, Math.min(index, digitCount - 1));
+    const input = inputsRef.current[safeIndex];
+    input?.focus();
+    input?.select();
+  }
+
+  function writeFrom(index: number, rawValue: string) {
+    const incoming = normalizeCode(rawValue, digitCount, allowAlphanumeric);
+    if (!incoming) return;
+
+    if (incoming.length === digitCount) {
+      commit(incoming);
+      focusBox(digitCount - 1);
+      return;
+    }
+
+    const next = code.split("");
+    incoming.split("").forEach((digit, offset) => {
+      if (index + offset < digitCount) next[index + offset] = digit;
+    });
+    commit(next.join(""));
+    focusBox(Math.min(index + incoming.length, digitCount - 1));
+  }
+
+  function removeAt(index: number) {
+    if (index < 0 || index >= code.length) return;
+    commit(`${code.slice(0, index)}${code.slice(index + 1)}`);
+  }
+
+  function handleKeyDown(index: number, event: KeyboardEvent<HTMLInputElement>) {
+    if (event.key === "ArrowLeft") {
+      event.preventDefault();
+      focusBox(index - 1);
+    } else if (event.key === "ArrowRight") {
+      event.preventDefault();
+      focusBox(index + 1);
+    } else if (event.key === "Backspace") {
+      event.preventDefault();
+      if (index < code.length) {
+        removeAt(index);
+      } else if (index > 0) {
+        removeAt(index - 1);
+        focusBox(index - 1);
+      }
+    } else if (event.key === "Delete") {
+      event.preventDefault();
+      removeAt(index);
+    }
+  }
+
   return (
     <div
-      data-slot="input-otp-group"
-      className={cn(
-        "flex items-center rounded-md has-aria-invalid:border-destructive has-aria-invalid:ring-3 has-aria-invalid:ring-destructive/20 dark:has-aria-invalid:ring-destructive/40",
-        className
-      )}
       {...props}
-    />
-  )
-}
-
-function InputOTPSlot({
-  index,
-  className,
-  ...props
-}: React.ComponentProps<"div"> & {
-  index: number
-}) {
-  const inputOTPContext = React.useContext(OTPInputContext)
-  const { char, hasFakeCaret, isActive } = inputOTPContext?.slots[index] ?? {}
-
-  return (
-    <div
-      data-slot="input-otp-slot"
-      data-active={isActive}
-      className={cn(
-        "relative flex size-9 items-center justify-center border-y border-r border-input text-sm shadow-xs transition-all outline-none first:rounded-l-md first:border-l last:rounded-r-md aria-invalid:border-destructive data-[active=true]:z-10 data-[active=true]:border-ring data-[active=true]:ring-3 data-[active=true]:ring-ring/50 data-[active=true]:aria-invalid:border-destructive data-[active=true]:aria-invalid:ring-destructive/20 dark:bg-input/30 dark:data-[active=true]:aria-invalid:ring-destructive/40",
-        className
-      )}
-      {...props}
+      ref={ref}
+      role="group"
+      dir="ltr"
+      aria-label={ariaLabel}
+      aria-describedby={ariaDescribedBy}
+      className={cn("flex items-center gap-1.5 sm:gap-2", className)}
     >
-      {char}
-      {hasFakeCaret && (
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-          <div className="h-4 w-px animate-caret-blink bg-foreground duration-1000" />
-        </div>
-      )}
-    </div>
-  )
-}
+      {name && <input type="hidden" name={name} value={code} disabled={disabled} />}
+      {Array.from({ length: digitCount }, (_, index) => {
+        const gapBefore = safeGroupEvery > 0 && index > 0 && index % safeGroupEvery === 0;
 
-function InputOTPSeparator({ ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="input-otp-separator"
-      className="flex items-center [&_svg:not([class*='size-'])]:size-4"
-      role="separator"
-      {...props}
-    >
-      <MinusIcon
-      />
+        return (
+          <input
+            key={index}
+            ref={(node) => {
+              inputsRef.current[index] = node;
+            }}
+            type="text"
+            inputMode={resolvedInputMode}
+            autoComplete={index === 0 ? "one-time-code" : "off"}
+            maxLength={digitCount}
+            disabled={disabled}
+            aria-label={digitAriaLabel(index + 1, digitCount)}
+            aria-describedby={ariaDescribedBy}
+            aria-invalid={invalid || undefined}
+            value={code[index] ?? ""}
+            onChange={(event) => {
+              if (!event.target.value) {
+                removeAt(index);
+                return;
+              }
+              writeFrom(index, event.target.value);
+            }}
+            onKeyDown={(event) => handleKeyDown(index, event)}
+            onPaste={(event) => {
+              event.preventDefault();
+              writeFrom(index, event.clipboardData.getData("text"));
+            }}
+            onFocus={(event) => {
+              if (index > code.length) {
+                focusBox(code.length);
+                return;
+              }
+              event.currentTarget.select();
+            }}
+            className={cn(
+              "size-9 shrink-0 rounded-md border bg-background text-center text-base font-semibold tabular-nums shadow-sm outline-none transition-colors sm:size-10 sm:text-lg",
+              "focus-visible:ring-2 focus-visible:ring-ring/40",
+              invalid && "border-destructive focus-visible:ring-destructive/30",
+              disabled && "cursor-not-allowed opacity-50",
+              gapBefore && "ms-1 sm:ms-2",
+              inputClassName,
+            )}
+          />
+        );
+      })}
     </div>
-  )
+  );
 }
-
-export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator }

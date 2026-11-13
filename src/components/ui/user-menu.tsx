@@ -4,18 +4,17 @@ import * as React from "react";
 
 import Link from "next/link";
 
-import { IconLogout, IconMoon, IconSun } from "@tabler/icons-react";
+import { LogOut as IconLogout, Moon as IconMoon, Sun as IconSun } from "lucide-react";
 import { useTheme } from "next-themes";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  MenuTrigger,
+  Menu,
+  MenuItem,
+  MenuHeader,
+  MenuSeparator,
+} from "@/components/ui/menu";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Spinner } from "@/components/ui/spinner";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -125,11 +124,9 @@ export function UserMenu({
             {content}
           </a>
         ) : (
-          <DropdownMenuItem key={item.label} asChild>
-            <a href={item.href} target="_blank" rel="noreferrer">
-              {content}
-            </a>
-          </DropdownMenuItem>
+          <MenuItem key={item.label} href={item.href} target="_blank" rel="noreferrer">
+            {content}
+          </MenuItem>
         );
       }
 
@@ -138,9 +135,9 @@ export function UserMenu({
           {content}
         </Link>
       ) : (
-        <DropdownMenuItem key={item.label} asChild>
-          <Link href={item.href}>{content}</Link>
-        </DropdownMenuItem>
+        <MenuItem key={item.label} href={item.href}>
+          {content}
+        </MenuItem>
       );
     });
 
@@ -162,7 +159,7 @@ export function UserMenu({
         </button>
       );
     }
-    return <DropdownMenuItem onSelect={() => setTheme(nextTheme)}>{content}</DropdownMenuItem>;
+    return <MenuItem onAction={() => setTheme(nextTheme)}>{content}</MenuItem>;
   };
 
   const signOutAction = (mobile: boolean) => {
@@ -186,17 +183,16 @@ export function UserMenu({
       );
     }
     return (
-      <DropdownMenuItem
-        variant="destructive"
-        onSelect={(event) => {
-          event.preventDefault();
+      <MenuItem
+        intent="danger"
+        onAction={() => {
           void handleSignOut();
         }}
-        disabled={signingOut}
+        isDisabled={signingOut}
         aria-busy={signingOut}
       >
         {content}
-      </DropdownMenuItem>
+      </MenuItem>
     );
   };
 
@@ -232,21 +228,20 @@ export function UserMenu({
   }
 
   return (
-    <DropdownMenu open={open} onOpenChange={setOpen}>
-      <DropdownMenuTrigger asChild>{renderTrigger({ open, mobile: false })}</DropdownMenuTrigger>
-      <DropdownMenuContent
-        side={desktopSide}
-        align="end"
+    <MenuTrigger isOpen={open} onOpenChange={setOpen}>
+      {renderTrigger({ open, mobile: false })}
+      <Menu
+        placement={`${desktopSide} end` as React.ComponentProps<typeof Menu>["placement"]}
         className={cn("!bg-card w-64 !border-0 !p-0 !shadow-none !ring-0", className)}
       >
-        <DropdownMenuLabel className="p-2 font-normal">{identity}</DropdownMenuLabel>
-        <DropdownMenuSeparator />
+        <MenuHeader className="p-2 font-normal">{identity}</MenuHeader>
+        <MenuSeparator />
         {accountLinks(false)}
-        <DropdownMenuSeparator />
+        <MenuSeparator />
         {themeAction(false)}
         {failureMessage}
         {signOutAction(false)}
-      </DropdownMenuContent>
-    </DropdownMenu>
+      </Menu>
+    </MenuTrigger>
   );
 }

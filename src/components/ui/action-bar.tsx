@@ -43,7 +43,7 @@ export function ActionBar({
         data-slot="action-bar"
         data-orientation={orientation}
         className={cn(
-          "group/action-bar pointer-events-auto max-w-full flex-wrap gap-1.5 border border-border bg-popover px-2 py-1.5 text-popover-foreground shadow-md",
+          "group/action-bar pointer-events-auto max-w-full flex-wrap gap-1.5 border border-border bg-background px-2 py-1.5 text-foreground shadow-md",
           orientation === "vertical" && "flex-col",
           isAttached ? "rounded-xl" : "rounded-md border-transparent bg-transparent shadow-none",
         )}

@@ -1,62 +1,23 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Tooltip as TooltipPrimitive } from "radix-ui"
+import type { ReactNode } from "react";
+import { composeRenderProps } from "react-aria-components/composeRenderProps";
+import { OverlayArrow, Tooltip as TooltipPrimitive, type TooltipProps as TooltipPrimitiveProps, TooltipTrigger } from "react-aria-components/Tooltip";
+import { cn } from "@/lib/utils";
 
-import { cn } from "@/lib/utils"
+export { TooltipTrigger };
+export type TooltipProps = Omit<TooltipPrimitiveProps, "children"> & {
+  children?: ReactNode;
+  showArrow?: boolean;
+  arrowClassName?: string;
+};
 
-function TooltipProvider({
-  delayDuration = 0,
-  ...props
-}: React.ComponentProps<typeof TooltipPrimitive.Provider>) {
-  return (
-    <TooltipPrimitive.Provider
-      data-slot="tooltip-provider"
-      delayDuration={delayDuration}
-      {...props}
-    />
-  )
+export function Tooltip({ className, offset = 0, showArrow = true, arrowClassName, children, ...props }: TooltipProps) {
+  return <TooltipPrimitive {...props} offset={offset} data-slot="tooltip-content" className={composeRenderProps(className, (className) => cn(
+    "z-50 inline-flex w-fit max-w-xs origin-(--trigger-anchor-point) items-center gap-1.5 rounded-md bg-foreground px-3 py-1.5 text-xs text-background outline-none entering:animate-in entering:fade-in-0 exiting:animate-out exiting:fade-out-0 motion-reduce:animate-none has-data-[slot=kbd]:pr-1.5",
+    className,
+  ))}>
+    {children}
+    {showArrow && <OverlayArrow className="group"><svg width="10" height="5" viewBox="0 0 10 5" aria-hidden="true" className={cn("block fill-foreground group-placement-bottom:rotate-180 group-placement-left:-rotate-90 group-placement-right:rotate-90", arrowClassName)}><path d="M0 0L5 5L10 0" /></svg></OverlayArrow>}
+  </TooltipPrimitive>;
 }
-
-function Tooltip({
-  ...props
-}: React.ComponentProps<typeof TooltipPrimitive.Root>) {
-  return <TooltipPrimitive.Root data-slot="tooltip" {...props} />
-}
-
-function TooltipTrigger({
-  ...props
-}: React.ComponentProps<typeof TooltipPrimitive.Trigger>) {
-  return <TooltipPrimitive.Trigger data-slot="tooltip-trigger" {...props} />
-}
-
-function TooltipContent({
-  className,
-  sideOffset = 0,
-  arrowClassName,
-  showArrow = true,
-  children,
-  ...props
-}: React.ComponentProps<typeof TooltipPrimitive.Content> & {
-  arrowClassName?: string
-  showArrow?: boolean
-}) {
-  return (
-    <TooltipPrimitive.Portal>
-      <TooltipPrimitive.Content
-        data-slot="tooltip-content"
-        sideOffset={sideOffset}
-        className={cn(
-          "z-50 inline-flex w-fit max-w-xs origin-(--radix-tooltip-content-transform-origin) items-center gap-1.5 rounded-md bg-foreground px-3 py-1.5 text-xs text-background has-data-[slot=kbd]:pr-1.5 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 **:data-[slot=kbd]:relative **:data-[slot=kbd]:isolate **:data-[slot=kbd]:z-50 **:data-[slot=kbd]:rounded-sm data-[state=delayed-open]:animate-in data-[state=delayed-open]:fade-in-0 data-[state=delayed-open]:zoom-in-95 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95 motion-reduce:!animate-none motion-reduce:!transition-none",
-          className
-        )}
-        {...props}
-      >
-        {children}
-        {showArrow && <TooltipPrimitive.Arrow className={cn("z-50 size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px] bg-foreground fill-foreground", arrowClassName)} />}
-      </TooltipPrimitive.Content>
-    </TooltipPrimitive.Portal>
-  )
-}
-
-export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger }

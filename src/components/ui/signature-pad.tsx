@@ -7,7 +7,7 @@ import type {
   Ref,
 } from "react";
 // Title: Signature Pad
-// Description: Shadcn signature pad with pressure and velocity ink, touch and stylus input, undo and redo, form fields and PNG, JPEG or SVG export.
+// Description: Signature pad with pressure and velocity ink, touch and stylus input, undo and redo, form fields and PNG, JPEG or SVG export.
 import {
   createContext,
   memo,
@@ -20,7 +20,7 @@ import {
   useState,
 } from "react";
 
-import { IconArrowBackUp, IconArrowForwardUp, IconDeviceFloppy, IconEraser } from "@tabler/icons-react";
+import { Undo2 as IconArrowBackUp, Redo2 as IconArrowForwardUp, Save as IconDeviceFloppy, Eraser as IconEraser } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -1045,8 +1045,8 @@ type SignaturePadControlProps = ComponentProps<typeof Button>;
  */
 function SignaturePadClear({
   children,
-  onClick,
-  disabled,
+  onPress,
+  isDisabled,
   variant = "outline",
   size = "icon-sm",
   ...props
@@ -1061,10 +1061,9 @@ function SignaturePadClear({
       variant={variant}
       size={size}
       {...props}
-      disabled={disabled || api.isEmpty || api.disabled || api.readOnly}
-      onClick={(event) => {
-        onClick?.(event);
-        if (event.defaultPrevented) return;
+      isDisabled={isDisabled || api.isEmpty || api.disabled || api.readOnly}
+      onPress={(event) => {
+        onPress?.(event);
         api.clear();
         api.focus();
       }}
@@ -1076,8 +1075,8 @@ function SignaturePadClear({
 
 function SignaturePadUndo({
   children,
-  onClick,
-  disabled,
+  onPress,
+  isDisabled,
   variant = "outline",
   size = "icon-sm",
   ...props
@@ -1093,10 +1092,9 @@ function SignaturePadUndo({
       variant={variant}
       size={size}
       {...props}
-      disabled={disabled || !api.canUndo || api.disabled || api.readOnly}
-      onClick={(event) => {
-        onClick?.(event);
-        if (event.defaultPrevented) return;
+      isDisabled={isDisabled || !api.canUndo || api.disabled || api.readOnly}
+      onPress={(event) => {
+        onPress?.(event);
         api.undo();
         if (undoDepth === 1) api.focus();
       }}
@@ -1108,8 +1106,8 @@ function SignaturePadUndo({
 
 function SignaturePadRedo({
   children,
-  onClick,
-  disabled,
+  onPress,
+  isDisabled,
   variant = "outline",
   size = "icon-sm",
   ...props
@@ -1125,10 +1123,9 @@ function SignaturePadRedo({
       variant={variant}
       size={size}
       {...props}
-      disabled={disabled || !api.canRedo || api.disabled || api.readOnly}
-      onClick={(event) => {
-        onClick?.(event);
-        if (event.defaultPrevented) return;
+      isDisabled={isDisabled || !api.canRedo || api.disabled || api.readOnly}
+      onPress={(event) => {
+        onPress?.(event);
         api.redo();
         if (redoDepth === 1) api.focus();
       }}
@@ -1144,8 +1141,8 @@ function SignaturePadSave({
   options,
   onSave,
   children,
-  onClick,
-  disabled,
+  onPress,
+  isDisabled,
   variant = "outline",
   size = "icon-sm",
   ...props
@@ -1164,10 +1161,9 @@ function SignaturePadSave({
       variant={variant}
       size={size}
       {...props}
-      disabled={disabled || api.isEmpty || api.disabled}
-      onClick={(event) => {
-        onClick?.(event);
-        if (event.defaultPrevented) return;
+      isDisabled={isDisabled || api.isEmpty || api.disabled}
+      onPress={(event) => {
+        onPress?.(event);
         onSave?.(api.serialize(format, options), api.strokes);
       }}
     >

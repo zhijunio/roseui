@@ -1,27 +1,37 @@
 "use client";
 
-import { type ComponentProps, type KeyboardEvent, type ReactNode, useEffect, useRef, useState } from "react";
-
+import { createContext, useContext, type ReactNode } from "react";
+import { Button } from "react-aria-components/Button";
+import type {
+  TreeItemContentProps,
+  TreeItemContentRenderProps,
+  TreeItemProps,
+  TreeProps,
+} from "react-aria-components/Tree";
 import {
-  IconChevronRight as ChevronRight,
-  IconFile as File,
-  IconFolder as Folder,
-  IconFolderOpen as FolderOpen,
-  IconGripVertical,
-  IconMinus,
-  IconPlus,
-} from "@tabler/icons-react";
+  Tree as TreePrimitive,
+  TreeItem as TreeItemPrimitive,
+  TreeItemContent,
+} from "react-aria-components/Tree";
+import { useDragAndDrop } from "react-aria-components/useDragAndDrop";
+import { ChevronRight as IconChevronRight, Minus as IconMinus, Plus as IconPlus } from "lucide-react";
 
+import { Checkbox, CheckboxField } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 
-export type TreeNode = {
-  id: string;
-  label: string;
-  children?: TreeNode[];
-  disabled?: boolean;
-  trailingContent?: ReactNode;
-  icon?: ReactNode;
+type TreeVisualOptions = {
+  size: "sm" | "default" | "lg";
+  showGuides: boolean | "hover";
+  expanderStyle: "chevron" | "plus-minus";
+  reduceMotion: boolean;
 };
+
+const TreeVisualContext = createContext<TreeVisualOptions>({
+  size: "default",
+  showGuides: true,
+  expanderStyle: "chevron",
+  reduceMotion: false,
+});
 
 export type TreeMove = {
   sourceId: string;
@@ -29,423 +39,139 @@ export type TreeMove = {
   position: "before" | "after" | "inside";
 };
 
-function flattenVisibleNodes(
-  nodes: TreeNode[],
-  expandedIds: Set<string>,
-  depth = 0,
-  parentId: string | null = null,
-): Array<{ node: TreeNode; parentId: string | null; depth: number }> {
-  return nodes.flatMap((node) => {
-    const current = [{ node, parentId, depth }];
-    return node.children?.length && expandedIds.has(node.id)
-      ? [...current, ...flattenVisibleNodes(node.children, expandedIds, depth + 1, node.id)]
-      : current;
-  });
-}
+export type RoseTreeProps = {
+  size?: TreeVisualOptions["size"];
+  showGuides?: TreeVisualOptions["showGuides"];
+  expanderStyle?: TreeVisualOptions["expanderStyle"];
+  reduceMotion?: boolean;
+  emptyState?: ReactNode;
+  onItemMove?: (move: TreeMove) => void;
+};
 
-export function Tree({
-  items,
-  "aria-label": ariaLabel,
-  expandedIds,
-  defaultExpandedIds = [],
-  onExpandedChange,
-  selectionMode = "single",
-  selectedIds,
-  defaultSelectedIds = [],
-  onSelectionChange,
+export function Tree<T extends object>({
+  className,
   size = "default",
   showGuides = true,
   expanderStyle = "chevron",
   reduceMotion = false,
-  onItemMove,
   emptyState = "No items.",
-  className,
+  onItemMove,
+  dragAndDropHooks,
   ...props
-}: Omit<ComponentProps<"div">, "children" | "onSelect"> & {
-  items: TreeNode[];
-  "aria-label": string;
-  expandedIds?: string[];
-  defaultExpandedIds?: string[];
-  onExpandedChange?: (ids: string[]) => void;
-  selectionMode?: "single" | "multiple" | "none";
-  selectedIds?: string[];
-  defaultSelectedIds?: string[];
-  onSelectionChange?: (ids: string[]) => void;
-  size?: "default" | "sm" | "lg";
-  showGuides?: boolean | "hover";
-  expanderStyle?: "chevron" | "plus-minus";
-  reduceMotion?: boolean;
-  onItemMove?: (move: TreeMove) => void;
-  emptyState?: ReactNode;
-}) {
-  const [internalExpandedIds, setInternalExpandedIds] = useState(defaultExpandedIds);
-  const [internalSelectedIds, setInternalSelectedIds] = useState(defaultSelectedIds);
-  const [draggingId, setDraggingId] = useState<string | null>(null);
-  const [dropTargetId, setDropTargetId] = useState<string | null>(null);
-  const [focusedId, setFocusedId] = useState(defaultSelectedIds[0] ?? items[0]?.id ?? "");
-  const anchorIdRef = useRef(defaultSelectedIds[0] ?? null);
-  const itemRefs = useRef(new Map<string, HTMLDivElement>());
-  const typeaheadRef = useRef<{ query: string; timeout: number | null }>({
-    query: "",
-    timeout: null,
-  });
-  const expanded = expandedIds ?? internalExpandedIds;
-  const selected = selectedIds ?? internalSelectedIds;
-  const selectedSet = new Set(selected);
-  const expandedSet = new Set(expanded);
-  const visibleNodes = flattenVisibleNodes(items, expandedSet);
-  const focusableNodes = visibleNodes.filter(({ node }) => !node.disabled);
-  const currentFocusId = focusableNodes.some(({ node }) => node.id === focusedId)
-    ? focusedId
-    : (focusableNodes[0]?.node.id ?? "");
-
-  useEffect(
-    () => () => {
-      if (typeaheadRef.current.timeout !== null) {
-        window.clearTimeout(typeaheadRef.current.timeout);
+}: TreeProps<T> & RoseTreeProps) {
+  const localDragAndDrop = useDragAndDrop<T>({
+    getItems: (keys) => [...keys].map((key) => ({ "text/plain": String(key) })),
+    onMove: (event) => {
+      const position = event.target.dropPosition === "on" ? "inside" : event.target.dropPosition;
+      for (const sourceKey of event.keys) {
+        onItemMove?.({ sourceId: String(sourceKey), targetId: String(event.target.key), position });
       }
     },
-    [],
-  );
-
-  function updateExpanded(next: string[]) {
-    if (expandedIds === undefined) setInternalExpandedIds(next);
-    onExpandedChange?.(next);
-  }
-
-  function updateSelected(id: string, extendRange = false) {
-    if (selectionMode === "none") return;
-
-    let next: string[];
-    if (selectionMode === "single") {
-      next = [id];
-      anchorIdRef.current = id;
-    } else if (extendRange) {
-      const anchorId = anchorIdRef.current ?? selected[0] ?? id;
-      const startIndex = focusableNodes.findIndex(({ node }) => node.id === anchorId);
-      const endIndex = focusableNodes.findIndex(({ node }) => node.id === id);
-      if (startIndex < 0 || endIndex < 0) {
-        anchorIdRef.current = id;
-        next = [id];
-      } else {
-        const first = Math.min(startIndex, endIndex);
-        const last = Math.max(startIndex, endIndex);
-        next = focusableNodes.slice(first, last + 1).map(({ node }) => node.id);
-      }
-    } else {
-      next = selectedSet.has(id) ? selected.filter((selectedId) => selectedId !== id) : [...selected, id];
-      anchorIdRef.current = id;
-    }
-
-    if (selectedIds === undefined) setInternalSelectedIds(next);
-    onSelectionChange?.(next);
-  }
-
-  function focusNode(id: string | undefined) {
-    if (!id) return;
-    setFocusedId(id);
-    itemRefs.current.get(id)?.focus();
-  }
-
-  function toggleExpanded(id: string) {
-    updateExpanded(expandedSet.has(id) ? expanded.filter((expandedId) => expandedId !== id) : [...expanded, id]);
-  }
-
-  function focusRelativeNode(id: string, offset: number) {
-    const currentIndex = focusableNodes.findIndex(({ node }) => node.id === id);
-    focusNode(focusableNodes[currentIndex + offset]?.node.id);
-  }
-
-  function handleKeyDown(id: string, parentId: string | null, node: TreeNode, event: KeyboardEvent<HTMLDivElement>) {
-    event.stopPropagation();
-    if (onItemMove && event.altKey && (event.key === "ArrowUp" || event.key === "ArrowDown")) {
-      event.preventDefault();
-      const siblings = focusableNodes.filter((entry) => entry.parentId === parentId);
-      const currentIndex = siblings.findIndex((entry) => entry.node.id === id);
-      const target = siblings[currentIndex + (event.key === "ArrowUp" ? -1 : 1)];
-      if (target) {
-        onItemMove({
-          sourceId: id,
-          targetId: target.node.id,
-          position: event.key === "ArrowUp" ? "before" : "after",
-        });
-      }
-      return;
-    }
-    if (node.disabled && ["ArrowRight", "ArrowLeft", " ", "Enter"].includes(event.key)) {
-      event.preventDefault();
-      return;
-    }
-    const hasChildren = Boolean(node.children?.length);
-    const isExpanded = expandedSet.has(id);
-
-    switch (event.key) {
-      case "ArrowDown":
-        event.preventDefault();
-        if (event.shiftKey && selectionMode === "multiple") {
-          const nextId =
-            focusableNodes[focusableNodes.findIndex(({ node: visibleNode }) => visibleNode.id === id) + 1]?.node.id;
-          if (nextId) updateSelected(nextId, true);
-          focusNode(nextId);
-        } else {
-          focusRelativeNode(id, 1);
-        }
-        break;
-      case "ArrowUp":
-        event.preventDefault();
-        if (event.shiftKey && selectionMode === "multiple") {
-          const previousId =
-            focusableNodes[focusableNodes.findIndex(({ node: visibleNode }) => visibleNode.id === id) - 1]?.node.id;
-          if (previousId) updateSelected(previousId, true);
-          focusNode(previousId);
-        } else {
-          focusRelativeNode(id, -1);
-        }
-        break;
-      case "Home":
-        event.preventDefault();
-        if (event.shiftKey && selectionMode === "multiple") {
-          const firstId = focusableNodes[0]?.node.id;
-          if (firstId) updateSelected(firstId, true);
-          focusNode(firstId);
-        } else {
-          focusNode(focusableNodes[0]?.node.id);
-        }
-        break;
-      case "End":
-        event.preventDefault();
-        if (event.shiftKey && selectionMode === "multiple") {
-          const lastId = focusableNodes.at(-1)?.node.id;
-          if (lastId) updateSelected(lastId, true);
-          focusNode(lastId);
-        } else {
-          focusNode(focusableNodes.at(-1)?.node.id);
-        }
-        break;
-      case "ArrowRight":
-        if (!hasChildren) return;
-        event.preventDefault();
-        if (!isExpanded) toggleExpanded(id);
-        else focusNode(node.children?.find((child) => !child.disabled)?.id);
-        break;
-      case "ArrowLeft":
-        if (hasChildren && isExpanded) {
-          event.preventDefault();
-          toggleExpanded(id);
-        } else if (parentId) {
-          event.preventDefault();
-          focusNode(parentId);
-        }
-        break;
-      case " ":
-      case "Enter":
-        event.preventDefault();
-        updateSelected(id, event.shiftKey);
-        break;
-      default: {
-        if (event.key.length !== 1 || event.ctrlKey || event.metaKey || event.altKey || event.nativeEvent.isComposing) {
-          return;
-        }
-
-        event.preventDefault();
-        const character = event.key.toLocaleLowerCase();
-        const previous = typeaheadRef.current;
-        const withinWindow = previous.timeout !== null;
-        const repeatedCharacter =
-          withinWindow && previous.query.length > 0 && [...previous.query].every((part) => part === character);
-        const query = !withinWindow ? character : repeatedCharacter ? character : previous.query + character;
-        if (previous.timeout !== null) window.clearTimeout(previous.timeout);
-        const timeout = window.setTimeout(() => {
-          typeaheadRef.current = { query: "", timeout: null };
-        }, 700);
-        typeaheadRef.current = { query, timeout };
-
-        const currentIndex = focusableNodes.findIndex(({ node: visibleNode }) => visibleNode.id === id);
-        const startIndex = currentIndex < 0 ? -1 : currentIndex;
-
-        for (let offset = 1; offset <= focusableNodes.length; offset += 1) {
-          const index = (startIndex + offset) % focusableNodes.length;
-          const candidate = focusableNodes[index]?.node;
-          if (candidate?.label.toLocaleLowerCase().startsWith(query)) {
-            focusNode(candidate.id);
-            break;
-          }
-        }
-      }
-    }
-  }
-
-  function renderNodes(nodes: TreeNode[], parentId: string | null = null) {
-    return nodes.map((node, index) => {
-      const hasChildren = Boolean(node.children?.length);
-      const isExpanded = expandedSet.has(node.id);
-      const depth = parentId ? (visibleNodes.find((entry) => entry.node.id === node.id)?.depth ?? 1) : 0;
-
-      return (
-        <div
-          key={node.id}
-          ref={(element) => {
-            if (element) itemRefs.current.set(node.id, element);
-            else itemRefs.current.delete(node.id);
-          }}
-          role="treeitem"
-          aria-level={depth + 1}
-          aria-posinset={index + 1}
-          aria-setsize={nodes.length}
-          aria-expanded={hasChildren ? isExpanded : undefined}
-          aria-selected={selectionMode === "none" ? undefined : selectedSet.has(node.id)}
-          aria-disabled={node.disabled || undefined}
-          aria-keyshortcuts={onItemMove ? "Alt+ArrowUp Alt+ArrowDown" : undefined}
-          draggable={Boolean(onItemMove) && !node.disabled}
-          tabIndex={currentFocusId === node.id ? 0 : -1}
-          onFocus={() => setFocusedId(node.id)}
-          onClick={(event) => {
-            event.stopPropagation();
-            if (node.disabled) return;
-            if (
-              event.target instanceof Element &&
-              event.target.closest("a, button, input, select, textarea, [role='checkbox'], [role='switch']")
-            )
-              return;
-            updateSelected(node.id, event.shiftKey);
-            if (hasChildren) toggleExpanded(node.id);
-          }}
-          onKeyDown={(event) => handleKeyDown(node.id, parentId, node, event)}
-          onDragStart={(event) => {
-            if (!onItemMove || node.disabled) return;
-            event.dataTransfer.effectAllowed = "move";
-            event.dataTransfer.setData("text/plain", node.id);
-            setDraggingId(node.id);
-          }}
-          onDragEnd={() => {
-            setDraggingId(null);
-            setDropTargetId(null);
-          }}
-          onDragOver={(event) => {
-            if (!onItemMove || !draggingId || draggingId === node.id || node.disabled) return;
-            event.preventDefault();
-            event.stopPropagation();
-            setDropTargetId(node.id);
-          }}
-          onDragLeave={(event) => {
-            if (event.relatedTarget instanceof Node && event.currentTarget.contains(event.relatedTarget)) return;
-            setDropTargetId((current) => (current === node.id ? null : current));
-          }}
-          onDrop={(event) => {
-            if (!onItemMove) return;
-            event.preventDefault();
-            event.stopPropagation();
-            const sourceId = event.dataTransfer.getData("text/plain") || draggingId;
-            if (sourceId && sourceId !== node.id && !node.disabled) {
-              const bounds =
-                event.currentTarget.firstElementChild?.getBoundingClientRect() ??
-                event.currentTarget.getBoundingClientRect();
-              const position =
-                hasChildren &&
-                event.clientY > bounds.top + bounds.height * 0.25 &&
-                event.clientY < bounds.bottom - bounds.height * 0.25
-                  ? "inside"
-                  : event.clientY < bounds.top + bounds.height / 2
-                    ? "before"
-                    : "after";
-              onItemMove({ sourceId, targetId: node.id, position });
-            }
-            setDraggingId(null);
-            setDropTargetId(null);
-          }}
-          className={cn(
-            "outline-none focus-visible:rounded-md focus-visible:ring-2 focus-visible:ring-ring/50",
-            draggingId === node.id && "opacity-50",
-          )}
-          data-drop-target={dropTargetId === node.id || undefined}
-        >
-          <div
-            style={{ paddingInlineStart: `${8 + depth * (size === "lg" ? 20 : 16)}px` }}
-            className={cn(
-              "flex w-full items-center gap-2 rounded-md pr-2 text-left transition-colors hover:bg-muted data-[drop-target=true]:bg-primary/10 data-[drop-target=true]:ring-1 data-[drop-target=true]:ring-ring/40",
-              size === "sm" ? "h-7 text-xs" : size === "lg" ? "h-10 text-base" : "h-8 text-sm",
-              selectedSet.has(node.id) && "bg-primary/10 text-foreground",
-              node.disabled && "cursor-not-allowed opacity-50",
-            )}
-          >
-            {hasChildren ? (
-              expanderStyle === "plus-minus" ? (
-                isExpanded ? (
-                  <IconMinus aria-hidden="true" className="size-4 shrink-0 text-muted-foreground" />
-                ) : (
-                  <IconPlus aria-hidden="true" className="size-4 shrink-0 text-muted-foreground" />
-                )
-              ) : (
-                <ChevronRight
-                  aria-hidden="true"
-                  className={cn(
-                    "size-4 shrink-0 text-muted-foreground transition-transform",
-                    reduceMotion ? "transition-none" : "motion-reduce:transition-none",
-                    isExpanded && "rotate-90",
-                  )}
-                />
-              )
-            ) : (
-              <span aria-hidden="true" className="size-4 shrink-0" />
-            )}
-            <span className="flex size-4 shrink-0 items-center justify-center text-muted-foreground">
-              {node.icon ??
-                (hasChildren ? (
-                  isExpanded ? (
-                    <FolderOpen className="size-4" />
-                  ) : (
-                    <Folder className="size-4" />
-                  )
-                ) : (
-                  <File className="size-4" />
-                ))}
-            </span>
-            <span className="min-w-0 flex-1 truncate">{node.label}</span>
-            {node.trailingContent && (
-              <span className="shrink-0 text-xs text-muted-foreground">{node.trailingContent}</span>
-            )}
-            {onItemMove && !node.disabled ? (
-              <IconGripVertical aria-hidden="true" className="size-3.5 shrink-0 text-muted-foreground/60" />
-            ) : null}
-          </div>
-          {hasChildren && isExpanded && (
-            <div
-              role="group"
-              className={cn(
-                showGuides ? "ms-2 border-s ps-1" : undefined,
-                showGuides === "hover" &&
-                  "opacity-0 transition-opacity group-hover/tree:opacity-100 group-focus-within/tree:opacity-100 motion-reduce:transition-none",
-              )}
-            >
-              {renderNodes(node.children ?? [], node.id)}
-            </div>
-          )}
-        </div>
-      );
-    });
-  }
+  });
 
   return (
-    <div
-      {...props}
-      role="tree"
-      aria-label={ariaLabel}
-      aria-multiselectable={selectionMode === "multiple" || undefined}
-      className={cn("group/tree min-w-0 space-y-0.5", className)}
-    >
-      {items.length > 0 ? (
-        renderNodes(items)
-      ) : (
-        <div
-          role="treeitem"
-          aria-selected="false"
-          aria-disabled="true"
-          tabIndex={-1}
-          className="px-2 py-3 text-sm text-muted-foreground"
-        >
-          {emptyState}
-        </div>
-      )}
-    </div>
+    <TreeVisualContext.Provider value={{ size, showGuides, expanderStyle, reduceMotion }}>
+      <TreePrimitive
+        className={cn(
+          "flex cursor-default flex-col gap-y-2 overflow-auto outline-none forced-color-adjust-none",
+          "[--tree-active-bg:var(--color-primary-subtle)] [--tree-active-foreground:var(--color-primary-subtle-foreground)]",
+          className,
+        )}
+        dragAndDropHooks={dragAndDropHooks ?? (onItemMove ? localDragAndDrop.dragAndDropHooks : undefined)}
+        renderEmptyState={() => emptyState}
+        {...props}
+      />
+    </TreeVisualContext.Provider>
   );
 }
+
+export function TreeItem<T extends object>({ className, ...props }: TreeItemProps<T>) {
+  const { size } = useContext(TreeVisualContext);
+  return (
+    <TreeItemPrimitive
+      className={cn(
+        "group/tree-item relative flex shrink-0 select-none rounded-lg px-2 pe-2 focus:outline-none",
+        size === "sm" ? "py-1 text-xs" : size === "lg" ? "py-2.5 text-base" : "py-1.5",
+        "focus:bg-(--tree-active-bg) focus:text-(--tree-active-foreground) focus:**:[.text-muted-foreground]:text-(--tree-active-foreground)",
+        "**:data-[slot=avatar]:*:size-6 **:data-[slot=avatar]:size-6 sm:**:data-[slot=avatar]:*:size-5 sm:**:data-[slot=avatar]:size-5",
+        "**:[svg]:size-5 **:[svg]:shrink-0 sm:**:[svg]:size-4 **:[svg:not([data-slot=check-indicator]):not([data-slot=chevron])]:me-1",
+        "disabled:opacity-50 forced-colors:text-[GrayText]",
+        "href" in props ? "cursor-pointer" : "cursor-default",
+        className,
+      )}
+      {...props}
+    />
+  );
+}
+
+export interface TreeContentProps extends TreeItemContentProps {
+  className?: string;
+}
+
+export function TreeContent({ className, children, ...props }: TreeContentProps) {
+  const { showGuides, reduceMotion } = useContext(TreeVisualContext);
+  return (
+    <TreeItemContent {...props}>
+      {(values) => (
+        <div className={cn("relative flex w-full min-w-0 items-center gap-x-1 truncate text-sm", className)}>
+          {values.allowsDragging && <Button className="sr-only" slot="drag" />}
+          {values.selectionMode === "multiple" && values.selectionBehavior === "toggle" && (
+            <CheckboxField className="gap-x-0" slot="selection">
+              <Checkbox className="col-span-1" />
+            </CheckboxField>
+          )}
+          <div
+            className={cn(
+              "relative w-[calc(calc(var(--tree-item-level)-1)*(--spacing(5)))] shrink-0",
+              !showGuides && "before:hidden",
+              showGuides === "hover" && "before:opacity-0 group-hover/tree-item:before:opacity-100",
+              "before:absolute before:inset-0 before:-ms-1 before:bg-[repeating-linear-gradient(to_right,transparent_0,transparent_calc(var(--tree-item-level)-1px),var(--border)_calc(var(--tree-item-level)-1px),var(--border)_calc(var(--tree-item-level)))]",
+            )}
+          />
+          {values.hasChildItems ? (
+            <TreeIndicator
+              values={{ isDisabled: values.isDisabled, isExpanded: values.isExpanded }}
+              reduceMotion={reduceMotion}
+            />
+          ) : (
+            <span aria-hidden className="block w-5 shrink-0" />
+          )}
+          {typeof children === "function" ? children(values) : children}
+        </div>
+      )}
+    </TreeItemContent>
+  );
+}
+
+export function TreeIndicator({
+  values,
+  reduceMotion = false,
+  expanderStyle,
+}: {
+  values: Pick<TreeItemContentRenderProps, "isDisabled" | "isExpanded">;
+  reduceMotion?: boolean;
+  expanderStyle?: TreeVisualOptions["expanderStyle"];
+}) {
+  const visual = useContext(TreeVisualContext);
+  const style = expanderStyle ?? visual.expanderStyle;
+  const Icon = style === "plus-minus" ? (values.isExpanded ? IconMinus : IconPlus) : IconChevronRight;
+  return (
+    <Button
+      slot="chevron"
+      isDisabled={values.isDisabled}
+      className={cn("shrink-0 text-muted-foreground hover:text-foreground", values.isExpanded && "text-foreground")}
+    >
+      <Icon
+        data-slot="chevron"
+        aria-hidden="true"
+        className={cn(
+          "size-5 sm:size-4",
+          !reduceMotion && !visual.reduceMotion && "transition-transform duration-200 ease-in-out",
+          style === "chevron" && values.isExpanded && "rotate-90",
+        )}
+      />
+    </Button>
+  );
+}
+
+export type { TreeItemProps, TreeProps };

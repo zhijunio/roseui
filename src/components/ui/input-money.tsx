@@ -2,14 +2,14 @@
 
 import * as React from "react";
 
-import { IconMinus, IconPlus } from "@tabler/icons-react";
+import { Minus as IconMinus, Plus as IconPlus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 
-export type MoneyInputDetails = {
+export type InputMoneyDetails = {
   currency: string;
   major: number | null;
   formatted: string;
@@ -23,7 +23,7 @@ type InputMoneyProps = Omit<
   hideLabel?: boolean;
   value?: number | null;
   defaultValue?: number | null;
-  onValueChange?: (value: number | null, details: MoneyInputDetails) => void;
+  onValueChange?: (value: number | null, details: InputMoneyDetails) => void;
   currency?: string;
   locale?: string;
   min?: number;
@@ -249,8 +249,8 @@ function InputMoney({
               type="button"
               variant="outline"
               size="sm"
-              disabled={disabled || inputProps.readOnly}
-              onClick={() => applyMajor((majorValue ?? 0) + amount)}
+              isDisabled={disabled || inputProps.readOnly}
+              onPress={() => applyMajor((majorValue ?? 0) + amount)}
               aria-label={`Add ${formatter.format(amount)}`}
             >
               <IconPlus aria-hidden="true" />
@@ -262,8 +262,8 @@ function InputMoney({
               type="button"
               variant="ghost"
               size="sm"
-              disabled={disabled || inputProps.readOnly}
-              onClick={() => applyMajor((majorValue ?? 0) - (Number(inputProps.step) || 1))}
+              isDisabled={disabled || inputProps.readOnly}
+              onPress={() => applyMajor((majorValue ?? 0) - (Number(inputProps.step) || 1))}
               aria-label="Decrease amount"
             >
               <IconMinus aria-hidden="true" />

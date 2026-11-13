@@ -14,7 +14,7 @@ import {
   startOfYear,
   today,
 } from "@internationalized/date";
-import { IconCalendarEvent, IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
+import { CalendarDays as IconCalendarEvent, ChevronLeft as IconChevronLeft, ChevronRight as IconChevronRight } from "lucide-react";
 import {
   Button as AriaButton,
   DateRangePicker as AriaDateRangePicker,
@@ -254,7 +254,7 @@ export function DateRangePicker({
           {label && <Label className="w-fit text-sm font-medium text-foreground">{label}</Label>}
           <Group
             className={cn(
-              "flex h-10 min-w-0 items-center gap-1.5 rounded-lg border border-input bg-background px-3 text-sm text-foreground shadow-sm transition-colors",
+              "flex min-h-11 min-w-0 items-center gap-1.5 rounded-lg border border-input bg-background px-3 text-sm text-foreground shadow-sm transition-colors md:min-h-10",
               "hover:bg-accent/40",
               isInvalid && "border-destructive",
               disabled && "cursor-not-allowed bg-muted/50 opacity-60",
@@ -270,7 +270,7 @@ export function DateRangePicker({
               {(segment) => (
                 <DateSegment
                   segment={segment}
-                  className="rounded-sm px-0.5 tabular-nums outline-none focus:bg-accent focus:text-secondary-foreground data-[placeholder]:text-muted-foreground data-[type=literal]:px-0"
+                  className="rounded-sm px-0.5 tabular-nums outline-none focus:bg-accent focus:text-secondary-foreground placeholder:text-muted-foreground data-[type=literal]:px-0"
                 />
               )}
             </DateInput>
@@ -285,13 +285,13 @@ export function DateRangePicker({
               {(segment) => (
                 <DateSegment
                   segment={segment}
-                  className="rounded-sm px-0.5 tabular-nums outline-none focus:bg-accent focus:text-secondary-foreground data-[placeholder]:text-muted-foreground data-[type=literal]:px-0"
+                  className="rounded-sm px-0.5 tabular-nums outline-none focus:bg-accent focus:text-secondary-foreground placeholder:text-muted-foreground data-[type=literal]:px-0"
                 />
               )}
             </DateInput>
             <AriaButton
               aria-label={placeholder ?? "Choose date range"}
-              className="ml-auto inline-flex size-7 shrink-0 items-center justify-center rounded-md text-muted-foreground outline-none hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-50"
+              className="touch-target ml-auto inline-flex size-7 shrink-0 items-center justify-center rounded-md text-muted-foreground outline-none hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-50"
               isDisabled={disabled}
             >
               {icon ?? <IconCalendarEvent aria-hidden="true" className="size-4" />}
@@ -338,7 +338,7 @@ export function DateRangePicker({
                           <AriaButton
                             slot="previous"
                             aria-label="Previous month"
-                            className="inline-flex size-8 items-center justify-center rounded-md outline-none hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring"
+                            className="touch-target inline-flex size-8 items-center justify-center rounded-md outline-none hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring"
                           >
                             <IconChevronLeft className="size-4" />
                           </AriaButton>
@@ -393,7 +393,7 @@ export function DateRangePicker({
                             <AriaButton
                               slot="next"
                               aria-label="Next month"
-                              className="inline-flex size-8 items-center justify-center rounded-md outline-none hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring"
+                              className="touch-target inline-flex size-8 items-center justify-center rounded-md outline-none hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring"
                             >
                               <IconChevronRight className="size-4" />
                             </AriaButton>
@@ -464,15 +464,15 @@ export function DateRangePicker({
                       <Button
                         variant="ghost"
                         size="sm"
-                        disabled={disabled || !pending}
-                        onClick={() => setPending(null)}
+                        isDisabled={disabled || !pending}
+                        onPress={() => setPending(null)}
                       >
                         Clear
                       </Button>
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => {
+                        onPress={() => {
                           setPending(committed);
                           setOpen(false);
                         }}
@@ -481,8 +481,8 @@ export function DateRangePicker({
                       </Button>
                       <Button
                         size="sm"
-                        disabled={disabled || sameCommitted(pending, committed)}
-                        onClick={() => {
+                        isDisabled={disabled || sameCommitted(pending, committed)}
+                        onPress={() => {
                           commit(pending);
                           setOpen(false);
                         }}

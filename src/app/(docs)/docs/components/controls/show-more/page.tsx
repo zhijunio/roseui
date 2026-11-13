@@ -1,0 +1,11 @@
+import { ShowMoreExamples } from "@/components/examples/show-more/show-more";
+
+export const metadata = { title: "Show More" };
+
+export default function ComponentExamplePage() {
+  return (
+    <div className="grid min-w-0 items-start gap-5 xl:grid-cols-2 [&>*]:min-w-0">
+      <ShowMoreExamples />
+    </div>
+  );
+}

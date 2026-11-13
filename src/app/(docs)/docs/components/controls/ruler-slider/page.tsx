@@ -1,0 +1,13 @@
+import { RulerSliderExamples } from "@/components/examples/ruler-slider/ruler-slider";
+
+export const metadata = { title: "Ruler Slider" };
+
+export default function RulerSliderPage() {
+  return (
+    <div className="space-y-6">
+      <div className="grid min-w-0 items-start gap-5 xl:grid-cols-2 [&>*]:min-w-0">
+        <RulerSliderExamples />
+      </div>
+    </div>
+  );
+}

@@ -2,7 +2,7 @@
 
 import { type ComponentProps, type ReactNode, useRef, useState } from "react";
 
-import { IconFilter, IconPlus, IconX } from "@tabler/icons-react";
+import { Filter as IconFilter, Plus as IconPlus, X as IconX } from "lucide-react";
 
 import type {
   FilterField,
@@ -14,10 +14,10 @@ import type {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+import { CheckboxButton, CheckboxField } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
-import { NativeSelect } from "@/components/ui/native-select";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 
 export type FiltersLabels = {
@@ -86,40 +86,37 @@ function DefaultEditor({
     return (
       <div className="space-y-2">
         {field.options.map((option) => (
-          <label key={option.value} className="flex items-center gap-2 text-sm">
-            <Checkbox
-              checked={typeof value !== "string" && value.includes(option.value)}
-              onCheckedChange={(checked) => {
-                const current = typeof value === "string" ? [] : value;
-                onChange(checked ? [...current, option.value] : current.filter((item) => item !== option.value));
-              }}
-            />
-            {option.label}
-          </label>
+          <CheckboxField
+            key={option.value}
+            checked={typeof value !== "string" && value.includes(option.value)}
+            onCheckedChange={(checked) => {
+              const current = typeof value === "string" ? [] : value;
+              onChange(checked ? [...current, option.value] : current.filter((item) => item !== option.value));
+            }}
+          >
+            <CheckboxButton className="items-center gap-2 text-sm">{option.label}</CheckboxButton>
+          </CheckboxField>
         ))}
       </div>
     );
   if (field.type === "select")
     return (
-      <NativeSelect
-        className="w-full"
-        aria-label={labels.value}
-        value={scalar}
-        onChange={(event) => onChange(event.target.value)}
-      >
-        {field.options.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </NativeSelect>
+      <Select aria-label={labels.value} value={scalar} onValueChange={onChange}>
+        <SelectTrigger className="w-full"><SelectValue /></SelectTrigger>
+        <SelectContent>
+          {field.options.map((option) => <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>)}
+        </SelectContent>
+      </Select>
     );
   if (field.type === "boolean")
     return (
-      <NativeSelect aria-label={labels.value} value={scalar} onChange={(event) => onChange(event.target.value)}>
-        <option value="true">{labels.true}</option>
-        <option value="false">{labels.false}</option>
-      </NativeSelect>
+      <Select aria-label={labels.value} value={scalar} onValueChange={onChange}>
+        <SelectTrigger><SelectValue /></SelectTrigger>
+        <SelectContent>
+          <SelectItem value="true">{labels.true}</SelectItem>
+          <SelectItem value="false">{labels.false}</SelectItem>
+        </SelectContent>
+      </Select>
     );
   return (
     <Input
@@ -169,25 +166,24 @@ function RuleEditor({
         if (valid) onApply(draft);
       }}
     >
-      <NativeSelect
+      <Select
         aria-label={labels.field}
         value={draft.field}
-        onChange={(event) => {
-          const next = fields.find((item) => item.id === event.target.value);
+        onValueChange={(value) => {
+          const next = fields.find((item) => item.id === value);
           if (next) setDraft({ ...initialRule(next), id: draft.id });
         }}
       >
-        {fields.map((item) => (
-          <option key={item.id} value={item.id}>
-            {[...(item.path ?? []), item.label].join(" / ")}
-          </option>
-        ))}
-      </NativeSelect>
-      <NativeSelect
+        <SelectTrigger className="w-full"><SelectValue /></SelectTrigger>
+        <SelectContent>
+          {fields.map((item) => <SelectItem key={item.id} value={item.id}>{[...(item.path ?? []), item.label].join(" / ")}</SelectItem>)}
+        </SelectContent>
+      </Select>
+      <Select
         aria-label={labels.operator}
         value={draft.operator}
-        onChange={(event) => {
-          const operator = event.target.value as FilterOperator;
+        onValueChange={(value) => {
+          const operator = value as FilterOperator;
           setDraft({
             ...draft,
             operator,
@@ -195,12 +191,11 @@ function RuleEditor({
           });
         }}
       >
-        {operatorsFor(field).map((operator) => (
-          <option key={operator} value={operator}>
-            {labels[operator]}
-          </option>
-        ))}
-      </NativeSelect>
+        <SelectTrigger className="w-full"><SelectValue /></SelectTrigger>
+        <SelectContent>
+          {operatorsFor(field).map((operator) => <SelectItem key={operator} value={operator}>{labels[operator]}</SelectItem>)}
+        </SelectContent>
+      </Select>
       {draft.operator === "between" ? (
         <div className="grid grid-cols-2 gap-2">
           {[0, 1].map((index) => (
@@ -226,10 +221,10 @@ function RuleEditor({
         </p>
       )}
       <div className="flex justify-end gap-2 border-t pt-3">
-        <Button variant="outline" size="sm" onClick={onCancel}>
+        <Button variant="outline" size="sm" onPress={onCancel}>
           {labels.cancel}
         </Button>
-        <Button type="submit" size="sm" disabled={!valid}>
+        <Button type="submit" size="sm" isDisabled={!valid}>
           {labels.apply}
         </Button>
       </div>
@@ -306,7 +301,7 @@ function FilterChip({
         variant="ghost"
         size="icon-sm"
         aria-label={`${labels.remove} ${field?.label ?? rule.field}`}
-        onClick={onRemove}
+        onPress={onRemove}
       >
         <IconX />
       </Button>
@@ -363,20 +358,22 @@ export function Filters({
       <legend className="sr-only">{labels.advanced}</legend>
       <div className="flex min-w-0 flex-wrap items-center gap-2">
         {(nested || value.rules.length > 1) && (
-          <NativeSelect
-            size="sm"
+          <Select
             aria-label={labels.operator}
             value={value.combinator}
-            onChange={(event) =>
+            onValueChange={(combinator) =>
               onChange({
                 ...value,
-                combinator: event.target.value as "and" | "or",
+                combinator: combinator as "and" | "or",
               })
             }
           >
-            <option value="and">{labels.and}</option>
-            <option value="or">{labels.or}</option>
-          </NativeSelect>
+            <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="and">{labels.and}</SelectItem>
+              <SelectItem value="or">{labels.or}</SelectItem>
+            </SelectContent>
+          </Select>
         )}
         {value.rules.map((rule) =>
           "rules" in rule ? (
@@ -396,7 +393,7 @@ export function Filters({
                 variant="ghost"
                 size="icon"
                 aria-label={labels.remove}
-                onClick={() => {
+                onPress={() => {
                   onChange({
                     ...value,
                     rules: value.rules.filter((item) => item.id !== rule.id),
@@ -430,7 +427,7 @@ export function Filters({
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => {
+            onPress={() => {
               onChange({ ...value, rules: [] });
               focusAddButton();
             }}
@@ -445,8 +442,8 @@ export function Filters({
               ref={addButtonRef}
               variant="outline"
               size={size ?? "default"}
-              disabled={!fields.length}
-              onClick={() => {
+              isDisabled={!fields.length}
+              onPress={() => {
                 if (fields[0]) setNewRule(initialRule(fields[0]));
               }}
             >
@@ -475,7 +472,7 @@ export function Filters({
           <Button
             variant="ghost"
             size="sm"
-            onClick={() =>
+            onPress={() =>
               onChange({
                 ...value,
                 rules: [...value.rules, { id: crypto.randomUUID(), combinator: "or", rules: [] }],
@@ -492,7 +489,7 @@ export function Filters({
   return variant === "popover" ? (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="outline" disabled={disabled}>
+        <Button variant="outline" isDisabled={disabled}>
           <IconFilter />
           {labels.advanced}
           <Badge variant="secondary">{value.rules.length}</Badge>

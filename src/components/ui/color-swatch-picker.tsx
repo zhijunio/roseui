@@ -10,5 +10,5 @@ export function ColorSwatchPicker({ className, layout = "grid", ...props }: Comp
 }
 
 export function ColorSwatchPickerItem({ className, ...props }: ComponentProps<typeof AriaColorSwatchPickerItem>) {
-  return <AriaColorSwatchPickerItem data-slot="color-swatch-picker-item" className={cn("grid size-9 cursor-pointer place-items-center rounded-lg border border-transparent outline-none transition-colors hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring data-[selected]:bg-accent/40", className)} {...props} />;
+  return <AriaColorSwatchPickerItem data-slot="color-swatch-picker-item" className={cn("grid size-9 cursor-pointer place-items-center rounded-lg border border-transparent outline-none transition-colors hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring selected:bg-accent/40", className)} {...props} />;
 }

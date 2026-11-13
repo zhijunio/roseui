@@ -1,83 +1,94 @@
-import { cva, type VariantProps } from "class-variance-authority"
-import { cn } from "@/lib/utils"
-import { Slot } from "radix-ui"
+import type { ComponentProps } from "react";
 
-import { Separator } from "@/components/ui/separator"
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
-const buttonGroupVariants = cva(
-  "group/button-group flex w-fit items-stretch *:focus-visible:relative *:focus-visible:z-10 has-[>[data-slot=button-group]]:gap-2 has-[select[aria-hidden=true]:last-child]:[&>[data-slot=select-trigger]:last-of-type]:rounded-r-md [&>[data-slot=select-trigger]:not([class*='w-'])]:w-fit [&>input]:flex-1",
-  {
-    variants: {
-      orientation: {
-        horizontal:
-          "[&>*:not(:first-child)]:rounded-l-none [&>*:not(:first-child)]:border-l-0 [&>*:not(:last-child)]:rounded-r-none [&>[data-slot]:not(:has(~[data-slot]))]:rounded-r-md!",
-        vertical:
-          "flex-col [&>*:not(:first-child)]:rounded-t-none [&>*:not(:first-child)]:border-t-0 [&>*:not(:last-child)]:rounded-b-none [&>[data-slot]:not(:has(~[data-slot]))]:rounded-b-md!",
-      },
-    },
-    defaultVariants: {
-      orientation: "horizontal",
-    },
-  }
-)
+type ButtonGroupLabel =
+  | { "aria-label": string; "aria-labelledby"?: never }
+  | { "aria-label"?: never; "aria-labelledby": string };
 
-function ButtonGroup({
+export function ButtonGroup({
   className,
-  orientation,
+  orientation = "horizontal",
+  fullWidth = false,
   ...props
-}: React.ComponentProps<"div"> & VariantProps<typeof buttonGroupVariants>) {
+}: Omit<ComponentProps<"div">, "aria-label" | "aria-labelledby" | "role"> &
+  ButtonGroupLabel & { orientation?: "horizontal" | "vertical"; fullWidth?: boolean }) {
   return (
     <div
+      {...props}
       role="group"
       data-slot="button-group"
       data-orientation={orientation}
-      className={cn(buttonGroupVariants({ orientation }), className)}
-      {...props}
+      data-full-width={fullWidth ? "" : undefined}
+      className={cn(
+        "flex w-fit items-stretch has-[>[data-slot=button-group]]:gap-2",
+        fullWidth ? "w-full" : "w-fit",
+        "has-[select[aria-hidden=true]:last-child]:[&>[data-slot=select-trigger]:last-of-type]:rounded-e-lg [&>[data-slot=select-trigger]:not([class*='w-'])]:w-fit [&>input]:flex-1",
+        orientation === "horizontal" &&
+          "[&>*:not(:first-child)]:rounded-s-none [&>*:not(:first-child)]:border-s-0 [&>*:not(:last-child)]:rounded-e-none",
+        orientation === "vertical" &&
+          "flex-col [&>*:not(:first-child)]:rounded-t-none [&>*:not(:first-child)]:border-t-0 [&>*:not(:last-child)]:rounded-b-none",
+        fullWidth && orientation === "horizontal" && "[&>[data-slot=button]]:flex-1",
+        fullWidth && orientation === "vertical" && "[&>[data-slot=button]]:w-full",
+        "*:focus-visible:relative *:focus-visible:z-10 *:focus-visible:ring-inset",
+        className,
+      )}
     />
-  )
+  );
 }
 
-function ButtonGroupText({
-  className,
-  asChild = false,
-  ...props
-}: React.ComponentProps<"div"> & {
-  asChild?: boolean
-}) {
-  const Comp = asChild ? Slot.Root : "div"
-
+export function ButtonGroupText({ className, ...props }: ComponentProps<"span">) {
   return (
-    <Comp
+    <span
+      data-slot="button-group-text"
       className={cn(
-        "flex items-center gap-2 rounded-md border bg-muted px-2.5 text-sm font-medium shadow-xs [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4",
-        className
+        "inline-flex items-center gap-2 rounded-lg border border-border bg-muted px-3 text-sm font-medium text-muted-foreground",
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
-function ButtonGroupSeparator({
+export function ButtonGroupSeparator({
   className,
   orientation = "vertical",
   ...props
-}: React.ComponentProps<typeof Separator>) {
+}: ComponentProps<"div"> & { orientation?: "horizontal" | "vertical" }) {
   return (
-    <Separator
+    <div
+      role="separator"
+      aria-orientation={orientation}
       data-slot="button-group-separator"
-      orientation={orientation}
+      data-orientation={orientation}
       className={cn(
-        "relative self-stretch bg-input data-horizontal:mx-px data-horizontal:w-auto data-vertical:my-px data-vertical:h-auto",
-        className
+        "relative m-0! shrink-0 self-stretch bg-input",
+        orientation === "vertical" ? "w-px" : "h-px w-full",
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
-export {
-  ButtonGroup,
-  ButtonGroupSeparator,
-  ButtonGroupText,
-  buttonGroupVariants,
+export function ButtonGroupItem({
+  className,
+  selected,
+  type = "button",
+  ...props
+}: Omit<ComponentProps<typeof Button>, "aria-pressed"> & {
+  selected?: boolean;
+}) {
+  return (
+    <Button
+      {...props}
+      type={type}
+      aria-pressed={selected}
+      className={cn(
+        selected && "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground",
+        className,
+      )}
+    />
+  );
 }

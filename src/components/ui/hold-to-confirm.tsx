@@ -2,12 +2,12 @@
 
 import * as React from "react";
 
-import { IconCheck } from "@tabler/icons-react";
+import { Check as IconCheck } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-export type HoldToConfirmProps = Omit<React.ComponentProps<typeof Button>, "onClick" | "children"> & {
+export type HoldToConfirmProps = Omit<React.ComponentProps<typeof Button>, "onPress" | "children"> & {
   label: React.ReactNode;
   confirmedLabel?: string;
   duration?: number;
@@ -24,7 +24,7 @@ export function HoldToConfirm({
   onHoldChange,
   resetOnComplete = false,
   className,
-  disabled,
+  isDisabled,
   ...buttonProps
 }: HoldToConfirmProps) {
   const [progress, setProgress] = React.useState(0);
@@ -71,7 +71,7 @@ export function HoldToConfirm({
   }
 
   function start() {
-    if (disabled || completedRef.current || frameRef.current !== null) return;
+    if (isDisabled || completedRef.current || frameRef.current !== null) return;
     startRef.current = null;
     onHoldChange?.(true);
     frameRef.current = requestAnimationFrame(tick);
@@ -90,7 +90,7 @@ export function HoldToConfirm({
       {...buttonProps}
       type="button"
       variant="destructive"
-      disabled={disabled || confirmed}
+      isDisabled={isDisabled || confirmed}
       aria-label={confirmed ? confirmedLabel : typeof label === "string" ? label : undefined}
       aria-describedby={buttonProps["aria-describedby"]}
       aria-disabled={confirmed || undefined}

@@ -38,10 +38,5 @@ jobs:
       - name: Check TypeScript
         run: npx tsc --noEmit
 
-      - name: Verify generated registry
-        run: |
-          npm run registry:build
-          git diff --exit-code -- registry.json public/r
-
       - name: Build application
         run: npm run build

@@ -1,175 +1,157 @@
-"use client";
+"use client"
 
-import * as React from "react";
+import { useEffect, useMemo, useRef, useState } from "react"
+import type { Key, Selection } from "react-aria-components/TagGroup"
+import type { TextFieldProps } from "react-aria-components/TextField"
+import { cn } from "@/lib/utils"
+import { FieldError, TextField } from "react-aria-components"
+import { Input as AriaInput } from "react-aria-components/Input"
+import { Tag, TagGroup, TagList } from "./tag-group"
 
-import { IconX } from "@tabler/icons-react";
+export interface InputTagProps extends Pick<
+  TextFieldProps,
+  "isDisabled" | "isReadOnly" | "children" | "aria-label" | "aria-labelledby"
+> {
+  value?: Selection
+  onChange?: (next: Selection) => void
+  defaultValue?: string[]
+  splitPattern?: RegExp
+  className?: string
+  inputValue?: string
+  onInputValueChange?: (v: string) => void
+  isRequired?: boolean
+  requiredMessage?: string
+  name?: string
+}
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { cn } from "@/lib/utils";
-
-type InputTagProps = {
-  label: string;
-  value?: string[];
-  defaultValue?: string[];
-  onValueChange?: (value: string[]) => void;
-  placeholder?: string;
-  description?: string;
-  error?: string;
-  disabled?: boolean;
-  maxTags?: number;
-  id?: string;
-  className?: string;
-};
-
-function InputTag({
-  label,
+export function InputTag({
   value,
+  onChange,
   defaultValue = [],
-  onValueChange,
-  placeholder = "Add a value",
-  description,
-  error,
-  disabled,
-  maxTags,
-  id: providedId,
+  splitPattern = /[,;]/,
   className,
+  inputValue: controlledInput,
+  onInputValueChange,
+  isRequired,
+  requiredMessage,
+  name = "tags",
+  children,
+  ...props
 }: InputTagProps) {
-  const generatedId = React.useId();
-  const id = providedId ?? generatedId;
-  const descriptionId = `${id}-description`;
-  const errorId = `${id}-error`;
-  const [internalValue, setInternalValue] = React.useState(defaultValue);
-  const [draft, setDraft] = React.useState("");
-  const [pickedIndex, setPickedIndex] = React.useState<number | null>(null);
-  const [announcement, setAnnouncement] = React.useState("");
-  const tags = value ?? internalValue;
+  const [internalSelection, setInternalSelection] = useState<Selection>(new Set(defaultValue))
+  const [uncontrolledInput, setUncontrolledInput] = useState("")
+  const [touched, setTouched] = useState(false)
+  const hiddenRef = useRef<HTMLInputElement>(null)
 
-  function emit(next: string[]) {
-    if (value === undefined) setInternalValue(next);
-    onValueChange?.(next);
-  }
+  const selection: Selection = value ?? internalSelection
+  const inputValue = controlledInput ?? uncontrolledInput
+  const setInputValue = onInputValueChange ?? setUncontrolledInput
+  const applySelection = (next: Selection) => (onChange ?? setInternalSelection)(next as Selection)
 
-  function removeAt(index: number) {
-    const removed = tags[index];
-    emit(tags.filter((_, itemIndex) => itemIndex !== index));
-    setPickedIndex(null);
-    setAnnouncement(`${removed} removed.`);
-  }
+  const list = useMemo(() => {
+    return selection === "all" ? [] : Array.from(selection).map((v) => String(v))
+  }, [selection])
 
-  function addDraft() {
-    const next = draft.trim().replace(/,+$/, "").trim();
-    if (!next) return;
-    if (tags.some((tag) => tag.toLocaleLowerCase() === next.toLocaleLowerCase())) {
-      setAnnouncement(`${next} is already in the list.`);
-      setDraft("");
-      return;
-    }
-    if (maxTags !== undefined && tags.length >= maxTags) {
-      setAnnouncement(`You can add up to ${maxTags} items.`);
-      return;
-    }
-    emit([...tags, next]);
-    setDraft("");
-    setPickedIndex(null);
-    setAnnouncement(`${next} added.`);
-  }
+  const isInvalid = Boolean(isRequired && list.length === 0 && touched)
+  const errorText = requiredMessage ?? "At least one item is required"
 
-  function onKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
-    if (event.key === "Enter" || event.key === ",") {
-      event.preventDefault();
-      addDraft();
-    } else if (event.key === "Backspace" && !draft) {
-      event.preventDefault();
-      if (pickedIndex !== null) removeAt(pickedIndex);
-      else if (tags.length > 0) {
-        setPickedIndex(tags.length - 1);
-        setAnnouncement(`${tags[tags.length - 1]} selected. Press Backspace again to remove.`);
+  useEffect(() => {
+    const input = hiddenRef.current
+    const form = input?.form
+    if (!form || !input) return
+    const onSubmit = (e: Event) => {
+      if (isRequired && list.length === 0) {
+        e.preventDefault()
+        setTouched(true)
+        input.setCustomValidity(errorText)
+        form.reportValidity()
+      } else {
+        input.setCustomValidity("")
       }
-    } else if (event.key === "Delete" && pickedIndex !== null) {
-      event.preventDefault();
-      removeAt(pickedIndex);
-    } else if (event.key === "ArrowLeft" && event.currentTarget.selectionStart === 0 && tags.length > 0) {
-      event.preventDefault();
-      setPickedIndex((current) => (current === null ? tags.length - 1 : Math.max(0, current - 1)));
-    } else if (event.key === "ArrowRight" && pickedIndex !== null) {
-      event.preventDefault();
-      setPickedIndex((current) => (current !== null && current < tags.length - 1 ? current + 1 : null));
-    } else if (event.key === "Escape") {
-      setPickedIndex(null);
+    }
+    form.addEventListener("submit", onSubmit)
+    return () => form.removeEventListener("submit", onSubmit)
+  }, [isRequired, list.length, errorText])
+
+  function handleKeyDown(e: React.KeyboardEvent) {
+    if (e.key === "Enter" || e.key === "," || e.key === ";") {
+      e.preventDefault()
+      addTag()
     }
   }
 
-  function handleBlur(event: React.FocusEvent<HTMLDivElement>) {
-    if (!event.currentTarget.contains(event.relatedTarget as Node | null)) addDraft();
+  function addTag() {
+    if (selection === "all") return
+    const next = new Set<Key>(Array.from(selection))
+    inputValue.split(splitPattern).forEach((raw) => {
+      const formatted = raw
+        .trim()
+        .replace(/\s\s+/g, " ")
+        .replace(/\t|\\t|\r|\\r|\n|\\n/g, "")
+      if (formatted === "") return
+      const exists = Array.from(next).some(
+        (id) => String(id).toLocaleLowerCase() === formatted.toLocaleLowerCase()
+      )
+      if (!exists) next.add(formatted)
+    })
+    applySelection(next)
+    setInputValue("")
+    setTouched(true)
+  }
+
+  function removeKeys(keys: Selection) {
+    if (selection === "all") return
+    const next = new Set<Key>(Array.from(selection))
+    if (keys !== "all") {
+      for (const k of keys) next.delete(k)
+    }
+    applySelection(next)
+    setTouched(true)
   }
 
   return (
-    <div className={cn("grid min-w-0 gap-2", className)} onBlur={handleBlur}>
-      <Label htmlFor={id} isDisabled={disabled} isInvalid={Boolean(error)}>
-        {label}
-      </Label>
-      <div
-        className={cn(
-          "flex min-h-9 min-w-0 flex-wrap items-center gap-1.5 rounded-[var(--radius)] border border-input bg-background p-1.5 focus-within:ring-3 focus-within:ring-ring/50",
-          error && "border-destructive focus-within:ring-destructive/20",
-          disabled && "bg-input/50 opacity-60",
-        )}
+    <div className={cn("flex flex-col gap-y-1", className)}>
+      <TextField
+        value={inputValue}
+        onChange={setInputValue}
+        onKeyDown={handleKeyDown}
+        onBlur={() => setTouched(true)}
+        isInvalid={isInvalid}
+        {...props}
       >
-        {tags.map((tag, index) => (
-          <span
-            key={`${tag}-${index}`}
-            data-selected={pickedIndex === index || undefined}
-            className={cn(
-              "inline-flex max-w-full items-center gap-1 rounded-md bg-secondary px-2 py-1 text-xs text-secondary-foreground",
-              pickedIndex === index && "ring-2 ring-ring",
-            )}
-          >
-            <span className="truncate">{tag}</span>
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon-xs"
-              aria-label={`Remove ${tag}`}
-              disabled={disabled}
-              onClick={() => removeAt(index)}
-              className="-mr-1 size-5 text-muted-foreground"
-            >
-              <IconX aria-hidden="true" />
-            </Button>
-          </span>
-        ))}
-        <Input
-          id={id}
-          value={draft}
-          disabled={disabled || (maxTags !== undefined && tags.length >= maxTags)}
-          placeholder={tags.length === 0 ? placeholder : "Add another…"}
-          aria-invalid={error ? true : undefined}
-          aria-describedby={
-            [description ? descriptionId : undefined, error ? errorId : undefined].filter(Boolean).join(" ") ||
-            undefined
-          }
-          onChange={(event) => setDraft(event.currentTarget.value)}
-          onKeyDown={onKeyDown}
-          className="h-7 min-w-24 flex-1 border-0 bg-transparent px-2 shadow-none focus-visible:ring-0"
-        />
-      </div>
-      {description && (
-        <p id={descriptionId} className="text-xs text-muted-foreground">
-          {description}
-        </p>
-      )}
-      {error && (
-        <p id={errorId} role="alert" className="text-xs text-destructive">
-          {error}
-        </p>
-      )}
-      <p role="status" aria-live="polite" className="sr-only">
-        {announcement}
-      </p>
+        {(values) => (
+          <>
+            {typeof children === "function" ? children(values) : children}
+            <FieldError>{isInvalid ? errorText : undefined}</FieldError>
+          </>
+        )}
+      </TextField>
+      {selection ? (
+        <TagGroup
+          disabledKeys={props.isDisabled ? new Set(list) : undefined}
+          className="mt-1"
+          aria-label="Selected tags"
+          {...(!props.isReadOnly && !props.isDisabled ? { onRemove: removeKeys } : {})}
+        >
+          <TagList>
+            {list.map((id) => (
+              <Tag key={id} id={id}>
+                {id}
+              </Tag>
+            ))}
+          </TagList>
+        </TagGroup>
+      ) : null}
+      <AriaInput
+        ref={hiddenRef}
+        name={name}
+        value={list.join(",")}
+        required={Boolean(isRequired)}
+        readOnly
+        aria-hidden="true"
+        tabIndex={-1}
+        className="sr-only absolute -z-10 h-0 w-0 opacity-0"
+      />
     </div>
-  );
+  )
 }
-
-export { InputTag, type InputTagProps };

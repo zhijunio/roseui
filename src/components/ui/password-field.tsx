@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-import { IconEye, IconEyeOff } from "@tabler/icons-react";
+import { Eye as IconEye, EyeOff as IconEyeOff } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -99,8 +99,8 @@ const PasswordField = React.forwardRef<HTMLInputElement, PasswordFieldProps>(fun
           aria-label={isRevealed ? hideLabel : revealLabel}
           aria-pressed={isRevealed}
           aria-controls={id}
-          disabled={disabled}
-          onClick={() => changeReveal(!isRevealed)}
+          isDisabled={disabled}
+          onPress={() => changeReveal(!isRevealed)}
           className="absolute right-1 top-1/2 -translate-y-1/2 text-muted-foreground"
         >
           {isRevealed ? <IconEyeOff aria-hidden="true" /> : <IconEye aria-hidden="true" />}

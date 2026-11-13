@@ -2,15 +2,7 @@
 
 import { useEffect, useMemo } from "react";
 
-import {
-  IconArrowBackUp,
-  IconArrowForwardUp,
-  IconBold,
-  IconItalic,
-  IconList,
-  IconListNumbers,
-  IconStrikethrough,
-} from "@tabler/icons-react";
+import { Undo2 as IconArrowBackUp, Redo2 as IconArrowForwardUp, Bold as IconBold, Italic as IconItalic, List as IconList, ListOrdered as IconListNumbers, Strikethrough as IconStrikethrough } from "lucide-react";
 import { type Editor, EditorContent, type Extension, type JSONContent, useEditor, useEditorState } from "@tiptap/react";
 import { BubbleMenu } from "@tiptap/react/menus";
 import StarterKit from "@tiptap/starter-kit";
@@ -75,9 +67,9 @@ function ToolbarButton({
       size="icon-sm"
       aria-label={label}
       title={label}
-      disabled={!editor.isEditable}
+      isDisabled={!editor.isEditable}
       onMouseDown={(event) => event.preventDefault()}
-      onClick={onClick}
+      onPress={onClick}
     >
       {children}
     </Button>

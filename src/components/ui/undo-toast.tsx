@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-import { IconArchive, IconRotate2, IconTrash } from "@tabler/icons-react";
+import { Archive as IconArchive, RotateCcw as IconRotate2, Trash as IconTrash } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -95,7 +95,7 @@ export function UndoToast({
       if (timer.current) clearTimeout(timer.current);
     };
   }, [pending, duration, onCommit, items, onItemsChange, restoreFocus]);
-  const remove = (id: string, action: UndoableChange["action"], source: HTMLElement) => {
+  const remove = (id: string, action: UndoableChange["action"], source: Element) => {
     const index = items.findIndex((item) => item.id === id);
     if (index < 0) return;
     const item = items[index];
@@ -103,7 +103,7 @@ export function UndoToast({
     setCommitState("idle");
     setPending((old) => [...old, { item, index, action }]);
     onItemsChange(items.filter((entry) => entry.id !== id));
-    source.blur();
+    if (source instanceof HTMLElement) source.blur();
     setMessage(`${item.title} ${action === "archive" ? "archived" : "removed"}. Undo is available.`);
   };
   return (
@@ -121,7 +121,7 @@ export function UndoToast({
               data-undo-id={item.id}
               data-undo-action="archive"
               aria-label={`Archive ${item.title}`}
-              onClick={(event) => remove(item.id, "archive", event.currentTarget)}
+              onPress={(event) => remove(item.id, "archive", event.target)}
             >
               <IconArchive />
             </Button>
@@ -131,7 +131,7 @@ export function UndoToast({
               data-undo-id={item.id}
               data-undo-action="delete"
               aria-label={`Remove ${item.title}`}
-              onClick={(event) => remove(item.id, "delete", event.currentTarget)}
+              onPress={(event) => remove(item.id, "delete", event.target)}
             >
               <IconTrash />
             </Button>
@@ -150,7 +150,7 @@ export function UndoToast({
               ? "Saving changes..."
               : `${pending.length} change${pending.length === 1 ? "" : "s"} pending`}
           </span>
-          <Button size="sm" variant="outline" disabled={commitState === "committing"} onClick={undo}>
+          <Button size="sm" variant="outline" isDisabled={commitState === "committing"} onPress={undo}>
             <IconRotate2 /> {commitState === "committing" ? "Saving..." : "Undo"}
           </Button>
         </div>

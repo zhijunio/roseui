@@ -1,13 +1,14 @@
 "use client"
 
 import * as React from "react"
-import { ScrollArea as ScrollAreaPrimitive } from "radix-ui"
+import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area"
 
 import { cn } from "@/lib/utils"
 
 function ScrollArea({
   orientation = "vertical",
   fadeEdges = false,
+  scrollFade,
   className,
   children,
   onScroll,
@@ -15,7 +16,9 @@ function ScrollArea({
 }: React.ComponentProps<typeof ScrollAreaPrimitive.Root> & {
   orientation?: "vertical" | "horizontal" | "both"
   fadeEdges?: boolean
+  scrollFade?: boolean
 }) {
+  const shouldFade = scrollFade ?? fadeEdges
   const [viewport, setViewport] = React.useState<HTMLDivElement | null>(null)
   const [visibleEdges, setVisibleEdges] = React.useState({
     top: false,
@@ -25,7 +28,7 @@ function ScrollArea({
   })
 
   const updateVisibleEdges = React.useCallback(() => {
-    if (!viewport || !fadeEdges) return
+    if (!viewport || !shouldFade) return
 
     setVisibleEdges({
       top: orientation !== "horizontal" && viewport.scrollTop > 0,
@@ -37,10 +40,10 @@ function ScrollArea({
         viewport.scrollTop + viewport.clientHeight < viewport.scrollHeight - 1,
       left: orientation !== "vertical" && viewport.scrollLeft > 0,
     })
-  }, [fadeEdges, orientation, viewport])
+  }, [shouldFade, orientation, viewport])
 
   React.useEffect(() => {
-    if (!fadeEdges || !viewport) return
+    if (!shouldFade || !viewport) return
 
     const resizeObserver = new ResizeObserver(updateVisibleEdges)
     resizeObserver.observe(viewport)
@@ -53,7 +56,7 @@ function ScrollArea({
       resizeObserver.disconnect()
       mutationObserver.disconnect()
     }
-  }, [fadeEdges, updateVisibleEdges, viewport])
+  }, [shouldFade, updateVisibleEdges, viewport])
 
   const handleScroll = (event: React.UIEvent<HTMLDivElement>) => {
     updateVisibleEdges()
@@ -74,7 +77,7 @@ function ScrollArea({
       >
         {children}
       </ScrollAreaPrimitive.Viewport>
-      {fadeEdges && (
+      {shouldFade && (
         <>
           {visibleEdges.top && (
             <div

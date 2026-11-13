@@ -1,13 +1,48 @@
 "use client";
 
-import { useRef, useState } from "react";
+import * as React from "react";
 
-import { IconFile as FileIcon, IconUpload as Upload, IconX as X } from "@tabler/icons-react";
+import { AlertCircle, CheckCircle2, Clock3, File as FileIcon, LoaderCircle, Upload, X } from "lucide-react";
+import { FileTrigger } from "react-aria-components/FileTrigger";
+import { DropZone } from "react-aria-components/DropZone";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-export type FileUploadAccept = Record<string, string[]>;
+type FileUploadAccept = Record<string, string[]>;
+
+type FileUploadRejectionReason = "file-type" | "file-size" | "max-files";
+
+type FileUploadRejection = {
+  file: File;
+  reason: FileUploadRejectionReason;
+  message: string;
+};
+
+type FileUploadFileStatus = {
+  label: string;
+  tone?: "neutral" | "progress" | "success" | "error";
+};
+
+type FileUploadRenderProps = {
+  index: number;
+  status?: FileUploadFileStatus;
+  remove: () => void;
+};
+
+type FileUploadProps = {
+  files: File[];
+  onFilesChange: (files: File[]) => void;
+  accept?: FileUploadAccept;
+  multiple?: boolean;
+  maxSize?: number;
+  maxFiles?: number;
+  disabled?: boolean;
+  className?: string;
+  onReject?: (rejections: FileUploadRejection[]) => void;
+  getFileStatus?: (file: File, index: number) => FileUploadFileStatus | undefined;
+  renderFile?: (file: File, props: FileUploadRenderProps) => React.ReactNode;
+};
 
 function fileAllowed(file: File, accept?: FileUploadAccept) {
   if (!accept) return true;
@@ -23,32 +58,38 @@ function fileAllowed(file: File, accept?: FileUploadAccept) {
   });
 }
 
-export function FileUpload({
+function formatFileSize(bytes: number) {
+  if (bytes >= 1024 * 1024) return `${(bytes / (1024 * 1024)).toFixed(bytes % (1024 * 1024) === 0 ? 0 : 1)}MB`;
+  return `${Math.max(1, Math.round(bytes / 1024))}KB`;
+}
+
+function FileStatusIcon({ tone = "neutral" }: { tone?: FileUploadFileStatus["tone"] }) {
+  if (tone === "progress") return <LoaderCircle className="size-3.5 animate-spin" aria-hidden="true" />;
+  if (tone === "success") return <CheckCircle2 className="size-3.5" aria-hidden="true" />;
+  if (tone === "error") return <AlertCircle className="size-3.5" aria-hidden="true" />;
+  return <Clock3 className="size-3.5" aria-hidden="true" />;
+}
+
+function FileUpload({
   files,
   onFilesChange,
   accept,
   multiple = false,
   maxSize = 5 * 1024 * 1024,
+  maxFiles,
   disabled = false,
   className,
-}: {
-  files: File[];
-  onFilesChange: (files: File[]) => void;
-  accept?: FileUploadAccept;
-  multiple?: boolean;
-  maxSize?: number;
-  disabled?: boolean;
-  className?: string;
-}) {
-  const inputRef = useRef<HTMLInputElement>(null);
-  const [error, setError] = useState("");
-  const [dragging, setDragging] = useState(false);
+  onReject,
+  getFileStatus,
+  renderFile,
+}: FileUploadProps) {
+  const descriptionId = React.useId();
+  const errorId = React.useId();
+  const [rejections, setRejections] = React.useState<FileUploadRejection[]>([]);
   const extensions = accept ? Object.values(accept).flat().filter(Boolean) : [];
-  const acceptValue = accept
-    ? [...new Set([...Object.keys(accept).filter(Boolean), ...extensions])].join(",")
+  const acceptedFileTypes = accept
+    ? [...new Set([...Object.keys(accept).filter(Boolean), ...extensions])]
     : undefined;
-  const formatSize = (bytes: number) =>
-    bytes >= 1024 * 1024 ? `${(bytes / (1024 * 1024)).toFixed(0)}MB` : `${Math.max(1, Math.round(bytes / 1024))}KB`;
   const occurrences = new Map<string, number>();
   const keyedFiles = files.map((file) => {
     const identity = JSON.stringify([file.name, file.lastModified, file.size, file.type]);
@@ -56,116 +97,175 @@ export function FileUpload({
     occurrences.set(identity, occurrence + 1);
     return { file, key: JSON.stringify([identity, occurrence]) };
   });
-  const handleFiles = (selected: FileList | null) => {
-    if (!selected || disabled) return;
-    const incoming = Array.from(selected);
-    const rejectedType = incoming.find((file) => !fileAllowed(file, accept));
-    const oversized = incoming.find((file) => file.size > maxSize);
-    const accepted = incoming.filter((file) => fileAllowed(file, accept) && file.size <= maxSize);
-    if (rejectedType) setError(`${rejectedType.name} is not an accepted file type.`);
-    else if (oversized) setError(`${oversized.name} exceeds the ${formatSize(maxSize)} limit.`);
-    else setError("");
-    if (accepted.length === 0) return;
-    onFilesChange(multiple ? [...files, ...accepted] : accepted.slice(0, 1));
+
+  const reportRejections = (nextRejections: FileUploadRejection[]) => {
+    setRejections(nextRejections);
+    if (nextRejections.length > 0) onReject?.(nextRejections);
   };
 
+  const handleFiles = (incoming: readonly File[]) => {
+    if (disabled || incoming.length === 0) return;
+
+    const slots = multiple ? (maxFiles === undefined ? Number.POSITIVE_INFINITY : Math.max(0, maxFiles - files.length)) : 1;
+    const accepted: File[] = [];
+    const nextRejections: FileUploadRejection[] = [];
+
+    for (const file of incoming) {
+      if (!fileAllowed(file, accept)) {
+        nextRejections.push({
+          file,
+          reason: "file-type",
+          message: `${file.name} is not an accepted file type.`,
+        });
+        continue;
+      }
+
+      if (file.size > maxSize) {
+        nextRejections.push({
+          file,
+          reason: "file-size",
+          message: `${file.name} exceeds the ${formatFileSize(maxSize)} limit.`,
+        });
+        continue;
+      }
+
+      if (accepted.length >= slots) {
+        nextRejections.push({
+          file,
+          reason: "max-files",
+          message: multiple
+            ? `Only ${maxFiles} ${maxFiles === 1 ? "file is" : "files are"} allowed.`
+            : "Only one file can be selected.",
+        });
+        continue;
+      }
+
+      accepted.push(file);
+    }
+
+    reportRejections(nextRejections);
+
+    if (accepted.length > 0) {
+      onFilesChange(multiple ? [...files, ...accepted] : accepted.slice(0, 1));
+    }
+  };
+
+  const handleDrop = async (items: Parameters<NonNullable<React.ComponentProps<typeof DropZone>["onDrop"]>>[0]["items"]) => {
+    const fileItems = items.filter((item) => item.kind === "file");
+    const droppedFiles = await Promise.all(fileItems.map((item) => item.getFile()));
+    handleFiles(droppedFiles);
+  };
+
+  const formatSummary = [
+    extensions.length > 0 ? extensions.join(", ").toUpperCase() : "Any file type",
+    `up to ${formatFileSize(maxSize)}`,
+    maxFiles === undefined ? undefined : `maximum ${maxFiles} ${maxFiles === 1 ? "file" : "files"}`,
+  ]
+    .filter(Boolean)
+    .join(" · ");
+
   return (
-    <div className={cn("w-full space-y-3", className)}>
-      <div
-        data-slot="file-upload-drop-zone"
-        role="group"
-        aria-label="File drop zone"
-        data-disabled={disabled || undefined}
-        data-dragging={dragging || undefined}
-        onDragEnter={(event) => {
-          if (disabled) return;
-          event.preventDefault();
-          setDragging(true);
-        }}
-        onDragOver={(event) => {
-          if (disabled) return;
-          event.preventDefault();
-        }}
-        onDragLeave={(event) => {
-          if (event.currentTarget.contains(event.relatedTarget as Node | null)) return;
-          setDragging(false);
-        }}
+    <div data-slot="file-upload" className={cn("w-full space-y-3", className)}>
+      <DropZone
+        aria-label="File upload"
+        aria-describedby={`${descriptionId}${rejections.length > 0 ? ` ${errorId}` : ""}`}
+        isDisabled={disabled}
         onDrop={(event) => {
-          event.preventDefault();
-          setDragging(false);
-          handleFiles(event.dataTransfer.files);
+          void handleDrop(event.items);
         }}
-        className={cn(
-          "flex w-full flex-col items-center justify-center rounded-lg border border-dashed px-5 py-6 text-center transition-colors hover:border-primary/50 hover:bg-muted/30 data-[dragging=true]:border-primary data-[dragging=true]:bg-muted/40 data-[disabled=true]:hover:border-border data-[disabled=true]:hover:bg-transparent",
-          disabled && "cursor-not-allowed opacity-50",
-        )}
+        className={({ isDropTarget, isFocusVisible }) =>
+          cn(
+            "flex w-full flex-col items-center justify-center rounded-lg border border-dashed border-border bg-background px-5 py-6 text-center transition-[border-color,background-color,box-shadow] hover:border-primary/50 hover:bg-muted/30 focus-visible:outline-none",
+            isDropTarget && "border-primary bg-muted/40",
+            isFocusVisible && "ring-3 ring-ring/50",
+            disabled && "cursor-not-allowed opacity-50 hover:border-border hover:bg-background",
+          )
+        }
       >
-        <input
-          ref={inputRef}
-          tabIndex={-1}
-          aria-hidden="true"
-          className="sr-only"
-          type="file"
-          accept={acceptValue}
-          multiple={multiple}
-          disabled={disabled}
-          onChange={(event) => {
-            handleFiles(event.currentTarget.files);
-            event.currentTarget.value = "";
-          }}
-        />
         <span
           data-slot="file-upload-icon"
           className="mb-3 flex size-10 items-center justify-center rounded-lg bg-muted text-muted-foreground"
         >
-          <Upload className="size-5" />
+          <Upload className="size-5" aria-hidden="true" />
         </span>
         <span data-slot="file-upload-label" className="text-sm font-medium">
           Drop files here
         </span>
-        <span data-slot="file-upload-description" className="mt-1 text-xs text-muted-foreground">
-          {extensions.length > 0 ? `${extensions.join(",").toUpperCase()} · ` : ""}Up to {formatSize(maxSize)}
+        <span id={descriptionId} data-slot="file-upload-description" className="mt-1 text-xs text-muted-foreground">
+          {formatSummary}
         </span>
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          className="mt-3"
-          disabled={disabled}
-          onClick={() => inputRef.current?.click()}
+        <FileTrigger
+          acceptedFileTypes={acceptedFileTypes}
+          allowsMultiple={multiple}
+          onSelect={(selected) => {
+            if (selected) handleFiles(Array.from(selected));
+          }}
         >
-          Browse files
-        </Button>
-      </div>
-      {error && (
-        <p role="alert" className="text-sm text-destructive">
-          {error}
-        </p>
-      )}
-      {keyedFiles.length > 0 && (
-        <ul className="space-y-2">
-          {keyedFiles.map(({ file, key }, index) => (
-            <li key={key} className="flex items-center gap-3 rounded-md border px-3 py-2">
-              <FileIcon className="size-4 shrink-0 text-muted-foreground" />
-              <span className="min-w-0 flex-1 truncate text-sm">
-                {file.name}
-                <span className="ml-2 text-xs text-muted-foreground">{formatSize(file.size)}</span>
-              </span>
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                className="size-7"
-                aria-label={`Remove ${file.name}`}
-                disabled={disabled}
-                onClick={() => onFilesChange(files.filter((_, fileIndex) => fileIndex !== index))}
-              >
-                <X className="size-4" />
-              </Button>
-            </li>
+          <Button type="button" variant="outline" size="sm" className="mt-3" isDisabled={disabled}>
+            Browse files
+          </Button>
+        </FileTrigger>
+      </DropZone>
+
+      {rejections.length > 0 && (
+        <div id={errorId} role="alert" className="space-y-1 text-sm text-destructive">
+          {rejections.map((rejection) => (
+            <p key={`${rejection.reason}-${rejection.file.name}-${rejection.file.lastModified}`}>{rejection.message}</p>
           ))}
+        </div>
+      )}
+
+      {keyedFiles.length > 0 && (
+        <ul aria-label="Selected files" className="space-y-2">
+          {keyedFiles.map(({ file, key }, index) => {
+            const status = getFileStatus?.(file, index);
+            const remove = () => onFilesChange(files.filter((_, fileIndex) => fileIndex !== index));
+
+            if (renderFile) {
+              return <li key={key}>{renderFile(file, { index, status, remove })}</li>;
+            }
+
+            return (
+              <li key={key} className="flex min-w-0 items-center gap-3 rounded-md border border-border px-3 py-2">
+                <FileIcon className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+                <span className="min-w-0 flex-1 truncate text-sm">
+                  {file.name}
+                  <span className="ml-2 text-xs text-muted-foreground">{formatFileSize(file.size)}</span>
+                </span>
+                {status && (
+                  <span
+                    data-tone={status.tone ?? "neutral"}
+                    className="inline-flex shrink-0 items-center gap-1 rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground data-[tone=success]:bg-emerald-500/10 data-[tone=success]:text-emerald-700 data-[tone=error]:bg-destructive/10 data-[tone=error]:text-destructive data-[tone=progress]:bg-primary/10 data-[tone=progress]:text-primary dark:data-[tone=success]:text-emerald-400"
+                  >
+                    <FileStatusIcon tone={status.tone} />
+                    {status.label}
+                  </span>
+                )}
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon-sm"
+                  aria-label={`Remove ${file.name}`}
+                  isDisabled={disabled}
+                  onPress={remove}
+                >
+                  <X className="size-4" />
+                </Button>
+              </li>
+            );
+          })}
         </ul>
       )}
     </div>
   );
 }
+
+export { FileUpload, fileAllowed, formatFileSize };
+export type {
+  FileUploadAccept,
+  FileUploadFileStatus,
+  FileUploadProps,
+  FileUploadRejection,
+  FileUploadRejectionReason,
+  FileUploadRenderProps,
+};

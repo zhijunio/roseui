@@ -2,7 +2,7 @@
 
 import { type ComponentProps, type ReactNode, useState } from "react";
 
-import { IconCreditCard } from "@tabler/icons-react";
+import { CreditCard as IconCreditCard } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -13,7 +13,7 @@ export function PaymentButton({
   icon = <IconCreditCard aria-hidden />,
   variant = "outline",
   className,
-  onClick,
+  onPress,
   ...buttonProps
 }: {
   label?: string;
@@ -27,9 +27,9 @@ export function PaymentButton({
       {...buttonProps}
       variant={variant}
       className={cn("h-auto max-w-full justify-start gap-3 px-4 py-3 text-left whitespace-normal", className)}
-      onClick={(event) => {
+      onPress={(event) => {
         setFeedback(`${label} selected`);
-        onClick?.(event);
+        onPress?.(event);
       }}
     >
       <span className="flex size-10 shrink-0 items-center justify-center rounded-md bg-muted">{icon}</span>

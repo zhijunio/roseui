@@ -2,7 +2,7 @@
 
 import { type ComponentProps, type ReactNode, useState } from "react";
 
-import { IconStar } from "@tabler/icons-react";
+import { Star as IconStar } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 

@@ -1,17 +1,22 @@
 "use client";
 
 import { useState, type ComponentProps } from "react";
-import { Slider as SliderPrimitive } from "radix-ui";
+import {
+  Slider as SliderPrimitive,
+  SliderFill,
+  SliderThumb,
+  SliderTrack,
+  type SliderProps as SliderPrimitiveProps,
+} from "react-aria-components/Slider";
 
 import { cn } from "@/lib/utils";
 
 type SliderRootProps = Omit<
-  ComponentProps<typeof SliderPrimitive.Root>,
+  SliderPrimitiveProps<number | number[]>,
   | "value"
   | "defaultValue"
   | "onChange"
-  | "onValueChange"
-  | "onValueCommit"
+  | "onChangeEnd"
 >;
 
 type SliderDisplayProps = {
@@ -33,31 +38,33 @@ type SliderIndicatorProps = {
 };
 
 const rootClassName =
-  "relative flex w-full touch-none select-none items-center py-2 disabled:opacity-50 data-[disabled]:pointer-events-none data-[orientation=vertical]:h-full data-[orientation=vertical]:w-auto data-[orientation=vertical]:flex-col data-[orientation=vertical]:py-0";
+  "relative flex w-full touch-none select-none items-center py-2 disabled:opacity-50 disabled:pointer-events-none orientation-vertical:h-full orientation-vertical:w-auto orientation-vertical:flex-col orientation-vertical:py-0";
 const trackClassName =
-  "relative h-1.5 w-full grow overflow-hidden rounded-full bg-muted shadow-inner data-[orientation=vertical]:h-full data-[orientation=vertical]:w-1.5";
+  "relative h-1.5 w-full grow overflow-visible rounded-full bg-muted shadow-inner orientation-vertical:h-full orientation-vertical:w-1.5";
 const rangeClassName =
-  "absolute h-full rounded-full bg-gradient-to-r from-primary/80 to-primary data-[orientation=vertical]:h-auto data-[orientation=vertical]:w-full data-[orientation=vertical]:bg-gradient-to-b";
+  "absolute h-full rounded-full bg-gradient-to-r from-primary/80 to-primary forced-colors:bg-[Highlight] orientation-vertical:h-auto orientation-vertical:w-full orientation-vertical:bg-gradient-to-b";
 const thumbClassName =
-  "relative z-10 block size-4 shrink-0 rounded-full border-2 border-primary bg-background shadow-md shadow-primary/20 transition-shadow focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/20 disabled:pointer-events-none disabled:opacity-50";
+  "touch-target relative z-10 block size-4 shrink-0 rounded-full border-2 border-primary bg-background shadow-md shadow-primary/20 transition-shadow focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/20 disabled:pointer-events-none disabled:opacity-50 forced-colors:border-[Highlight] forced-colors:bg-[Canvas]";
 
 function ValueThumb({
   value,
+  index,
   label,
   formatValue,
   showTooltip,
   className,
 }: {
   value: number;
+  index: number;
   label: string;
   formatValue: (value: number) => string;
   showTooltip: boolean;
   className?: string;
 }) {
   return (
-    <SliderPrimitive.Thumb
+    <SliderThumb
+      index={index}
       aria-label={label}
-      aria-valuetext={formatValue(value)}
       className={cn(thumbClassName, className)}
     >
       {showTooltip && (
@@ -68,7 +75,7 @@ function ValueThumb({
           {formatValue(value)}
         </span>
       )}
-    </SliderPrimitive.Thumb>
+    </SliderThumb>
   );
 }
 
@@ -146,6 +153,8 @@ export function Slider({
   showSteps = false,
   marks,
   orientation = "horizontal",
+  disabled,
+  isDisabled,
   ...props
 }: SliderRootProps &
   SliderDisplayProps & {
@@ -153,6 +162,10 @@ export function Slider({
     defaultValue?: number;
     onValueChange?: (value: number) => void;
     onValueCommit?: (value: number) => void;
+    min?: number;
+    max?: number;
+    step?: number;
+    disabled?: boolean;
     showSteps?: boolean;
     marks?: readonly SliderMark[];
   }) {
@@ -170,30 +183,32 @@ export function Slider({
   }
 
   return (
-    <SliderPrimitive.Root
+    <SliderPrimitive
       {...props}
-      min={min}
-      max={max}
+      minValue={min}
+      maxValue={max}
       step={step}
       orientation={orientation}
       value={value === undefined ? undefined : [value]}
       defaultValue={value === undefined ? [defaultValue] : undefined}
-      onValueChange={handleValueChange}
-      onValueCommit={handleValueCommit}
+      onChange={(nextValue) => handleValueChange(Array.isArray(nextValue) ? nextValue : [nextValue])}
+      onChangeEnd={(nextValue) => handleValueCommit(Array.isArray(nextValue) ? nextValue : [nextValue])}
+      isDisabled={disabled ?? isDisabled}
       className={cn(rootClassName, className)}
     >
-      <SliderPrimitive.Track className={trackClassName}>
-        <SliderPrimitive.Range className={rangeClassName} />
-      </SliderPrimitive.Track>
-      <SliderIndicators min={min} max={max} step={step} orientation={orientation} values={[currentValue]} showSteps={showSteps} marks={marks} />
-      <ValueThumb
-        value={currentValue}
-        label={label}
-        formatValue={formatValue}
-        showTooltip={showTooltip}
-        className={customThumbClassName}
-      />
-    </SliderPrimitive.Root>
+      <SliderTrack className={trackClassName}>
+        <SliderFill className={rangeClassName} />
+        <SliderIndicators min={min} max={max} step={step} orientation={orientation} values={[currentValue]} showSteps={showSteps} marks={marks} />
+        <ValueThumb
+          index={0}
+          value={currentValue}
+          label={label}
+          formatValue={formatValue}
+          showTooltip={showTooltip}
+          className={customThumbClassName}
+        />
+      </SliderTrack>
+    </SliderPrimitive>
   );
 }
 
@@ -213,6 +228,8 @@ export function RangeSlider({
   showSteps = false,
   marks,
   orientation = "horizontal",
+  disabled,
+  isDisabled,
   ...props
 }: SliderRootProps &
   SliderDisplayProps & {
@@ -220,6 +237,10 @@ export function RangeSlider({
     defaultValue?: [number, number];
     onValueChange?: (value: [number, number]) => void;
     onValueCommit?: (value: [number, number]) => void;
+    min?: number;
+    max?: number;
+    step?: number;
+    disabled?: boolean;
     showSteps?: boolean;
     marks?: readonly SliderMark[];
   }) {
@@ -237,32 +258,34 @@ export function RangeSlider({
   }
 
   return (
-    <SliderPrimitive.Root
+    <SliderPrimitive
       {...props}
-      min={min}
-      max={max}
+      minValue={min}
+      maxValue={max}
       step={step}
       orientation={orientation}
       value={value}
       defaultValue={value === undefined ? defaultValue : undefined}
-      onValueChange={handleValueChange}
-      onValueCommit={handleValueCommit}
+      onChange={(nextValue) => handleValueChange(Array.isArray(nextValue) ? nextValue : [nextValue])}
+      onChangeEnd={(nextValue) => handleValueCommit(Array.isArray(nextValue) ? nextValue : [nextValue])}
+      isDisabled={disabled ?? isDisabled}
       className={cn(rootClassName, className)}
     >
-      <SliderPrimitive.Track className={trackClassName}>
-        <SliderPrimitive.Range className={rangeClassName} />
-      </SliderPrimitive.Track>
-      <SliderIndicators min={min} max={max} step={step} orientation={orientation} values={currentValue} showSteps={showSteps} marks={marks} />
-      {currentValue.map((thumbValue, index) => (
-        <ValueThumb
-          key={index}
-          value={thumbValue}
-          label={`${label} ${index === 0 ? "minimum" : "maximum"}`}
-          formatValue={formatValue}
-          showTooltip={showTooltip}
-          className={customThumbClassName}
-        />
-      ))}
-    </SliderPrimitive.Root>
+      <SliderTrack className={trackClassName}>
+        <SliderFill className={rangeClassName} />
+        <SliderIndicators min={min} max={max} step={step} orientation={orientation} values={currentValue} showSteps={showSteps} marks={marks} />
+        {currentValue.map((thumbValue, index) => (
+          <ValueThumb
+            key={index}
+            index={index}
+            value={thumbValue}
+            label={`${label} ${index === 0 ? "minimum" : "maximum"}`}
+            formatValue={formatValue}
+            showTooltip={showTooltip}
+            className={customThumbClassName}
+          />
+        ))}
+      </SliderTrack>
+    </SliderPrimitive>
   );
 }

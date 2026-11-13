@@ -1,7 +1,11 @@
 "use client"
 
 import * as React from "react"
-import { Progress as ProgressPrimitive } from "radix-ui"
+import {
+  ProgressBar as ProgressPrimitive,
+  type ProgressBarProps as ProgressPrimitiveProps,
+  type ProgressBarRenderProps,
+} from "react-aria-components/ProgressBar"
 
 import { cn } from "@/lib/utils"
 
@@ -22,6 +26,46 @@ const toneClasses: Record<ProgressTone, string> = {
   error: "bg-destructive",
 }
 
+type ProgressContextValue = ProgressBarRenderProps & {
+  size: ProgressSize
+  tone: ProgressTone
+}
+
+const ProgressContext = React.createContext<ProgressContextValue | null>(null)
+
+function useProgressContext() {
+  const context = React.useContext(ProgressContext)
+  if (!context) {
+    throw new Error("Progress subcomponents must be used within Progress")
+  }
+  return context
+}
+
+function ProgressIndicator({
+  percentage,
+  isIndeterminate,
+  tone,
+  className,
+}: {
+  percentage: number
+  isIndeterminate: boolean
+  tone: ProgressTone
+  className?: string
+}) {
+  return (
+    <span
+      data-slot="progress-indicator"
+      className={cn(
+        "absolute inset-y-0 start-0 rounded-[inherit] motion-safe:transition-[width] motion-safe:duration-300 motion-safe:ease-out motion-reduce:!transition-none forced-colors:bg-[Highlight]",
+        toneClasses[tone],
+        isIndeterminate && "w-2/5 motion-safe:animate-progress-bar-indeterminate",
+        className,
+      )}
+      style={isIndeterminate ? undefined : { width: `${percentage}%` }}
+    />
+  )
+}
+
 function Progress({
   className,
   value,
@@ -30,12 +74,16 @@ function Progress({
   max = 100,
   size = "md",
   tone = "accent",
+  children,
   ...props
-}: React.ComponentProps<typeof ProgressPrimitive.Root> & {
+}: Omit<ProgressPrimitiveProps, "value" | "minValue" | "maxValue" | "children"> & {
+  value?: number | null
   minValue?: number
   maxValue?: number
+  max?: number
   size?: ProgressSize
   tone?: ProgressTone
+  children?: React.ReactNode | ((values: ProgressBarRenderProps) => React.ReactNode)
 }) {
   const minimum = Number.isFinite(minValue) ? minValue : 0
   const requestedMaximum = maxValue ?? max
@@ -50,35 +98,87 @@ function Progress({
     ? 0
     : ((currentValue - minimum) / (maximum - minimum)) * 100
 
+  if (children !== undefined) {
+    return (
+      <ProgressPrimitive
+        {...props}
+        data-slot="progress"
+        data-size={size}
+        data-tone={tone}
+        data-indeterminate={isIndeterminate || undefined}
+        value={currentValue ?? undefined}
+        minValue={minimum}
+        maxValue={maximum}
+        className={cn("flex w-full flex-col gap-2", className)}
+      >
+        {(values) => {
+          const contextValue = { ...values, size, tone }
+          return (
+            <ProgressContext.Provider value={contextValue}>
+              {typeof children === "function" ? children(contextValue) : children}
+            </ProgressContext.Provider>
+          )
+        }}
+      </ProgressPrimitive>
+    )
+  }
+
   return (
-    <ProgressPrimitive.Root
+    <ProgressPrimitive
       {...props}
       data-slot="progress"
       data-size={size}
       data-tone={tone}
       data-indeterminate={isIndeterminate || undefined}
-      value={currentValue}
-      max={maximum}
-      aria-valuemin={minimum}
-      aria-valuemax={maximum}
-      aria-valuenow={isIndeterminate ? undefined : currentValue}
+      value={currentValue ?? undefined}
+      minValue={minimum}
+      maxValue={maximum}
       className={cn(
-        "relative flex w-full items-center overflow-hidden bg-muted",
+        "relative flex w-full items-center overflow-hidden bg-muted forced-colors:border forced-colors:border-[ButtonBorder] forced-colors:bg-[Canvas]",
         sizeClasses[size],
         className
       )}
     >
-      <ProgressPrimitive.Indicator
-        data-slot="progress-indicator"
-        className={cn(
-          "absolute inset-y-0 left-0 rounded-[inherit] motion-safe:transition-[width] motion-safe:duration-300 motion-safe:ease-out motion-reduce:!transition-none",
-          toneClasses[tone],
-          isIndeterminate && "w-2/5 motion-safe:animate-progress-bar-indeterminate"
-        )}
-        style={isIndeterminate ? undefined : { width: `${percentage}%` }}
-      />
-    </ProgressPrimitive.Root>
+      <ProgressIndicator percentage={percentage ?? 0} isIndeterminate={isIndeterminate} tone={tone} />
+    </ProgressPrimitive>
   )
 }
 
-export { Progress }
+function ProgressHeader({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="progress-header"
+      className={cn("flex items-center justify-between gap-4 text-sm", className)}
+      {...props}
+    />
+  )
+}
+
+function ProgressValue({ className, ...props }: Omit<React.ComponentProps<"span">, "children">) {
+  const { valueText } = useProgressContext()
+  return (
+    <span
+      data-slot="progress-value"
+      className={cn("shrink-0 tabular-nums text-muted-foreground", className)}
+      {...props}
+    >
+      {valueText}
+    </span>
+  )
+}
+
+function ProgressTrack({ className, ...props }: React.ComponentProps<"div">) {
+  const { percentage, isIndeterminate, size, tone } = useProgressContext()
+  return (
+    <div
+      data-slot="progress-track"
+      className={cn("relative flex w-full items-center overflow-hidden bg-muted forced-colors:border forced-colors:border-[ButtonBorder] forced-colors:bg-[Canvas]", sizeClasses[size], className)}
+      {...props}
+    >
+      <ProgressIndicator percentage={percentage ?? 0} isIndeterminate={isIndeterminate} tone={tone} />
+    </div>
+  )
+}
+
+export { Progress, ProgressHeader, ProgressValue, ProgressTrack }
+export type { ProgressSize, ProgressTone }

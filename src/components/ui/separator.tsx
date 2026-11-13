@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Separator as SeparatorPrimitive } from "radix-ui"
+import { Separator as SeparatorPrimitive } from "react-aria-components/Separator"
 
 import { cn } from "@/lib/utils"
 import type { ReactNode } from "react"
@@ -12,16 +12,17 @@ function Separator({
   decorative = true,
   variant = "default",
   ...props
-}: React.ComponentProps<typeof SeparatorPrimitive.Root> & {
+}: React.ComponentProps<typeof SeparatorPrimitive> & {
+  decorative?: boolean
   variant?: "default" | "secondary" | "tertiary"
 }) {
   return (
-    <SeparatorPrimitive.Root
+    <SeparatorPrimitive
       data-slot="separator"
-      decorative={decorative}
+      aria-hidden={decorative || undefined}
       orientation={orientation}
       className={cn(
-        "shrink-0 data-horizontal:h-px data-horizontal:w-full data-vertical:w-px data-vertical:self-stretch",
+        "shrink-0 orientation-horizontal:h-px orientation-horizontal:w-full orientation-vertical:w-px orientation-vertical:self-stretch",
         variant === "default" && "bg-border",
         variant === "secondary" && "bg-muted/50",
         variant === "tertiary" && "bg-muted/25",

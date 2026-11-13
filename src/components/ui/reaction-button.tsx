@@ -2,7 +2,7 @@
 
 import { type ComponentProps, type ReactNode, useState } from "react";
 
-import { IconStar, IconThumbUp } from "@tabler/icons-react";
+import { Star as IconStar, ThumbsUp as IconThumbUp } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
@@ -13,7 +13,7 @@ export function ReactionButton({
   pressed,
   defaultPressed = false,
   onPressedChange,
-  onClick,
+  onPress,
   ...buttonProps
 }: {
   icon?: ReactNode;
@@ -39,11 +39,11 @@ export function ReactionButton({
       {...buttonProps}
       variant={buttonProps.variant ?? "outline"}
       aria-pressed={isPressed}
-      onClick={(event) => {
+      onPress={(event) => {
         const nextPressed = !isPressed;
         if (pressed === undefined) setUncontrolledPressed(nextPressed);
         onPressedChange?.(nextPressed);
-        onClick?.(event);
+        onPress?.(event);
       }}
     >
       {iconNode}

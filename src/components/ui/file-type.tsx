@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { IconArchive, IconCode, IconFile, IconFileText, IconFolder, IconMusic, IconPhoto, IconPresentation, IconTable, IconTextSize, IconVideo, IconWindow } from "@tabler/icons-react"
+import { Archive as IconArchive, Code as IconCode, File as IconFile, FileText as IconFileText, Folder as IconFolder, Music as IconMusic, Image as IconPhoto, Presentation as IconPresentation, Table as IconTable, Text as IconTextSize, Video as IconVideo, AppWindow as IconWindow } from "lucide-react";
 import { cn } from "@/lib/utils"
 
 export type FileTypeCategory = "archive" | "audio" | "code" | "design" | "document" | "empty" | "executable" | "file" | "folder" | "font" | "image" | "presentation" | "spreadsheet" | "video"

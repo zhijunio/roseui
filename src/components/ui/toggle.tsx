@@ -2,11 +2,12 @@
 
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
-import { Toggle as TogglePrimitive } from "radix-ui"
+import { ToggleButton as TogglePrimitive, type ToggleButtonProps } from "react-aria-components/ToggleButton"
+import { composeRenderProps } from "react-aria-components/composeRenderProps"
 import { cn } from "@/lib/utils"
 
 const toggleVariants = cva(
-  "group/toggle inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 aria-pressed:bg-accent aria-pressed:text-secondary-foreground [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "touch-target group/toggle inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 disabled:text-[GrayText] aria-pressed:bg-accent aria-pressed:text-secondary-foreground forced-colors:border-[ButtonBorder] forced-colors:aria-pressed:bg-[Highlight] forced-colors:aria-pressed:text-[HighlightText] [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
@@ -25,23 +26,24 @@ const toggleVariants = cva(
 
 export type ToggleVariant = NonNullable<VariantProps<typeof toggleVariants>["variant"]>
 export type ToggleSize = NonNullable<VariantProps<typeof toggleVariants>["size"]>
+export type ToggleProps = ToggleButtonProps & VariantProps<typeof toggleVariants> & { isIconOnly?: boolean; ref?: React.Ref<HTMLButtonElement> }
 export function Toggle({
   className,
   variant = "default",
   size = "default",
   isIconOnly = false,
   ...props
-}: React.ComponentProps<typeof TogglePrimitive.Root> & VariantProps<typeof toggleVariants> & { isIconOnly?: boolean }) {
-  return <TogglePrimitive.Root
+}: ToggleProps) {
+  return <TogglePrimitive
     data-slot="toggle"
     data-variant={variant}
     data-size={size}
     data-icon-only={isIconOnly || undefined}
-    className={cn(
+    className={composeRenderProps(className, (className) => cn(
       toggleVariants({ variant, size }),
       isIconOnly && (size === "sm" ? "w-8 px-0" : size === "lg" ? "w-10 px-0" : "w-9 px-0"),
       className,
-    )}
+    ))}
     {...props}
   />
 }

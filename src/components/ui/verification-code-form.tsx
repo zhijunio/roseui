@@ -2,10 +2,10 @@
 
 import { type FormEvent, type ReactNode, useId } from "react";
 
-import { IconCheck, IconSend } from "@tabler/icons-react";
+import { Check as IconCheck, Send as IconSend } from "lucide-react";
 
-import { InputGroup, InputGroupAddon, InputGroupButton } from "@/components/ui/composite-input-group";
-import { InputOtp } from "@/components/ui/composite-input-otp";
+import { InputGroup, InputGroupAddon, InputGroupButton } from "@/components/ui/input-group";
+import { InputOTP } from "@/components/ui/input-otp";
 import { Button } from "@/components/ui/button";
 import { HintText } from "@/components/ui/hint-text";
 import { Label } from "@/components/ui/label";
@@ -74,7 +74,7 @@ export function VerificationCodeForm({
           onChange: onRecipientChange ?? (() => undefined),
         })}
         <InputGroupAddon align="inline-end">
-          <InputGroupButton type="submit" size="xs" disabled={sendDisabled} aria-label={sendLabel} title={sendLabel}>
+          <InputGroupButton type="submit" size="xs" isDisabled={sendDisabled} aria-label={sendLabel} title={sendLabel}>
             {cooldownSecondsLeft > 0 ? (
               <>
                 <IconCheck className="size-3.5" />
@@ -93,8 +93,8 @@ export function VerificationCodeForm({
       ) : null}
       {codeVisible ? (
         <div className="flex flex-wrap items-center gap-2">
-          <InputOtp aria-label={`${codeLength}-digit verification code`} value={code} onChange={onCodeChange} />
-          <Button type="button" variant="outline" disabled={code.length !== codeLength} onClick={onVerifyCode}>
+          <InputOTP aria-label={`${codeLength}-digit verification code`} value={code} onChange={onCodeChange} />
+          <Button type="button" variant="outline" isDisabled={code.length !== codeLength} onPress={onVerifyCode}>
             {verifyLabel}
           </Button>
         </div>

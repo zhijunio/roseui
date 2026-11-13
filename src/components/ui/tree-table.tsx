@@ -2,11 +2,11 @@
 
 import { type KeyboardEvent, type ReactNode, useRef, useState } from "react";
 
-import { IconChevronRight, IconRefresh } from "@tabler/icons-react";
+import { ChevronRight as IconChevronRight, RefreshCw as IconRefresh } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@/components/ui/table";
 
 export type TreeTableNode<Row> = {
   id: string;
@@ -271,17 +271,16 @@ export function TreeTable<Row>({
     <div className="grid min-w-0 gap-2">
       <Table aria-label={ariaLabel} role="treegrid" aria-colcount={columns.length + 2}>
         <TableHeader>
-          <TableRow role="row">
-            <TableHead role="columnheader" className="w-10">
+            <TableColumn className="w-10">
               <span className="sr-only">Select</span>
-            </TableHead>
-            <TableHead role="columnheader">Record</TableHead>
+            </TableColumn>
+            <TableColumn isRowHeader>Record</TableColumn>
             {columns.map((column) => {
               const direction = sort?.columnId === column.id ? sort.direction : "none";
               return (
-                <TableHead key={column.id} role="columnheader" aria-sort={direction}>
+                <TableColumn key={column.id} role="columnheader" aria-sort={direction}>
                   {column.sortValue ? (
-                    <Button variant="ghost" size="sm" className="-ml-2" onClick={() => toggleSort(column)}>
+                    <Button variant="ghost" size="sm" className="-ml-2" onPress={() => toggleSort(column)}>
                       {column.label}
                       <span className="sr-only">
                         {direction === "ascending"
@@ -294,11 +293,10 @@ export function TreeTable<Row>({
                   ) : (
                     column.label
                   )}
-                </TableHead>
+                </TableColumn>
               );
             })}
-          </TableRow>
-        </TableHeader>
+          </TableHeader>
         <TableBody>
           {visibleNodes.map((entry) => {
             const { node, depth, position, setSize } = entry;
@@ -343,8 +341,8 @@ export function TreeTable<Row>({
                           size="icon-sm"
                           aria-label={`${isExpanded ? "Collapse" : "Expand"} ${label}`}
                           aria-expanded={isExpanded}
-                          disabled={isLoading || node.disabled}
-                          onClick={() => (isExpanded ? setExpanded(node.id, false) : void expandNode(node))}
+                          isDisabled={isLoading || node.disabled}
+                          onPress={() => (isExpanded ? setExpanded(node.id, false) : void expandNode(node))}
                         >
                           <IconChevronRight
                             className={`size-4 transition-transform motion-reduce:transition-none ${isExpanded ? "rotate-90" : ""}`}
@@ -363,7 +361,7 @@ export function TreeTable<Row>({
                     {error && (
                       <span className="flex items-center gap-2 text-xs text-destructive" role="alert">
                         {error}
-                        <Button size="sm" variant="outline" onClick={() => void expandNode(node)}>
+                        <Button size="sm" variant="outline" onPress={() => void expandNode(node)}>
                           <IconRefresh className="size-3.5" />
                           Retry
                         </Button>

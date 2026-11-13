@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-import { IconSearch, IconX } from "@tabler/icons-react";
+import { Search as IconSearch, X as IconX } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -398,7 +398,7 @@ export function EmojiPicker({
           variant="outline"
           size={size === "lg" ? "lg" : size === "sm" ? "sm" : "icon"}
           aria-label={triggerLabel}
-          disabled={disabled}
+          isDisabled={disabled}
           className={className}
         >
           {current || "☺"}

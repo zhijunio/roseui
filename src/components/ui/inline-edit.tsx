@@ -2,11 +2,11 @@
 
 import * as React from "react";
 
-import { IconCheck, IconPencil, IconX } from "@tabler/icons-react";
+import { Check as IconCheck, Pencil as IconPencil, X as IconX } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { TextArea } from "@/components/ui/text-area";
 import { cn } from "@/lib/utils";
 
 type InlineEditProps = {
@@ -139,7 +139,7 @@ function InlineEdit({
   return (
     <div className={cn("grid w-full gap-2", className)} onBlur={handleBlur}>
       {multiline ? (
-        <Textarea
+        <TextArea
           ref={fieldRef as React.Ref<HTMLTextAreaElement>}
           aria-label={label}
           aria-invalid={Boolean(error)}
@@ -171,7 +171,7 @@ function InlineEdit({
         </p>
       )}
       <div className="flex items-center gap-1">
-        <Button type="button" size="sm" onClick={() => void saveDraft()} disabled={saving}>
+        <Button type="button" size="sm" onPress={() => void saveDraft()} isDisabled={saving}>
           {saving ? (
             "Saving…"
           ) : (
@@ -181,7 +181,7 @@ function InlineEdit({
             </>
           )}
         </Button>
-        <Button type="button" size="sm" variant="ghost" onClick={cancelEdit} disabled={saving}>
+        <Button type="button" size="sm" variant="ghost" onPress={cancelEdit} isDisabled={saving}>
           <IconX aria-hidden="true" />
           Cancel
         </Button>

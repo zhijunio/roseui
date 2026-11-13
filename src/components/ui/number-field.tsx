@@ -1,239 +1,124 @@
 "use client";
 
-import type { FocusEvent, KeyboardEvent } from "react";
-import { useMemo, useState } from "react";
+import type { ComponentProps } from "react";
+import {
+  Button as AriaButton,
+  Group,
+  NumberField as NumberFieldPrimitive,
+  type NumberFieldProps as AriaNumberFieldProps,
+} from "react-aria-components/NumberField";
+import type { InputProps as AriaInputProps } from "react-aria-components/Input";
+import { I18nProvider } from "react-aria-components/I18nProvider";
 
-import { IconMinus as Minus, IconPlus as Plus } from "@tabler/icons-react";
+import { Minus as IconMinus, Plus as IconPlus } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
-function parseFormattedNumber(value: string, options: Intl.NumberFormatOptions, locale: string): number | null {
-  if (!value.trim()) return null;
-
-  const symbols = new Intl.NumberFormat(locale, {
-    useGrouping: true,
-    numberingSystem: options.numberingSystem,
-  }).formatToParts(-12345.6);
-  const decimal = symbols.find((part) => part.type === "decimal")?.value ?? ".";
-  const group = symbols.find((part) => part.type === "group")?.value;
-  const minus = symbols.find((part) => part.type === "minusSign")?.value ?? "-";
-  const accountingNegative = value.includes("(") && value.includes(")");
-  const percent = new Intl.NumberFormat(locale, options)
-    .formatToParts(1)
-    .some((part) => part.type === "percentSign" && value.includes(part.value));
-  const digitFormatter = new Intl.NumberFormat(locale, {
-    useGrouping: false,
-    numberingSystem: options.numberingSystem,
-  });
-
-  let normalized = value;
-  for (let digit = 0; digit <= 9; digit += 1) {
-    const localized = digitFormatter.format(digit);
-    if (localized !== String(digit)) normalized = normalized.replaceAll(localized, String(digit));
-  }
-  if (group) normalized = normalized.replaceAll(group, "");
-  if (decimal !== ".") normalized = normalized.replaceAll(decimal, ".");
-  if (minus !== "-") normalized = normalized.replaceAll(minus, "-");
-  normalized = normalized.replace(/[^\d+\-.]/g, "");
-
-  const parsed = Number(normalized);
-  if (!Number.isFinite(parsed)) return null;
-  const signed = accountingNegative ? -Math.abs(parsed) : parsed;
-  return percent ? signed / 100 : signed;
-}
-
-function formatEditableNumber(value: number, locale: string): string {
-  return new Intl.NumberFormat(locale, {
-    useGrouping: false,
-    maximumFractionDigits: 20,
-  }).format(value);
+export interface NumberFieldProps extends AriaNumberFieldProps {
+  ref?: React.Ref<HTMLDivElement>;
+  /** Compatibility props retained from the RoseUI number field. */
+  min?: number;
+  max?: number;
+  disabled?: boolean;
+  readOnly?: boolean;
+  locale?: string;
+  onValueChange?: (value: number) => void;
 }
 
 export function NumberField({
-  value,
-  defaultValue = 0,
-  onValueChange,
-  step = 1,
-  min,
-  max,
-  formatOptions,
-  locale = "en-US",
-  size = "default",
-  layout = "inline",
   className,
+  min,
+  minValue,
+  max,
+  maxValue,
   disabled,
+  isDisabled,
   readOnly,
-  onFocus,
-  onBlur,
-  onKeyDown,
+  isReadOnly,
+  locale,
+  onChange,
+  onValueChange,
   ...props
-}: Omit<React.ComponentProps<"input">, "type" | "size" | "value" | "defaultValue" | "onChange"> & {
-  value?: number;
-  defaultValue?: number;
-  onValueChange?: (value: number) => void;
-  step?: number;
-  min?: number;
-  max?: number;
-  formatOptions?: Intl.NumberFormatOptions;
-  /** Defaults to en-US so server and browser formatting are consistent. */
-  locale?: string;
-  size?: "sm" | "default" | "lg";
-  layout?: "inline" | "right";
-}) {
-  const [internal, setInternal] = useState(defaultValue);
-  const [editing, setEditing] = useState(false);
-  const [draft, setDraft] = useState("");
-  const current = value ?? internal;
-  const formatter = useMemo(
-    () => (formatOptions ? new Intl.NumberFormat(locale, formatOptions) : undefined),
-    [locale, formatOptions],
+}: NumberFieldProps) {
+  const numberField = (
+    <NumberFieldPrimitive
+      data-slot="control"
+      className={cn("w-full", className)}
+      minValue={minValue ?? min}
+      maxValue={maxValue ?? max}
+      isDisabled={isDisabled ?? disabled}
+      isReadOnly={isReadOnly ?? readOnly}
+      onChange={(value) => {
+        onChange?.(value);
+        onValueChange?.(value);
+      }}
+      {...props}
+    />
   );
 
-  function update(next: number) {
-    const bounded = Math.min(max ?? Infinity, Math.max(min ?? -Infinity, next));
-    if (value === undefined) setInternal(bounded);
-    onValueChange?.(bounded);
-  }
+  return locale ? <I18nProvider locale={locale}>{numberField}</I18nProvider> : numberField;
+}
 
-  function handleFocus(event: FocusEvent<HTMLInputElement>) {
-    setDraft(formatEditableNumber(current, locale));
-    setEditing(true);
-    onFocus?.(event);
-  }
+export interface NumberInputProps extends Omit<AriaInputProps, "className" | "size"> {
+  className?: string;
+  size?: "sm" | "default" | "lg";
+  layout?: "inline" | "right";
+}
 
-  function handleBlur(event: FocusEvent<HTMLInputElement>) {
-    setEditing(false);
-    onBlur?.(event);
-  }
-
-  function handleKeyDown(event: KeyboardEvent<HTMLInputElement>) {
-    onKeyDown?.(event);
-    if (event.defaultPrevented || readOnly || !formatOptions) return;
-    if (event.key === "ArrowUp") {
-      event.preventDefault();
-      update(current + step);
-      setDraft(formatEditableNumber(Math.min(max ?? Infinity, current + step), locale));
-    } else if (event.key === "ArrowDown") {
-      event.preventDefault();
-      update(current - step);
-      setDraft(formatEditableNumber(Math.max(min ?? -Infinity, current - step), locale));
-    }
-  }
-
+export function NumberInput({ className, size = "default", layout = "inline", ...props }: NumberInputProps) {
   return (
-    <div
+    <Group
       className={cn(
-        "flex min-w-0 items-center rounded-lg border bg-card",
-        formatter ? "w-full" : "w-fit",
+        "flex h-9 w-fit min-w-0 items-center overflow-hidden rounded-lg border border-input bg-background",
+        "focus-within:border-ring/70 focus-within:ring-2 focus-within:ring-ring/20",
+        "in-disabled:cursor-not-allowed in-disabled:opacity-50",
         size === "sm" && "h-7",
-        size === "default" && "h-9",
         size === "lg" && "h-11",
-        disabled && "opacity-50",
+        layout === "right" && "[&>[slot=increment]]:order-2 [&>[slot=decrement]]:order-3",
         className,
       )}
     >
-      {layout === "inline" && (
-        <Button
-          type="button"
-          variant="ghost"
-          size={size === "lg" ? "icon" : "icon-sm"}
-          aria-label="Decrease value"
-          disabled={disabled || readOnly || (min !== undefined && current <= min)}
-          onClick={() => update(current - step)}
-        >
-          <Minus />
-        </Button>
-      )}
-      {formatter ? (
-        <Input
-          {...props}
-          type="text"
-          lang={locale}
-          inputMode="decimal"
-          role="spinbutton"
-          readOnly={readOnly}
-          value={editing ? draft : formatter.format(current)}
-          aria-valuenow={current}
-          aria-valuemin={min}
-          aria-valuemax={max}
-          aria-valuetext={formatter.format(current)}
-          disabled={disabled}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-          onKeyDown={handleKeyDown}
-          onChange={(event) => {
-            const nextDraft = event.currentTarget.value;
-            setDraft(nextDraft);
-            const nextValue = parseFormattedNumber(nextDraft, formatOptions!, locale);
-            if (nextValue !== null) update(nextValue);
-          }}
-          className={cn(
-            "h-full min-w-0 flex-1 rounded-none border-0 px-1 text-center shadow-none focus-visible:ring-0",
-            size === "sm" ? "w-28 text-sm" : size === "lg" ? "w-44" : "w-36",
-          )}
-        />
-      ) : (
-        <Input
-          {...props}
-          type="number"
-          readOnly={readOnly}
-          value={current}
-          min={min}
-          max={max}
-          step={step}
-          disabled={disabled}
-          onFocus={onFocus}
-          onBlur={onBlur}
-          onKeyDown={onKeyDown}
-          onChange={(event) => {
-            const next = event.currentTarget.valueAsNumber;
-            if (Number.isFinite(next)) update(next);
-          }}
-          className={cn(
-            "h-full rounded-none border-0 px-1 text-center shadow-none focus-visible:ring-0",
-            size === "sm" ? "w-12 text-sm" : size === "lg" ? "w-24" : "w-16",
-          )}
-        />
-      )}
+      {layout === "inline" && <StepperButton slot="decrement" size={size} />}
+      <Input
+        {...props}
+        type="number"
+        className={cn(
+          "h-full min-w-0 flex-1 rounded-none border-0 bg-transparent px-2 text-center tabular-nums shadow-none focus:ring-0",
+          size === "sm" ? "w-12 text-xs" : size === "lg" ? "w-24" : "w-16",
+        )}
+      />
       {layout === "inline" ? (
-        <Button
-          type="button"
-          variant="ghost"
-          size={size === "lg" ? "icon" : "icon-sm"}
-          aria-label="Increase value"
-          disabled={disabled || readOnly || (max !== undefined && current >= max)}
-          onClick={() => update(current + step)}
-        >
-          <Plus />
-        </Button>
+        <StepperButton slot="increment" size={size} />
       ) : (
-        <div className="flex h-full w-6 shrink-0 flex-col border-l">
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon-xs"
-            className="h-1/2 min-h-0 w-full flex-1 rounded-none px-0"
-            aria-label="Increase value"
-            disabled={disabled || readOnly || (max !== undefined && current >= max)}
-            onClick={() => update(current + step)}
-          >
-            <Plus />
-          </Button>
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon-xs"
-            className="h-1/2 min-h-0 w-full flex-1 rounded-none px-0"
-            aria-label="Decrease value"
-            disabled={disabled || readOnly || (min !== undefined && current <= min)}
-            onClick={() => update(current - step)}
-          >
-            <Minus />
-          </Button>
-        </div>
+        <span className="flex h-full shrink-0 flex-col border-l">
+          <StepperButton slot="increment" size="sm" className="h-1/2 w-7" />
+          <StepperButton slot="decrement" size="sm" className="h-1/2 w-7 border-t" />
+        </span>
       )}
-    </div>
+    </Group>
+  );
+}
+
+export interface StepperButtonProps extends Omit<ComponentProps<typeof AriaButton>, "children" | "slot"> {
+  slot: "increment" | "decrement";
+  size?: "sm" | "default" | "lg";
+}
+
+export function StepperButton({ slot, size = "default", className, ...props }: StepperButtonProps) {
+  const Icon = slot === "increment" ? IconPlus : IconMinus;
+  return (
+    <AriaButton
+      slot={slot}
+      aria-label={slot === "increment" ? "Increase value" : "Decrease value"}
+      className={cn(
+        "grid shrink-0 place-content-center text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:cursor-not-allowed disabled:opacity-50",
+        size === "lg" ? "size-10" : size === "sm" ? "size-7" : "size-8",
+        className,
+      )}
+      {...props}
+    >
+      <Icon aria-hidden="true" className="size-4" />
+    </AriaButton>
   );
 }

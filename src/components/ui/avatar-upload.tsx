@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-import { IconCamera, IconX } from "@tabler/icons-react";
+import { Camera as IconCamera, X as IconX } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -28,6 +28,7 @@ export function AvatarUpload({
   disabled?: boolean;
   className?: string;
 }) {
+  const cropId = React.useId();
   const input = React.useRef<HTMLInputElement>(null);
   const [preview, setPreview] = React.useState(src);
   const [message, setMessage] = React.useState("");
@@ -180,17 +181,17 @@ export function AvatarUpload({
         {file && (
           <div className="space-y-2">
             <div className="flex flex-wrap items-center gap-2">
-              <Button size="sm" onClick={() => void crop()} disabled={busy || cropping}>
+              <Button size="sm" onPress={() => void crop()} isDisabled={busy || cropping}>
                 {cropping ? "Cropping..." : "Crop image"}
               </Button>
-              <Button size="sm" onClick={() => void upload()} disabled={busy || cropping}>
+              <Button size="sm" onPress={() => void upload()} isDisabled={busy || cropping}>
                 {busy ? "Uploading..." : "Save image"}
               </Button>
               <Button
                 size="sm"
                 variant="outline"
-                disabled={busy || cropping}
-                onClick={() => {
+                isDisabled={busy || cropping}
+                onPress={() => {
                   setFile(undefined);
                   setPreview(src);
                   setCropScale(1);
@@ -203,11 +204,11 @@ export function AvatarUpload({
                 Cancel
               </Button>
             </div>
-            <label htmlFor="avatar-crop-zoom" className="block text-xs text-muted-foreground">
+            <label htmlFor={`${cropId}-zoom`} className="block text-xs text-muted-foreground">
               Crop zoom
             </label>
             <input
-              id="avatar-crop-zoom"
+              id={`${cropId}-zoom`}
               type="range"
               min="1"
               max="2"
@@ -219,10 +220,10 @@ export function AvatarUpload({
               aria-valuetext={`${cropScale.toFixed(1)}x`}
             />
             <div className="grid grid-cols-2 gap-2">
-              <label htmlFor="avatar-crop-x" className="text-xs text-muted-foreground">
+              <label htmlFor={`${cropId}-x`} className="text-xs text-muted-foreground">
                 Horizontal position
                 <input
-                  id="avatar-crop-x"
+                  id={`${cropId}-x`}
                   type="range"
                   min="-100"
                   max="100"
@@ -234,10 +235,10 @@ export function AvatarUpload({
                   aria-valuetext={`${cropX}%`}
                 />
               </label>
-              <label htmlFor="avatar-crop-y" className="text-xs text-muted-foreground">
+              <label htmlFor={`${cropId}-y`} className="text-xs text-muted-foreground">
                 Vertical position
                 <input
-                  id="avatar-crop-y"
+                  id={`${cropId}-y`}
                   type="range"
                   min="-100"
                   max="100"
@@ -257,8 +258,8 @@ export function AvatarUpload({
           <Button
             variant="ghost"
             size="sm"
-            disabled={disabled || busy}
-            onClick={() => {
+            isDisabled={disabled || busy}
+            onPress={() => {
               onRemove();
               setPreview(undefined);
               setFile(undefined);

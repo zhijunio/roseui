@@ -3,7 +3,7 @@
 import * as React from "react";
 
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { TextArea } from "@/components/ui/text-area";
 import { cn } from "@/lib/utils";
 
 export type MentionKind = "person" | "channel";
@@ -252,7 +252,7 @@ function InputMention({
         {label}
       </Label>
       <div className="relative">
-        <Textarea
+        <TextArea
           ref={inputRef}
           id={id}
           value={currentValue.text}

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-import { IconDots, IconX } from "@tabler/icons-react";
+import { Ellipsis as IconDots, X as IconX } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -73,7 +73,7 @@ export function SwipeActions({ children, actions, className, label = "Item actio
             size="icon-sm"
             aria-label={action.label}
             tabIndex={open ? 0 : -1}
-            onClick={() => finishAction(action)}
+            onPress={() => finishAction(action)}
           >
             {action.icon ?? (action.label === "Close" ? <IconX /> : action.label.slice(0, 1))}
           </Button>
@@ -92,7 +92,7 @@ export function SwipeActions({ children, actions, className, label = "Item actio
           size="icon-sm"
           aria-label={open ? `Hide ${label.toLowerCase()}` : `Show ${label.toLowerCase()}`}
           aria-expanded={open}
-          onClick={() => setOpen((value) => !value)}
+          onPress={() => setOpen((value) => !value)}
         >
           {open ? <IconX /> : <IconDots />}
         </Button>

@@ -99,7 +99,7 @@ export function ProgressCircle({
           fill="none"
           stroke="currentColor"
           strokeWidth={normalizedStrokeWidth}
-          className="text-border/70"
+          className="text-border/70 forced-colors:text-[GrayText]"
         />
         <circle
           cx="18"
@@ -112,7 +112,7 @@ export function ProgressCircle({
           strokeDasharray={circumference}
           strokeDashoffset={dashOffset}
           transform="rotate(-90 18 18)"
-          className={cn("transition-[stroke-dashoffset] duration-300 ease-out motion-reduce:!transition-none", isIndeterminate && "transition-none")}
+          className={cn("forced-colors:text-[Highlight] transition-[stroke-dashoffset] duration-300 ease-out motion-reduce:!transition-none", isIndeterminate && "transition-none")}
         />
       </svg>
       {content != null && (

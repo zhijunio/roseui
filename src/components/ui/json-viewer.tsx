@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
-import { IconChevronRight, IconCopy } from "@tabler/icons-react";
+import { ChevronRight as IconChevronRight, Copy as IconCopy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -183,7 +183,7 @@ export function JsonViewer(props: JsonViewerProps) {
 
     return <li key={path} role="treeitem" aria-selected={false} aria-expanded={expandable ? isExpanded : undefined}>
       <div className="group flex min-w-0 items-center gap-1 rounded-sm py-1 hover:bg-muted/60 focus-within:bg-muted/60" style={{ paddingInlineStart: `${depth * 1.1}rem` }}>
-        {expandable ? <Button variant="ghost" size="icon-xs" aria-label={`${isExpanded ? "Collapse" : "Expand"} ${label}`} aria-expanded={isExpanded} onClick={() => toggle(path)}><IconChevronRight className={`size-3.5 transition-transform motion-reduce:transition-none ${isExpanded ? "rotate-90" : ""}`} /></Button> : <span className="size-7 shrink-0" aria-hidden="true" />}
+        {expandable ? <Button variant="ghost" size="icon-xs" aria-label={`${isExpanded ? "Collapse" : "Expand"} ${label}`} aria-expanded={isExpanded} onPress={() => toggle(path)}><IconChevronRight className={`size-3.5 transition-transform motion-reduce:transition-none ${isExpanded ? "rotate-90" : ""}`} /></Button> : <span className="size-7 shrink-0" aria-hidden="true" />}
         <Button
           ref={(element) => { if (element) itemRefs.current.set(path, element); else itemRefs.current.delete(path); }}
           variant="ghost"
@@ -194,13 +194,13 @@ export function JsonViewer(props: JsonViewerProps) {
           tabIndex={activeFocusPath === path ? 0 : -1}
           onFocus={() => setFocusedPath(path)}
           onKeyDown={(event) => handleTreeKeyDown(event, path, parentPath, expandable, isExpanded, nodeValue)}
-          onClick={() => { if (expandable) toggle(path); }}
+          onPress={() => { if (expandable) toggle(path); }}
         >{label}</Button>
         <span className="text-muted-foreground">:</span>
         <span className={`min-w-0 truncate font-mono text-xs ${primitiveTone}`}>{displayValue(nodeValue)}</span>
         <span className="ml-auto flex shrink-0 items-center gap-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-within:opacity-100">
-          <Button variant="ghost" size="sm" className="h-7 px-2 text-[10px]" aria-label={`Copy path ${path}`} onClick={() => void copy(path, "Path")}>Path</Button>
-          <Button variant="ghost" size="icon-xs" aria-label={`Copy value at ${path}`} onClick={() => void copy(JSON.stringify(nodeValue, null, 2), "Value")}><IconCopy /></Button>
+          <Button variant="ghost" size="sm" className="h-7 px-2 text-[10px]" aria-label={`Copy path ${path}`} onPress={() => void copy(path, "Path")}>Path</Button>
+          <Button variant="ghost" size="icon-xs" aria-label={`Copy value at ${path}`} onPress={() => void copy(JSON.stringify(nodeValue, null, 2), "Value")}><IconCopy /></Button>
         </span>
       </div>
       {expandable && isExpanded && <ul role="group" className="grid min-w-0 border-l border-border/70">
@@ -209,8 +209,8 @@ export function JsonViewer(props: JsonViewerProps) {
         {Array.isArray(nodeValue) && filteredEntries.length > itemsPerPage && <li className="flex items-center justify-between gap-2 py-2 pl-8">
           <span className="text-xs text-muted-foreground">Page {page + 1} of {pageCount} · {filteredEntries.length} items</span>
           <span className="flex gap-1">
-            <Button size="sm" variant="outline" disabled={page === 0} onClick={() => setPage(path, page - 1)}>Previous</Button>
-            <Button size="sm" variant="outline" disabled={page + 1 >= pageCount} onClick={() => setPage(path, page + 1)}>Next</Button>
+            <Button size="sm" variant="outline" isDisabled={page === 0} onPress={() => setPage(path, page - 1)}>Previous</Button>
+            <Button size="sm" variant="outline" isDisabled={page + 1 >= pageCount} onPress={() => setPage(path, page + 1)}>Next</Button>
           </span>
         </li>}
       </ul>}

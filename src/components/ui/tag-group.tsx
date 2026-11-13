@@ -1,123 +1,57 @@
 "use client";
 
-import { type ReactNode, useId } from "react";
+import { X } from "lucide-react";
+import type { TagGroupProps, TagListProps, TagProps } from "react-aria-components/TagGroup";
+import {
+  Tag as TagPrimitive,
+  TagGroup as TagGroupPrimitive,
+  TagList as TagListPrimitive,
+} from "react-aria-components/TagGroup";
+import { Button } from "react-aria-components/Button";
 
-import { IconX as X } from "@tabler/icons-react";
-
-import { Chip, type ChipColor } from "@/components/ui/chip";
 import { cn } from "@/lib/utils";
 
-type TagGroupSharedProps = {
-  values: string[];
-  onValuesChange?: (values: string[]) => void;
-  removeLabel?: string;
-  color?: ChipColor;
-  size?: "sm" | "default";
-  icon?: ReactNode;
-  disabled?: boolean;
-  "aria-label": string;
-  "aria-describedby"?: string;
-};
-
-const sizeClasses = {
-  sm: "h-6 px-2 py-0",
-  default: "h-7 px-2.5 py-0",
-} as const;
-
-export function TagGroup(
-  props: TagGroupSharedProps &
-    (
-      | { selectionMode?: undefined; options?: never }
-      | {
-          selectionMode: "single" | "multiple";
-          options: string[];
-          onValuesChange: (values: string[]) => void;
-        }
-    ),
-) {
-  const groupId = useId();
-  const color = props.color ?? "gray";
-  const size = props.size ?? "default";
-  const icon = props.icon;
-
-  if (props.selectionMode) {
-    const { values, options, selectionMode, onValuesChange } = props;
-    return (
-      <div
-        role={selectionMode === "single" ? "radiogroup" : "group"}
-        aria-label={props["aria-label"]}
-        aria-describedby={props["aria-describedby"]}
-        className="flex flex-wrap items-center gap-2"
-      >
-        {options.map((option, index) => {
-          const selected = values.includes(option);
-          const id = `${groupId}-${index}`;
-          return (
-            <label key={option} htmlFor={id} className="cursor-pointer">
-              <input
-                id={id}
-                className="peer sr-only"
-                type={selectionMode === "single" ? "radio" : "checkbox"}
-                name={groupId}
-                value={option}
-                checked={selected}
-                disabled={props.disabled}
-                onChange={() => {
-                  if (selectionMode === "single") {
-                    onValuesChange([option]);
-                  } else {
-                    onValuesChange(selected ? values.filter((value) => value !== option) : [...values, option]);
-                  }
-                }}
-              />
-              <Chip
-                color={selected ? color : "gray"}
-                textStyle="caption"
-                className={cn(
-                  sizeClasses[size],
-                  "peer-focus-visible:ring-2 peer-focus-visible:ring-ring peer-focus-visible:ring-offset-2",
-                )}
-              >
-                <span className="inline-flex items-center gap-1.5">
-                  {icon}
-                  {option}
-                </span>
-              </Chip>
-            </label>
-          );
-        })}
-      </div>
-    );
-  }
-
+export function TagGroup({ className, ...props }: TagGroupProps) {
   return (
-    <div
-      role="group"
-      aria-label={props["aria-label"]}
-      aria-describedby={props["aria-describedby"]}
-      className="flex flex-wrap items-center gap-2"
+    <TagGroupPrimitive
+      data-slot="control"
+      className={cn("flex flex-col gap-y-1 *:data-[slot=label]:font-medium", className)}
+      {...props}
+    />
+  );
+}
+
+export function TagList<T extends object>({ className, ...props }: TagListProps<T>) {
+  return <TagListPrimitive className={cn("flex flex-wrap gap-1", className)} {...props} />;
+}
+
+export function Tag({ children, className, ...props }: TagProps) {
+  const textValue = typeof children === "string" ? children : undefined;
+  return (
+    <TagPrimitive
+      textValue={textValue}
+      className={cn(
+        "inset-ring inset-ring-input outline-hidden dark:bg-input/30",
+        "inline-flex items-center gap-x-1.5 py-0.5 font-medium text-xs/5 forced-colors:outline",
+        "*:data-[slot=icon]:size-3 *:data-[slot=icon]:shrink-0",
+        "cursor-default rounded-full px-2",
+        "selected:inset-ring-ring/70 selected:bg-primary-subtle selected:text-primary-subtle-foreground",
+        "disabled:opacity-50 disabled:forced-colors:text-[GrayText]",
+        props.href && "cursor-pointer hover:inset-ring-muted-foreground",
+        className,
+      )}
+      {...props}
     >
-      {props.values.map((value) => (
-        <span key={value} className="inline-flex items-center gap-1">
-          <Chip textStyle="caption" color={color} className={sizeClasses[size]}>
-            <span className="inline-flex items-center gap-1.5">
-              {icon}
-              {value}
-            </span>
-          </Chip>
-          {props.onValuesChange && (
-            <button
-              type="button"
-              aria-label={`${props.removeLabel ?? "Remove"}: ${value}`}
-              disabled={props.disabled}
-              onClick={() => props.onValuesChange?.(props.values.filter((item) => item !== value))}
-              className="inline-flex size-5 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              <X aria-hidden="true" className="size-3" />
-            </button>
-          )}
-        </span>
-      ))}
-    </div>
+      {({ allowsRemoving }) => (
+        <>
+          {children}
+          {allowsRemoving ? (
+            <Button slot="remove" className="-me-1 inline-flex size-4 items-center justify-center">
+              <X aria-hidden="true" className="size-3.5" />
+            </Button>
+          ) : null}
+        </>
+      )}
+    </TagPrimitive>
   );
 }

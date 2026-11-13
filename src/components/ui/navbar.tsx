@@ -1,125 +1,276 @@
 "use client";
 
-import Link from "next/link";
 import * as React from "react";
-import { IconMenu2, IconX } from "@tabler/icons-react";
-import { Button } from "@/components/ui/button";
+
+import { LayoutGroup, motion } from "motion/react";
+import { Menu } from "lucide-react";
+import { Link as LinkPrimitive, type LinkProps as LinkPrimitiveProps, type LinkRenderProps } from "react-aria-components/Link";
+import { composeRenderProps } from "react-aria-components/composeRenderProps";
+
+import { Button, type ButtonProps } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 
-type NavbarPosition = "sticky" | "static" | "floating";
-type NavbarSize = "sm" | "md" | "lg";
-type NavbarContextValue = { menuOpen: boolean; setMenuOpen: (open: boolean) => void; menuId: string; size: NavbarSize; maxWidth: NonNullable<NavbarProps["maxWidth"]> };
-const NavbarContext = React.createContext<NavbarContextValue | null>(null);
-
-type NavbarProps = Omit<React.ComponentProps<"nav">, "onChange"> & {
-  position?: NavbarPosition;
-  size?: NavbarSize;
-  maxWidth?: "sm" | "md" | "lg" | "xl" | "2xl" | "full";
-  hideOnScroll?: boolean;
-  parentRef?: React.RefObject<HTMLElement | null>;
-  menuOpen?: boolean;
-  defaultMenuOpen?: boolean;
-  onMenuOpenChange?: (open: boolean) => void;
-};
-type NavbarMaxWidth = NonNullable<NavbarProps["maxWidth"]>;
-const navbarMaxWidthClasses: Record<NavbarMaxWidth, string> = {
-  sm: "max-w-screen-sm", md: "max-w-screen-md", lg: "max-w-screen-lg", xl: "max-w-screen-xl", "2xl": "max-w-screen-2xl", full: "max-w-none",
+export type NavbarContextProps = {
+  open: boolean;
+  setOpen: (open: boolean) => void;
+  isMobile: boolean;
+  toggleNavbar: () => void;
 };
 
-function Navbar({ position = "sticky", size = "md", maxWidth = "lg", hideOnScroll = false, parentRef, menuOpen: controlledMenuOpen, defaultMenuOpen = false, onMenuOpenChange, className, children, ...props }: NavbarProps) {
-  const [uncontrolledMenuOpen, setUncontrolledMenuOpen] = React.useState(defaultMenuOpen);
-  const [isHidden, setIsHidden] = React.useState(false);
-  const menuOpen = controlledMenuOpen ?? uncontrolledMenuOpen;
-  const menuId = React.useId();
-  const setMenuOpen = React.useCallback((open: boolean) => {
-    if (controlledMenuOpen === undefined) setUncontrolledMenuOpen(open);
-    onMenuOpenChange?.(open);
-  }, [controlledMenuOpen, onMenuOpenChange]);
-  React.useEffect(() => {
-    if (!hideOnScroll || position === "static") return;
-    const scrollContainer = parentRef?.current;
-    const scrollTarget = scrollContainer ?? window;
-    let previousY = scrollContainer ? scrollContainer.scrollTop : window.scrollY;
-    const handleScroll = () => {
-      const currentY = scrollContainer ? scrollContainer.scrollTop : window.scrollY;
-      setIsHidden(currentY > 80 && currentY > previousY);
-      previousY = currentY;
-    };
-    scrollTarget.addEventListener("scroll", handleScroll, { passive: true });
-    return () => scrollTarget.removeEventListener("scroll", handleScroll);
-  }, [hideOnScroll, parentRef, position]);
-  const positionClass: Record<NavbarPosition, string> = {
-    sticky: "sticky top-0 z-40 bg-background",
-    static: "relative bg-background",
-    floating: cn("sticky top-2 z-40 mx-auto w-[calc(100%-1rem)] rounded-xl border bg-background/90 shadow-sm backdrop-blur", navbarMaxWidthClasses[maxWidth]),
-  };
-  const shouldHide = hideOnScroll && position !== "static" && isHidden && !menuOpen;
+const NavbarContext = React.createContext<NavbarContextProps | null>(null);
+
+function useNavbar() {
+  const context = React.useContext(NavbarContext);
+  if (!context) throw new Error("Navbar parts must be used inside NavbarProvider.");
+  return context;
+}
+
+export type NavbarProviderProps = React.ComponentProps<"div"> & {
+  defaultOpen?: boolean;
+  isOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
+};
+
+function NavbarProvider({ defaultOpen = false, isOpen: openProp, onOpenChange, className, children, ...props }: NavbarProviderProps) {
+  const isMobile = useIsMobile();
+  const [internalOpen, setInternalOpen] = React.useState(defaultOpen);
+  const open = openProp ?? internalOpen;
+  const setOpen = React.useCallback(
+    (value: boolean | ((open: boolean) => boolean)) => {
+      const nextOpen = typeof value === "function" ? value(open) : value;
+      if (openProp === undefined) setInternalOpen(nextOpen);
+      onOpenChange?.(nextOpen);
+    },
+    [onOpenChange, openProp],
+  );
+  const toggleNavbar = React.useCallback(() => setOpen(!open), [open, setOpen]);
+  const value = React.useMemo(() => ({ open, setOpen, isMobile, toggleNavbar }), [open, setOpen, isMobile, toggleNavbar]);
+
   return (
-    <NavbarContext.Provider value={{ menuOpen, setMenuOpen, menuId, size, maxWidth }}>
-      <nav data-slot="navbar" data-position={position} data-hidden={shouldHide || undefined} data-menu-open={menuOpen || undefined} className={cn(positionClass[position], "transition-transform duration-300 motion-reduce:transition-none data-[hidden=true]:-translate-y-full", className)} {...props}>{children}</nav>
+    <NavbarContext.Provider value={value}>
+      <div
+        data-slot="navbar-provider"
+        className={cn(
+          "group/navbar relative isolate z-10 flex w-full flex-col",
+          "has-data-navbar-inset:min-h-svh has-data-navbar-inset:bg-navbar dark:has-data-navbar-inset:bg-background",
+          className,
+        )}
+        {...props}
+      >
+        {children}
+      </div>
     </NavbarContext.Provider>
   );
 }
 
-function useNavbarContext() {
-  const context = React.useContext(NavbarContext);
-  if (!context) throw new Error("Navbar parts must be used inside Navbar.");
-  return context;
+export type NavbarVariant = "default" | "float" | "inset";
+export type NavbarPlacement = "top" | "bottom";
+export type NavbarSide = "left" | "right";
+
+type NavbarCommonProps = React.ComponentProps<"div"> & {
+  variant?: NavbarVariant;
+  side?: NavbarSide;
+};
+
+export type NavbarProps = NavbarCommonProps &
+  (
+    | { isSticky: true; placement?: NavbarPlacement }
+    | { isSticky?: false; placement?: never }
+  );
+
+function Navbar({ children, isSticky = false, placement = "top", variant = "default", side = "left", className, ...props }: NavbarProps) {
+  const { isMobile, open, setOpen } = useNavbar();
+
+  if (isMobile) {
+    return (
+      <>
+        <span className="sr-only" aria-hidden="true" data-navbar={variant} data-navbar-sticky={isSticky} data-placement={placement} />
+        <Sheet open={open} onOpenChange={setOpen}>
+          <SheetContent
+            side={side}
+            aria-label="Mobile navigation"
+            showCloseButton={false}
+            className="w-[min(100vw,24rem)] p-4"
+          >
+            {children}
+          </SheetContent>
+        </Sheet>
+      </>
+    );
+  }
+
+  return (
+    <div
+      data-navbar={variant}
+      data-placement={placement}
+      data-navbar-sticky={isSticky || undefined}
+      className={cn(
+        "group/navbar-variant relative isolate",
+        isSticky && "sticky top-0 z-40",
+        placement === "top" && variant === "float" && "md:pt-8",
+        placement === "bottom" && variant === "float" && "bottom-0 md:pb-8",
+        variant === "float" && "mx-auto w-full max-w-7xl px-4 xl:max-w-(--breakpoint-xl)",
+        className,
+      )}
+      {...props}
+    >
+      <div
+        className={cn(
+          "relative isolate hidden py-(--navbar-gutter) [--navbar-gutter:--spacing(2.5)] md:block",
+          variant === "float" &&
+            "rounded-xl bg-background py-0 *:data-[navbar=content]:max-w-7xl *:data-[navbar=content]:rounded-xl *:data-[navbar=content]:border *:data-[navbar=content]:bg-navbar *:data-[navbar=content]:px-4 *:data-[navbar=content]:py-(--navbar-gutter) *:data-[navbar=content]:shadow-xs",
+          (variant === "default" || variant === "inset") && "px-4",
+          variant === "default" && "border-b bg-navbar",
+        )}
+      >
+        <div data-navbar="content" className="mx-auto w-full max-w-(--breakpoint-2xl) items-center md:flex">
+          {children}
+        </div>
+      </div>
+    </div>
+  );
 }
 
-function NavbarBrand({ className, ...props }: React.ComponentProps<"div">) {
-  return <div data-slot="navbar-brand" className={cn("flex shrink-0 items-center gap-2 font-semibold tracking-tight", className)} {...props} />;
+function NavbarSection({ className, children, ...props }: React.ComponentProps<"div">) {
+  const id = React.useId();
+  return (
+    <LayoutGroup id={id}>
+      <div
+        data-slot="navbar-section"
+        className={cn(
+          "col-span-full grid grid-cols-[auto_1fr] flex-col gap-3 gap-y-0.5 md:flex md:flex-none md:flex-row md:items-center md:gap-2.5",
+          className,
+        )}
+        {...props}
+      >
+        {children}
+      </div>
+    </LayoutGroup>
+  );
 }
 
-function NavbarHeader({ className, ...props }: React.ComponentProps<"div">) {
-  const { size, maxWidth } = useNavbarContext();
-  return <div data-slot="navbar-header" className={cn("mx-auto flex min-h-16 w-full items-center gap-4 px-4 sm:px-6", navbarMaxWidthClasses[maxWidth], size === "sm" && "min-h-12 px-3 sm:px-3", size === "lg" && "min-h-20 px-6", className)} {...props} />;
+export interface NavbarItemProps extends Omit<LinkPrimitiveProps, "children"> {
+  isCurrent?: boolean;
+  children?: React.ReactNode | ((values: LinkRenderProps & { defaultChildren: React.ReactNode }) => React.ReactNode);
 }
 
-function NavbarContent({ className, ...props }: React.ComponentProps<"div">) {
-  return <div data-slot="navbar-content" className={cn("flex min-w-0 items-center gap-1", className)} {...props} />;
+function NavbarItem({ className, children, isCurrent, ...props }: NavbarItemProps) {
+  return (
+    <LinkPrimitive
+      data-slot="navbar-item"
+      aria-current={isCurrent ? "page" : undefined}
+      className={composeRenderProps(className, (resolvedClassName, values) =>
+        cn(
+          "group/navbar-item relative col-span-full grid min-w-0 grid-cols-[auto_1fr_1.5rem_0.5rem_auto] items-center gap-x-3 rounded-lg p-2 text-start text-sm font-medium text-foreground outline-hidden transition-colors hover:bg-secondary hover:text-secondary-foreground md:grid-cols-none md:gap-x-(--navbar-gutter) md:px-(--navbar-gutter) md:py-[calc(var(--navbar-gutter)-0.125rem)]",
+          "[&>svg]:size-5 [&>svg]:shrink-0 [&>svg]:text-muted-foreground md:[&>svg]:size-4",
+          "focus-visible:ring-2 focus-visible:ring-ring/20 disabled:cursor-default disabled:opacity-50",
+          values.isFocusVisible && "ring-2 ring-ring/50",
+          values.isPressed && "bg-secondary text-secondary-foreground",
+          (isCurrent || values.isCurrent) && "text-foreground",
+          resolvedClassName,
+        ),
+      )}
+      {...props}
+    >
+      {(values) => (
+        <>
+          {typeof children === "function" ? children(values) : children}
+          {(isCurrent || values.isCurrent) && (
+            <motion.span
+              data-slot="current-indicator"
+              layoutId="current-indicator"
+              transition={{ type: "spring", stiffness: 500, damping: 40 }}
+              className="bg-foreground absolute rounded-full [--gutter:--spacing(0.5)] inset-y-[calc(var(--navbar-gutter)-0.125rem)] -start-4 w-(--gutter) md:inset-y-auto md:inset-x-2 md:-bottom-[calc(var(--navbar-gutter)+1px)] md:h-(--gutter) md:w-auto"
+            />
+          )}
+        </>
+      )}
+    </LinkPrimitive>
+  );
 }
 
 function NavbarSpacer({ className, ...props }: React.ComponentProps<"div">) {
-  return <div aria-hidden="true" data-slot="navbar-spacer" className={cn("min-w-4 flex-1", className)} {...props} />;
+  return <div aria-hidden="true" className={cn("-ms-4 flex-1", className)} {...props} />;
 }
 
-type NavbarItemCommonProps = { isCurrent?: boolean; closeMenuOnSelect?: boolean; className?: string; children?: React.ReactNode; id?: string; title?: string; "aria-label"?: string; onClick?: (event: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => void };
-type NavbarLinkProps = NavbarItemCommonProps & { href: string; target?: React.HTMLAttributeAnchorTarget; rel?: string };
-type NavbarButtonProps = NavbarItemCommonProps & { href?: undefined; disabled?: boolean };
-type NavbarItemProps = NavbarLinkProps | NavbarButtonProps;
-
-function NavbarItem(props: NavbarItemProps) {
-  const context = React.useContext(NavbarContext);
-  const size = context?.size ?? "md";
-  if (props.href !== undefined) {
-    const { href, isCurrent, closeMenuOnSelect, onClick, className, children, target, rel, id, title, "aria-label": ariaLabel } = props;
-    const handleClick = (event: React.MouseEvent<HTMLAnchorElement>) => { onClick?.(event); if (!event.defaultPrevented && closeMenuOnSelect) context?.setMenuOpen(false); };
-    const itemClass = navbarItemClass(size, className);
-    return <Link href={href} target={target} rel={rel} id={id} title={title} aria-label={ariaLabel} aria-current={isCurrent ? "page" : undefined} data-current={isCurrent || undefined} data-slot="navbar-item" className={itemClass} onClick={handleClick}>{children}</Link>;
-  }
-  const { isCurrent, closeMenuOnSelect, onClick, className, children, disabled, id, title, "aria-label": ariaLabel } = props;
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => { onClick?.(event); if (!event.defaultPrevented && closeMenuOnSelect) context?.setMenuOpen(false); };
-  return <button type="button" disabled={disabled} id={id} title={title} aria-label={ariaLabel} aria-current={isCurrent ? "page" : undefined} data-current={isCurrent || undefined} data-slot="navbar-item" className={navbarItemClass(size, className)} onClick={handleClick}>{children}</button>;
+function NavbarStart({ className, ...props }: React.ComponentProps<"div">) {
+  return <div data-slot="navbar-start" className={cn("relative p-2 py-4 md:p-0.5", className)} {...props} />;
 }
 
-function navbarItemClass(size: NavbarSize, className?: string) {
-  return cn("inline-flex min-h-9 items-center rounded-md px-3 text-sm text-muted-foreground outline-none transition-colors hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring aria-[current=page]:bg-muted aria-[current=page]:text-foreground motion-reduce:transition-none", size === "sm" && "min-h-8 px-2.5 text-xs", size === "lg" && "min-h-11 px-3.5 text-base", className);
+function NavbarGap({ className, ...props }: React.ComponentProps<"div">) {
+  return <div aria-hidden="true" className={cn("mx-2", className)} {...props} />;
 }
 
-function NavbarToggle({ className, label = "Toggle navigation menu", ...props }: Omit<React.ComponentProps<typeof Button>, "onClick" | "aria-label"> & { label?: string }) {
-  const { menuOpen, setMenuOpen, menuId } = useNavbarContext();
-  return <Button type="button" variant="ghost" size="icon" aria-label={label} aria-expanded={menuOpen} aria-controls={menuId} data-navbar-toggle className={className} onClick={() => setMenuOpen(!menuOpen)} {...props}>{menuOpen ? <IconX /> : <IconMenu2 />}</Button>;
+function NavbarSeparator({ className, ...props }: React.ComponentProps<typeof Separator>) {
+  return <Separator orientation="vertical" className={cn("h-5", className)} {...props} />;
 }
 
-function NavbarMenu({ className, ...props }: React.ComponentProps<"div">) {
-  const { menuOpen, menuId, maxWidth } = useNavbarContext();
-  const { children, ...divProps } = props;
-  return <div id={menuId} data-slot="navbar-menu" data-open={menuOpen || undefined} aria-hidden={!menuOpen} inert={!menuOpen} className={cn("grid overflow-hidden border-t transition-[grid-template-rows,opacity] duration-200 ease-out motion-reduce:transition-none", menuOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] border-transparent opacity-0", className)} {...divProps}><div className="min-h-0 overflow-hidden"><div className={cn("mx-auto grid gap-1 px-4 py-2 sm:px-6", navbarMaxWidthClasses[maxWidth])}>{children}</div></div></div>;
+function NavbarMobile({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="navbar-mobile"
+      className={cn(
+        "group/navbar-mobile flex items-center gap-x-3 px-4 py-2.5 md:hidden",
+        "group-has-data-navbar-sticky/navbar:sticky group-has-data-navbar-sticky/navbar:bg-navbar",
+        "group-has-data-navbar-sticky/navbar:group-has-data-[placement=top]/navbar:top-0 group-has-data-navbar-sticky/navbar:group-has-data-[placement=top]/navbar:border-b",
+        "group-has-data-navbar-sticky/navbar:group-has-data-[placement=bottom]/navbar:bottom-0 group-has-data-navbar-sticky/navbar:group-has-data-[placement=bottom]/navbar:border-t",
+        className,
+      )}
+      {...props}
+    />
+  );
 }
 
-function NavbarMenuItem({ href, className, children, isCurrent, onClick, target, rel, id, title, "aria-label": ariaLabel }: NavbarLinkProps) {
-  return <NavbarItem href={href} closeMenuOnSelect className={cn("min-h-11 justify-start text-foreground", className)} isCurrent={isCurrent} onClick={onClick} target={target} rel={rel} id={id} title={title} aria-label={ariaLabel}>{children}</NavbarItem>;
+function NavbarInset({ className, children, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div data-navbar-inset="true" className={cn("flex flex-1 flex-col bg-navbar pb-2 md:px-2 dark:bg-background", className)} {...props}>
+      <div className="grow bg-background p-6 md:rounded-lg md:p-16 md:shadow-xs md:ring-1 md:ring-foreground/15 dark:md:bg-navbar dark:md:ring-border dark:md:group-has-data-navbar-inset/navbar:bg-muted">
+        <div className="mx-auto max-w-7xl">{children}</div>
+      </div>
+    </div>
+  );
 }
 
-export { Navbar, NavbarHeader, NavbarBrand, NavbarContent, NavbarSpacer, NavbarItem, NavbarToggle, NavbarMenu, NavbarMenuItem };
+function NavbarTrigger({ className, onPress, ...props }: ButtonProps) {
+  const { toggleNavbar } = useNavbar();
+  return (
+    <Button
+      data-slot="navbar-trigger"
+      variant="ghost"
+      size="icon-sm"
+      aria-label={props["aria-label"] ?? "Toggle navigation"}
+      className={cn("-ms-2 lg:hidden", className)}
+      onPress={(event) => {
+        onPress?.(event);
+        toggleNavbar();
+      }}
+      {...props}
+    >
+      <Menu aria-hidden="true" />
+      <span className="sr-only">Toggle navigation</span>
+    </Button>
+  );
+}
+
+function NavbarLabel({ className, ...props }: React.ComponentProps<"span">) {
+  return <span data-slot="navbar-label" className={cn("col-start-2 row-start-1 truncate", className)} {...props} />;
+}
+
+export {
+  Navbar,
+  NavbarGap,
+  NavbarInset,
+  NavbarItem,
+  NavbarLabel,
+  NavbarMobile,
+  NavbarProvider,
+  NavbarSection,
+  NavbarSeparator,
+  NavbarSpacer,
+  NavbarStart,
+  NavbarTrigger,
+  useNavbar,
+};

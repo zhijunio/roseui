@@ -2,10 +2,10 @@
 
 import { type ChangeEvent, useId, useState } from "react";
 
-import { IconCalendar, IconCreditCard, IconLock } from "@tabler/icons-react";
+import { Calendar as IconCalendar, CreditCard as IconCreditCard, Lock as IconLock } from "lucide-react";
 import { usePaymentInputs } from "react-payment-inputs";
 
-import { Field, FieldDescription, FieldLabel } from "@/components/ui/composite-field";
+import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 
 export type PaymentValues = {

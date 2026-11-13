@@ -125,7 +125,7 @@ export function TimeField({
               segment={segment}
               className={cn(
                 "rounded-sm px-0.5 tabular-nums outline-none focus:bg-accent focus:text-secondary-foreground",
-                "data-[placeholder]:text-muted-foreground data-[type=literal]:px-0 data-[invalid]:text-destructive",
+                "placeholder:text-muted-foreground data-[type=literal]:px-0 invalid:text-destructive",
               )}
             />
           )}

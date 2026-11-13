@@ -30,7 +30,7 @@ export function ColorAreaThumb({ className, ...props }: ComponentProps<typeof Co
   return (
     <ColorThumb
       data-slot="color-area-thumb"
-      className={cn("size-4 rounded-full border-2 border-white shadow-md outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 data-[disabled]:opacity-50", className)}
+      className={cn("size-4 rounded-full border-2 border-white shadow-md outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50", className)}
       {...props}
     />
   );

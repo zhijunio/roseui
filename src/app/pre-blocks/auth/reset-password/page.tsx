@@ -1,0 +1,91 @@
+"use client";
+
+import * as React from "react";
+
+import Link from "next/link";
+
+import { ArrowLeft as IconArrowLeft, Lock as IconLock } from "lucide-react";
+
+import { buttonVariants } from "@/components/ui/button";
+import { PasswordField } from "@/components/ui/password-field";
+import { PasswordStrength, type PasswordStrengthResult } from "@/components/ui/password-strength";
+import { cn } from "@/lib/utils";
+
+export function ResetPasswordForm() {
+  const [password, setPassword] = React.useState("");
+  const [confirm, setConfirm] = React.useState("");
+  const [strength, setStrength] = React.useState<PasswordStrengthResult>({
+    level: 0,
+    total: 4,
+    met: 0,
+    label: "Requirements not met",
+  });
+  const match = confirm.length > 0 && confirm === password;
+
+  return (
+    <div className="mx-auto w-full max-w-md space-y-6 px-1 py-2 sm:px-2">
+      <div className="space-y-1.5">
+        <div className="bg-card mb-3 flex size-11 items-center justify-center rounded-xl border">
+          <IconLock className="size-5" />
+        </div>
+        <h1 className="text-2xl font-semibold tracking-tight">Set a new password</h1>
+      </div>
+
+      <form className="space-y-4">
+        <PasswordStrength
+          id="password"
+          label="New password"
+          value={password}
+          onValueChange={(next, result) => {
+            setPassword(next);
+            setStrength(result);
+          }}
+          autoComplete="new-password"
+          placeholder="Enter a new password"
+        />
+
+        <PasswordField
+          id="confirm"
+          label="Confirm password"
+          value={confirm}
+          onValueChange={setConfirm}
+          autoComplete="new-password"
+          placeholder="Re-enter your password"
+          error={confirm.length > 0 && !match ? "Passwords do not match." : undefined}
+        />
+
+        <Link
+          href="/docs/blocks/auth/sign-in"
+          aria-disabled={strength.level < strength.total || !match}
+          tabIndex={strength.level < strength.total || !match ? -1 : undefined}
+          onClick={(event) => {
+            if (strength.level < strength.total || !match) event.preventDefault();
+          }}
+          className={cn(
+            buttonVariants({ className: "w-full" }),
+            (strength.level < strength.total || !match) && "pointer-events-none opacity-50",
+          )}
+        >
+          Reset password
+        </Link>
+      </form>
+
+      <Link
+        href="/docs/blocks/auth/sign-in"
+        className="text-muted-foreground hover:text-foreground flex items-center justify-center gap-2 text-sm"
+      >
+        <IconArrowLeft aria-hidden="true" className="size-4" /> Back to sign in
+      </Link>
+    </div>
+  );
+}
+
+export default function ResetPasswordPage() {
+  return (
+    <main className="flex min-h-dvh items-center justify-center p-6">
+      <div className="w-full max-w-md">
+        <ResetPasswordForm />
+      </div>
+    </main>
+  );
+}

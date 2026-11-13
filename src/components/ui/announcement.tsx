@@ -2,7 +2,7 @@
 
 import { useId, useState, type ReactNode } from "react";
 import { AnimatePresence, motion, useReducedMotion, type HTMLMotionProps } from "motion/react";
-import { IconShieldStar } from "@tabler/icons-react";
+import { ShieldCheck as IconShieldStar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CloseButton } from "@/components/ui/close-button";
 import { cn } from "@/lib/utils";
@@ -68,7 +68,7 @@ export function Announcement({
               />
             )}
             {actionLabel && (
-              <Button type="button" variant="secondary" size="sm" onClick={onAction} className="w-full">
+              <Button type="button" variant="secondary" size="sm" onPress={onAction} className="w-full">
                 {actionLabel}
               </Button>
             )}

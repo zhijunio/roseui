@@ -2,7 +2,7 @@
 
 import { type MouseEvent, type RefObject, useEffect, useRef, useState } from "react";
 
-import { IconList } from "@tabler/icons-react";
+import { List as IconList } from "lucide-react";
 
 import { Scrollspy } from "@/components/ui/scrollspy";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";

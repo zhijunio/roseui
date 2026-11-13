@@ -1,15 +1,14 @@
 "use client";
 
-import { IconChevronDown } from "@tabler/icons-react";
+import { ChevronDown as IconChevronDown } from "lucide-react";
 
-import { ButtonGroup } from "@/components/ui/composite-button-group";
+import { ButtonGroup } from "@/components/ui/button-group";
 import { Button } from "@/components/ui/button";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  MenuTrigger,
+  Menu,
+  MenuItem,
+} from "@/components/ui/menu";
 
 export type SplitButtonOption = {
   id: string;
@@ -32,29 +31,29 @@ export function SplitButton({
 }) {
   return (
     <ButtonGroup aria-label={`${label} actions`}>
-      <Button onClick={onAction} disabled={disabled}>
+      <Button onPress={onAction} isDisabled={disabled}>
         {label}
       </Button>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
+      <MenuTrigger>
+
           <Button
             variant="default"
             size="icon"
             aria-label={`${label} options`}
             aria-haspopup="menu"
-            disabled={disabled}
+            isDisabled={disabled}
           >
             <IconChevronDown aria-hidden="true" />
           </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
+
+        <Menu placement="bottom end">
           {options.map((option) => (
-            <DropdownMenuItem key={option.id} disabled={option.disabled} onSelect={() => onOptionSelect(option)}>
+            <MenuItem key={option.id} isDisabled={option.disabled} onAction={() => onOptionSelect(option)}>
               {option.label}
-            </DropdownMenuItem>
+            </MenuItem>
           ))}
-        </DropdownMenuContent>
-      </DropdownMenu>
+        </Menu>
+      </MenuTrigger>
     </ButtonGroup>
   );
 }

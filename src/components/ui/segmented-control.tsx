@@ -2,7 +2,8 @@
 import * as React from "react";
 
 import { cva, type VariantProps } from "class-variance-authority";
-import { ToggleGroup as ToggleGroupPrimitive } from "radix-ui";
+import { ToggleButton as TogglePrimitive, type ToggleButtonProps } from "react-aria-components/ToggleButton";
+import { ToggleButtonGroup as ToggleGroupPrimitive, type ToggleButtonGroupProps } from "react-aria-components/ToggleButtonGroup";
 
 import { cn } from "@/lib/utils";
 
@@ -27,8 +28,8 @@ const segmentedControlItemVariants = cva(
     variants: {
       variant: {
         default:
-          "hover:text-foreground data-[state=on]:bg-background data-[state=on]:text-foreground data-[state=on]:shadow-sm",
-        ghost: "hover:bg-muted hover:text-foreground data-[state=on]:bg-accent data-[state=on]:text-accent-foreground",
+          "hover:text-foreground selected:bg-background selected:text-foreground selected:shadow-sm",
+        ghost: "hover:bg-muted hover:text-foreground selected:bg-accent selected:text-accent-foreground",
       },
       size: {
         sm: "h-6 px-2 text-xs",
@@ -48,38 +49,37 @@ function SegmentedControl({
   value,
   defaultValue,
   onValueChange,
+  disabled,
+  isDisabled,
   variant = "default",
   size = "md",
   ...props
-}: {
+}: Omit<ToggleButtonGroupProps, "selectionMode"> & {
   children?: React.ReactNode;
-  className?: string;
-  id?: string;
-  dir?: "ltr" | "rtl";
-  "aria-label"?: string;
-  "aria-labelledby"?: string;
   value?: string;
   defaultValue?: string;
   onValueChange?: (value: string) => void;
   disabled?: boolean;
-  orientation?: "horizontal" | "vertical";
-  loop?: boolean;
   variant?: SegmentedControlVariants["variant"];
   size?: SegmentedControlVariants["size"];
 }) {
   const [uncontrolled, setUncontrolled] = React.useState(defaultValue ?? "");
   const current = value ?? uncontrolled;
+
   return (
     <SegmentedControlContext.Provider value={{ variant, size }}>
-      <ToggleGroupPrimitive.Root
+      <ToggleGroupPrimitive
         {...props}
-        type="single"
+        selectionMode="single"
+        disallowEmptySelection
         data-slot="segmented-control"
         data-variant={variant}
         data-size={size}
-        value={current}
-        onValueChange={(next) => {
-          if (!next) return;
+        selectedKeys={current ? [current] : []}
+        isDisabled={disabled ?? isDisabled}
+        onSelectionChange={(nextKeys) => {
+          const next = Array.from(nextKeys)[0];
+          if (typeof next !== "string" || !next) return;
           if (value === undefined) setUncontrolled(next);
           onValueChange?.(next);
         }}
@@ -92,11 +92,20 @@ function SegmentedControlItem({
   className,
   variant,
   size,
+  value,
+  disabled,
+  isDisabled,
+  id,
   ...props
-}: React.ComponentProps<typeof ToggleGroupPrimitive.Item> & SegmentedControlVariants) {
+}: ToggleButtonProps & SegmentedControlVariants & {
+  value?: string;
+  disabled?: boolean;
+}) {
   const inherited = React.useContext(SegmentedControlContext);
   return (
-    <ToggleGroupPrimitive.Item
+    <TogglePrimitive
+      id={id ?? value}
+      isDisabled={disabled ?? isDisabled}
       data-slot="segmented-control-item"
       className={cn(
         segmentedControlItemVariants({ variant: variant ?? inherited.variant, size: size ?? inherited.size }),

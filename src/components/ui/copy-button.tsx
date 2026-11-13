@@ -1,44 +1,64 @@
 "use client";
 
-import { type ComponentProps, useState } from "react";
+import { type ComponentProps, useEffect, useRef, useState } from "react";
 
-import { IconCheck, IconCopy } from "@tabler/icons-react";
+import { Check as IconCheck, Copy as IconCopy } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-export function CopyButton({
-  value = "RoseUI",
-  iconOnly = false,
-  copyLabel = "Copy",
-  copiedLabel = "Copied",
-  errorMessage = "Unable to copy. Try again.",
-  onCopied,
-  onClick,
-  variant = "outline",
-  size = iconOnly ? "icon" : "default",
-  "aria-label": ariaLabel,
-  className,
-  ...buttonProps
-}: {
-  value?: string;
+const feedbackDuration = 2000;
+
+export type CopyButtonProps = {
+  value: string;
   iconOnly?: boolean;
   copyLabel?: string;
   copiedLabel?: string;
   errorMessage?: string;
   onCopied?: () => void;
-} & Omit<ComponentProps<typeof Button>, "children">) {
-  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+} & Omit<ComponentProps<typeof Button>, "children">;
 
-  const copy = async (event: Parameters<NonNullable<ComponentProps<typeof Button>["onClick"]>>[0]) => {
-    onClick?.(event);
+export function CopyButton({
+  value,
+  iconOnly = false,
+  copyLabel = "Copy",
+  copiedLabel = "Copied",
+  errorMessage = "Unable to copy. Try again.",
+  onCopied,
+  onPress,
+  variant = "outline",
+  size = iconOnly ? "icon" : "default",
+  "aria-label": ariaLabel,
+  className,
+  ...buttonProps
+}: CopyButtonProps) {
+  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const resetTimer = useRef<number | undefined>(undefined);
+
+  useEffect(
+    () => () => {
+      if (resetTimer.current !== undefined) window.clearTimeout(resetTimer.current);
+    },
+    [],
+  );
+
+  const showStatus = (nextStatus: "success" | "error") => {
+    if (resetTimer.current !== undefined) window.clearTimeout(resetTimer.current);
+    setStatus(nextStatus);
+    resetTimer.current = window.setTimeout(() => setStatus("idle"), feedbackDuration);
+  };
+
+  const copy = async (event: Parameters<NonNullable<ComponentProps<typeof Button>["onPress"]>>[0]) => {
+    onPress?.(event);
     try {
       await navigator.clipboard.writeText(value);
-      setStatus("success");
-      onCopied?.();
     } catch {
-      setStatus("error");
+      showStatus("error");
+      return;
     }
+
+    showStatus("success");
+    onCopied?.();
   };
 
   const label = status === "success" ? copiedLabel : copyLabel;
@@ -51,12 +71,17 @@ export function CopyButton({
         size={size}
         className={className}
         aria-label={iconOnly ? (ariaLabel ?? label) : ariaLabel}
-        onClick={copy}
+        onPress={copy}
       >
         {status === "success" ? <IconCheck aria-hidden /> : <IconCopy aria-hidden />}
         {iconOnly ? null : label}
       </Button>
-      <span role="status" className={cn("text-xs text-muted-foreground", status !== "error" && "sr-only")}>
+      <span
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+        className={cn("text-xs text-muted-foreground", status !== "error" && "sr-only")}
+      >
         {status === "error" ? errorMessage : status === "success" ? copiedLabel : ""}
       </span>
     </span>

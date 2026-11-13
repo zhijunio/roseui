@@ -30,6 +30,7 @@ export function LogoMark({
       <svg
         aria-hidden="true"
         viewBox="0 0 64 64"
+        className="text-primary-foreground"
         style={{ width: iconSize, height: iconSize }}
       >
         <path fill="currentColor" d={BRAND_MARK_PATH} />

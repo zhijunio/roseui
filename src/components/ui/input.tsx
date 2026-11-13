@@ -1,19 +1,31 @@
-import * as React from "react"
+"use client";
 
-import { cn } from "@/lib/utils"
+import {
+  Input as InputPrimitive,
+  type InputProps as InputPrimitiveProps,
+} from "react-aria-components/Input";
 
-function Input({ className, type, ...props }: React.ComponentProps<"input">) {
-  return (
-    <input
-      type={type}
-      data-slot="input"
-      className={cn(
-        "h-9 w-full min-w-0 rounded-[var(--radius)] border border-input bg-transparent px-2.5 py-1 text-base transition-colors duration-150 ease-in-out outline-none file:inline-flex file:h-6 file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:cursor-not-allowed disabled:bg-input/50 disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 md:text-sm dark:bg-input/30 dark:disabled:bg-input/80 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40",
-        className
-      )}
-      {...props}
-    />
-  )
+import { cn } from "@/lib/utils";
+
+export interface InputProps extends InputPrimitiveProps {
+  ref?: React.Ref<HTMLInputElement>;
 }
 
-export { Input }
+export function Input({ className, ref, ...props }: InputProps) {
+  return (
+    <span data-slot="control" className="relative block w-full">
+      <InputPrimitive
+        {...props}
+        ref={ref}
+        className={cn(
+          "relative block w-full appearance-none rounded-lg bg-(--control-bg,transparent)",
+          "ps-[calc(--spacing(3.5)-1px)] pe-[calc(--spacing(3.5)-1px)] py-[calc(--spacing(2.5)-1px)] text-base/6 text-foreground placeholder:text-muted-foreground sm:py-[calc(--spacing(1.5)-1px)] sm:text-sm/6",
+          "border border-input enabled:hover:border-muted-foreground/30 outline-hidden focus:border-ring/70 focus:ring-3 focus:ring-ring/20 focus:enabled:hover:border-ring/80",
+          "invalid:border-danger-subtle-foreground/70 focus:invalid:border-danger-subtle-foreground/70 focus:invalid:ring-danger-subtle-foreground/20 disabled:bg-muted forced-colors:in-disabled:text-[GrayText]",
+          "[&::-ms-reveal]:hidden [&::-webkit-search-cancel-button]:hidden dark:scheme-dark",
+          className,
+        )}
+      />
+    </span>
+  );
+}

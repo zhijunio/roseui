@@ -31,17 +31,7 @@
   },
   "files": {
     "ignoreUnknown": true,
-    "includes": [
-      "**",
-      "!.github",
-      "!.husky",
-      "!node_modules",
-      "!.next",
-      "!dist",
-      "!out",
-      "!public/r",
-      "!src/components/ui"
-    ]
+    "includes": ["**", "!.github", "!.husky", "!node_modules", "!.next", "!dist", "!out", "!src/components/ui"]
   },
   "formatter": {
     "enabled": true,
@@ -106,9 +96,8 @@
     {
       "includes": [
         "src/components/ui/**",
-        "src/examples/components/**",
-        "src/examples/component-preview.tsx",
-        "src/examples/page-header.tsx",
+        "src/components/examples/**",
+        "src/components/docs/component-preview.tsx",
         "src/hooks/use-platform.ts"
       ],
       "linter": {

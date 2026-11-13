@@ -1,13 +1,13 @@
 "use client";
 
 import { createContext, useContext, useMemo } from "react";
+import { Input as InputPrimitive } from "react-aria-components/Input";
 
-import { IconSelector, IconWorld } from "@tabler/icons-react";
+import { ChevronsUpDown as IconSelector, Globe as IconWorld } from "lucide-react";
 import * as BaseInputPhone from "react-phone-number-input";
 import flags from "react-phone-number-input/flags";
 
-import { Combobox, type ComboboxOption } from "@/components/ui/search-select";
-import { Input } from "@/components/ui/input";
+import { SearchSelect, type SearchSelectOption } from "@/components/ui/search-select";
 import { cn } from "@/lib/utils";
 
 type InputPhoneSize = "sm" | "default" | "lg";
@@ -80,7 +80,7 @@ function CountrySelect({ disabled, value: selectedCountry, options, onChange }: 
   const { size, invalid } = useContext(InputPhoneContext);
   const filteredCountries = useMemo(() => options.filter((country) => country.value), [options]);
   const selectedLabel = options.find(({ value }) => value === selectedCountry)?.label;
-  const comboboxOptions: ComboboxOption[] = filteredCountries.map(({ label, value }) => ({
+  const comboboxOptions: SearchSelectOption[] = filteredCountries.map(({ label, value }) => ({
     value: value!,
     label,
     description: `+${BaseInputPhone.getCountryCallingCode(value!)}`,
@@ -89,7 +89,7 @@ function CountrySelect({ disabled, value: selectedCountry, options, onChange }: 
 
   return (
     <div className="flex min-w-0 items-center">
-      <Combobox
+      <SearchSelect
         options={comboboxOptions}
         value={selectedCountry || ""}
         onValueChange={(country) => {
@@ -101,7 +101,7 @@ function CountrySelect({ disabled, value: selectedCountry, options, onChange }: 
         disabled={disabled}
         invalid={invalid}
         className={cn(
-          "w-28 shrink-0 [&_[role=combobox]]:rounded-r-none [&_[role=combobox]]:border-r-0",
+          "w-32 shrink-0 [&_[role=combobox]]:gap-1 [&_[role=combobox]]:rounded-r-none [&_[role=combobox]]:border-r-0 [&_[role=combobox]]:px-2",
           size === "sm" && "[&_[role=combobox]]:h-8",
           size === "default" && "[&_[role=combobox]]:h-10",
           size === "lg" && "[&_[role=combobox]]:h-11",
@@ -114,7 +114,7 @@ function CountrySelect({ disabled, value: selectedCountry, options, onChange }: 
             <IconWorld className="size-4" />
           )
         }
-        triggerIcon={<IconSelector className="size-4 shrink-0 text-muted-foreground" />}
+        triggerIcon={<IconSelector className="size-3 shrink-0 text-muted-foreground" />}
         renderOption={(option) => (
           <>
             {option.icon}
@@ -127,18 +127,21 @@ function CountrySelect({ disabled, value: selectedCountry, options, onChange }: 
   );
 }
 
-function PhoneNumberInput({ className, "aria-invalid": ariaInvalid, ...props }: React.ComponentProps<typeof Input>) {
+function PhoneNumberInput({ className, "aria-invalid": ariaInvalid, ref, ...props }: React.ComponentProps<typeof InputPrimitive>) {
   const { size } = useContext(InputPhoneContext);
   return (
-    <Input
+    <InputPrimitive
       {...props}
+      ref={ref}
       type="tel"
       aria-invalid={ariaInvalid}
       className={cn(
-        "min-w-0 flex-1",
-        size === "sm" && "h-8 rounded-s-none",
-        size === "default" && "rounded-s-none",
-        size === "lg" && "h-11 rounded-s-none",
+        "relative block min-w-0 flex-1 appearance-none rounded-lg rounded-s-none bg-(--control-bg,transparent)",
+        "ps-3 pe-3 py-[calc(--spacing(2.5)-1px)] text-base/6 text-foreground placeholder:text-muted-foreground sm:py-[calc(--spacing(1.5)-1px)] sm:text-sm/6",
+        "border border-input enabled:hover:border-muted-foreground/30 outline-hidden focus:border-ring/70 focus:ring-3 focus:ring-ring/20 focus:enabled:hover:border-ring/80",
+        "invalid:border-danger-subtle-foreground/70 focus:invalid:border-danger-subtle-foreground/70 focus:invalid:ring-danger-subtle-foreground/20 disabled:bg-muted forced-colors:in-disabled:text-[GrayText] dark:scheme-dark",
+        size === "sm" && "h-8",
+        size === "lg" && "h-11",
         className,
       )}
     />
