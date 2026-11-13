@@ -64,12 +64,12 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Routes
 
-| URL                              | Route entry                                             | Demo source                             |
-| -------------------------------- | ------------------------------------------------------- | --------------------------------------- |
-| `/`                              | `src/app/(home)/page.tsx`                               | Application overview                    |
-| `/docs/components/<name>`        | `src/app/(docs)/docs/components/<name>/page.tsx`        | `src/components/examples/<name>/`       |
-| `/docs/blocks/<category>/<name>` | `src/app/(docs)/docs/blocks/<category>/<name>/page.tsx` | `src/app/pre-blocks/<category>/<name>/` |
-| `/pre-blocks/<category>/<name>`  | `src/app/pre-blocks/<category>/<name>/page.tsx`         | Full-screen block preview               |
+| URL                                  | Route entry                                                 | Demo source                             |
+| ------------------------------------ | ----------------------------------------------------------- | --------------------------------------- |
+| `/`                                  | `src/app/(home)/page.tsx`                                   | Application overview                    |
+| `/docs/components/<category>/<name>` | `src/app/(docs)/docs/components/<category>/<name>/page.tsx` | `src/components/examples/<name>/`       |
+| `/docs/blocks/<category>/<name>`     | `src/app/(docs)/docs/blocks/<category>/<name>/page.tsx`     | `src/app/pre-blocks/<category>/<name>/` |
+| `/pre-blocks/<category>/<name>`      | `src/app/pre-blocks/<category>/<name>/page.tsx`             | Full-screen block preview               |
 
 Route groups such as `(docs)` and `(home)` organize the source tree without changing the URL.
 
@@ -85,30 +85,26 @@ src/
 │   ├── globals.css
 │   └── layout.tsx                # Root layout and providers
 ├── components/
-│   ├── examples/                 # Component demos
-│   ├── docs/                     # Documentation shell and showcase helpers
+│   ├── examples/                 # Component demos and local demo data
+│   ├── docs/                     # Documentation shell, navigation, and theme settings
 │   └── ui/                       # Reusable UI primitives
-├── data/
-│   ├── nav.ts                    # Sidebar menu data
-│   ├── site.ts                   # Project metadata
-│   └── theme.ts                  # Theme colors and layout preferences
 ├── hooks/                        # Shared React hooks
-└── lib/                          # Shared utilities and navigation helpers
+└── lib/                          # Shared utilities and shell navigation
 ```
 
 ## Structure rules
 
-Keep component documentation pages under `src/app/(docs)/docs/components/<name>/page.tsx`. Each page may contain its complete page composition, route-specific UI, documentation content, and local data. Use `src/components/examples/<name>/` for demo modules shared by the page and other consumers. Use `src/app/pre-blocks/<category>/<name>/page.tsx` for a block's full-screen preview route and export its named example from that module when the docs page also embeds it.
+Keep component documentation pages under `src/app/(docs)/docs/components/<category>/<name>/page.tsx`. Each page may contain its complete page composition, route-specific UI, documentation content, and local data. Use `src/components/examples/<name>/` for demo modules shared by the page and other consumers. Use `src/app/pre-blocks/<category>/<name>/page.tsx` for a block's full-screen preview route and export its named example from that module when the docs page also embeds it.
 
-Keep component documentation routes explicit instead of introducing a dynamic `[slug]` route or thin wrapper. Do not create a private `_components` folder solely to hide page-specific code. Put code shared by several routes in `src/components/docs`, `src/components/ui`, `src/data`, or `src/lib` only when it is genuinely shared.
+Keep component documentation routes explicit instead of introducing a dynamic `[slug]` route or thin wrapper. Do not create a private `_components` folder solely to hide page-specific code. Put code shared by several routes in `src/components/docs`, `src/components/ui`, or `src/lib` only when it is genuinely shared.
 
-Application pages share the shell in `src/components/docs/app-layout.tsx`. Keep navigation and user records in `src/data`.
+Application pages share the shell in `src/components/docs/app-layout.tsx`. Keep shell navigation in `src/lib/nav.ts`, shell user-menu items in `src/components/docs/user-menu.tsx`, and example-only records beside the examples that use them.
 
 Use `"use client"` only at the interactive leaf. Interactive demos use client components when they manage browser state or events. Keep route entries server components when they do not need client behavior.
 
 ## Customize the theme
 
-The theme system keeps the complete light and dark token sets for each color option in `src/data/theme.ts`. The theme customizer presents color swatches, and selecting one applies the corresponding surfaces, status colors, borders, charts, sidebar tokens, and shadows together with the primary color.
+The theme system keeps the complete light and dark token sets for each color option in `src/components/docs/theme-tokens.ts`. Theme preference options, defaults, and cookie parsers live in `src/components/docs/theme-options.ts`. The theme customizer presents color swatches, and selecting one applies the corresponding surfaces, status colors, borders, charts, sidebar tokens, and shadows together with the primary color.
 
 Use hex values for color tokens. Provide light and dark values for every color option.
 
@@ -127,7 +123,7 @@ The root layout reads these values from cookies on the server. The preferences p
 
 ### Add a theme color
 
-1. Add the color label and swatch to `THEME_COLOR_OPTIONS` in `src/data/theme.ts`.
+1. Add the color label and swatch to `THEME_COLOR_OPTIONS` in `src/components/docs/theme-tokens.ts`.
 2. Provide complete light and dark token overrides, including surfaces, status colors, borders, charts, sidebar tokens, and shadows.
 3. Provide readable foreground colors for both modes and validate the swatch against both backgrounds.
 
@@ -135,6 +131,6 @@ The root layout reads these values from cookies on the server. The preferences p
 
 ## Extending the template
 
-To add a component documentation page, create an explicit `page.tsx` under `src/app/(docs)/docs/components/<name>/`. The page can own its complete presentation and local data; extract reusable demo modules to `src/components/examples/<name>/` when they are genuinely shared. For a page block, create its docs route under `src/app/(docs)/docs/blocks/<category>/<name>/` and its full-screen preview implementation under `src/app/pre-blocks/<category>/<name>/page.tsx`.
+To add a component documentation page, create an explicit `page.tsx` under `src/app/(docs)/docs/components/<category>/<name>/`. The page can own its complete presentation and local data; extract reusable demo modules to `src/components/examples/<name>/` when they are genuinely shared. For a page block, create its docs route under `src/app/(docs)/docs/blocks/<category>/<name>/` and its full-screen preview implementation under `src/app/pre-blocks/<category>/<name>/page.tsx`.
 
-Replace the example data in `src/data` and the route-local data files with your application data source. Add authentication and persistence when you connect the template to a real backend.
+Replace the local example records with your application data source. Add authentication and persistence when you connect the template to a real backend.

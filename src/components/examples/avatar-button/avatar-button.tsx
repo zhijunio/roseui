@@ -4,15 +4,15 @@ import { useState } from "react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
 import { AvatarButton, type AvatarButtonProps } from "@/components/ui/avatar-button";
-import { getUserAvatar } from "@/data/user";
+import { demoAvatarUrl } from "@/lib/utils";
 
 const variants = ["default", "secondary", "outline", "ghost"] satisfies NonNullable<AvatarButtonProps["variant"]>[];
 const sizes = ["xs", "sm", "default", "lg"] satisfies NonNullable<AvatarButtonProps["avatarSize"]>[];
 
 const members = [
-  { id: "alex", label: "Alex Morgan", fallback: "AM", src: getUserAvatar("Alex Morgan") },
-  { id: "sofia", label: "Sofia Rossi", fallback: "SR", src: getUserAvatar("Sofia Rossi") },
-  { id: "jordan", label: "Jordan Lee", fallback: "JL", src: getUserAvatar("Jordan Lee") },
+  { id: "alex", label: "Alex Morgan", fallback: "AM", src: demoAvatarUrl("Alex Morgan") },
+  { id: "sofia", label: "Sofia Rossi", fallback: "SR", src: demoAvatarUrl("Sofia Rossi") },
+  { id: "jordan", label: "Jordan Lee", fallback: "JL", src: demoAvatarUrl("Jordan Lee") },
 ] as const;
 
 function MemberSelectionExample() {
@@ -51,7 +51,7 @@ export function AvatarButtonExamples() {
             <AvatarButton
               key={variant}
               label="Alex Morgan"
-              src={getUserAvatar("Alex Morgan")}
+              src={demoAvatarUrl("Alex Morgan")}
               fallback="AM"
               variant={variant}
             />
@@ -64,7 +64,7 @@ export function AvatarButtonExamples() {
             <AvatarButton
               key={avatarSize}
               label={avatarSize}
-              src={getUserAvatar("Alex Morgan")}
+              src={demoAvatarUrl("Alex Morgan")}
               fallback="AM"
               avatarSize={avatarSize}
             />
@@ -72,7 +72,7 @@ export function AvatarButtonExamples() {
         </div>
       </ComponentPreview>
       <ComponentPreview title="Disabled" layout="panel">
-        <AvatarButton label="Unavailable member" src={getUserAvatar("Hannah Kim")} fallback="HK" isDisabled />
+        <AvatarButton label="Unavailable member" src={demoAvatarUrl("Hannah Kim")} fallback="HK" isDisabled />
       </ComponentPreview>
     </>
   );

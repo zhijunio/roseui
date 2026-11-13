@@ -3,10 +3,17 @@ import type { ReactNode } from "react";
 import { cookies } from "next/headers";
 
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { cn } from "@/lib/utils";
+import { cn, demoAvatarUrl } from "@/lib/utils";
 
 import { AppHeader } from "./app-header";
 import { AppSidebar } from "./app-sidebar";
+import type { AccountUser } from "./user-menu";
+
+const shellUser: AccountUser = {
+  name: "Alex Morgan",
+  email: "alex.morgan@roseui.com",
+  avatar: demoAvatarUrl("Alex Morgan"),
+};
 
 export async function AppLayout({ children }: { readonly children: ReactNode }) {
   const cookieStore = await cookies();
@@ -15,7 +22,7 @@ export async function AppLayout({ children }: { readonly children: ReactNode }) 
 
   return (
     <SidebarProvider defaultOpen={defaultOpen}>
-      <AppSidebar />
+      <AppSidebar user={shellUser} />
       <SidebarInset
         className={cn(
           "min-w-0 overflow-x-clip",
@@ -25,7 +32,7 @@ export async function AppLayout({ children }: { readonly children: ReactNode }) 
           "[html[data-content-layout=centered]_&>div]:max-w-screen-2xl",
         )}
       >
-        <AppHeader />
+        <AppHeader user={shellUser} />
         <div className="min-h-0 min-w-0 flex-1 overflow-x-hidden p-3 md:p-4">{children}</div>
       </SidebarInset>
     </SidebarProvider>

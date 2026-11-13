@@ -75,7 +75,12 @@ export function AvatarUploadExamples() {
         <FailedUploadExample />
       </ComponentPreview>
       <ComponentPreview title="Disabled" layout="panel">
-        <AvatarUpload name="Jordan Lee" src="https://api.dicebear.com/9.x/avataaars/svg?seed=Jordan%20Lee" onUpload={async () => {}} disabled />
+        <AvatarUpload
+          name="Jordan Lee"
+          src="https://api.dicebear.com/9.x/avataaars/svg?seed=Jordan%20Lee"
+          onUpload={async () => {}}
+          disabled
+        />
       </ComponentPreview>
     </>
   );

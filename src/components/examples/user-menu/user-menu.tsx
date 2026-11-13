@@ -1,18 +1,52 @@
 "use client";
 
-import { useState } from "react";
+import { type ReactNode, useState } from "react";
 
-import { ChevronDown as IconChevronDown, EllipsisVertical as IconDotsVertical } from "lucide-react";
+import {
+  CreditCard,
+  ChevronDown as IconChevronDown,
+  EllipsisVertical as IconDotsVertical,
+  MessageSquareDot,
+  UserCircle,
+} from "lucide-react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { UserMenu } from "@/components/ui/user-menu";
-import { currentUser } from "@/data/user";
-import { userMenuDemoItems } from "@/data/user-menu";
-import { getInitials } from "@/lib/utils";
+import { demoAvatarUrl, getInitials } from "@/lib/utils";
 
+const currentUser = {
+  name: "Alex Morgan",
+  email: "alex.morgan@roseui.com",
+  avatar: demoAvatarUrl("Alex Morgan"),
+};
 const currentWorkspace = { type: "Free" };
+
+type DemoUserMenuItem =
+  | { kind: "internal"; label: string; href: string; icon: ReactNode }
+  | { kind: "external"; label: string; href: string; icon: ReactNode };
+
+const userMenuDemoItems = [
+  {
+    kind: "internal",
+    label: "Profile",
+    href: "/docs/components/layouts/user-menu",
+    icon: <UserCircle aria-hidden="true" />,
+  },
+  {
+    kind: "internal",
+    label: "Billing",
+    href: "/docs/components/forms/payment-field",
+    icon: <CreditCard aria-hidden="true" />,
+  },
+  {
+    kind: "external",
+    label: "Project source",
+    href: "https://github.com/zhijunio/roseui",
+    icon: <MessageSquareDot aria-hidden="true" />,
+  },
+] satisfies DemoUserMenuItem[];
 
 function AccountMenuDemo({ placement }: { placement: "topbar" | "sidebar" }) {
   const [feedback, setFeedback] = useState("Choose an account action to see its result.");

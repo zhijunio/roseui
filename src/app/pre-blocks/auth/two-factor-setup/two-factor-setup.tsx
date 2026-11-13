@@ -21,6 +21,9 @@ import { CheckboxButton, CheckboxField } from "@/components/ui/checkbox";
 import { InputOTP } from "@/components/ui/input-otp";
 
 const setupKey = "JBSW Y3DP EHPK 3PXP";
+const authenticatorImageUrl =
+  "https://images.unsplash.com/photo-1615985250204-b48c0936d4fc?auto=format&fit=crop&w=720&q=80";
+
 const backupCodes = [
   "482103",
   "715422",
@@ -104,7 +107,9 @@ export function TotpSetupExample() {
         </span>
         <div>
           <h2 className="font-semibold tracking-tight">Authenticator app</h2>
-          <p className="text-muted-foreground mt-1 text-sm">Scan the QR code, then verify a code from your app.</p>
+          <p className="text-muted-foreground mt-1 text-sm">
+            Enter the setup key in your authenticator app, then verify a code from your app.
+          </p>
         </div>
       </div>
 
@@ -131,10 +136,11 @@ export function TotpSetupExample() {
           <div className="grid justify-items-center gap-3">
             <div className="rounded-lg border bg-white p-3">
               <Image
-                src="/authenticator-setup-qr.png"
-                alt="QR code for authenticator app setup"
-                width={180}
-                height={180}
+                src={authenticatorImageUrl}
+                alt="Phone displaying a lock symbol"
+                width={720}
+                height={720}
+                unoptimized
                 className="size-40 sm:size-44"
               />
             </div>

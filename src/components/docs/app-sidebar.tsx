@@ -7,17 +7,16 @@ import Link from "next/link";
 import { EllipsisVertical, Search, X } from "lucide-react";
 
 import { NavMain } from "@/components/docs/nav-main";
-import { UserAvatar, UserMenu } from "@/components/docs/user-menu";
+import { type AccountUser, UserAvatar, UserMenu } from "@/components/docs/user-menu";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { LogoMark } from "@/components/ui/logo-mark";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, useSidebar } from "@/components/ui/sidebar";
-import { NAV_DATA } from "@/data/nav";
-import { currentUser } from "@/data/user";
+import { NAV_DATA } from "@/lib/nav";
 
 import { useThemePreferences } from "./theme-preferences";
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({ user, ...props }: React.ComponentProps<typeof Sidebar> & { user: AccountUser }) {
   const { preferences } = useThemePreferences();
   const { isMobile } = useSidebar();
   const [searchQuery, setSearchQuery] = React.useState("");
@@ -70,17 +69,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavMain sections={NAV_DATA} searchQuery={searchQuery} />
       </SidebarContent>
       <SidebarFooter className="items-stretch p-2">
-        <UserMenu user={currentUser} side={isMobile ? "bottom" : "right"}>
+        <UserMenu user={user} side={isMobile ? "bottom" : "right"}>
           <Button
             type="button"
             variant="ghost"
             className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground h-14 w-full justify-start gap-3 px-2 group-data-[collapsible=dock]:justify-center"
-            aria-label={`Open account menu for ${currentUser.name}`}
+            aria-label={`Open account menu for ${user.name}`}
           >
-            <UserAvatar user={currentUser} />
+            <UserAvatar user={user} />
             <span className="grid min-w-0 flex-1 text-left text-sm leading-tight group-data-[collapsible=dock]:hidden">
-              <span className="truncate font-medium">{currentUser.name}</span>
-              <span className="text-muted-foreground truncate text-xs">{currentUser.email}</span>
+              <span className="truncate font-medium">{user.name}</span>
+              <span className="text-muted-foreground truncate text-xs">{user.email}</span>
             </span>
             <EllipsisVertical className="ml-auto size-4 group-data-[collapsible=dock]:hidden" aria-hidden="true" />
           </Button>

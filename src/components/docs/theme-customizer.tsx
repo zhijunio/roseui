@@ -5,10 +5,6 @@ import * as React from "react";
 import { Palette } from "lucide-react";
 import { useTheme } from "next-themes";
 
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import {
   CONTENT_LAYOUT_OPTIONS,
   DEFAULT_THEME_MODE,
@@ -23,9 +19,13 @@ import {
   NAVBAR_STYLE_OPTIONS,
   SIDEBAR_COLLAPSIBLE_OPTIONS,
   SIDEBAR_VARIANT_OPTIONS,
-  THEME_COLOR_OPTIONS,
   THEME_MODE_OPTIONS,
-} from "@/data/theme";
+} from "@/components/docs/theme-options";
+import { THEME_COLOR_OPTIONS } from "@/components/docs/theme-tokens";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { cn } from "@/lib/utils";
 
 import { useThemePreferences } from "./theme-preferences";

@@ -4,17 +4,32 @@ import * as React from "react";
 
 import { useRouter } from "next/navigation";
 
-import { LogOut, Moon, Sun } from "lucide-react";
+import { CreditCard, LogOut, type LucideIcon, MessageSquareDot, Moon, Sun, UserCircle } from "lucide-react";
 import { useTheme } from "next-themes";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Menu, MenuHeader, MenuItem, MenuSection, MenuSeparator, MenuTrigger } from "@/components/ui/menu";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Spinner } from "@/components/ui/spinner";
-import type { User } from "@/data/user";
-import { userMenuItems } from "@/data/user-menu";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
+
+export type AccountUser = {
+  name: string;
+  email: string;
+  avatar: string;
+};
+
+type UserMenuItem = {
+  label: string;
+  icon: LucideIcon;
+};
+
+const userMenuItems = [
+  { label: "Profile", icon: UserCircle },
+  { label: "Billing", icon: CreditCard },
+  { label: "Notifications", icon: MessageSquareDot },
+] satisfies readonly UserMenuItem[];
 
 function getInitials(name: string) {
   return (
@@ -27,7 +42,7 @@ function getInitials(name: string) {
   );
 }
 
-export function UserAvatar({ user, className }: { user: User; className?: string }) {
+export function UserAvatar({ user, className }: { user: AccountUser; className?: string }) {
   return (
     <Avatar className={cn("rounded-lg", className)}>
       <AvatarImage src={user.avatar} alt={user.name} className="z-10" />
@@ -42,7 +57,7 @@ export function UserMenu({
   side = "bottom",
   contentClassName,
 }: {
-  user: User;
+  user: AccountUser;
   children: React.ReactElement;
   side?: "top" | "right" | "bottom" | "left";
   contentClassName?: string;

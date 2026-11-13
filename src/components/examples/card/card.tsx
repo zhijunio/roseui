@@ -17,7 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Menu, MenuItem, MenuTrigger } from "@/components/ui/menu";
 import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@/components/ui/table";
-import { getUserAvatar } from "@/data/user";
+import { demoAvatarUrl } from "@/lib/utils";
 
 const styleOne = [
   {
@@ -38,7 +38,7 @@ const styleTwo = {
   image: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1200&q=80",
   description: "Assessing eco-friendly practices to reduce carbon footprints in product development.",
   author: "John Doe",
-  avatar: getUserAvatar("John Doe"),
+  avatar: demoAvatarUrl("John Doe"),
 };
 
 const styleHorizontal = {
@@ -61,7 +61,7 @@ const styleFour = {
   date: "Aug 14, 2028",
   description: "Track launch readiness across product, support, and customer communications.",
   author: "Sofia Rossi",
-  avatar: getUserAvatar("Sofia Rossi"),
+  avatar: demoAvatarUrl("Sofia Rossi"),
 };
 
 export function CardsExample() {

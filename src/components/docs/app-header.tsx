@@ -10,7 +10,7 @@ import { Focusable } from "react-aria-components/Focusable";
 
 import { ThemeCustomizer } from "@/components/docs/theme-customizer";
 import { ThemeToggle } from "@/components/docs/theme-toggle";
-import { UserAvatar, UserMenu } from "@/components/docs/user-menu";
+import { type AccountUser, UserAvatar, UserMenu } from "@/components/docs/user-menu";
 import { Button } from "@/components/ui/button";
 import {
   CommandMenu,
@@ -22,12 +22,10 @@ import {
 } from "@/components/ui/command-menu";
 import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
 import { Tooltip, TooltipTrigger } from "@/components/ui/tooltip";
-import { NAV_DATA, type NavItem } from "@/data/nav";
-import { currentUser } from "@/data/user";
 import { useIsMac } from "@/hooks/use-platform";
+import { NAV_DATA, type NavItem } from "@/lib/nav";
 import { getBreadcrumbItems } from "@/lib/navigation";
-
-export function AppHeader() {
+export function AppHeader({ user }: { user: AccountUser }) {
   const pathname = usePathname();
   const router = useRouter();
   const { setOpen: setSidebarOpen } = useSidebar();
@@ -96,9 +94,9 @@ export function AppHeader() {
           </TooltipTrigger>
           <ThemeCustomizer />
           <ThemeToggle />
-          <UserMenu user={currentUser} contentClassName="w-56">
+          <UserMenu user={user} contentClassName="w-56">
             <Button variant="ghost" size="icon-sm" aria-label="Open user menu" className="rounded-full">
-              <UserAvatar user={currentUser} className="size-7" />
+              <UserAvatar user={user} className="size-7" />
             </Button>
           </UserMenu>
           <CommandMenu isOpen={open} onOpenChange={setOpen} shortcut="k" aria-label="Search pages">

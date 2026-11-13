@@ -9,13 +9,12 @@ import {
   DEFAULT_THEME_MODE,
   DEFAULT_THEME_PREFERENCES,
   getFontOption,
-  getThemeColorOption,
   type NavbarStyle,
   type SidebarCollapsible,
   type SidebarVariant,
   type ThemePreferences,
-  type ThemeTokenSet,
-} from "@/data/theme";
+} from "@/components/docs/theme-options";
+import { getThemeColorOption, type ThemeTokenSet } from "@/components/docs/theme-tokens";
 
 type ThemePreferenceKey = keyof ThemePreferences;
 type ThemePreferenceValueMap = {

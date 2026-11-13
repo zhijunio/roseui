@@ -13,8 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DataTable, SortableHeader } from "@/components/ui/data-table";
 import { Menu, MenuHeader, MenuItem, MenuSeparator, MenuTrigger } from "@/components/ui/menu";
-import { users } from "@/data/user";
-import { getInitials } from "@/lib/utils";
+import { demoAvatarUrl, getInitials } from "@/lib/utils";
 
 type Customer = {
   id: string;
@@ -32,9 +31,9 @@ type Customer = {
 const customers: Customer[] = [
   {
     id: "CUS-1042",
-    name: users[6].name,
+    name: "Emma Carter",
     email: "emma@vertexlabs.com",
-    avatar: users[6].avatar,
+    avatar: demoAvatarUrl("Emma Carter"),
     company: "Vertex Labs",
     status: "Active",
     plan: "Enterprise",
@@ -44,9 +43,9 @@ const customers: Customer[] = [
   },
   {
     id: "CUS-1043",
-    name: users[7].name,
+    name: "Liam Nguyen",
     email: "liam@northwind.com",
-    avatar: users[7].avatar,
+    avatar: demoAvatarUrl("Liam Nguyen"),
     company: "Northwind",
     status: "Active",
     plan: "Pro",
@@ -56,9 +55,9 @@ const customers: Customer[] = [
   },
   {
     id: "CUS-1044",
-    name: users[8].name,
+    name: "Olivia Patel",
     email: "olivia@lumen.co",
-    avatar: users[8].avatar,
+    avatar: demoAvatarUrl("Olivia Patel"),
     company: "Lumen Co",
     status: "Pending",
     plan: "Free",
@@ -68,9 +67,9 @@ const customers: Customer[] = [
   },
   {
     id: "CUS-1045",
-    name: users[9].name,
+    name: "Noah Kim",
     email: "noah@aperture.com",
-    avatar: users[9].avatar,
+    avatar: demoAvatarUrl("Noah Kim"),
     company: "Aperture",
     status: "Inactive",
     plan: "Pro",
@@ -80,9 +79,9 @@ const customers: Customer[] = [
   },
   {
     id: "CUS-1046",
-    name: users[8].name,
+    name: "Olivia Patel",
     email: "olivia@blueharbor.com",
-    avatar: users[8].avatar,
+    avatar: demoAvatarUrl("Olivia Patel"),
     company: "Blue Harbor",
     status: "Active",
     plan: "Enterprise",
@@ -92,9 +91,9 @@ const customers: Customer[] = [
   },
   {
     id: "CUS-1047",
-    name: users[9].name,
+    name: "Noah Kim",
     email: "noah@sunroot.com",
-    avatar: users[9].avatar,
+    avatar: demoAvatarUrl("Noah Kim"),
     company: "Sunroot",
     status: "Active",
     plan: "Pro",
@@ -104,9 +103,9 @@ const customers: Customer[] = [
   },
   {
     id: "CUS-1048",
-    name: users[3].name,
+    name: "Priya Nair",
     email: "priya@kitedigital.com",
-    avatar: users[3].avatar,
+    avatar: demoAvatarUrl("Priya Nair"),
     company: "Kite Digital",
     status: "Pending",
     plan: "Free",
@@ -116,9 +115,9 @@ const customers: Customer[] = [
   },
   {
     id: "CUS-1049",
-    name: users[4].name,
+    name: "Daniel Weber",
     email: "daniel@foundry.com",
-    avatar: users[4].avatar,
+    avatar: demoAvatarUrl("Daniel Weber"),
     company: "Foundry",
     status: "Active",
     plan: "Enterprise",

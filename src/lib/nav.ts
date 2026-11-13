@@ -265,7 +265,6 @@ const componentGroups = [
       { title: "Heatmap Chart", url: "/docs/components/chart/heatmap-chart" },
       { title: "Map Chart", url: "/docs/components/chart/map-chart" },
       { title: "Leaderboard", url: "/docs/components/chart/leaderboard" },
-      { title: "Sunburst Chart", url: "/docs/components/chart/sunburst-chart" },
       { title: "Tracker", url: "/docs/components/chart/tracker" },
     ],
   },

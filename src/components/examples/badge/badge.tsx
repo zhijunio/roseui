@@ -12,7 +12,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge, BadgeAnchor, type BadgePlacement } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { StatusDot } from "@/components/ui/status-dot";
-import { users } from "@/data/user";
+import { demoAvatarUrl } from "@/lib/utils";
+
+const badgeUser = {
+  name: "Alex Morgan",
+  avatar: demoAvatarUrl("Alex Morgan"),
+};
 
 type ExampleSection = {
   title: string;
@@ -154,7 +159,7 @@ export function BadgeExample({ example }: { example: number }) {
       <div className="flex flex-wrap items-center gap-6">
         <BadgeAnchor className="m-2">
           <Avatar size="lg">
-            <AvatarImage src={users[0].avatar} alt={users[0].name} />
+            <AvatarImage src={badgeUser.avatar} alt={badgeUser.name} />
             <AvatarFallback>AM</AvatarFallback>
           </Avatar>
           <Badge
@@ -162,7 +167,7 @@ export function BadgeExample({ example }: { example: number }) {
             placement="bottom-right"
             variant="success"
             role="status"
-            aria-label={`${users[0].name} is online`}
+            aria-label={`${badgeUser.name} is online`}
           />
         </BadgeAnchor>
         <span className="text-sm text-muted-foreground">Online</span>
@@ -243,10 +248,10 @@ export function BadgeExample({ example }: { example: number }) {
     return (
       <Badge variant="outline" size="lg" className="pl-0.5">
         <Avatar size="xs" className="size-4">
-          <AvatarImage src={users[0].avatar} alt="" />
+          <AvatarImage src={badgeUser.avatar} alt="" />
           <AvatarFallback>AM</AvatarFallback>
         </Avatar>
-        {users[0].name}
+        {badgeUser.name}
       </Badge>
     );
   if (example === 25) {

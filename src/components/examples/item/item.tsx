@@ -40,8 +40,13 @@ import {
 } from "@/components/ui/item";
 import { Kbd } from "@/components/ui/kbd";
 import { Switch } from "@/components/ui/switch";
-import { users as exampleUsers } from "@/data/user";
-import { getInitials } from "@/lib/utils";
+import { demoAvatarUrl, getInitials } from "@/lib/utils";
+
+const exampleUsers = [
+  { id: "priya", name: "Priya Nair", email: "priya.nair@roseui.com", avatar: demoAvatarUrl("Priya Nair") },
+  { id: "daniel", name: "Daniel Weber", email: "daniel.weber@roseui.com", avatar: demoAvatarUrl("Daniel Weber") },
+  { id: "alex", name: "Alex Morgan", email: "alex.morgan@roseui.com", avatar: demoAvatarUrl("Alex Morgan") },
+];
 
 const examples = [
   "Basic item with title and description",

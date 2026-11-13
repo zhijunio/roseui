@@ -44,7 +44,7 @@ const examples: BreadcrumbExample[] = [
     separator: "chevron" as const,
     items: [
       { id: "home", label: "Home", href: "/", textValue: "Home" },
-      { id: "more", label: "…", href: "/docs", textValue: "More pages" },
+      { id: "more", label: "…", href: "/docs/components/forms/field", textValue: "More pages" },
       { id: "forms", label: "Forms", href: "/docs/components/forms/field" },
       { id: "input", label: "Input", href: "/docs/components/forms/input" },
     ],

@@ -17,8 +17,7 @@ import { CloseButton } from "@/components/ui/close-button";
 import { Progress } from "@/components/ui/progress";
 import { Spinner } from "@/components/ui/spinner";
 import { TextArea } from "@/components/ui/text-area";
-import { users } from "@/data/user";
-import { getInitials } from "@/lib/utils";
+import { demoAvatarUrl, getInitials } from "@/lib/utils";
 
 type ExampleSection = {
   title: string;
@@ -141,7 +140,10 @@ function MessageAlert() {
   const [reply, setReply] = useState("");
   const [sent, setSent] = useState(false);
   const [viewed, setViewed] = useState(false);
-  const person = users[0];
+  const person = {
+    name: "Alex Morgan",
+    avatar: demoAvatarUrl("Alex Morgan"),
+  };
   return (
     <Alert variant="default" className="has-data-[slot=alert-action]:pr-4">
       <Avatar>

@@ -31,7 +31,20 @@ import { Input } from "@/components/ui/input";
 import { Menu, MenuItem, MenuTrigger } from "@/components/ui/menu";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { StatusDot } from "@/components/ui/status-dot";
-import { users } from "@/data/user";
+import { demoAvatarUrl } from "@/lib/utils";
+
+const users = [
+  { id: "alex", name: "Alex Morgan", avatar: demoAvatarUrl("Alex Morgan") },
+  { id: "sofia", name: "Sofia Rossi", avatar: demoAvatarUrl("Sofia Rossi") },
+  { id: "marcus", name: "Marcus Chen", avatar: demoAvatarUrl("Marcus Chen") },
+  { id: "priya", name: "Priya Nair", avatar: demoAvatarUrl("Priya Nair") },
+  { id: "daniel", name: "Daniel Weber", avatar: demoAvatarUrl("Daniel Weber") },
+  { id: "hannah", name: "Hannah Kim", avatar: demoAvatarUrl("Hannah Kim") },
+  { id: "emma", name: "Emma Carter", avatar: demoAvatarUrl("Emma Carter") },
+  { id: "liam", name: "Liam Nguyen", avatar: demoAvatarUrl("Liam Nguyen") },
+  { id: "olivia", name: "Olivia Patel", avatar: demoAvatarUrl("Olivia Patel") },
+  { id: "noah", name: "Noah Kim", avatar: demoAvatarUrl("Noah Kim") },
+];
 
 type ExampleSection = {
   title: string;

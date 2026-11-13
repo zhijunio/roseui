@@ -14,8 +14,20 @@ import { ComponentPreview, type ComponentPreviewLayout } from "@/components/docs
 import { Avatar, AvatarBadge, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Menu, MenuHeader, MenuItem, MenuSeparator, MenuTrigger } from "@/components/ui/menu";
-import { users } from "@/data/user";
-import { cn, getInitials } from "@/lib/utils";
+import { cn, demoAvatarUrl, getInitials } from "@/lib/utils";
+
+const users = [
+  { id: "alex", name: "Alex Morgan", avatar: demoAvatarUrl("Alex Morgan") },
+  { id: "sofia", name: "Sofia Rossi", avatar: demoAvatarUrl("Sofia Rossi") },
+  { id: "marcus", name: "Marcus Chen", avatar: demoAvatarUrl("Marcus Chen") },
+  { id: "priya", name: "Priya Nair", avatar: demoAvatarUrl("Priya Nair") },
+  { id: "daniel", name: "Daniel Weber", avatar: demoAvatarUrl("Daniel Weber") },
+  { id: "hannah", name: "Hannah Kim", avatar: demoAvatarUrl("Hannah Kim") },
+  { id: "emma", name: "Emma Carter", avatar: demoAvatarUrl("Emma Carter") },
+  { id: "liam", name: "Liam Nguyen", avatar: demoAvatarUrl("Liam Nguyen") },
+  { id: "olivia", name: "Olivia Patel", avatar: demoAvatarUrl("Olivia Patel") },
+  { id: "noah", name: "Noah Kim", avatar: demoAvatarUrl("Noah Kim") },
+];
 
 type ExampleSection = {
   title: string;

@@ -1,14 +1,20 @@
 "use client";
 
 import * as React from "react";
+
 import { ToggleButton } from "react-aria-components/ToggleButton";
 import { ToggleButtonGroup } from "react-aria-components/ToggleButtonGroup";
 import type { LegendPayload, TooltipValueType } from "recharts";
 import * as RechartsPrimitive from "recharts";
+
 import { cn } from "@/lib/utils";
 
 // Format: { THEME_NAME: CSS_SELECTOR }
 const THEMES = { light: "", dark: '[data-theme="dark"]' } as const;
+const chartKeyPattern = /^[a-zA-Z0-9_-]+$/;
+// Chart config values enter generated style text, so accept only single CSS color tokens.
+const chartColorPattern =
+  /^(?:#[\da-f]{3}|#[\da-f]{4}|#[\da-f]{6}|#[\da-f]{8}|[a-z]+|var\(--[a-zA-Z_][a-zA-Z0-9_-]*\)|(?:rgb|rgba|hsl|hsla|hwb|lab|lch|oklab|oklch|color)\([\da-z.%\s,+/-]+\))$/i;
 
 const INITIAL_DIMENSION = { width: 320, height: 200 } as const;
 type TooltipNameType = number | string;
@@ -265,7 +271,8 @@ function withPieCellSelection(children: React.ReactNode, pieProps: Record<string
 
 export function getColorValue(color?: string): string {
   if (!color) return CHART_COLORS["chart-1"];
-  return CHART_COLORS[color as keyof typeof CHART_COLORS] ?? color;
+  const value = CHART_COLORS[color as keyof typeof CHART_COLORS] ?? color;
+  return chartColorPattern.test(value) ? value : CHART_COLORS["chart-1"];
 }
 
 export function constructCategoryColors(categories: string[], colors: readonly ChartColorKey[]) {
@@ -393,19 +400,19 @@ export function CartesianGrid({ className, ...props }: React.ComponentProps<type
 }
 
 const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
-  const colorConfig = Object.entries(config).filter(([, config]) => config.theme ?? config.color);
+  const chartId = id.replace(/[^a-zA-Z0-9_-]/g, "");
+  const colorConfig = Object.entries(config).filter(
+    ([key, entry]) => chartKeyPattern.test(key) && (entry.theme ?? entry.color),
+  );
 
   if (!colorConfig.length) {
     return null;
   }
 
-  return (
-    <style
-      dangerouslySetInnerHTML={{
-        __html: Object.entries(THEMES)
-          .map(
-            ([theme, prefix]) => `
-${prefix} [data-chart="${id}"] {
+  const styles = Object.entries(THEMES)
+    .map(
+      ([theme, prefix]) => `
+${prefix} [data-chart="${chartId}"] {
 ${colorConfig
   .map(([key, itemConfig]) => {
     const configuredColor = itemConfig.theme?.[theme as keyof typeof itemConfig.theme] ?? itemConfig.color;
@@ -415,11 +422,10 @@ ${colorConfig
   .join("\n")}
 }
 `,
-          )
-          .join("\n"),
-      }}
-    />
-  );
+    )
+    .join("\n");
+
+  return <style>{styles}</style>;
 };
 
 const tooltipCursor = {
@@ -520,13 +526,20 @@ function ChartTooltipContent({
         {payload
           .filter((item) => item.type !== "none")
           .map((item, index) => {
-            const key = `${nameKey ?? item.name ?? item.dataKey ?? "value"}`;
+            const payloadName =
+              nameKey && typeof item.payload === "object" && item.payload !== null ? item.payload[nameKey] : undefined;
+            const key = String(
+              (typeof payloadName === "string" || typeof payloadName === "number" ? payloadName : undefined) ??
+                item.dataKey ??
+                item.name ??
+                "value",
+            );
             const itemConfig = getPayloadConfigFromPayload(config, item, key);
             const indicatorColor = color ?? item.payload?.fill ?? item.color;
 
             return (
               <div
-                key={index}
+                key={key}
                 className={cn(
                   "flex w-full flex-wrap items-stretch gap-2 [&>svg]:h-2.5 [&>svg]:w-2.5 [&>svg]:text-muted-foreground",
                   indicator === "dot" && "items-center",

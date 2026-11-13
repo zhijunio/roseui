@@ -2,12 +2,12 @@
 
 ## Work rules
 
-- Keep component documentation routes explicit under `src/app/(docs)/docs/components/<name>/page.tsx`. Each page may own its complete page composition, route-specific UI, documentation content, and local data; do not introduce a dynamic `[slug]` route or thin wrapper just to avoid an explicit page.
+- Keep component documentation routes explicit under `src/app/(docs)/docs/components/<category>/<name>/page.tsx`. Each page may own its complete page composition, route-specific UI, documentation content, and local data; do not introduce a dynamic `[slug]` route or thin wrapper just to avoid an explicit page.
 - Keep reusable component demos under `src/components/examples/<name>`. Keep each block's full-screen preview and named implementation in `src/app/pre-blocks/<category>/<name>/page.tsx`; share it with the corresponding docs route instead of adding a thin wrapper.
-- Keep `src/components/docs` limited to documentation-shell UI, showcase helpers, and their interaction logic. Keep user records, navigation definitions, menu items, and other business data under `src/data`.
+- Keep `src/components/docs` focused on documentation-shell UI, showcase helpers, interaction logic, and the theme configuration those controls own. Keep demo data beside the route or example that consumes it.
 - Keep `src/components/ui` limited to reusable UI primitives. Do not place route or product data there.
 - Keep reusable components under `src/components/ui`, component demos under `src/components/examples`, full-screen block routes under `src/app/pre-blocks`, and shared documentation helpers under `src/components/docs`. Components are maintained in this repository; do not add a component registry or install generated primitives from one.
-- Define shell menu data in `src/data/nav.ts` as `NAV_DATA` with `label` and nested `items`, then pass it to `NavMain` through typed props. Put user records in `src/data/user.ts` and user-menu configuration in `src/data/user-menu.ts`.
+- Define shell navigation in `src/lib/nav.ts` as `NAV_DATA` with `label` and nested `items`, then pass it to `NavMain` through typed props. Keep shell user-menu items in `src/components/docs/user-menu.tsx`; keep demo users and other example-only data beside their consuming modules. Do not create a shared `src/data` directory.
 - Use existing dependencies before adding a new one. Do not add a dependency for a single icon or a thin wrapper.
 - Use `lucide-react` for interface icons. Use the existing `simple-icons` and `SimpleIcon` adapter for brand icons that Lucide does not provide.
 - Write CSS colors as hex values. Do not add `oklch`, `hsl`, `rgb`, or other color-function values.
@@ -24,16 +24,15 @@
 - `src/app/pre-blocks` contains full-screen page block routes and their implementations.
 - `src/components/docs` contains `AppLayout`, `AppHeader`, `AppSidebar`, navigation presentation, theme controls, user-menu presentation, and `ComponentPreview`.
 - `src/components/ui` contains reusable UI primitives maintained in this repository.
-- `src/data` contains typed static configuration and data used by multiple modules.
-- `src/lib` contains shared framework helpers such as route matching and class merging.
-- `src/data/theme.ts` contains complete light and dark theme token sets for each color option.
+- `src/lib` contains shared framework helpers such as route matching and class merging, plus shell navigation in `src/lib/nav.ts`.
+- `src/components/docs/theme-tokens.ts` contains complete light and dark theme token sets for each color option. `src/components/docs/theme-options.ts` contains theme preference options, defaults, and boundary parsers.
 
 ## Naming and boundaries
 
 - Use `AppLayout`, `AppHeader`, and `AppSidebar` for the application shell.
 - Keep `NavMain` as the main navigation module name.
 - Keep data names descriptive. Use names such as `NAV_DATA`, `currentUser`, and `userMenuItems`.
-- Pass data into site components through typed props or imports from `src/data`. Keep the shell menu shape in `AppSidebar` and define reusable records in `src/data`.
+- Pass shell data through typed props. Keep user-menu items beside `UserMenu`, and keep example records local to the example that owns them.
 - Model variants with discriminated unions when variants exist and validate external values at the boundary. Prefer `satisfies` over type assertions.
 - Keep one source of truth for a setting or menu definition. Do not duplicate the same configuration in a component and a data file.
 

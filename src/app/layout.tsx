@@ -6,14 +6,9 @@ import { cookies } from "next/headers";
 
 import type { Metadata } from "next";
 
-import { ThemePreferencesProvider } from "@/components/docs/theme-preferences";
-import { ThemeProvider } from "@/components/docs/theme-provider";
-import { Toaster } from "@/components/ui/sonner";
-import { PROJECT_CONFIG } from "@/data/site";
 import {
   DEFAULT_THEME_MODE,
   getFontOption,
-  getThemeColorOption,
   parseContentLayout,
   parseFont,
   parseNavbarStyle,
@@ -21,8 +16,11 @@ import {
   parseSidebarVariant,
   parseThemeColor,
   type ThemePreferences,
-  type ThemeTokenSet,
-} from "@/data/theme";
+} from "@/components/docs/theme-options";
+import { ThemePreferencesProvider } from "@/components/docs/theme-preferences";
+import { ThemeProvider } from "@/components/docs/theme-provider";
+import { getThemeColorOption, type ThemeTokenSet } from "@/components/docs/theme-tokens";
+import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
 type ThemeColorStyle = CSSProperties &
@@ -57,8 +55,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: PROJECT_CONFIG.name,
-  description: PROJECT_CONFIG.description,
+  title: "RoseUI",
+  description: "A modular component workbench built with Next.js, Tailwind CSS, and React Aria.",
 };
 
 export default async function RootLayout({

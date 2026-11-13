@@ -14,8 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Menu, MenuItem, MenuTrigger } from "@/components/ui/menu";
 import { Switch } from "@/components/ui/switch";
 import { Table, TableBody, TableCell, TableColumn, TableFooter, TableHeader, TableRow } from "@/components/ui/table";
-import { getUserAvatar } from "@/data/user";
-import { getInitials } from "@/lib/utils";
+import { demoAvatarUrl, getInitials } from "@/lib/utils";
 
 const tableExampleLabels: Record<number, string> = {
   1: "Basic table",
@@ -172,7 +171,7 @@ function PersonCell({ name, detail }: { name: string; detail?: string }) {
   return (
     <div className="flex items-center gap-3">
       <Avatar size="sm">
-        <AvatarImage src={getUserAvatar(name)} alt="" />
+        <AvatarImage src={demoAvatarUrl(name)} alt="" />
         <AvatarFallback>{getInitials(name)}</AvatarFallback>
       </Avatar>
       <div className="min-w-0">
@@ -470,7 +469,7 @@ export function TableExample({ example }: { example: number }) {
                         <div className="flex -space-x-2">
                           {people.slice(0, Number(row.metric)).map((person) => (
                             <Avatar key={person.id} size="sm" className="ring-card ring-2">
-                              <AvatarImage src={getUserAvatar(person.name)} alt={person.name} />
+                              <AvatarImage src={demoAvatarUrl(person.name)} alt={person.name} />
                               <AvatarFallback>{person.name[0]}</AvatarFallback>
                             </Avatar>
                           ))}

@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { Separator } from "@/components/ui/separator";
-import { getUserAvatar } from "@/data/user";
+import { demoAvatarUrl } from "@/lib/utils";
 
 const releases = [
   {
@@ -129,7 +129,7 @@ export function HoverCardExamples() {
             <HoverCardTrigger asChild>
               <button className="flex items-center gap-2 rounded-md p-2 text-left hover:bg-muted">
                 <Avatar className="size-9">
-                  <AvatarImage src={getUserAvatar("Priya Nair")} alt="Priya Nair" />
+                  <AvatarImage src={demoAvatarUrl("Priya Nair")} alt="Priya Nair" />
                   <AvatarFallback>PN</AvatarFallback>
                 </Avatar>
                 <span>
@@ -141,7 +141,7 @@ export function HoverCardExamples() {
             <HoverCardContent className="w-72">
               <div className="flex gap-3">
                 <Avatar className="size-11">
-                  <AvatarImage src={getUserAvatar("Priya Nair")} alt="Priya Nair" />
+                  <AvatarImage src={demoAvatarUrl("Priya Nair")} alt="Priya Nair" />
                   <AvatarFallback>PN</AvatarFallback>
                 </Avatar>
                 <div>

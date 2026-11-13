@@ -1,5 +1,4 @@
-import type { NavSection } from "@/data/nav";
-import { NAV_DATA } from "@/data/nav";
+import { NAV_DATA, type NavSection } from "@/lib/nav";
 
 export interface BreadcrumbItem {
   label: string;

@@ -16,7 +16,7 @@ import {
   SidebarSectionGroup,
   useSidebar,
 } from "@/components/ui/sidebar";
-import type { NavItem, NavSection } from "@/data/nav";
+import type { NavItem, NavSection } from "@/lib/nav";
 import { cn } from "@/lib/utils";
 
 interface NavMainProps {

@@ -10,8 +10,16 @@ import { Avatar, AvatarBadge, AvatarFallback, AvatarImage } from "@/components/u
 import { AvatarGroup, AvatarGroupCount } from "@/components/ui/avatar-group";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipTrigger } from "@/components/ui/tooltip";
-import { users } from "@/data/user";
-import { cn, getInitials } from "@/lib/utils";
+import { cn, demoAvatarUrl, getInitials } from "@/lib/utils";
+
+const users = [
+  { id: "alex", name: "Alex Morgan", avatar: demoAvatarUrl("Alex Morgan") },
+  { id: "sofia", name: "Sofia Rossi", avatar: demoAvatarUrl("Sofia Rossi") },
+  { id: "marcus", name: "Marcus Chen", avatar: demoAvatarUrl("Marcus Chen") },
+  { id: "priya", name: "Priya Nair", avatar: demoAvatarUrl("Priya Nair") },
+  { id: "daniel", name: "Daniel Weber", avatar: demoAvatarUrl("Daniel Weber") },
+  { id: "hannah", name: "Hannah Kim", avatar: demoAvatarUrl("Hannah Kim") },
+];
 
 type ExampleSection = {
   title: string;

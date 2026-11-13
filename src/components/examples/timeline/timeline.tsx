@@ -21,8 +21,7 @@ import {
   TimelineSeparator,
   TimelineTitle,
 } from "@/components/ui/timeline";
-import { getUserAvatar } from "@/data/user";
-import { cn } from "@/lib/utils";
+import { cn, demoAvatarUrl } from "@/lib/utils";
 
 const timelineShowcase = [
   { title: "Basic Timeline", index: 0 },
@@ -331,7 +330,7 @@ function TimelineDemo({ index }: { index: number }) {
             ) : index === 10 ? (
               <Avatar className="size-8">
                 <AvatarImage
-                  src={getUserAvatar(activityPeople[stepIndex] ?? "User")}
+                  src={demoAvatarUrl(activityPeople[stepIndex] ?? "User")}
                   alt={activityPeople[stepIndex] ?? "User"}
                 />
                 <AvatarFallback className="text-[10px]">

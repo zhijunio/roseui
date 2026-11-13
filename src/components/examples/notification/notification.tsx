@@ -7,7 +7,7 @@ import { AnimatePresence } from "motion/react";
 import { ComponentPreview } from "@/components/docs/component-preview";
 import { Button } from "@/components/ui/button";
 import { Notification, type NotificationStatus, NotificationViewport } from "@/components/ui/notification";
-import { getUserAvatar } from "@/data/user";
+import { demoAvatarUrl } from "@/lib/utils";
 
 type DemoNotification = { id: number; status: NotificationStatus | "avatar" | "actions" };
 const notificationStatuses = [
@@ -84,7 +84,7 @@ export function NotificationExamples() {
       <ComponentPreview title="Avatar and Action Buttons" layout="panel">
         <div className="grid w-full gap-3">
           <Notification
-            avatar={{ src: getUserAvatar("Livia Saris"), alt: "Livia Saris", presence: "busy" }}
+            avatar={{ src: demoAvatarUrl("Livia Saris"), alt: "Livia Saris", presence: "busy" }}
             title="Livia Saris"
             timestamp="just now"
             description="Mentioned you in the launch checklist."
@@ -122,7 +122,7 @@ export function NotificationExamples() {
                   <Notification
                     key={notification.id}
                     {...common}
-                    avatar={{ src: getUserAvatar("Livia Saris"), alt: "Livia Saris", presence: "online" }}
+                    avatar={{ src: demoAvatarUrl("Livia Saris"), alt: "Livia Saris", presence: "online" }}
                     title="Livia Saris"
                     timestamp="just now"
                     description="Mentioned you in the launch checklist."

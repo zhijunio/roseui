@@ -5,8 +5,13 @@ import { ArrowRight as IconArrowRight, Lock as IconLock } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { buttonVariants } from "@/components/ui/button-variants";
 import { PasswordField } from "@/components/ui/password-field";
-import { currentUser } from "@/data/user";
-import { getInitials } from "@/lib/utils";
+import { demoAvatarUrl, getInitials } from "@/lib/utils";
+
+const currentUser = {
+  name: "Alex Morgan",
+  email: "alex.morgan@roseui.com",
+  avatar: demoAvatarUrl("Alex Morgan"),
+};
 
 export function LockScreenExample() {
   const initials = getInitials(currentUser.name, true);
