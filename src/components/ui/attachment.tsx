@@ -2,9 +2,9 @@ import { Button } from "@/components/ui/button";
 import { Root as SlotRoot } from "@radix-ui/react-slot";
 import { cn } from "@/lib/utils";
 
-export type AttachmentState = "idle" | "uploading" | "processing" | "error" | "done";
-export type AttachmentSize = "default" | "sm" | "xs";
-export type AttachmentOrientation = "horizontal" | "vertical";
+type AttachmentState = "idle" | "uploading" | "processing" | "error" | "done";
+type AttachmentSize = "default" | "sm" | "xs";
+type AttachmentOrientation = "horizontal" | "vertical";
 
 function Attachment({
   className,

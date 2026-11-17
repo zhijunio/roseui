@@ -8,10 +8,10 @@ import { Bell as IconBell, Check as IconCheck, X as IconX } from "lucide-react";
 import flags from "react-phone-number-input/flags";
 
 import { ComponentPreview, type ComponentPreviewLayout } from "@/components/docs/component-preview";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge, BadgeAnchor, type BadgePlacement } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/roseui/avatar";
+import { Badge, BadgeAnchor, type BadgePlacement } from "@/components/roseui/badge";
+import { StatusDot } from "@/components/roseui/status-dot";
 import { Button } from "@/components/ui/button";
-import { StatusDot } from "@/components/ui/status-dot";
 import { demoAvatarUrl } from "@/lib/utils";
 
 const badgeUser = {
@@ -221,7 +221,7 @@ export function BadgeExample({ example }: { example: number }) {
         <span role="status" className="text-xs text-muted-foreground">
           {"Badge removed"}
         </span>
-        <Button variant="ghost" size="sm" onPress={() => setDismissed(false)}>
+        <Button variant="ghost" size="sm" onClick={() => setDismissed(false)}>
           {"Restore"}
         </Button>
       </div>

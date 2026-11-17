@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { MediaGallery, type MediaGalleryItem } from "@/components/ui/media-gallery";
+import { MediaGallery, type MediaGalleryItem } from "@/components/roseui/media-gallery";
 
 const initialItems: MediaGalleryItem[] = [
   {

@@ -12,7 +12,7 @@ import {
   ComboBoxLabel,
   ComboBoxSection,
   ComboBoxValue,
-} from "@/components/ui/combo-box";
+} from "@/components/roseui/combo-box";
 
 const teams = [
   { id: "design", name: "Design" },
@@ -160,7 +160,7 @@ export function ComboBoxExamples() {
 
       <ComponentPreview title="Disabled, Read-only, and Invalid">
         <div className="grid w-full gap-3 md:grid-cols-3">
-          <ComboBox aria-label="Disabled team" isDisabled className="w-full min-w-0">
+          <ComboBox aria-label="Disabled team" disabled className="w-full min-w-0">
             <ComboBoxInput placeholder="Disabled" />
             <ComboBoxContent items={teams}>
               {(team) => (
@@ -170,7 +170,7 @@ export function ComboBoxExamples() {
               )}
             </ComboBoxContent>
           </ComboBox>
-          <ComboBox aria-label="Read-only team" defaultSelectedKey="design" isReadOnly className="w-full min-w-0">
+          <ComboBox aria-label="Read-only team" defaultSelectedKey="design" readOnly className="w-full min-w-0">
             <ComboBoxInput />
             <ComboBoxContent items={teams}>
               {(team) => (
@@ -180,7 +180,7 @@ export function ComboBoxExamples() {
               )}
             </ComboBoxContent>
           </ComboBox>
-          <ComboBox aria-label="Required team" isRequired isInvalid className="w-full min-w-0">
+          <ComboBox aria-label="Required team" required invalid className="w-full min-w-0">
             <ComboBoxInput placeholder="Choose a team" />
             <ComboBoxContent items={teams}>
               {(team) => (

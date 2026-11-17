@@ -99,7 +99,7 @@ export function VerifyOtpExample() {
             />
           ))}
         </div>
-        <Button type="submit" className="w-full" isDisabled={!complete}>
+        <Button type="submit" className="w-full" disabled={!complete}>
           Verify
         </Button>
       </form>

@@ -10,13 +10,13 @@ import {
 } from "lucide-react";
 
 import { ComponentPreview, type ComponentPreviewLayout } from "@/components/docs/component-preview";
-import { Alert, AlertAction, AlertContent, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Alert, AlertAction, AlertContent, AlertDescription, AlertTitle } from "@/components/roseui/alert";
+import { CloseButton } from "@/components/roseui/close-button";
+import { Progress } from "@/components/roseui/progress";
+import { Spinner } from "@/components/roseui/spinner";
+import { TextArea } from "@/components/roseui/text-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { CloseButton } from "@/components/ui/close-button";
-import { Progress } from "@/components/ui/progress";
-import { Spinner } from "@/components/ui/spinner";
-import { TextArea } from "@/components/ui/text-area";
 import { demoAvatarUrl, getInitials } from "@/lib/utils";
 
 type ExampleSection = {
@@ -168,10 +168,10 @@ function MessageAlert() {
           )}
         </AlertDescription>
         <AlertAction className="static mt-3 flex gap-2">
-          <Button size="xs" variant="outline" onPress={() => setViewed(true)}>
+          <Button size="xs" variant="outline" onClick={() => setViewed(true)}>
             View message
           </Button>
-          <Button size="xs" onPress={() => setReplyOpen((open) => !open)}>
+          <Button size="xs" onClick={() => setReplyOpen((open) => !open)}>
             <IconMessageCircle aria-hidden="true" />
             {replyOpen ? "Cancel reply" : "Reply"}
           </Button>
@@ -230,7 +230,7 @@ function UsageLimitAlert() {
           </div>
         </AlertDescription>
         <AlertAction className="static mt-3">
-          <Button size="xs" onPress={() => setManaged(true)}>
+          <Button size="xs" onClick={() => setManaged(true)}>
             Manage storage
           </Button>
         </AlertAction>
@@ -320,7 +320,7 @@ function ActionAlert({ kind }: { kind: ActionKind }) {
   }[kind];
   if (!visible)
     return (
-      <Button variant="outline" size="sm" onPress={() => setVisible(true)}>
+      <Button variant="outline" size="sm" onClick={() => setVisible(true)}>
         Restore alert
       </Button>
     );
@@ -353,16 +353,16 @@ function ActionAlert({ kind }: { kind: ActionKind }) {
         </AlertDescription>
         <AlertAction className="static mt-3 flex gap-2">
           {(kind === "notice" || kind === "security") && (
-            <Button size="xs" variant="outline" onPress={() => setVisible(false)}>
+            <Button size="xs" variant="outline" onClick={() => setVisible(false)}>
               Dismiss
             </Button>
           )}
           {kind === "payment" && (
-            <Button size="xs" variant="outline" onPress={() => setFeedback("Payment details opened.")}>
+            <Button size="xs" variant="outline" onClick={() => setFeedback("Payment details opened.")}>
               Review details
             </Button>
           )}
-          <Button size="xs" onPress={() => setFeedback(content.result)}>
+          <Button size="xs" onClick={() => setFeedback(content.result)}>
             {content.action}
           </Button>
         </AlertAction>
@@ -375,7 +375,7 @@ function DismissibleAlert() {
   const [visible, setVisible] = useState(true);
   if (!visible)
     return (
-      <Button variant="outline" size="sm" onPress={() => setVisible(true)}>
+      <Button variant="outline" size="sm" onClick={() => setVisible(true)}>
         Restore alert
       </Button>
     );
@@ -398,7 +398,7 @@ function OptionalContentAlert({ title }: { title: boolean }) {
   const [visible, setVisible] = useState(true);
   if (!visible)
     return (
-      <Button variant="outline" size="sm" onPress={() => setVisible(true)}>
+      <Button variant="outline" size="sm" onClick={() => setVisible(true)}>
         Restore alert
       </Button>
     );
@@ -417,10 +417,10 @@ function OptionalContentAlert({ title }: { title: boolean }) {
           </span>
         )}
         <AlertAction className="static mt-3 flex gap-2">
-          <Button size="xs" variant="outline" onPress={() => setVisible(false)}>
+          <Button size="xs" variant="outline" onClick={() => setVisible(false)}>
             Dismiss
           </Button>
-          <Button size="xs" onPress={() => setFeedback("Demo security preferences updated.")}>
+          <Button size="xs" onClick={() => setFeedback("Demo security preferences updated.")}>
             Update
           </Button>
         </AlertAction>
@@ -447,7 +447,7 @@ function ProFeatureAlert() {
             size="xs"
             variant="outline"
             className="border-background/40 bg-transparent text-background hover:bg-background/10 hover:text-background dark:bg-transparent"
-            onPress={() => setFeedback("Available plans opened.")}
+            onClick={() => setFeedback("Available plans opened.")}
           >
             Review plans
           </Button>

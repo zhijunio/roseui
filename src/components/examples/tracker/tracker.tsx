@@ -1,5 +1,5 @@
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { Tracker, type TrackerBlockProps } from "@/components/ui/tracker";
+import { Tracker, type TrackerBlockProps } from "@/components/roseui/tracker";
 
 const statuses = [
   "success",

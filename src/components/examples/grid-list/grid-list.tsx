@@ -2,8 +2,6 @@
 
 import { useState } from "react";
 
-import { Collection, type Selection, useAsyncList, useDragAndDrop } from "react-aria-components";
-
 import { ComponentPreview } from "@/components/docs/component-preview";
 import {
   GridList,
@@ -16,7 +14,8 @@ import {
   GridListSection,
   GridListSpacer,
   GridListStart,
-} from "@/components/ui/grid-list";
+  type Selection,
+} from "@/components/roseui/grid-list";
 
 const bands = [
   { id: "beatles", name: "The Beatles" },
@@ -80,30 +79,40 @@ function ControlledSelectionExample() {
 
 function DragAndDropExample() {
   const [items, setItems] = useState(bands);
-  const { dragAndDropHooks } = useDragAndDrop({
-    getItems: (keys) =>
-      [...keys].map((key) => ({
-        "text/plain": items.find((item) => item.id === String(key))?.name ?? "",
-      })),
-    onReorder(event) {
-      if (event.target.dropPosition !== "before" && event.target.dropPosition !== "after") return;
-
-      const movingKeys = new Set([...event.keys].map(String));
-      setItems((currentItems) => {
-        const movingItems = currentItems.filter((item) => movingKeys.has(item.id));
-        const remainingItems = currentItems.filter((item) => !movingKeys.has(item.id));
-        const targetIndex = remainingItems.findIndex((item) => item.id === String(event.target.key));
-        if (targetIndex < 0 || movingItems.length === 0) return currentItems;
-
-        const insertIndex = targetIndex + (event.target.dropPosition === "after" ? 1 : 0);
-        return [...remainingItems.slice(0, insertIndex), ...movingItems, ...remainingItems.slice(insertIndex)];
-      });
-    },
-  });
-
+  const [draggedId, setDraggedId] = useState<string | null>(null);
+  function moveItem(targetId: string) {
+    if (!draggedId || draggedId === targetId) return;
+    setItems((current) => {
+      const from = current.findIndex((item) => item.id === draggedId);
+      const to = current.findIndex((item) => item.id === targetId);
+      if (from < 0 || to < 0) return current;
+      const next = [...current];
+      const [moved] = next.splice(from, 1);
+      next.splice(to, 0, moved);
+      return next;
+    });
+  }
   return (
-    <GridList items={items} aria-label="Reorder bands" selectionMode="multiple" dragAndDropHooks={dragAndDropHooks}>
-      {(item) => <GridListItem id={item.id}>{item.name}</GridListItem>}
+    <GridList items={items} aria-label="Reorder bands" selectionMode="multiple">
+      {(item) => (
+        <GridListItem
+          id={item.id}
+          draggable
+          onDragStart={(event) => {
+            setDraggedId(item.id);
+            event.dataTransfer.effectAllowed = "move";
+          }}
+          onDragOver={(event) => event.preventDefault()}
+          onDrop={(event) => {
+            event.preventDefault();
+            moveItem(item.id);
+            setDraggedId(null);
+          }}
+          onDragEnd={() => setDraggedId(null)}
+        >
+          {item.name}
+        </GridListItem>
+      )}
     </GridList>
   );
 }
@@ -122,23 +131,22 @@ function EmptyListExample() {
 }
 
 function InfiniteScrollExample() {
-  const list = useAsyncList<(typeof pagingBands)[number]>({
-    async load({ cursor }) {
-      const start = Number(cursor ?? 0);
-      const end = start + 4;
-      return {
-        items: pagingBands.slice(start, end),
-        cursor: end < pagingBands.length ? String(end) : undefined,
-      };
-    },
-  });
+  const [visibleCount, setVisibleCount] = useState(4);
+  const visibleItems = pagingBands.slice(0, visibleCount);
 
   return (
     <div className="max-h-64 overflow-y-auto">
       <GridList selectionMode="multiple" aria-label="Browse bands">
-        <Collection items={list.items}>{(item) => <GridListItem id={item.id}>{item.name}</GridListItem>}</Collection>
-        <GridListLoadMoreItem onLoadMore={list.loadMore} isLoading={list.loadingState === "loadingMore"}>
-          {list.loadingState === "loadingMore" ? "Loading…" : "Load more"}
+        {visibleItems.map((item) => (
+          <GridListItem key={item.id} id={item.id}>
+            {item.name}
+          </GridListItem>
+        ))}
+        <GridListLoadMoreItem
+          onLoadMore={() => setVisibleCount((count) => Math.min(pagingBands.length, count + 4))}
+          disabled={visibleCount >= pagingBands.length}
+        >
+          {visibleCount >= pagingBands.length ? "All bands loaded" : "Load more"}
         </GridListLoadMoreItem>
       </GridList>
     </div>
@@ -168,18 +176,16 @@ export function GridListExamples() {
                   <GridListDescription>{server.address}</GridListDescription>
                 </GridListStart>
               </GridListHeader>
-              <Collection items={server.sites}>
-                {(site) => (
-                  <GridListItem id={site.id} textValue={site.name}>
-                    <GridListStart className="min-w-0 flex-1">
-                      <GridListLabel>{site.name}</GridListLabel>
-                      <GridListDescription>{site.domain}</GridListDescription>
-                    </GridListStart>
-                    <GridListSpacer />
-                    <span className="text-muted-foreground text-xs">{site.status}</span>
-                  </GridListItem>
-                )}
-              </Collection>
+              {server.sites.map((site) => (
+                <GridListItem key={site.id} id={site.id} textValue={site.name}>
+                  <GridListStart className="min-w-0 flex-1">
+                    <GridListLabel>{site.name}</GridListLabel>
+                    <GridListDescription>{site.domain}</GridListDescription>
+                  </GridListStart>
+                  <GridListSpacer />
+                  <span className="text-muted-foreground text-xs">{site.status}</span>
+                </GridListItem>
+              ))}
             </GridListSection>
           )}
         </GridList>
@@ -196,7 +202,7 @@ export function GridListExamples() {
       <ComponentPreview title="States" layout="stack">
         <GridList items={bands} aria-label="Bands with unavailable items" selectionMode="multiple">
           {(item) => (
-            <GridListItem id={item.id} isDisabled={item.id === "zeppelin" || item.id === "stones"}>
+            <GridListItem id={item.id} disabled={item.id === "zeppelin" || item.id === "stones"}>
               {item.name}
             </GridListItem>
           )}

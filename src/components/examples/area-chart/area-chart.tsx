@@ -6,7 +6,7 @@ import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import { ComponentPreview } from "@/components/docs/component-preview";
 import { ChartExample, monthlyData } from "@/components/examples/chart/chart-example";
 import { ChartSeriesControls } from "@/components/examples/chart/chart-series-controls";
-import { AreaChart as ConfigAreaChart } from "@/components/ui/area-chart";
+import { AreaChart as ConfigAreaChart } from "@/components/roseui/area-chart";
 import {
   type ChartConfig,
   ChartContainer,
@@ -14,7 +14,7 @@ import {
   ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart";
+} from "@/components/roseui/chart";
 
 const axisProps = { tickLine: false, axisLine: false, tickMargin: 8 } as const;
 const chartClass = "!aspect-auto h-[260px] w-full sm:h-[360px]";

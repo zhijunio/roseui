@@ -4,7 +4,7 @@ import * as React from "react";
 import { Calendar as IconCalendar } from "lucide-react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { TimePicker } from "@/components/ui/time-picker";
+import { TimePicker } from "@/components/roseui/time-picker";
 
 const examples = [
   "Inline time panel",

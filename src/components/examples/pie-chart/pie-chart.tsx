@@ -5,7 +5,6 @@ import { Pie, PieChart } from "recharts";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
 import { ChartExample, monthlyData } from "@/components/examples/chart/chart-example";
-import { Button } from "@/components/ui/button";
 import {
   type ChartConfig,
   ChartContainer,
@@ -13,8 +12,9 @@ import {
   ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart";
-import { PieChart as ConfigPieChart } from "@/components/ui/pie-chart";
+} from "@/components/roseui/chart";
+import { PieChart as ConfigPieChart } from "@/components/roseui/pie-chart";
+import { Button } from "@/components/ui/button";
 
 const chartClass = "!aspect-auto h-[260px] w-full sm:h-[360px]";
 
@@ -162,7 +162,7 @@ function ConfigPieChartInteractiveExample() {
             size="sm"
             variant={activeIndex === index ? "default" : "outline"}
             aria-pressed={activeIndex === index}
-            onPress={() => setActiveIndex(activeIndex === index ? null : index)}
+            onClick={() => setActiveIndex(activeIndex === index ? null : index)}
           >
             {config[item.name].label}
           </Button>

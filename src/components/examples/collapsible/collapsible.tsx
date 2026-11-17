@@ -15,10 +15,9 @@ import {
 } from "lucide-react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
+import { CheckboxButton, CheckboxField } from "@/components/roseui/checkbox";
 import { Button } from "@/components/ui/button";
-import { CheckboxButton, CheckboxField } from "@/components/ui/checkbox";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { Frame, FrameHeader, FramePanel, FrameTitle } from "@/components/ui/frame";
 
 const initialKeys = ["sk_live_83a1…", "sk_test_42f0…", "sk_live_3c9d…"];
 
@@ -55,7 +54,7 @@ export function CollapsibleExamples() {
           </CollapsibleTrigger>
           <CollapsibleContent className="space-y-3 px-4 pb-2 pt-4">
             {["Email alerts", "Product updates", "Weekly digest"].map((item, index) => (
-              <CheckboxField key={item} defaultSelected={index !== 1}>
+              <CheckboxField key={item} defaultChecked={index !== 1}>
                 <CheckboxButton className="items-center gap-2 text-sm">{item}</CheckboxButton>
               </CheckboxField>
             ))}
@@ -123,7 +122,7 @@ export function CollapsibleExamples() {
               size="icon"
               aria-label="Toggle tax and discount fields"
               aria-expanded={controlledOpen}
-              onPress={() => setControlledOpen((open) => !open)}
+              onClick={() => setControlledOpen((open) => !open)}
             >
               <ChevronDown className={`size-4 transition-transform ${controlledOpen ? "rotate-180" : ""}`} />
             </Button>
@@ -149,29 +148,25 @@ export function CollapsibleExamples() {
       </ComponentPreview>
 
       <ComponentPreview title="Composed Layout">
-        <Frame className="w-full max-w-lg" stacked>
-          <FramePanel fit>
+        <div className="w-full max-w-lg divide-y overflow-hidden rounded-xl border bg-card">
+          <div className="p-4">
             <Collapsible defaultOpen>
               <CollapsibleTrigger className="group flex w-full items-center justify-between text-left">
-                <FrameHeader className="px-0 py-0">
-                  <FrameTitle>Deployment status</FrameTitle>
-                </FrameHeader>
+                <span className="text-sm font-medium">Deployment status</span>
                 <ChevronDown className="size-4 transition-transform group-data-[state=open]:rotate-180" />
               </CollapsibleTrigger>
               <CollapsibleContent className="pt-3 text-sm text-muted-foreground">
                 Release 2.4.1 completed in all regions at 14:32 UTC.
               </CollapsibleContent>
             </Collapsible>
-          </FramePanel>
-          <FramePanel fit className="text-sm text-muted-foreground">
-            All systems operational
-          </FramePanel>
-        </Frame>
+          </div>
+          <div className="p-4 text-sm text-muted-foreground">All systems operational</div>
+        </div>
       </ComponentPreview>
 
       <ComponentPreview title="Nested Interactive Content">
-        <Frame className="w-full max-w-lg" dense>
-          <FramePanel fit>
+        <div className="w-full max-w-lg divide-y overflow-hidden rounded-xl border bg-card">
+          <div className="p-3">
             <div className="flex items-center justify-between">
               <span className="text-sm font-semibold">API keys</span>
               <Button
@@ -179,14 +174,14 @@ export function CollapsibleExamples() {
                 variant="ghost"
                 size="icon-sm"
                 aria-label="Add API key"
-                onPress={() => setKeys((items) => [...items, `sk_test_${Math.random().toString(16).slice(2, 6)}…`])}
+                onClick={() => setKeys((items) => [...items, `sk_test_${Math.random().toString(16).slice(2, 6)}…`])}
               >
                 <Plus className="size-4" />
               </Button>
             </div>
-          </FramePanel>
+          </div>
           {keys.map((key) => (
-            <FramePanel fit key={key}>
+            <div className="p-3" key={key}>
               <div className="flex items-center gap-2 text-sm">
                 <span className="min-w-0 flex-1 truncate font-mono">{key}</span>
                 <Button
@@ -194,7 +189,7 @@ export function CollapsibleExamples() {
                   variant="ghost"
                   size="icon-sm"
                   aria-label={`Copy ${key}`}
-                  onPress={() => void navigator.clipboard?.writeText(key)}
+                  onClick={() => void navigator.clipboard?.writeText(key)}
                 >
                   <Copy className="size-4" />
                 </Button>
@@ -203,14 +198,14 @@ export function CollapsibleExamples() {
                   variant="ghost"
                   size="icon-sm"
                   aria-label={`Delete ${key}`}
-                  onPress={() => setKeys((items) => items.filter((item) => item !== key))}
+                  onClick={() => setKeys((items) => items.filter((item) => item !== key))}
                 >
                   <Trash className="size-4 text-destructive" />
                 </Button>
               </div>
-            </FramePanel>
+            </div>
           ))}
-        </Frame>
+        </div>
       </ComponentPreview>
 
       <ComponentPreview title="Rich Trigger Content">

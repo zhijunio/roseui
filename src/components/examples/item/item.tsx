@@ -20,11 +20,8 @@ import {
 } from "lucide-react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { BrandIcon } from "@/components/ui/brand-icon";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Badge } from "@/components/roseui/badge";
+import { BrandIcon } from "@/components/roseui/brand-icon";
 import {
   Item,
   ItemActions,
@@ -37,7 +34,10 @@ import {
   ItemMedia,
   ItemSeparator,
   ItemTitle,
-} from "@/components/ui/item";
+} from "@/components/roseui/item";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Kbd } from "@/components/ui/kbd";
 import { Switch } from "@/components/ui/switch";
 import { demoAvatarUrl, getInitials } from "@/lib/utils";
@@ -146,7 +146,7 @@ function ItemDemo({ index }: { index: number }) {
               <Button
                 size="sm"
                 variant={row.action === "Enable" ? "default" : "outline"}
-                onPress={() => setOpened(row.title)}
+                onClick={() => setOpened(row.title)}
               >
                 {opened === row.title ? "Enabled" : row.action}
               </Button>
@@ -171,7 +171,7 @@ function ItemDemo({ index }: { index: number }) {
               <Button
                 size="sm"
                 variant={following.includes(person.initials) ? "secondary" : "outline"}
-                onPress={() => toggle(following, person.initials, setFollowing)}
+                onClick={() => toggle(following, person.initials, setFollowing)}
               >
                 {following.includes(person.initials) ? "Following" : "Follow"}
               </Button>
@@ -243,7 +243,7 @@ function ItemDemo({ index }: { index: number }) {
             </ItemContent>
             <ItemActions>
               <Badge variant={file.state === "Final" ? "secondary" : "outline"}>{file.state}</Badge>
-              <Button size="sm" variant="ghost" onPress={() => setOpened(file.name)}>
+              <Button size="sm" variant="ghost" onClick={() => setOpened(file.name)}>
                 {opened === file.name ? "Opened" : "Open"}
               </Button>
             </ItemActions>
@@ -316,7 +316,7 @@ function ItemDemo({ index }: { index: number }) {
               size="icon-xs"
               variant="ghost"
               aria-label={`More actions for ${person.name}`}
-              onPress={() => setOpened(opened === person.name ? "" : person.name)}
+              onClick={() => setOpened(opened === person.name ? "" : person.name)}
             >
               <IconDots />
             </Button>
@@ -328,7 +328,7 @@ function ItemDemo({ index }: { index: number }) {
                 <Button
                   size="xs"
                   variant="ghost"
-                  onPress={() => setRoles({ ...roles, [person.initials.toLowerCase()]: "Removed" })}
+                  onClick={() => setRoles({ ...roles, [person.initials.toLowerCase()]: "Removed" })}
                 >
                   Remove
                 </Button>
@@ -358,7 +358,7 @@ function ItemDemo({ index }: { index: number }) {
                 Connected
               </Badge>
             ) : (
-              <Button size="sm" variant="outline" onPress={() => toggle(enabled, app.id, setEnabled)}>
+              <Button size="sm" variant="outline" onClick={() => toggle(enabled, app.id, setEnabled)}>
                 <IconPlugConnected />
                 Connect
               </Button>
@@ -379,7 +379,7 @@ function ItemDemo({ index }: { index: number }) {
             <ItemDescription>Manage access, notifications, and connected services.</ItemDescription>
           </ItemContent>
           <ItemActions>
-            <Button size="sm" variant="outline" onPress={() => setOpened(opened ? "" : "Workspace settings")}>
+            <Button size="sm" variant="outline" onClick={() => setOpened(opened ? "" : "Workspace settings")}>
               {opened ? "Opened" : "Manage"}
             </Button>
           </ItemActions>
@@ -602,7 +602,7 @@ function ItemDemo({ index }: { index: number }) {
             size="icon-xs"
             variant="ghost"
             aria-label={`Open ${activity.target}`}
-            onPress={() => setOpened(activity.target)}
+            onClick={() => setOpened(activity.target)}
           >
             <IconChevronRight />
           </Button>

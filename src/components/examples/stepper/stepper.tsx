@@ -19,12 +19,8 @@ import {
 } from "lucide-react";
 
 import { ComponentPreview, type ComponentPreviewLayout } from "@/components/docs/component-preview";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { CheckboxButton, CheckboxField } from "@/components/ui/checkbox";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { Frame, FramePanel } from "@/components/ui/frame";
-import { IconTile } from "@/components/ui/icon-tile";
+import { CheckboxButton, CheckboxField } from "@/components/roseui/checkbox";
+import { IconTile } from "@/components/roseui/icon-tile";
 import {
   Stepper,
   StepperContent,
@@ -36,7 +32,10 @@ import {
   StepperSeparator,
   StepperTitle,
   StepperTrigger,
-} from "@/components/ui/stepper";
+} from "@/components/roseui/stepper";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { cn } from "@/lib/utils";
 
 const stepperExampleLabels: Record<number, string> = {
@@ -570,16 +569,16 @@ export function StepperExample({ example }: { example: number }) {
             <Button
               size="sm"
               variant="outline"
-              onPress={() => setStep((value) => Math.max(1, value - 1))}
-              isDisabled={step === 1}
+              onClick={() => setStep((value) => Math.max(1, value - 1))}
+              disabled={step === 1}
             >
               {"Previous"}
             </Button>
             <Button
               size="sm"
               variant="outline"
-              onPress={() => setStep((value) => Math.min(titles.length + (example >= 16 ? 1 : 0), value + 1))}
-              isDisabled={step === titles.length + (example >= 16 ? 1 : 0)}
+              onClick={() => setStep((value) => Math.min(titles.length + (example >= 16 ? 1 : 0), value + 1))}
+              disabled={step === titles.length + (example >= 16 ? 1 : 0)}
             >
               {"Next"}
             </Button>
@@ -591,13 +590,7 @@ export function StepperExample({ example }: { example: number }) {
       )}
     </Stepper>
   );
-  return framed ? (
-    <Frame spacing="sm" className="w-full">
-      <FramePanel>{content}</FramePanel>
-    </Frame>
-  ) : (
-    content
-  );
+  return framed ? <div className="w-full rounded-xl border bg-card p-3">{content}</div> : content;
 }
 
 function CheckGroups({ grouped }: { grouped: boolean }) {

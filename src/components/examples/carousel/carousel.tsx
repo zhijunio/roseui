@@ -5,8 +5,8 @@ import { useState } from "react";
 import Image from "next/image";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
+import { Carousel, type CarouselApi } from "@/components/roseui/carousel";
 import { Button } from "@/components/ui/button";
-import { Carousel, type CarouselApi } from "@/components/ui/carousel";
 
 const slides = [
   {
@@ -62,6 +62,7 @@ function Gallery({
             alt={slide.alt}
             fill
             sizes="(max-width: 768px) 100vw, 768px"
+            unoptimized
             className="object-cover"
           />
         </div>
@@ -77,23 +78,18 @@ function CarouselApiExample() {
   return (
     <div className="grid w-full gap-3">
       <div className="flex flex-wrap items-center gap-2">
-        <Button
-          size="sm"
-          variant="outline"
-          isDisabled={!api || activeIndex === 0}
-          onPress={() => api?.scrollPrevious()}
-        >
+        <Button size="sm" variant="outline" disabled={!api || activeIndex === 0} onClick={() => api?.scrollPrevious()}>
           Previous
         </Button>
         <Button
           size="sm"
           variant="outline"
-          isDisabled={!api || activeIndex >= (api?.getSlideCount() ?? 0) - 1}
-          onPress={() => api?.scrollNext()}
+          disabled={!api || activeIndex >= (api?.getSlideCount() ?? 0) - 1}
+          onClick={() => api?.scrollNext()}
         >
           Next
         </Button>
-        <Button size="sm" variant="ghost" isDisabled={!api} onPress={() => api?.scrollTo(0)}>
+        <Button size="sm" variant="ghost" disabled={!api} onClick={() => api?.scrollTo(0)}>
           Go to first
         </Button>
         <span aria-live="polite" className="text-xs tabular-nums text-muted-foreground">
@@ -113,6 +109,7 @@ function CarouselApiExample() {
               alt={slide.alt}
               fill
               sizes="(max-width: 768px) 100vw, 768px"
+              unoptimized
               className="object-cover"
             />
           </div>
@@ -127,8 +124,8 @@ function CarouselApiExample() {
             variant={activeIndex === index ? "secondary" : "ghost"}
             aria-label={`Go to slide ${index + 1}`}
             aria-current={activeIndex === index ? "true" : undefined}
-            isDisabled={!api}
-            onPress={() => api?.scrollTo(index)}
+            disabled={!api}
+            onClick={() => api?.scrollTo(index)}
             className="size-7 text-xs tabular-nums"
           >
             {index + 1}
@@ -195,6 +192,7 @@ export function CarouselExamples() {
                   alt={slide.alt}
                   fill
                   sizes="(max-width: 768px) 100vw, 768px"
+                  unoptimized
                   className="object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
@@ -229,6 +227,7 @@ export function CarouselExamples() {
                   alt={slide.alt}
                   fill
                   sizes="(max-width: 768px) 100vw, 768px"
+                  unoptimized
                   className="object-cover"
                 />
               </div>
@@ -250,6 +249,7 @@ export function CarouselExamples() {
                     alt={slide.alt}
                     fill
                     sizes="(max-width: 768px) 80vw, 31vw"
+                    unoptimized
                     className="object-cover"
                   />
                 </div>
@@ -286,6 +286,7 @@ export function CarouselExamples() {
                   alt={slide.alt}
                   fill
                   sizes="(max-width: 768px) 100vw, 768px"
+                  unoptimized
                   className="object-cover"
                 />
               </div>
@@ -299,7 +300,7 @@ export function CarouselExamples() {
             showDots={false}
             thumbnails={slides.map((slide) => (
               <span key={slide.src} className="relative block size-12 sm:size-16">
-                <Image src={slide.src} alt="" fill sizes="64px" className="object-cover" />
+                <Image src={slide.src} alt="" fill sizes="64px" unoptimized className="object-cover" />
               </span>
             ))}
           >
@@ -310,6 +311,7 @@ export function CarouselExamples() {
                   alt={slide.alt}
                   fill
                   sizes="(max-width: 768px) 100vw, 768px"
+                  unoptimized
                   className="object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent" />
@@ -329,7 +331,7 @@ export function CarouselExamples() {
             thumbnailPosition="overlay"
             thumbnails={slides.map((slide) => (
               <span key={slide.src} className="relative block size-10 sm:size-14">
-                <Image src={slide.src} alt="" fill sizes="56px" className="object-cover" />
+                <Image src={slide.src} alt="" fill sizes="56px" unoptimized className="object-cover" />
               </span>
             ))}
           >
@@ -340,6 +342,7 @@ export function CarouselExamples() {
                   alt={slide.alt}
                   fill
                   sizes="(max-width: 768px) 100vw, 768px"
+                  unoptimized
                   className="object-cover"
                 />
               </div>

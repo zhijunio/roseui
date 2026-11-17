@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-import { Stepper, StepperContent } from "@/components/ui/stepper";
+import { Stepper, StepperContent } from "@/components/roseui/stepper";
 
 import { steps, type WorkspaceRole } from "./data";
 import { FormActions } from "./form-actions";

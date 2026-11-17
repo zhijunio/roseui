@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 import { PanelsTopLeft as IconComponents, Home as IconHome, UserCircle as IconUserCircle } from "lucide-react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { Breadcrumb, Breadcrumbs } from "@/components/ui/breadcrumb";
+import { Breadcrumb, Breadcrumbs } from "@/components/roseui/breadcrumb";
 
 type BreadcrumbExampleItem = { id: string; label: string; href: string; icon?: ReactNode; textValue?: string };
 type BreadcrumbExample = { title: string; separator: "chevron" | "slash"; items: BreadcrumbExampleItem[] };

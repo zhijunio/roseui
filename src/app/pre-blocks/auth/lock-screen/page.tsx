@@ -2,9 +2,9 @@ import Link from "next/link";
 
 import { ArrowRight as IconArrowRight, Lock as IconLock } from "lucide-react";
 
+import { PasswordField } from "@/components/roseui/password-field";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { buttonVariants } from "@/components/ui/button-variants";
-import { PasswordField } from "@/components/ui/password-field";
+import { buttonVariants } from "@/components/ui/button";
 import { demoAvatarUrl, getInitials } from "@/lib/utils";
 
 const currentUser = {

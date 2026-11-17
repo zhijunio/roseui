@@ -6,12 +6,12 @@ import { type CalendarDate, getLocalTimeZone, today } from "@internationalized/d
 import { CalendarDays, Clock3, Globe as Globe2, Clock3 as IconClockHour3, Video } from "lucide-react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
+import { DatePicker } from "@/components/roseui/date-picker";
+import { DateSelector, type DateSelectorValue, formatDateSelectorValue } from "@/components/roseui/date-selector";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/roseui/dialog";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { DatePicker } from "@/components/ui/date-picker";
-import { DateSelector, type DateSelectorValue, formatDateSelectorValue } from "@/components/ui/date-selector";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 export function MeetingSchedulerExample() {
@@ -67,7 +67,7 @@ export function MeetingSchedulerExample() {
             variant={selectedTime === time ? "default" : "outline"}
             size="sm"
             aria-pressed={selectedTime === time}
-            onPress={() => setSelectedTime(time)}
+            onClick={() => setSelectedTime(time)}
           >
             {time}
           </Button>
@@ -143,7 +143,7 @@ export function DatePickerAdditionalExamples() {
               setAppointmentDate(nextDate);
               if (nextDate) setSubmitted(false);
             }}
-            isInvalid={submitted && !appointmentDate}
+            invalid={submitted && !appointmentDate}
             errorMessage="Choose an appointment date before continuing."
             description="Select a date to continue."
           />
@@ -258,7 +258,7 @@ export function DatePickerSelectorExamples() {
                   type="button"
                   variant="outline"
                   size="sm"
-                  onPress={() => {
+                  onClick={() => {
                     setSelectorDraft(selectorValue);
                     setSelectorPopoverOpen(false);
                   }}
@@ -268,7 +268,7 @@ export function DatePickerSelectorExamples() {
                 <Button
                   type="button"
                   size="sm"
-                  onPress={() => {
+                  onClick={() => {
                     setSelectorValue(selectorDraft);
                     setSelectorPopoverOpen(false);
                   }}
@@ -287,7 +287,7 @@ export function DatePickerSelectorExamples() {
             type="button"
             variant="outline"
             className="w-fit"
-            onPress={() => {
+            onClick={() => {
               setSelectorDraft(selectorValue);
               setSelectorDialogOpen(true);
             }}
@@ -304,7 +304,7 @@ export function DatePickerSelectorExamples() {
                 <Button
                   type="button"
                   variant="outline"
-                  onPress={() => {
+                  onClick={() => {
                     setSelectorDraft(selectorValue);
                     setSelectorDialogOpen(false);
                   }}
@@ -313,7 +313,7 @@ export function DatePickerSelectorExamples() {
                 </Button>
                 <Button
                   type="button"
-                  onPress={() => {
+                  onClick={() => {
                     setSelectorValue(selectorDraft);
                     setSelectorDialogOpen(false);
                   }}

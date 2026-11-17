@@ -5,15 +5,22 @@ import { useState } from "react";
 import { Ellipsis as IconDots, File as IconFile, Key as IconKey, Trash as IconTrash } from "lucide-react";
 
 import { ComponentPreview, type ComponentPreviewLayout } from "@/components/docs/component-preview";
+import { Menu, MenuItem, MenuTrigger } from "@/components/roseui/menu";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableColumn,
+  TableFooter,
+  TableHeader,
+  TableRow,
+} from "@/components/roseui/table";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Frame, FramePanel } from "@/components/ui/frame";
 import { Input } from "@/components/ui/input";
-import { Menu, MenuItem, MenuTrigger } from "@/components/ui/menu";
 import { Switch } from "@/components/ui/switch";
-import { Table, TableBody, TableCell, TableColumn, TableFooter, TableHeader, TableRow } from "@/components/ui/table";
 import { demoAvatarUrl, getInitials } from "@/lib/utils";
 
 const tableExampleLabels: Record<number, string> = {
@@ -320,11 +327,11 @@ export function TableExample({ example }: { example: number }) {
         <IconDots />
       </Button>
 
-      <Menu placement="bottom end">
-        <MenuItem onAction={() => setSelected(row)}>{"View details"}</MenuItem>
+      <Menu side="bottom" align="end">
+        <MenuItem onSelect={() => setSelected(row)}>{"View details"}</MenuItem>
         {example === 12 && (
           <MenuItem
-            onAction={async () => {
+            onSelect={async () => {
               try {
                 await navigator.clipboard.writeText(`demo-${row.id}`);
                 setFeedback("Demo key copied.");
@@ -337,7 +344,7 @@ export function TableExample({ example }: { example: number }) {
           </MenuItem>
         )}
         <MenuItem
-          onAction={() => {
+          onSelect={() => {
             setRemoved((current) => [...current, row.id]);
             setFeedback("Row removed.");
           }}
@@ -366,213 +373,209 @@ export function TableExample({ example }: { example: number }) {
             ["Storage", "256 GB"],
           ];
     return (
-      <Frame spacing="xs" className="w-full">
-        <FramePanel className="p-0">
-          <Table aria-label={exampleTitles[example - 1]}>
-            <TableHeader className="sr-only">
-              <TableColumn isRowHeader>Property</TableColumn>
-              <TableColumn>Value</TableColumn>
-            </TableHeader>
-            <TableBody>
-              {details.map(([label, value]) => (
-                <TableRow key={label}>
-                  <TableCell role="rowheader" className="bg-muted/30 w-2/5">
-                    {label}
-                  </TableCell>
-                  <TableCell>{value}</TableCell>
-                </TableRow>
-              ))}
-              {example === 17 && (
-                <TableRow>
-                  <TableCell role="rowheader">{"Enabled"}</TableCell>
-                  <TableCell>
-                    <Switch checked={enabled} onCheckedChange={setEnabled} aria-label={"Enabled"} />
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </FramePanel>
-      </Frame>
+      <div className="w-full overflow-hidden rounded-xl border bg-card">
+        <Table aria-label={exampleTitles[example - 1]}>
+          <TableHeader className="sr-only">
+            <TableColumn isRowHeader>Property</TableColumn>
+            <TableColumn>Value</TableColumn>
+          </TableHeader>
+          <TableBody>
+            {details.map(([label, value]) => (
+              <TableRow key={label}>
+                <TableCell role="rowheader" className="bg-muted/30 w-2/5">
+                  {label}
+                </TableCell>
+                <TableCell>{value}</TableCell>
+              </TableRow>
+            ))}
+            {example === 17 && (
+              <TableRow>
+                <TableCell role="rowheader">{"Enabled"}</TableCell>
+                <TableCell>
+                  <Switch checked={enabled} onCheckedChange={setEnabled} aria-label={"Enabled"} />
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
     );
   }
   return (
     <div className="w-full min-w-0 space-y-3">
-      <Frame spacing="xs">
-        <FramePanel className="p-0">
-          <Table aria-label={exampleTitles[example - 1]}>
-            <TableHeader>
-              {headers.map((header, index) => (
-                <TableColumn key={header} isRowHeader={index === 0}>
-                  {header}
-                </TableColumn>
-              ))}
-              {example === 4 && <TableColumn>{"Actions"}</TableColumn>}
-            </TableHeader>
-            <TableBody>
-              {visible.map((row, index) => (
-                <TableRow key={row.id}>
-                  {example <= 4 ? (
-                    <>
-                      <TableCell className="font-medium">{row.id}</TableCell>
-                      <TableCell>{row.name}</TableCell>
-                      <TableCell>{example >= 3 ? status(row.status) : row.status}</TableCell>
-                      <TableCell className="tabular-nums">{currency.format(row.amount ?? 0)}</TableCell>
-                      {example === 4 && <TableCell>{actions(row)}</TableCell>}
-                    </>
-                  ) : example === 5 ? (
-                    <>
-                      <TableCell>{row.name}</TableCell>
-                      <TableCell>
-                        <Input
-                          type="number"
-                          min={0}
-                          max={99}
-                          value={quantities[row.id] ?? 0}
-                          onChange={(event) =>
-                            setQuantities((current) => ({
-                              ...current,
-                              [row.id]: Math.min(99, Math.max(0, Number(event.target.value))),
-                            }))
-                          }
-                          aria-label={`${"Quantity"} ${row.name}`}
-                          className="w-20"
-                        />
-                      </TableCell>
-                      <TableCell className="tabular-nums">
-                        {currency.format((row.amount ?? 0) * (quantities[row.id] ?? 0))}
-                      </TableCell>
-                    </>
-                  ) : example === 6 ? (
-                    <>
-                      <TableCell>
-                        <PersonCell name={row.name} detail={row.detail} />
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant="outline">{row.role}</Badge>
-                      </TableCell>
-                      <TableCell>{status(row.status)}</TableCell>
-                    </>
-                  ) : example === 7 ? (
-                    <>
-                      <TableCell>{row.id}</TableCell>
-                      <TableCell>
-                        <PersonCell name={row.name} detail={row.detail} />
-                      </TableCell>
-                      <TableCell>{status(row.status)}</TableCell>
-                      <TableCell>{currency.format(row.amount ?? 0)}</TableCell>
-                    </>
-                  ) : example === 8 ? (
-                    <>
-                      <TableCell>{row.name}</TableCell>
-                      <TableCell>
-                        <div className="flex -space-x-2">
-                          {people.slice(0, Number(row.metric)).map((person) => (
-                            <Avatar key={person.id} size="sm" className="ring-card ring-2">
-                              <AvatarImage src={demoAvatarUrl(person.name)} alt={person.name} />
-                              <AvatarFallback>{person.name[0]}</AvatarFallback>
-                            </Avatar>
-                          ))}
-                        </div>
-                      </TableCell>
-                      <TableCell>{status(row.status)}</TableCell>
-                    </>
-                  ) : example === 9 ? (
-                    <>
-                      <TableCell>
-                        <PersonCell name={row.name} />
-                      </TableCell>
-                      <TableCell>{row.role}</TableCell>
-                      <TableCell className="tabular-nums">{row.metric}</TableCell>
-                    </>
-                  ) : example === 10 ? (
-                    <>
-                      <TableCell>
-                        <Badge variant="outline">{row.name}</Badge>
-                      </TableCell>
-                      <TableCell>{status(row.status)}</TableCell>
-                      <TableCell>{currency.format(row.amount ?? 0)}</TableCell>
-                      <TableCell>{row.metric}</TableCell>
-                    </>
-                  ) : example === 11 ? (
-                    <>
-                      <TableCell>{row.name}</TableCell>
-                      <TableCell>
-                        <Badge variant={row.metric === "0" ? "destructive" : "secondary"}>{row.metric}</Badge>
-                      </TableCell>
-                      <TableCell>{currency.format(row.amount ?? 0)}</TableCell>
-                    </>
-                  ) : example === 12 ? (
-                    <>
-                      <TableCell>
-                        <span className="inline-flex items-center gap-2">
-                          <IconKey className="text-muted-foreground size-4" />
-                          {row.name}
-                        </span>
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant="outline">{row.role}</Badge>
-                      </TableCell>
-                      <TableCell>{row.metric}</TableCell>
-                      <TableCell>{actions(row)}</TableCell>
-                    </>
-                  ) : example === 13 ? (
-                    <>
-                      <TableCell>
-                        <span className="inline-flex items-center gap-2">
-                          <IconFile className="text-muted-foreground size-4" />
-                          {row.name}
-                        </span>
-                      </TableCell>
-                      <TableCell>{row.role}</TableCell>
-                      <TableCell>{status(row.status)}</TableCell>
-                      <TableCell>{row.metric}</TableCell>
-                    </>
-                  ) : example === 14 ? (
-                    <>
-                      <TableCell>
-                        <span className="text-muted-foreground block text-xs">{row.id}</span>
+      <div className="overflow-hidden rounded-xl border bg-card">
+        <Table aria-label={exampleTitles[example - 1]}>
+          <TableHeader>
+            {headers.map((header, index) => (
+              <TableColumn key={header} isRowHeader={index === 0}>
+                {header}
+              </TableColumn>
+            ))}
+            {example === 4 && <TableColumn>{"Actions"}</TableColumn>}
+          </TableHeader>
+          <TableBody>
+            {visible.map((row, index) => (
+              <TableRow key={row.id}>
+                {example <= 4 ? (
+                  <>
+                    <TableCell className="font-medium">{row.id}</TableCell>
+                    <TableCell>{row.name}</TableCell>
+                    <TableCell>{example >= 3 ? status(row.status) : row.status}</TableCell>
+                    <TableCell className="tabular-nums">{currency.format(row.amount ?? 0)}</TableCell>
+                    {example === 4 && <TableCell>{actions(row)}</TableCell>}
+                  </>
+                ) : example === 5 ? (
+                  <>
+                    <TableCell>{row.name}</TableCell>
+                    <TableCell>
+                      <Input
+                        type="number"
+                        min={0}
+                        max={99}
+                        value={quantities[row.id] ?? 0}
+                        onChange={(event) =>
+                          setQuantities((current) => ({
+                            ...current,
+                            [row.id]: Math.min(99, Math.max(0, Number(event.target.value))),
+                          }))
+                        }
+                        aria-label={`${"Quantity"} ${row.name}`}
+                        className="w-20"
+                      />
+                    </TableCell>
+                    <TableCell className="tabular-nums">
+                      {currency.format((row.amount ?? 0) * (quantities[row.id] ?? 0))}
+                    </TableCell>
+                  </>
+                ) : example === 6 ? (
+                  <>
+                    <TableCell>
+                      <PersonCell name={row.name} detail={row.detail} />
+                    </TableCell>
+                    <TableCell>
+                      <Badge variant="outline">{row.role}</Badge>
+                    </TableCell>
+                    <TableCell>{status(row.status)}</TableCell>
+                  </>
+                ) : example === 7 ? (
+                  <>
+                    <TableCell>{row.id}</TableCell>
+                    <TableCell>
+                      <PersonCell name={row.name} detail={row.detail} />
+                    </TableCell>
+                    <TableCell>{status(row.status)}</TableCell>
+                    <TableCell>{currency.format(row.amount ?? 0)}</TableCell>
+                  </>
+                ) : example === 8 ? (
+                  <>
+                    <TableCell>{row.name}</TableCell>
+                    <TableCell>
+                      <div className="flex -space-x-2">
+                        {people.slice(0, Number(row.metric)).map((person) => (
+                          <Avatar key={person.id} size="sm" className="ring-card ring-2">
+                            <AvatarImage src={demoAvatarUrl(person.name)} alt={person.name} />
+                            <AvatarFallback>{person.name[0]}</AvatarFallback>
+                          </Avatar>
+                        ))}
+                      </div>
+                    </TableCell>
+                    <TableCell>{status(row.status)}</TableCell>
+                  </>
+                ) : example === 9 ? (
+                  <>
+                    <TableCell>
+                      <PersonCell name={row.name} />
+                    </TableCell>
+                    <TableCell>{row.role}</TableCell>
+                    <TableCell className="tabular-nums">{row.metric}</TableCell>
+                  </>
+                ) : example === 10 ? (
+                  <>
+                    <TableCell>
+                      <Badge variant="outline">{row.name}</Badge>
+                    </TableCell>
+                    <TableCell>{status(row.status)}</TableCell>
+                    <TableCell>{currency.format(row.amount ?? 0)}</TableCell>
+                    <TableCell>{row.metric}</TableCell>
+                  </>
+                ) : example === 11 ? (
+                  <>
+                    <TableCell>{row.name}</TableCell>
+                    <TableCell>
+                      <Badge variant={row.metric === "0" ? "destructive" : "secondary"}>{row.metric}</Badge>
+                    </TableCell>
+                    <TableCell>{currency.format(row.amount ?? 0)}</TableCell>
+                  </>
+                ) : example === 12 ? (
+                  <>
+                    <TableCell>
+                      <span className="inline-flex items-center gap-2">
+                        <IconKey className="text-muted-foreground size-4" />
                         {row.name}
-                      </TableCell>
-                      <TableCell>{status(row.status)}</TableCell>
-                      <TableCell>{row.role}</TableCell>
-                      <TableCell>
-                        <Badge variant="outline">{row.metric}</Badge>
-                      </TableCell>
-                    </>
-                  ) : (
-                    <>
-                      <TableCell className="tabular-nums">{index + 1}</TableCell>
-                      <TableCell>
-                        <PersonCell name={row.name} />
-                      </TableCell>
-                      <TableCell className="tabular-nums">{row.metric}</TableCell>
-                      <TableCell>
-                        <Badge variant="outline">{row.extra}</Badge>
-                      </TableCell>
-                    </>
+                      </span>
+                    </TableCell>
+                    <TableCell>
+                      <Badge variant="outline">{row.role}</Badge>
+                    </TableCell>
+                    <TableCell>{row.metric}</TableCell>
+                    <TableCell>{actions(row)}</TableCell>
+                  </>
+                ) : example === 13 ? (
+                  <>
+                    <TableCell>
+                      <span className="inline-flex items-center gap-2">
+                        <IconFile className="text-muted-foreground size-4" />
+                        {row.name}
+                      </span>
+                    </TableCell>
+                    <TableCell>{row.role}</TableCell>
+                    <TableCell>{status(row.status)}</TableCell>
+                    <TableCell>{row.metric}</TableCell>
+                  </>
+                ) : example === 14 ? (
+                  <>
+                    <TableCell>
+                      <span className="text-muted-foreground block text-xs">{row.id}</span>
+                      {row.name}
+                    </TableCell>
+                    <TableCell>{status(row.status)}</TableCell>
+                    <TableCell>{row.role}</TableCell>
+                    <TableCell>
+                      <Badge variant="outline">{row.metric}</Badge>
+                    </TableCell>
+                  </>
+                ) : (
+                  <>
+                    <TableCell className="tabular-nums">{index + 1}</TableCell>
+                    <TableCell>
+                      <PersonCell name={row.name} />
+                    </TableCell>
+                    <TableCell className="tabular-nums">{row.metric}</TableCell>
+                    <TableCell>
+                      <Badge variant="outline">{row.extra}</Badge>
+                    </TableCell>
+                  </>
+                )}
+              </TableRow>
+            ))}
+          </TableBody>
+          {(example === 2 || example === 5) && (
+            <TableFooter>
+              <TableRow>
+                <TableCell colSpan={headers.length - 1}>{"Total"}</TableCell>
+                <TableCell>
+                  {currency.format(
+                    visible.reduce(
+                      (sum, row) => sum + (row.amount ?? 0) * (example === 5 ? (quantities[row.id] ?? 0) : 1),
+                      0,
+                    ),
                   )}
-                </TableRow>
-              ))}
-            </TableBody>
-            {(example === 2 || example === 5) && (
-              <TableFooter>
-                <TableRow>
-                  <TableCell colSpan={headers.length - 1}>{"Total"}</TableCell>
-                  <TableCell>
-                    {currency.format(
-                      visible.reduce(
-                        (sum, row) => sum + (row.amount ?? 0) * (example === 5 ? (quantities[row.id] ?? 0) : 1),
-                        0,
-                      ),
-                    )}
-                  </TableCell>
-                </TableRow>
-              </TableFooter>
-            )}
-          </Table>
-        </FramePanel>
-      </Frame>
+                </TableCell>
+              </TableRow>
+            </TableFooter>
+          )}
+        </Table>
+      </div>
       <output role="status" className="text-muted-foreground block text-xs">
         {feedback}
       </output>

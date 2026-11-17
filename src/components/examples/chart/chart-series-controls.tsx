@@ -29,7 +29,7 @@ export function ChartSeriesControls({
             size="sm"
             variant={isSelected ? "default" : "outline"}
             aria-pressed={isSelected}
-            onPress={() => onToggle(item.key)}
+            onClick={() => onToggle(item.key)}
           >
             <span aria-hidden="true" className="size-2 rounded-full" style={{ backgroundColor: item.color }} />
             {item.label}

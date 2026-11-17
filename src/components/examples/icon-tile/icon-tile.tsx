@@ -13,8 +13,7 @@ import {
 } from "lucide-react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { Frame, FramePanel } from "@/components/ui/frame";
-import { IconTile } from "@/components/ui/icon-tile";
+import { IconTile } from "@/components/roseui/icon-tile";
 
 const variants = ["outline", "elevated", "soft", "solid", "frame"] as const;
 const sizes = ["xs", "sm", "default", "lg", "xl"] as const;
@@ -181,8 +180,8 @@ export function IconTileExamples() {
           </div>
         </div>
 
-        <Frame className="w-full max-w-md">
-          <FramePanel className="flex flex-col gap-3">
+        <div className="w-full max-w-md rounded-xl border bg-card p-4">
+          <div className="flex flex-col gap-3">
             <IconTile variant="elevated" size="lg" aria-hidden="true">
               <IconDatabase />
             </IconTile>
@@ -190,8 +189,8 @@ export function IconTileExamples() {
               <h3 className="text-sm font-medium">Workspace analytics</h3>
               <p className="text-xs text-muted-foreground">Monitor projects, usage, and team activity in one place.</p>
             </div>
-          </FramePanel>
-        </Frame>
+          </div>
+        </div>
 
         <div className="flex w-full flex-col items-center gap-3 py-6 text-center">
           <IconTile variant="frame" size="xl" aria-hidden="true">

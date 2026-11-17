@@ -27,10 +27,10 @@ import {
   AlertDialogMedia,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+} from "@/components/roseui/alert-dialog";
+import { CheckboxButton, CheckboxField } from "@/components/roseui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { CheckboxButton, CheckboxField } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
@@ -39,7 +39,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Frame, FrameDescription, FrameFooter, FrameHeader, FramePanel, FrameTitle } from "@/components/ui/frame";
 import { Input } from "@/components/ui/input";
 
 function Example({ trigger, children }: { trigger: string; children: ReactNode }) {
@@ -458,7 +457,7 @@ function AlertDialogBehaviorExamples() {
               <AlertDialogDescription>Use Cancel, Confirm, or the explicit close action.</AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter className="sm:flex-wrap">
-              <Button variant="ghost" onPress={() => setCloseMethodsOpen(false)}>
+              <Button variant="ghost" onClick={() => setCloseMethodsOpen(false)}>
                 Close dialog
               </Button>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
@@ -499,37 +498,35 @@ function AlertDialogBehaviorExamples() {
             </DialogContent>
           </Dialog>
         </div>
-        <Frame className="w-full min-w-0 max-w-lg">
-          <FramePanel>
-            <FrameHeader>
-              <FrameTitle>Report editor</FrameTitle>
-              <FrameDescription>Draft changes have not been saved.</FrameDescription>
-            </FrameHeader>
-            <FrameFooter>
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button variant="outline">Navigate away</Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Discard unsaved changes?</AlertDialogTitle>
-                    <AlertDialogDescription>Your edits to the quarterly report will be lost.</AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <CheckboxField
-                    checked={skipUnsavedPrompt}
-                    onCheckedChange={(value) => setSkipUnsavedPrompt(value === true)}
-                  >
-                    <CheckboxButton className="items-center gap-2 text-sm">Don’t ask again</CheckboxButton>
-                  </CheckboxField>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Stay here</AlertDialogCancel>
-                    <AlertDialogAction variant="destructive">Discard changes</AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-            </FrameFooter>
-          </FramePanel>
-        </Frame>
+        <div className="w-full min-w-0 max-w-lg rounded-xl border bg-card p-4">
+          <header className="space-y-1 border-b pb-3">
+            <h3 className="text-sm font-medium">Report editor</h3>
+            <p className="text-sm text-muted-foreground">Draft changes have not been saved.</p>
+          </header>
+          <footer className="pt-4">
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="outline">Navigate away</Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Discard unsaved changes?</AlertDialogTitle>
+                  <AlertDialogDescription>Your edits to the quarterly report will be lost.</AlertDialogDescription>
+                </AlertDialogHeader>
+                <CheckboxField
+                  checked={skipUnsavedPrompt}
+                  onCheckedChange={(value) => setSkipUnsavedPrompt(value === true)}
+                >
+                  <CheckboxButton className="items-center gap-2 text-sm">Don’t ask again</CheckboxButton>
+                </CheckboxField>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Stay here</AlertDialogCancel>
+                  <AlertDialogAction variant="destructive">Discard changes</AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </footer>
+        </div>
       </ComponentPreview>
     </>
   );
@@ -690,7 +687,7 @@ function AlertDialogFeedbackExamples() {
       <ComponentPreview title="Custom Motion" layout="grid2" span={2}>
         <div className="min-w-0">
           <Example trigger="Slide from bottom">
-            <AlertDialogContent className="entering:slide-in-from-bottom-4 exiting:slide-out-to-bottom-4 motion-reduce:!animate-none">
+            <AlertDialogContent className="data-[state=open]:slide-in-from-bottom-4 data-[state=closed]:slide-out-to-bottom-4 motion-reduce:!animate-none">
               <AlertDialogHeader>
                 <AlertDialogTitle>Review deployment?</AlertDialogTitle>
                 <AlertDialogDescription>
@@ -706,7 +703,7 @@ function AlertDialogFeedbackExamples() {
         </div>
         <div className="min-w-0">
           <Example trigger="Slide from top">
-            <AlertDialogContent className="entering:slide-in-from-top-4 exiting:slide-out-to-top-4 motion-reduce:!animate-none">
+            <AlertDialogContent className="data-[state=open]:slide-in-from-top-4 data-[state=closed]:slide-out-to-top-4 motion-reduce:!animate-none">
               <AlertDialogHeader>
                 <AlertDialogTitle>Rotate workspace keys?</AlertDialogTitle>
                 <AlertDialogDescription>

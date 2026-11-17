@@ -5,7 +5,7 @@ import { useState } from "react";
 import { type DateValue, getLocalTimeZone, today } from "@internationalized/date";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { RangeCalendar } from "@/components/ui/range-calendar";
+import { RangeCalendar } from "@/components/roseui/range-calendar";
 
 export function RangeCalendarExamples() {
   const [range, setRange] = useState<{ start: DateValue; end: DateValue } | null>(null);

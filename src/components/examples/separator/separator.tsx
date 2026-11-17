@@ -1,5 +1,5 @@
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { ContentDivider, Separator } from "@/components/ui/separator";
+import { ContentDivider, Separator } from "@/components/roseui/separator";
 
 export function SeparatorExamples() {
   return (

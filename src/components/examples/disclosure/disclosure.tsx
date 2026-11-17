@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { Disclosure, DisclosurePanel, DisclosureTrigger } from "@/components/ui/disclosure-group";
+import { Disclosure, DisclosurePanel, DisclosureTrigger } from "@/components/roseui/disclosure-group";
 
 export function DisclosureExamples() {
   const [expanded, setExpanded] = useState(false);
@@ -23,7 +23,7 @@ export function DisclosureExamples() {
         </Disclosure>
       </ComponentPreview>
       <ComponentPreview title="Disabled">
-        <Disclosure isDisabled className="w-full max-w-xl">
+        <Disclosure disabled className="w-full max-w-xl">
           <DisclosureTrigger>Workspace policy</DisclosureTrigger>
           <DisclosurePanel>This section is unavailable to your account.</DisclosurePanel>
         </Disclosure>

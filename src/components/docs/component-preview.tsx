@@ -11,9 +11,9 @@ import {
   ExternalLink as IconExternalLink,
 } from "lucide-react";
 
+import { Toolbar } from "@/components/roseui/toolbar";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Toolbar } from "@/components/ui/toolbar";
 import { cn } from "@/lib/utils";
 
 export type ComponentPreviewLayout =
@@ -245,7 +245,7 @@ export function ComponentPreview({
                 aria-label={label}
                 aria-pressed={viewport === value}
                 title={label}
-                onPress={() => setViewport(value)}
+                onClick={() => setViewport(value)}
               >
                 <Icon />
               </Button>

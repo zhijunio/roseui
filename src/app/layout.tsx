@@ -56,7 +56,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "RoseUI",
-  description: "A modular component workbench built with Next.js, Tailwind CSS, and React Aria.",
+  description: "A modular component workbench built with Next.js, Tailwind CSS, and Radix UI.",
 };
 
 export default async function RootLayout({
@@ -73,9 +73,8 @@ export default async function RootLayout({
     sidebarVariant: parseSidebarVariant(cookieStore.get("sidebar_variant")?.value),
     sidebarCollapsible: parseSidebarCollapsible(cookieStore.get("sidebar_collapsible")?.value),
   } satisfies ThemePreferences;
-  const themeColor = getThemeColorOption(initialPreferences.themeColor);
   const themeColorStyle: ThemeColorStyle = {
-    ...themeColor.light,
+    ...getThemeColorOption(initialPreferences.themeColor).light,
     "--font-sans": getFontOption(initialPreferences.font).stack,
   };
 

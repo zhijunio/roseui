@@ -12,8 +12,8 @@ import {
   ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart";
-import { LineChart as ConfigLineChart } from "@/components/ui/line-chart";
+} from "@/components/roseui/chart";
+import { LineChart as ConfigLineChart } from "@/components/roseui/line-chart";
 
 function monthlyData(locale: string) {
   return [186, 305, 237, 173, 209, 214].map((desktop, index) => ({

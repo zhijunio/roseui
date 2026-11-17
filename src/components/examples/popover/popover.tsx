@@ -3,6 +3,15 @@ import Link from "next/link";
 import { Trash as IconTrash } from "lucide-react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
+import {
+  Popover,
+  PopoverClose,
+  PopoverContent,
+  PopoverDescription,
+  PopoverHeader,
+  PopoverTitle,
+  PopoverTrigger,
+} from "@/components/roseui/popover";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -14,15 +23,6 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Popover,
-  PopoverClose,
-  PopoverContent,
-  PopoverDescription,
-  PopoverHeader,
-  PopoverTitle,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 
 function AlignmentPopovers() {
   return (

@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { ArrowLeft as IconArrowLeft } from "lucide-react";
 
-import { buttonVariants } from "@/components/ui/button-variants";
+import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 

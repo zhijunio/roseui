@@ -4,12 +4,12 @@ import { type FormEvent, useState } from "react";
 import { Heart as IconHeart, Star as IconStar } from "lucide-react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
+import { Rating } from "@/components/roseui/rating";
+import { TextArea } from "@/components/roseui/text-area";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
-import { Rating } from "@/components/ui/rating";
 import { Separator } from "@/components/ui/separator";
-import { TextArea } from "@/components/ui/text-area";
 
 const distribution = [
   { stars: 5, count: 124, percentage: 62 },
@@ -234,7 +234,7 @@ export function RatingExamples() {
               rows={3}
             />
           </div>
-          <Button type="submit" size="sm" isDisabled={reviewRating === 0 || review.trim().length === 0}>
+          <Button type="submit" size="sm" disabled={reviewRating === 0 || review.trim().length === 0}>
             Submit review
           </Button>
           <p role="status" className="min-h-5 text-center text-sm text-primary">

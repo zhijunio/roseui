@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { ReactionButton } from "@/components/ui/reaction-button";
+import { ReactionButton } from "@/components/roseui/reaction-button";
 
 export function ReactionButtonExamples() {
   const [liked, setLiked] = useState(false);
@@ -22,7 +22,7 @@ export function ReactionButtonExamples() {
         <div className="flex flex-wrap gap-2">
           <ReactionButton icon="star" label="Helpful" count={8} defaultPressed />
           <ReactionButton label="Celebrate" count={3} icon={<span aria-hidden="true">🎉</span>} />
-          <ReactionButton label="Disabled" count={0} isDisabled />
+          <ReactionButton label="Disabled" count={0} disabled />
         </div>
       </ComponentPreview>
     </div>

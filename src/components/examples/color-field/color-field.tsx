@@ -2,10 +2,9 @@
 
 import { useState } from "react";
 
-import { type Color, parseColor } from "react-aria-components";
-
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { ColorField, ColorFieldInput, ColorFieldLabel } from "@/components/ui/color-field";
+import { ColorField, ColorFieldInput, ColorFieldLabel } from "@/components/roseui/color-field";
+import { type Color, parseColor } from "@/lib/color";
 
 export function ColorFieldExamples() {
   const [color, setColor] = useState<Color>(() => parseColor("#7f007f"));
@@ -56,12 +55,12 @@ export function ColorFieldExamples() {
 
       <ComponentPreview title="Required and Disabled States" layout="panel">
         <div className="grid w-full max-w-sm gap-4">
-          <ColorField aria-label="Required theme color" isRequired defaultValue={parseColor("#2563eb")}>
+          <ColorField aria-label="Required theme color" required defaultValue={parseColor("#2563eb")}>
             <ColorFieldLabel>Theme color</ColorFieldLabel>
             <ColorFieldInput />
             <p className="text-xs text-muted-foreground">Choose the color used for primary actions.</p>
           </ColorField>
-          <ColorField aria-label="Locked color" isDisabled defaultValue={parseColor("#64748b")}>
+          <ColorField aria-label="Locked color" disabled defaultValue={parseColor("#64748b")}>
             <ColorFieldLabel>Managed by your organization</ColorFieldLabel>
             <ColorFieldInput />
             <p className="text-xs text-muted-foreground">This value is read only for your account.</p>
@@ -70,7 +69,7 @@ export function ColorFieldExamples() {
       </ComponentPreview>
 
       <ComponentPreview title="Invalid Color" layout="field">
-        <ColorField aria-label="Invalid brand color" isInvalid defaultValue={parseColor("#dc2626")}>
+        <ColorField aria-label="Invalid brand color" invalid defaultValue={parseColor("#dc2626")}>
           <ColorFieldLabel>Brand color</ColorFieldLabel>
           <ColorFieldInput />
           <p role="alert" className="text-xs text-destructive">

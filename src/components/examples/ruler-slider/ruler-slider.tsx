@@ -3,7 +3,7 @@
 import * as React from "react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { RulerSlider } from "@/components/ui/ruler-slider";
+import { RulerSlider } from "@/components/roseui/ruler-slider";
 
 export function RulerSliderExamples() {
   const [threshold, setThreshold] = React.useState(12500);

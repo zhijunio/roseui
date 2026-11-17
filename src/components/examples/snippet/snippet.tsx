@@ -1,13 +1,13 @@
 "use client";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { Snippet, SnippetTab, SnippetTabPanel, SnippetTabPanels, SnippetTabsList } from "@/components/ui/snippet";
+import { Snippet, SnippetTab, SnippetTabPanel, SnippetTabPanels, SnippetTabsList } from "@/components/roseui/snippet";
 
 const commands = [
-  { id: "npm", label: "NPM", command: "npm install react-aria-components" },
-  { id: "pnpm", label: "PNPM", command: "pnpm add react-aria-components" },
-  { id: "yarn", label: "Yarn", command: "yarn add react-aria-components" },
-  { id: "bun", label: "Bun", command: "bun add react-aria-components" },
+  { id: "npm", label: "NPM", command: "npm install @radix-ui/react-tabs" },
+  { id: "pnpm", label: "PNPM", command: "pnpm add @radix-ui/react-tabs" },
+  { id: "yarn", label: "Yarn", command: "yarn add @radix-ui/react-tabs" },
+  { id: "bun", label: "Bun", command: "bun add @radix-ui/react-tabs" },
 ];
 
 export function SnippetExamples() {
@@ -23,7 +23,7 @@ export function SnippetExamples() {
         </SnippetTabsList>
         <SnippetTabPanels items={commands}>
           {(command) => (
-            <SnippetTabPanel key={command.id} id={command.id}>
+            <SnippetTabPanel key={command.id} id={command.id} value={command.id}>
               {command.command}
             </SnippetTabPanel>
           )}

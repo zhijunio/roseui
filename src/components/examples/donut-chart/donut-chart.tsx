@@ -4,9 +4,9 @@ import { useState } from "react";
 import { Pie, PieChart } from "recharts";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
+import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/roseui/chart";
+import { PieChart as ConfigPieChart } from "@/components/roseui/pie-chart";
 import { Button } from "@/components/ui/button";
-import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-import { PieChart as ConfigPieChart } from "@/components/ui/pie-chart";
 
 const chartClass = "!aspect-auto h-[260px] w-full sm:h-[360px]";
 
@@ -146,7 +146,7 @@ function InteractiveDonutExample() {
             size="sm"
             variant={activeIndex === index ? "default" : "outline"}
             aria-pressed={activeIndex === index}
-            onPress={() => setActiveIndex(activeIndex === index ? null : index)}
+            onClick={() => setActiveIndex(activeIndex === index ? null : index)}
           >
             {config[item.name].label}
           </Button>

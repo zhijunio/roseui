@@ -3,10 +3,10 @@
 import { useEffect, useId, useState } from "react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
+import { Form } from "@/components/roseui/form";
+import { InputOTP } from "@/components/roseui/input-otp";
 import { Button } from "@/components/ui/button";
 import { FieldError, FieldLegend, FieldSet } from "@/components/ui/field";
-import { Form } from "@/components/ui/form";
-import { InputOTP } from "@/components/ui/input-otp";
 
 function OtpResendExample() {
   const [secondsLeft, setSecondsLeft] = useState(0);
@@ -44,8 +44,8 @@ function OtpResendExample() {
           variant="link"
           size="sm"
           className="h-auto p-0"
-          isDisabled={secondsLeft > 0}
-          onPress={sendCode}
+          disabled={secondsLeft > 0}
+          onClick={sendCode}
         >
           Resend
         </Button>
@@ -64,7 +64,6 @@ function OtpFormExample() {
   return (
     <Form
       className="grid w-full max-w-sm gap-3"
-      validationBehavior="aria"
       onSubmit={(event) => {
         event.preventDefault();
         const formCode = new FormData(event.currentTarget).get("verificationCode");

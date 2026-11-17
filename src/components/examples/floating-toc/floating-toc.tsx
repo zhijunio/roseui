@@ -3,8 +3,8 @@
 import { useRef, useState } from "react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
+import { FloatingToc, type FloatingTocItem } from "@/components/roseui/floating-toc";
 import { Button } from "@/components/ui/button";
-import { FloatingToc, type FloatingTocItem } from "@/components/ui/floating-toc";
 
 const sections: Array<FloatingTocItem & { heading: string; description: string }> = [
   {
@@ -57,7 +57,7 @@ export function FloatingTocExamples() {
             type="button"
             size="sm"
             variant={mode === "hover" ? "secondary" : "outline"}
-            onPress={() => setMode("hover")}
+            onClick={() => setMode("hover")}
           >
             Hover
           </Button>
@@ -65,7 +65,7 @@ export function FloatingTocExamples() {
             type="button"
             size="sm"
             variant={mode === "press" ? "secondary" : "outline"}
-            onPress={() => setMode("press")}
+            onClick={() => setMode("press")}
           >
             Press
           </Button>
@@ -74,7 +74,7 @@ export function FloatingTocExamples() {
             type="button"
             size="sm"
             variant={placement === "left" ? "secondary" : "outline"}
-            onPress={() => setPlacement("left")}
+            onClick={() => setPlacement("left")}
           >
             Left
           </Button>
@@ -82,7 +82,7 @@ export function FloatingTocExamples() {
             type="button"
             size="sm"
             variant={placement === "right" ? "secondary" : "outline"}
-            onPress={() => setPlacement("right")}
+            onClick={() => setPlacement("right")}
           >
             Right
           </Button>
@@ -91,7 +91,7 @@ export function FloatingTocExamples() {
             size="sm"
             variant="ghost"
             className="ml-auto"
-            onPress={() => setOpen((value) => !value)}
+            onClick={() => setOpen((value) => !value)}
           >
             {open ? "Close directory" : "Open directory"}
           </Button>

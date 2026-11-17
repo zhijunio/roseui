@@ -5,7 +5,6 @@ import { useState } from "react";
 import { Computer, RefreshCw, Smartphone, Tablet, Tv } from "lucide-react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { Button } from "@/components/ui/button";
 import {
   Leaderboard,
   LeaderboardAction,
@@ -15,7 +14,8 @@ import {
   LeaderboardItem,
   LeaderboardStart,
   LeaderboardTitle,
-} from "@/components/ui/leaderboard";
+} from "@/components/roseui/leaderboard";
+import { Button } from "@/components/ui/button";
 
 const pageViews = [
   { name: "Documentation", value: 1200 },

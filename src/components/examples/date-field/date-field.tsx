@@ -6,9 +6,9 @@ import { type CalendarDate, getLocalTimeZone, today } from "@internationalized/d
 import { CalendarDays as IconCalendarEvent, Info as IconInfoCircle } from "lucide-react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
+import { DateField } from "@/components/roseui/date-field";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { DateField } from "@/components/ui/date-field";
 
 export function DateFieldExamples() {
   const [date, setDate] = useState<CalendarDate | null>(null);
@@ -50,20 +50,20 @@ export function DateFieldExamples() {
       </ComponentPreview>
 
       <ComponentPreview title="Required" layout="field">
-        <DateField label="Start date" isRequired description="This field is required." />
+        <DateField label="Start date" required description="This field is required." />
       </ComponentPreview>
 
       <ComponentPreview title="Disabled and Read-only" layout="field">
         <div className="grid w-full gap-3">
           <DateField
             label="Disabled date"
-            isDisabled
+            disabled
             defaultValue={todayDate}
             description="This date field is disabled."
           />
           <DateField
             label="Read-only date"
-            isReadOnly
+            readOnly
             defaultValue={todayDate}
             description="This date cannot be changed."
           />
@@ -75,7 +75,7 @@ export function DateFieldExamples() {
       </ComponentPreview>
 
       <ComponentPreview title="Invalid" layout="field">
-        <DateField label="Date" isInvalid errorMessage="Please enter a valid date." />
+        <DateField label="Date" invalid errorMessage="Please enter a valid date." />
       </ComponentPreview>
 
       <ComponentPreview title="Granularity" layout="field">
@@ -100,10 +100,10 @@ export function DateFieldExamples() {
         <div className="grid w-full gap-3">
           <DateField label="Date" value={date} onChange={setDate} />
           <div className="flex flex-wrap gap-2">
-            <Button type="button" variant="outline" size="sm" onPress={() => setDate(todayDate)}>
+            <Button type="button" variant="outline" size="sm" onClick={() => setDate(todayDate)}>
               Set today
             </Button>
-            <Button type="button" variant="outline" size="sm" onPress={() => setDate(null)}>
+            <Button type="button" variant="outline" size="sm" onClick={() => setDate(null)}>
               Clear
             </Button>
           </div>
@@ -124,7 +124,7 @@ export function DateFieldExamples() {
           <DateField
             label="Appointment date"
             name="appointment-date"
-            isRequired
+            required
             minValue={todayDate}
             description="Choose a date from today onwards."
           />

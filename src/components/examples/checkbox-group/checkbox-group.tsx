@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { CheckboxButton, CheckboxField, CheckboxGroup } from "@/components/ui/checkbox";
+import { CheckboxButton, CheckboxField, CheckboxGroup } from "@/components/roseui/checkbox";
 import { FieldDescription, FieldError, FieldLabel } from "@/components/ui/field";
 
 export function CheckboxGroupExamples() {
@@ -32,7 +32,7 @@ export function CheckboxGroupExamples() {
           aria-label="Workspace features"
           name="features"
           value={features}
-          onChange={setFeatures}
+          onValueChange={setFeatures}
           className="max-w-sm"
         >
           <FieldLabel>Workspace features</FieldLabel>
@@ -53,10 +53,10 @@ export function CheckboxGroupExamples() {
       <ComponentPreview title="Required and Validation" layout="field">
         <CheckboxGroup
           aria-label="Terms"
-          isRequired
-          isInvalid={notifications.length === 0}
+          required
+          invalid={notifications.length === 0}
           value={notifications}
-          onChange={setNotifications}
+          onValueChange={setNotifications}
           className="max-w-sm"
         >
           <FieldLabel>Notification preferences</FieldLabel>
@@ -77,7 +77,7 @@ export function CheckboxGroupExamples() {
           <CheckboxField value="read">
             <CheckboxButton>Read projects</CheckboxButton>
           </CheckboxField>
-          <CheckboxField value="write" isDisabled>
+          <CheckboxField value="write" disabled>
             <CheckboxButton>Modify projects (admin only)</CheckboxButton>
           </CheckboxField>
           <CheckboxField value="invite">

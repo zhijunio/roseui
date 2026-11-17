@@ -1,4 +1,0 @@
-ts	phase	decision	why	evidence	result
-2026-11-12T06:08:24Z	start	opened the migration run	the user chose a full Radix to React Aria migration and asked to reuse IntentUI component logic	user request, src/components/ui	scope fixed
-2026-11-12T06:08:24Z	baseline	counted 40 UI files that import Radix	the migration must remove Radix from the UI layer rather than change only Button	rg Radix imports in src/components/ui	baseline captured
-2026-11-12T06:08:24Z	baseline	recorded existing verification failures	the generated Next route types already reference a missing pre-blocks layout and lint has pre-existing diagnostics	npx tsc --noEmit; npm run lint; npm run check:example-layout	typecheck baseline red, lint warnings and infos, layout check green

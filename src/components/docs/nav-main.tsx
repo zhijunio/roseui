@@ -6,7 +6,10 @@ import { usePathname } from "next/navigation";
 
 import { Blocks as BlocksIcon, ChevronRight, type LucideIcon, PanelsTopLeft } from "lucide-react";
 
-import { Menu, MenuHeader, MenuItem, MenuSeparator, MenuTrigger } from "@/components/ui/menu";
+import { Menu, MenuHeader, MenuItem, MenuSeparator, MenuTrigger } from "@/components/roseui/menu";
+import type { NavItem, NavSection } from "@/lib/nav";
+import { cn } from "@/lib/utils";
+
 import {
   SidebarDisclosure,
   SidebarDisclosurePanel,
@@ -15,9 +18,7 @@ import {
   SidebarSection,
   SidebarSectionGroup,
   useSidebar,
-} from "@/components/ui/sidebar";
-import type { NavItem, NavSection } from "@/lib/nav";
-import { cn } from "@/lib/utils";
+} from "./sidebar-shell";
 
 interface NavMainProps {
   sections: readonly NavSection[];
@@ -105,7 +106,7 @@ function NavMainSection({
             <SectionIcon className="text-muted-foreground size-4" aria-hidden="true" />
           </button>
 
-          <Menu placement="right top" className="w-60">
+          <Menu side="right" align="start" className="w-60">
             {section.items.map((item, index) => (
               <React.Fragment key={item.title}>
                 {index > 0 ? <MenuSeparator /> : null}
@@ -114,7 +115,7 @@ function NavMainSection({
                   {item.title}
                 </MenuHeader>
                 {item.url ? (
-                  <MenuItem href={item.url} onAction={onNavigate}>
+                  <MenuItem href={item.url} onSelect={onNavigate}>
                     {item.title}
                   </MenuItem>
                 ) : null}
@@ -122,7 +123,7 @@ function NavMainSection({
                   <MenuItem
                     key={child.url}
                     href={child.url}
-                    onAction={onNavigate}
+                    onSelect={onNavigate}
                     className={isPathActive(child.url, pathname) ? "bg-accent" : undefined}
                   >
                     {child.title}
@@ -213,7 +214,7 @@ function NavMainItemRow({
                 key={child.url}
                 href={child.url}
                 isCurrent={isPathActive(child.url, pathname)}
-                onPress={onNavigate}
+                onClick={onNavigate}
                 className="grid-cols-1 gap-2 rounded-md px-2 py-1 text-sm"
               >
                 <span className="truncate">{child.title}</span>
@@ -231,7 +232,7 @@ function NavMainItemRow({
     <SidebarItem
       href={item.url}
       isCurrent={isPathActive(item.url, pathname)}
-      onPress={onNavigate}
+      onClick={onNavigate}
       tooltip={item.title}
       className="grid-cols-1 gap-2 py-1.5 group-data-[collapsible=dock]:mx-auto group-data-[collapsible=dock]:justify-center"
     >

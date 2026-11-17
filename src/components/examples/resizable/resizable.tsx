@@ -2,7 +2,7 @@
 import * as React from "react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { Resizable } from "@/components/ui/resizable";
+import { Resizable } from "@/components/roseui/resizable";
 
 const examples = [
   "Horizontal resizable layout",

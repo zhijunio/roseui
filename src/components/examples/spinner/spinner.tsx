@@ -3,10 +3,10 @@
 import { useEffect, useState } from "react";
 
 import { ComponentPreview, type ComponentPreviewLayout } from "@/components/docs/component-preview";
+import { Spinner } from "@/components/roseui/spinner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Spinner } from "@/components/ui/spinner";
 import { cn } from "@/lib/utils";
 
 type ExampleSection = {
@@ -100,11 +100,11 @@ export function SpinnerExample({ example }: { example: number }) {
   if (example === 2)
     return (
       <>
-        <Button isDisabled>
+        <Button disabled>
           {spinner}
           {"Saving…"}
         </Button>
-        <Button isDisabled variant="outline">
+        <Button disabled variant="outline">
           {spinner}
           {"Loading"}
         </Button>
@@ -132,7 +132,7 @@ export function SpinnerExample({ example }: { example: number }) {
     );
   if (example === 6)
     return (
-      <Button onPress={() => setLoading(true)} isDisabled={loading} aria-busy={loading}>
+      <Button onClick={() => setLoading(true)} disabled={loading} aria-busy={loading}>
         {loading && spinner}
         {loading ? "Saving…" : "Save changes"}
       </Button>
@@ -184,7 +184,7 @@ export function SpinnerExample({ example }: { example: number }) {
         <div className="space-y-3">
           <p className="font-medium">{"Workspace report"}</p>
           <p className="text-sm text-muted-foreground">{"Your latest activity and usage summary."}</p>
-          <Button variant="outline" isDisabled>
+          <Button variant="outline" disabled>
             {"Export"}
           </Button>
         </div>

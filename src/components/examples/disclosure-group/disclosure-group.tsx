@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { Disclosure, DisclosureGroup, DisclosurePanel, DisclosureTrigger } from "@/components/ui/disclosure-group";
+import { Disclosure, DisclosureGroup, DisclosurePanel, DisclosureTrigger } from "@/components/roseui/disclosure-group";
 
 export function DisclosureGroupExamples() {
   const [expandedKeys, setExpandedKeys] = useState<Set<string>>(new Set(["access"]));

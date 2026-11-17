@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Plus as IconPlus, Sparkles as IconSparkles } from "lucide-react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { ExpandableButton } from "@/components/ui/expandable-button";
+import { ExpandableButton } from "@/components/roseui/expandable-button";
 
 export function ExpandableButtonExamples() {
   const [message, setMessage] = useState("No workspace has been created yet.");
@@ -17,7 +17,7 @@ export function ExpandableButtonExamples() {
           <ExpandableButton
             label="Create workspace"
             successLabel="Workspace created"
-            onPress={() => setMessage("Workspace creation started.")}
+            onClick={() => setMessage("Workspace creation started.")}
           />
           <p role="status" className="text-sm text-muted-foreground">
             {message}
@@ -30,7 +30,7 @@ export function ExpandableButtonExamples() {
             label="Add teammate"
             successLabel="Invite started"
             icon={<IconPlus aria-hidden />}
-            onPress={() => setMessage("Invite flow started.")}
+            onClick={() => setMessage("Invite flow started.")}
           />
           <ExpandableButton
             label="Generate summary"
@@ -42,7 +42,7 @@ export function ExpandableButtonExamples() {
       </ComponentPreview>
       <ComponentPreview title="Disabled and pending">
         <div className="flex flex-wrap items-center gap-3">
-          <ExpandableButton label="Unavailable" isDisabled />
+          <ExpandableButton label="Unavailable" disabled />
           <ExpandableButton label="Creating project" isPending />
         </div>
       </ComponentPreview>

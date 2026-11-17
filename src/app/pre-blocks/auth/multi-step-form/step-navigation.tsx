@@ -6,7 +6,7 @@ import {
   StepperSeparator,
   StepperTitle,
   StepperTrigger,
-} from "@/components/ui/stepper";
+} from "@/components/roseui/stepper";
 
 import { steps } from "./data";
 

@@ -2,7 +2,7 @@
 import { useState } from "react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { type UndoableEntry, UndoToast } from "@/components/ui/undo-toast";
+import { type UndoableEntry, UndoToast } from "@/components/roseui/undo-toast";
 
 const initial: UndoableEntry[] = [
   { id: "r-101", title: "Quarterly access review", description: "Due Nov 18 · Security" },

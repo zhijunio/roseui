@@ -3,7 +3,7 @@
 import * as React from "react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { type Reaction, Reactions } from "@/components/ui/reactions";
+import { type Reaction, Reactions } from "@/components/roseui/reactions";
 
 const initialReactions: Reaction[] = [
   { emoji: "❤️", label: "Love", count: 11, selected: true },

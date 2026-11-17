@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { AvatarButton, type AvatarButtonProps } from "@/components/ui/avatar-button";
+import { AvatarButton, type AvatarButtonProps } from "@/components/roseui/avatar-button";
 import { demoAvatarUrl } from "@/lib/utils";
 
 const variants = ["default", "secondary", "outline", "ghost"] satisfies NonNullable<AvatarButtonProps["variant"]>[];
@@ -28,7 +28,7 @@ function MemberSelectionExample() {
             src={member.src}
             fallback={member.fallback}
             variant={selected.id === member.id ? "secondary" : "outline"}
-            onPress={() => setSelected(member)}
+            onClick={() => setSelected(member)}
           />
         ))}
       </div>
@@ -72,7 +72,7 @@ export function AvatarButtonExamples() {
         </div>
       </ComponentPreview>
       <ComponentPreview title="Disabled" layout="panel">
-        <AvatarButton label="Unavailable member" src={demoAvatarUrl("Hannah Kim")} fallback="HK" isDisabled />
+        <AvatarButton label="Unavailable member" src={demoAvatarUrl("Hannah Kim")} fallback="HK" disabled />
       </ComponentPreview>
     </>
   );

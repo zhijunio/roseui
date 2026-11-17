@@ -15,8 +15,7 @@ import type { Country } from "react-phone-number-input";
 import flags from "react-phone-number-input/flags";
 
 import { ComponentPreview, type ComponentPreviewLayout } from "@/components/docs/component-preview";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/roseui/avatar";
 import {
   Dialog,
   DialogContent,
@@ -24,10 +23,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Item, ItemContent, ItemDescription, ItemGroup, ItemTitle } from "@/components/ui/item";
-import { Label } from "@/components/ui/label";
+} from "@/components/roseui/dialog";
+import { Item, ItemContent, ItemDescription, ItemGroup, ItemTitle } from "@/components/roseui/item";
+import { Label } from "@/components/roseui/label";
 import {
   Select,
   SelectContent,
@@ -37,8 +35,10 @@ import {
   SelectSeparator,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { StatusDot, type StatusDotColor } from "@/components/ui/status-dot";
+} from "@/components/roseui/select";
+import { StatusDot, type StatusDotColor } from "@/components/roseui/status-dot";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { cn, demoAvatarUrl } from "@/lib/utils";
 
 const users = [
@@ -519,7 +519,7 @@ export function SelectExample({ example }: { example: number }) {
         {select}
         {example === 14 && (
           <Button
-            onPress={() =>
+            onClick={() =>
               setFeedback(
                 value ? (options.find((option) => option.value === value)?.label ?? "") : "Please choose an option.",
               )
@@ -529,7 +529,7 @@ export function SelectExample({ example }: { example: number }) {
           </Button>
         )}
         {[21, 22].includes(example) && value && (
-          <Button variant="ghost" size="icon-sm" aria-label={"Clear selection"} onPress={() => setValue("")}>
+          <Button variant="ghost" size="icon-sm" aria-label={"Clear selection"} onClick={() => setValue("")}>
             <IconX aria-hidden />
           </Button>
         )}

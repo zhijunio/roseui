@@ -3,8 +3,8 @@
 import { useState } from "react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { Filters, type FiltersLabels } from "@/components/ui/filters";
-import { type FilterField, type FilterQuery, matchesFilterQuery } from "@/components/ui/filters-query";
+import { Filters, type FiltersLabels } from "@/components/roseui/filters";
+import { type FilterField, type FilterQuery, matchesFilterQuery } from "@/components/roseui/filters-query";
 
 const fields: FilterField[] = [
   {

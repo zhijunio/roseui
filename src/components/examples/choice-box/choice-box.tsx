@@ -3,10 +3,11 @@
 import { useState } from "react";
 
 import { Cloud as IconCloud, ShieldCheck as IconShieldCheck, Sparkles as IconSparkles } from "lucide-react";
-import type { Selection } from "react-aria-components";
+
+type Selection = Set<string> | "all";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { ChoiceBox, ChoiceBoxDescription, ChoiceBoxItem, ChoiceBoxLabel } from "@/components/ui/choice-box";
+import { ChoiceBox, ChoiceBoxDescription, ChoiceBoxItem, ChoiceBoxLabel } from "@/components/roseui/choice-box";
 
 const plans = [
   { id: "starter", label: "Starter", description: "For personal projects and small teams." },
@@ -31,7 +32,7 @@ export function ChoiceBoxExamples() {
           items={packages}
           selectionMode="multiple"
           selectedKeys={selectedKeys}
-          onSelectionChange={setSelectedKeys}
+          onSelectionChange={(keys) => setSelectedKeys(keys === "all" ? new Set() : new Set([...keys].map(String)))}
         >
           {(plan) => <ChoiceBoxItem id={plan.id} label={plan.label} description={plan.description} />}
         </ChoiceBox>
@@ -54,7 +55,7 @@ export function ChoiceBoxExamples() {
             <ChoiceBoxLabel>Secure</ChoiceBoxLabel>
             <ChoiceBoxDescription>Private</ChoiceBoxDescription>
           </ChoiceBoxItem>
-          <ChoiceBoxItem textValue="AI" isDisabled>
+          <ChoiceBoxItem textValue="AI" disabled>
             <IconSparkles aria-hidden="true" />
             <ChoiceBoxLabel>AI tools</ChoiceBoxLabel>
             <ChoiceBoxDescription>Coming soon</ChoiceBoxDescription>
@@ -62,7 +63,7 @@ export function ChoiceBoxExamples() {
         </ChoiceBox>
       </ComponentPreview>
       <ComponentPreview title="Read Only" layout="panel">
-        <ChoiceBox aria-label="Selected plan" selectionMode="single" defaultSelectedKeys={["growth"]} isReadOnly>
+        <ChoiceBox aria-label="Selected plan" selectionMode="single" defaultSelectedKeys={["growth"]} readOnly>
           {plans.slice(0, 3).map((plan) => (
             <ChoiceBoxItem key={plan.id} id={plan.id} label={plan.label} description={plan.description} />
           ))}
@@ -75,7 +76,7 @@ export function ChoiceBoxExamples() {
               id={item.id}
               label={item.label}
               description={item.description}
-              isDisabled={item.id === "sm" || item.id === "lg"}
+              disabled={item.id === "sm" || item.id === "lg"}
             />
           )}
         </ChoiceBox>

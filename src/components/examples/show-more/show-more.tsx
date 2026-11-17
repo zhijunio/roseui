@@ -5,7 +5,7 @@ import { useState } from "react";
 import { ChevronDown as IconChevronDown, Ellipsis as IconDots } from "lucide-react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { ShowMore } from "@/components/ui/show-more";
+import { ShowMore } from "@/components/roseui/show-more";
 
 export function ShowMoreExamples() {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -29,7 +29,7 @@ export function ShowMoreExamples() {
         </div>
       </ComponentPreview>
       <ComponentPreview title="Controlled Toggle">
-        <ShowMore isSelected={isExpanded} onChange={setIsExpanded} aria-label="Toggle details">
+        <ShowMore pressed={isExpanded} onPressedChange={setIsExpanded} aria-label="Toggle details">
           {isExpanded ? "Show less" : "Show more"}
           <IconChevronDown
             aria-hidden="true"

@@ -3,8 +3,8 @@
 import { useState } from "react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
+import { NumberField, NumberInput } from "@/components/roseui/number-field";
 import { FieldError, FieldLabel } from "@/components/ui/field";
-import { NumberField, NumberInput } from "@/components/ui/number-field";
 
 export function NumberFieldExamples() {
   const [seats, setSeats] = useState(8);
@@ -55,18 +55,18 @@ export function NumberFieldExamples() {
           <NumberField aria-label="Guests" minValue={1} maxValue={12} defaultValue={4}>
             <NumberInput layout="right" />
           </NumberField>
-          <NumberField aria-label="Read-only quantity" value={3} isReadOnly>
+          <NumberField aria-label="Read-only quantity" value={3} readOnly>
             <NumberInput />
           </NumberField>
         </div>
       </ComponentPreview>
       <ComponentPreview title="Disabled and Invalid States" layout="panel">
         <div className="grid gap-5 sm:grid-cols-2">
-          <NumberField isDisabled defaultValue={12}>
+          <NumberField disabled defaultValue={12}>
             <FieldLabel>Locked value</FieldLabel>
             <NumberInput />
           </NumberField>
-          <NumberField isInvalid minValue={1} maxValue={3} defaultValue={5}>
+          <NumberField invalid minValue={1} maxValue={3} defaultValue={5}>
             <FieldLabel>Order quantity</FieldLabel>
             <NumberInput aria-describedby="order-error" />
             <FieldError id="order-error">Only 3 items are available.</FieldError>

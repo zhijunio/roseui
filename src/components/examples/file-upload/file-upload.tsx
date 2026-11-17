@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { FileUpload } from "@/components/ui/file-upload";
+import { FileUpload } from "@/components/roseui/file-upload";
 
 const imageAccept = {
   "image/png": [".png"],

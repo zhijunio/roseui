@@ -1,4 +1,4 @@
-import { StatCard } from "@/components/ui/stat-card";
+import { StatCard } from "@/components/roseui/stat-card";
 
 const overviewStats = [
   { label: "Total Revenue", value: "$284,392", change: 12.5, trend: "up" as const, hint: "vs. last month" },

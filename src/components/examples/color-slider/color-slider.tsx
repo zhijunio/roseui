@@ -2,10 +2,9 @@
 
 import { useState } from "react";
 
-import { type Color, parseColor } from "react-aria-components";
-
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { ColorSlider, ColorSliderThumb, ColorSliderTrack } from "@/components/ui/color-slider";
+import { ColorSlider, ColorSliderThumb, ColorSliderTrack } from "@/components/roseui/color-slider";
+import { type Color, parseColor } from "@/lib/color";
 
 const hueGradient = "linear-gradient(to right, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00)";
 
@@ -88,7 +87,7 @@ export function ColorSliderExamples() {
           channel="hue"
           colorSpace="hsl"
           defaultValue={parseColor("#059669")}
-          isDisabled
+          disabled
         >
           <ColorSliderTrack style={{ backgroundImage: hueGradient }}>
             <ColorSliderThumb />

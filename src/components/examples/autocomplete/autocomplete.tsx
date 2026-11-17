@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { Autocomplete, type AutocompleteItem } from "@/components/ui/autocomplete";
+import { Autocomplete, type AutocompleteItem } from "@/components/roseui/autocomplete";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 
@@ -158,7 +158,7 @@ function AutocompleteDemoContent() {
                 type="button"
                 variant="outline"
                 className="flex-1"
-                onPress={() => {
+                onClick={() => {
                   setFormValue("");
                   setFormError("");
                 }}

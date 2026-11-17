@@ -1,24 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Star } from "lucide-react";
-import { Collection, type Key, type Selection, useAsyncList, useDragAndDrop, useListData } from "react-aria-components";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { Autocomplete } from "@/components/ui/autocomplete";
+import { Autocomplete } from "@/components/roseui/autocomplete";
+import { Spinner } from "@/components/roseui/spinner";
+import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@/components/roseui/table";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Spinner } from "@/components/ui/spinner";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableColumn,
-  TableHeader,
-  TableLoadMoreItem,
-  TableRow,
-} from "@/components/ui/table";
+
+type Key = string | number;
+type Selection = Set<string | number> | "all";
 
 const initialProjects = [
   { id: "atlas", name: "Atlas redesign", owner: "Maya Chen", status: "In progress", updated: "Today" },
@@ -241,8 +235,6 @@ const films = [
   },
 ];
 
-type Project = (typeof initialProjects)[number];
-
 const loadableProjects = Array.from({ length: 24 }, (_, index) => ({
   id: `project-${index + 1}`,
   name: ["Atlas redesign", "Mobile onboarding", "Billing portal", "Analytics dashboard"][index % 4],
@@ -359,35 +351,13 @@ const nestedProjects: ProjectTreeNode[] = [
 
 function ExpandableRowsExample() {
   const [expandedKeys, setExpandedKeys] = useState<Set<Key>>(new Set(["design"]));
-  const renderProject = (project: ProjectTreeNode) => (
-    <TableRow key={project.id} id={project.id}>
-      {project.detail ? (
-        <TableCell colSpan={3}>
-          <div className="space-y-1 py-1">
-            <p className="text-foreground text-sm font-medium">Additional details</p>
-            <p className="text-muted-foreground text-sm whitespace-normal">{project.detail}</p>
-          </div>
-        </TableCell>
-      ) : (
-        <>
-          <TableCell>{project.name}</TableCell>
-          <TableCell>{project.owner}</TableCell>
-          <TableCell>
-            <ProjectStatus status={project.status} />
-          </TableCell>
-        </>
-      )}
-      <Collection items={project.children}>{renderProject}</Collection>
-    </TableRow>
-  );
+  const visibleProjects = nestedProjects.flatMap((project) => [
+    project,
+    ...(expandedKeys.has(project.id) ? project.children : []),
+  ]);
 
   return (
-    <Table
-      aria-label="Projects with expandable details"
-      treeColumn="name"
-      expandedKeys={expandedKeys}
-      onExpandedChange={setExpandedKeys}
-    >
+    <Table aria-label="Projects with expandable details">
       <TableHeader>
         <TableColumn id="name" isRowHeader>
           Project
@@ -395,7 +365,39 @@ function ExpandableRowsExample() {
         <TableColumn>Owner</TableColumn>
         <TableColumn>Status</TableColumn>
       </TableHeader>
-      <TableBody items={nestedProjects}>{renderProject}</TableBody>
+      <TableBody items={visibleProjects}>
+        {(project) =>
+          project.detail ? (
+            <TableRow key={project.id} id={project.id}>
+              <TableCell colSpan={3}>
+                <div className="space-y-1 py-1">
+                  <p className="text-foreground text-sm font-medium">Additional details</p>
+                  <p className="text-muted-foreground text-sm whitespace-normal">{project.detail}</p>
+                </div>
+              </TableCell>
+            </TableRow>
+          ) : (
+            <TableRow
+              key={project.id}
+              id={project.id}
+              onClick={() =>
+                setExpandedKeys((current) => {
+                  const next = new Set(current);
+                  if (next.has(project.id)) next.delete(project.id);
+                  else next.add(project.id);
+                  return next;
+                })
+              }
+            >
+              <TableCell>{project.name}</TableCell>
+              <TableCell>{project.owner}</TableCell>
+              <TableCell>
+                <ProjectStatus status={project.status} />
+              </TableCell>
+            </TableRow>
+          )
+        }
+      </TableBody>
     </Table>
   );
 }
@@ -445,17 +447,23 @@ function BulkActionsExample() {
 }
 
 function DragAndDropExample() {
-  const list = useListData({ initialItems: movies });
-  const { dragAndDropHooks } = useDragAndDrop({
-    getItems: (keys) => [...keys].map((key) => ({ "text/plain": list.getItem(String(key))?.name ?? "" })),
-    onReorder(event) {
-      if (event.target.dropPosition === "before") list.moveBefore(event.target.key, event.keys);
-      if (event.target.dropPosition === "after") list.moveAfter(event.target.key, event.keys);
-    },
-  });
+  const [items, setItems] = useState(movies);
+  const [draggedId, setDraggedId] = useState<string | null>(null);
+  const moveMovie = (targetId: string) => {
+    if (!draggedId || draggedId === targetId) return;
+    setItems((current) => {
+      const sourceIndex = current.findIndex((movie) => movie.id === draggedId);
+      const targetIndex = current.findIndex((movie) => movie.id === targetId);
+      const next = [...current];
+      const [moving] = next.splice(sourceIndex, 1);
+      next.splice(targetIndex, 0, moving);
+      return next;
+    });
+    setDraggedId(null);
+  };
 
   return (
-    <Table allowResize aria-label="Movies" selectionMode="multiple" dragAndDropHooks={dragAndDropHooks}>
+    <Table allowResize aria-label="Movies">
       <TableHeader>
         <TableColumn className="w-0">#</TableColumn>
         <TableColumn isRowHeader>Name</TableColumn>
@@ -463,9 +471,18 @@ function DragAndDropExample() {
         <TableColumn>Release</TableColumn>
         <TableColumn>Rating</TableColumn>
       </TableHeader>
-      <TableBody items={list.items}>
+      <TableBody items={items}>
         {(movie) => (
-          <TableRow id={movie.id}>
+          <TableRow
+            id={movie.id}
+            draggable
+            onDragStart={(event) => {
+              setDraggedId(movie.id);
+              event.dataTransfer.setData("text/plain", movie.id);
+            }}
+            onDragOver={(event) => event.preventDefault()}
+            onDrop={() => moveMovie(movie.id)}
+          >
             <TableCell>{movie.id}</TableCell>
             <TableCell>{movie.name}</TableCell>
             <TableCell>{movie.genre}</TableCell>
@@ -499,37 +516,37 @@ function getFilmSortValue(film: Film, key: Key) {
 }
 
 function SortingExample() {
-  const list = useAsyncList<Film>({
-    async load() {
-      return { items: films };
-    },
-    async sort({ items, sortDescriptor }) {
-      const key: FilmSortKey = sortDescriptor.column === "release_date" ? "release_date" : "director";
-      const direction = sortDescriptor.direction === "ascending" ? 1 : -1;
-      return {
-        items: [...items].sort(
-          (left, right) => getFilmSortValue(left, key).localeCompare(getFilmSortValue(right, key)) * direction,
-        ),
-      };
-    },
+  const [sortDescriptor, setSortDescriptor] = useState<{ column: FilmSortKey; direction: "ascending" | "descending" }>({
+    column: "director",
+    direction: "ascending",
   });
+  const sortedFilms = [...films].sort(
+    (left, right) =>
+      getFilmSortValue(left, sortDescriptor.column).localeCompare(getFilmSortValue(right, sortDescriptor.column)) *
+      (sortDescriptor.direction === "ascending" ? 1 : -1),
+  );
+  const changeSort = (column: FilmSortKey) =>
+    setSortDescriptor((current) => ({
+      column,
+      direction: current.column === column && current.direction === "ascending" ? "descending" : "ascending",
+    }));
 
   return (
-    <Table aria-label="Movies" sortDescriptor={list.sortDescriptor} onSortChange={list.sort}>
+    <Table aria-label="Movies">
       <TableHeader>
         <TableColumn id="title" isRowHeader>
           Title
         </TableColumn>
-        <TableColumn id="director" allowsSorting>
+        <TableColumn id="director" allowsSorting onClick={() => changeSort("director")}>
           Director
         </TableColumn>
         <TableColumn>Producer</TableColumn>
-        <TableColumn id="release_date" allowsSorting>
+        <TableColumn id="release_date" allowsSorting onClick={() => changeSort("release_date")}>
           Release Date
         </TableColumn>
       </TableHeader>
       <TableBody
-        items={list.items}
+        items={sortedFilms}
         renderEmptyState={() => (
           <div className="flex justify-center p-6">
             <Spinner size="sm" label="Loading films" />
@@ -581,19 +598,31 @@ function ResizableExample() {
 }
 
 function InfiniteScrollingExample() {
-  const list = useAsyncList<Project>({
-    async load({ cursor }) {
-      const start = Number(cursor ?? 0);
-      const end = start + 6;
-      return {
-        items: loadableProjects.slice(start, end),
-        cursor: end < loadableProjects.length ? String(end) : undefined,
-      };
-    },
-  });
+  const [visibleCount, setVisibleCount] = useState(6);
+  const visibleProjects = loadableProjects.slice(0, visibleCount);
+  const hasMore = visibleCount < loadableProjects.length;
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const loadMoreRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const root = scrollContainerRef.current;
+    const target = loadMoreRef.current;
+    if (!root || !target || !hasMore) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisibleCount((current) => Math.min(loadableProjects.length, current + 6));
+        }
+      },
+      { root, rootMargin: "0px 0px 80px 0px" },
+    );
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, [hasMore]);
 
   return (
-    <div className="max-h-72 overflow-auto">
+    <div ref={scrollContainerRef} className="max-h-72 overflow-auto">
       <Table aria-label="Projects loaded while scrolling">
         <TableHeader>
           <TableColumn isRowHeader>Project</TableColumn>
@@ -601,28 +630,29 @@ function InfiniteScrollingExample() {
           <TableColumn>Status</TableColumn>
         </TableHeader>
         <TableBody
+          items={visibleProjects}
           renderEmptyState={() => (
             <div className="flex justify-center p-6">
               <Spinner size="sm" label="Loading projects" />
             </div>
           )}
         >
-          <Collection items={list.items}>
-            {(project) => (
-              <TableRow id={project.id}>
-                <TableCell>{project.name}</TableCell>
-                <TableCell>{project.owner}</TableCell>
-                <TableCell>
-                  <ProjectStatus status={project.status} />
-                </TableCell>
-              </TableRow>
-            )}
-          </Collection>
-          <TableLoadMoreItem onLoadMore={list.loadMore} isLoading={list.loadingState === "loadingMore"}>
-            {list.loadingState === "loadingMore" ? "Loading more projects…" : "Scroll to load more"}
-          </TableLoadMoreItem>
+          {(project) => (
+            <TableRow id={project.id}>
+              <TableCell>{project.name}</TableCell>
+              <TableCell>{project.owner}</TableCell>
+              <TableCell>
+                <ProjectStatus status={project.status} />
+              </TableCell>
+            </TableRow>
+          )}
         </TableBody>
       </Table>
+      {hasMore && (
+        <div ref={loadMoreRef} className="flex min-h-8 items-center justify-center" aria-live="polite">
+          <Spinner size="sm" label="Loading more projects" />
+        </div>
+      )}
     </div>
   );
 }

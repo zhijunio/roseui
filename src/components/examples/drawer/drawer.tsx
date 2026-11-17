@@ -31,7 +31,7 @@ function DrawerExample({ direction }: { direction: "bottom" | "left" | "right" }
         </DrawerHeader>
         <div className="px-4 pb-4 text-sm text-muted-foreground">Changes are saved to your workspace profile.</div>
         <DrawerFooter>
-          <Button onPress={() => setOpen(false)}>Save changes</Button>
+          <Button onClick={() => setOpen(false)}>Save changes</Button>
           <DrawerClose asChild>
             <Button variant="outline">Cancel</Button>
           </DrawerClose>

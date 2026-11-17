@@ -8,8 +8,8 @@ import {
 } from "lucide-react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/roseui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const tabs = [
   { value: "overview", label: "Overview", Icon: IconHome },

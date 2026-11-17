@@ -5,8 +5,8 @@ import { useState } from "react";
 import { CircleX as IconCircleX } from "lucide-react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
+import { CloseButton } from "@/components/roseui/close-button";
 import { Button } from "@/components/ui/button";
-import { CloseButton } from "@/components/ui/close-button";
 
 type ExampleSection = {
   title: string;
@@ -81,7 +81,7 @@ export function CloseButtonExample({ example }: { example: number }) {
         <p role="status" className="text-sm text-muted-foreground">
           Notice dismissed.
         </p>
-        <Button variant="outline" size="sm" onPress={() => setVisible(true)}>
+        <Button variant="outline" size="sm" onClick={() => setVisible(true)}>
           Restore
         </Button>
       </div>

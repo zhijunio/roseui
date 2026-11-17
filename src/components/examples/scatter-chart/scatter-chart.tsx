@@ -5,7 +5,7 @@ import { CartesianGrid, Scatter, ScatterChart, XAxis, YAxis } from "recharts";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
 import { ChartSeriesControls } from "@/components/examples/chart/chart-series-controls";
-import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/roseui/chart";
 
 function monthlyData(locale: string) {
   return [186, 305, 237, 173, 209, 214].map((desktop, index) => ({

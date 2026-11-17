@@ -3,8 +3,8 @@
 import { useState } from "react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { ClearInput } from "@/components/ui/clear-input";
-import { Label } from "@/components/ui/label";
+import { ClearInput } from "@/components/roseui/clear-input";
+import { Label } from "@/components/roseui/label";
 
 export function ClearInputExamples() {
   const [search, setSearch] = useState("quarterly report");
@@ -44,7 +44,7 @@ export function ClearInputExamples() {
             />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="clear-disabled" isDisabled>
+            <Label htmlFor="clear-disabled" disabled>
               Account ID
             </Label>
             <ClearInput id="clear-disabled" value="ACC-1042" onValueChange={() => {}} disabled />

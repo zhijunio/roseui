@@ -151,7 +151,7 @@ export function EmptyBasicExamples() {
                 className="sr-only"
                 onChange={(event) => setFileName(event.currentTarget.files?.[0]?.name ?? "")}
               />
-              <Button variant="outline" onPress={() => uploadRef.current?.click()}>
+              <Button variant="outline" onClick={() => uploadRef.current?.click()}>
                 <IconUpload />
                 Choose file
               </Button>
@@ -381,12 +381,12 @@ function EmptyState({ icon: Icon, tint, title, description, primary, secondary, 
         <EmptyDescription>{description}</EmptyDescription>
       </EmptyHeader>
       <EmptyContent className="flex-row flex-wrap justify-center pt-1">
-        <Button size="sm" onPress={fire(primary.label)}>
+        <Button size="sm" onClick={fire(primary.label)}>
           {primary.icon && <primary.icon className="size-4" />}
           {primary.label}
         </Button>
         {secondary && (
-          <Button size="sm" variant="outline" onPress={fire(secondary.label)}>
+          <Button size="sm" variant="outline" onClick={fire(secondary.label)}>
             {secondary.icon && <secondary.icon className="size-4" />}
             {secondary.label}
           </Button>

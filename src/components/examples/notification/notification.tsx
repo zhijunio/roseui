@@ -5,8 +5,8 @@ import { useState } from "react";
 import { AnimatePresence } from "motion/react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
+import { Notification, type NotificationStatus, NotificationViewport } from "@/components/roseui/notification";
 import { Button } from "@/components/ui/button";
-import { Notification, type NotificationStatus, NotificationViewport } from "@/components/ui/notification";
 import { demoAvatarUrl } from "@/lib/utils";
 
 type DemoNotification = { id: number; status: NotificationStatus | "avatar" | "actions" };
@@ -107,7 +107,7 @@ export function NotificationExamples() {
       <ComponentPreview title="Viewport and Auto-dismiss" layout="panel">
         <div className="flex flex-wrap gap-2">
           {(["information", "success", "warning", "error", "avatar", "actions"] as const).map((status) => (
-            <Button key={status} variant="outline" onPress={() => show(status)}>
+            <Button key={status} variant="outline" onClick={() => show(status)}>
               {status === "avatar" ? "With avatar" : status === "actions" ? "With actions" : status}
             </Button>
           ))}

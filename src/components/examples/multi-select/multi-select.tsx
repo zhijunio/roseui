@@ -1,9 +1,8 @@
 "use client";
 
-import { Label } from "react-aria-components/Label";
-
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { MultiSelect, MultiSelectContent, MultiSelectItem } from "@/components/ui/multi-select";
+import { MultiSelect, MultiSelectContent, MultiSelectItem } from "@/components/roseui/multi-select";
+import { Label } from "@/components/ui/label";
 
 const workstreams = [
   { id: "accounts", name: "Accounts" },
@@ -73,7 +72,7 @@ export function MultiSelectExamples() {
             <Label>Notification channels</Label>
             <MultiSelectContent items={notificationChannels}>
               {(item) => (
-                <MultiSelectItem id={item.id} textValue={item.name} isDisabled={item.disabled}>
+                <MultiSelectItem id={item.id} textValue={item.name} disabled={item.disabled}>
                   {item.name}
                 </MultiSelectItem>
               )}

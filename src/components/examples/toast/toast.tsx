@@ -12,19 +12,19 @@ export function ToastExamples() {
         <div className="flex flex-wrap gap-2">
           <Button
             variant="outline"
-            onPress={() => toast.success("Changes saved", { description: "Your workspace settings are up to date." })}
+            onClick={() => toast.success("Changes saved", { description: "Your workspace settings are up to date." })}
           >
             Success
           </Button>
           <Button
             variant="outline"
-            onPress={() => toast.info("Upload complete", { description: "Quarterly report.pdf is ready." })}
+            onClick={() => toast.info("Upload complete", { description: "Quarterly report.pdf is ready." })}
           >
             Information
           </Button>
           <Button
             variant="outline"
-            onPress={() =>
+            onClick={() =>
               toast.warning("Storage is almost full", { description: "You have used 92% of your workspace quota." })
             }
           >
@@ -32,7 +32,7 @@ export function ToastExamples() {
           </Button>
           <Button
             variant="outline"
-            onPress={() =>
+            onClick={() =>
               toast.error("Could not save changes", { description: "Check your connection and try again." })
             }
           >
@@ -43,7 +43,7 @@ export function ToastExamples() {
       <ComponentPreview title="Action and Undo">
         <Button
           variant="outline"
-          onPress={() =>
+          onClick={() =>
             toast("Project archived", {
               description: "Acme Dashboard moved to the archive.",
               action: { label: "Undo", onClick: () => toast.success("Project restored") },
@@ -57,7 +57,7 @@ export function ToastExamples() {
         <div className="flex flex-wrap gap-2">
           <Button
             variant="outline"
-            onPress={() =>
+            onClick={() =>
               toast.promise(new Promise((resolve) => window.setTimeout(resolve, 1200)), {
                 loading: "Preparing export…",
                 success: "Export completed",
@@ -67,7 +67,7 @@ export function ToastExamples() {
           >
             Run export
           </Button>
-          <Button variant="outline" onPress={() => toast.dismiss()}>
+          <Button variant="outline" onClick={() => toast.dismiss()}>
             Dismiss all
           </Button>
         </div>

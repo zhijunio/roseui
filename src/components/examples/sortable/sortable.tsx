@@ -12,11 +12,11 @@ import {
 } from "lucide-react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
+import { BrandIcon } from "@/components/roseui/brand-icon";
+import { Item, ItemContent, ItemDescription, ItemHeader, ItemMedia, ItemTitle } from "@/components/roseui/item";
+import { SortableList } from "@/components/roseui/sortable";
 import { Badge } from "@/components/ui/badge";
-import { BrandIcon } from "@/components/ui/brand-icon";
 import { Button } from "@/components/ui/button";
-import { Item, ItemContent, ItemDescription, ItemHeader, ItemMedia, ItemTitle } from "@/components/ui/item";
-import { SortableList } from "@/components/ui/sortable";
 import { Switch } from "@/components/ui/switch";
 
 type Entry = {
@@ -349,7 +349,7 @@ export function SortableDemo({ index }: { index: number }) {
         )}
       />
       <div className="border-t border-border px-4 py-2">
-        <Button size="sm" variant="ghost" onPress={() => setFailed(true)}>
+        <Button size="sm" variant="ghost" onClick={() => setFailed(true)}>
           Simulate next save failure
         </Button>
       </div>

@@ -16,9 +16,9 @@ import {
   ShieldCheck as IconShieldCheck,
 } from "lucide-react";
 
+import { CheckboxButton, CheckboxField } from "@/components/roseui/checkbox";
+import { InputOTP } from "@/components/roseui/input-otp";
 import { Button } from "@/components/ui/button";
-import { CheckboxButton, CheckboxField } from "@/components/ui/checkbox";
-import { InputOTP } from "@/components/ui/input-otp";
 
 const setupKey = "JBSW Y3DP EHPK 3PXP";
 const authenticatorImageUrl =
@@ -75,7 +75,7 @@ function CopyButton({
   onCopy: (value: string, kind: CopyKind) => void;
 }) {
   return (
-    <Button type="button" variant="outline" size="sm" onPress={() => onCopy(value, kind)}>
+    <Button type="button" variant="outline" size="sm" onClick={() => onCopy(value, kind)}>
       <IconCopy aria-hidden="true" />
       {copied === kind ? "Copied" : "Copy"}
     </Button>
@@ -123,7 +123,7 @@ export function TotpSetupExample() {
             type="button"
             variant="outline"
             size="sm"
-            onPress={() => {
+            onClick={() => {
               setVerified(false);
               setCode("");
             }}
@@ -153,7 +153,7 @@ export function TotpSetupExample() {
             <p className="text-sm font-medium">Enter the 6-digit code</p>
             <InputOTP value={code} onChange={setCode} aria-label="Authenticator app code" groupEvery={3} />
           </div>
-          <Button type="button" className="w-full" isDisabled={code.length !== 6} onPress={() => setVerified(true)}>
+          <Button type="button" className="w-full" disabled={code.length !== 6} onClick={() => setVerified(true)}>
             Verify authenticator <IconArrowRight aria-hidden="true" />
           </Button>
         </>
@@ -191,7 +191,7 @@ export function EmailCodeExample() {
             type="button"
             variant="outline"
             size="sm"
-            onPress={() => {
+            onClick={() => {
               setVerified(false);
               setCode("");
             }}
@@ -209,7 +209,7 @@ export function EmailCodeExample() {
             <Button
               type="button"
               variant="ghost"
-              onPress={() => {
+              onClick={() => {
                 setResent(true);
                 setCode("");
               }}
@@ -217,7 +217,7 @@ export function EmailCodeExample() {
               <IconRefresh aria-hidden="true" />
               Resend code
             </Button>
-            <Button type="button" isDisabled={code.length !== 6} onPress={() => setVerified(true)}>
+            <Button type="button" disabled={code.length !== 6} onClick={() => setVerified(true)}>
               Verify code <IconArrowRight aria-hidden="true" />
             </Button>
           </div>
@@ -245,7 +245,7 @@ export function BackupCodesExample() {
           type="button"
           variant="outline"
           size="sm"
-          onPress={() => {
+          onClick={() => {
             setEnabled(false);
             setSaved(false);
           }}
@@ -280,7 +280,7 @@ export function BackupCodesExample() {
           type="button"
           variant="outline"
           size="sm"
-          onPress={() => downloadText("roseui-backup-codes.txt", `RoseUI backup codes\n\n${codes}\n`)}
+          onClick={() => downloadText("roseui-backup-codes.txt", `RoseUI backup codes\n\n${codes}\n`)}
         >
           <IconDownload aria-hidden="true" />
           Download
@@ -292,7 +292,7 @@ export function BackupCodesExample() {
           I have saved these backup codes in a secure place.
         </CheckboxButton>
       </CheckboxField>
-      <Button type="button" className="w-full" isDisabled={!saved} onPress={() => setEnabled(true)}>
+      <Button type="button" className="w-full" disabled={!saved} onClick={() => setEnabled(true)}>
         Continue
       </Button>
     </div>
@@ -317,7 +317,7 @@ export function RecoveryPhraseExample() {
           type="button"
           variant="outline"
           size="sm"
-          onPress={() => {
+          onClick={() => {
             setEnabled(false);
             setSaved(false);
           }}
@@ -355,7 +355,7 @@ export function RecoveryPhraseExample() {
           type="button"
           variant="outline"
           size="sm"
-          onPress={() => downloadText("roseui-recovery-phrase.txt", `RoseUI recovery phrase\n\n${phrase}\n`)}
+          onClick={() => downloadText("roseui-recovery-phrase.txt", `RoseUI recovery phrase\n\n${phrase}\n`)}
         >
           <IconDownload aria-hidden="true" />
           Download
@@ -367,7 +367,7 @@ export function RecoveryPhraseExample() {
           I wrote down all 12 words and will keep this phrase private.
         </CheckboxButton>
       </CheckboxField>
-      <Button type="button" className="w-full" isDisabled={!saved} onPress={() => setEnabled(true)}>
+      <Button type="button" className="w-full" disabled={!saved} onClick={() => setEnabled(true)}>
         Continue
       </Button>
     </div>

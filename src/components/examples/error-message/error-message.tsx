@@ -2,13 +2,12 @@
 
 import * as React from "react";
 
-import type { Selection } from "react-aria-components/TagGroup";
-
 import { ComponentPreview } from "@/components/docs/component-preview";
+import { ErrorMessage } from "@/components/roseui/error-message";
+import { ListBox, ListBoxItem } from "@/components/roseui/list-box";
+import type { Selection } from "@/components/roseui/tag-group";
+import { Tag, TagGroup, TagList } from "@/components/roseui/tag-group";
 import { Button } from "@/components/ui/button";
-import { ErrorMessage } from "@/components/ui/error-message";
-import { ListBox, ListBoxItem } from "@/components/ui/list-box";
-import { Tag, TagGroup, TagList } from "@/components/ui/tag-group";
 
 const categories = ["News", "Travel", "Gaming", "Shopping"];
 
@@ -37,7 +36,7 @@ function RequiredCategoriesExample() {
       </TagGroup>
       {hasError ? <ErrorMessage id={errorId}>Select at least one category.</ErrorMessage> : null}
       <div className="flex items-center gap-3">
-        <Button size="sm" onPress={() => setValues(selectedValues.length ? new Set() : new Set(["News"]))}>
+        <Button size="sm" onClick={() => setValues(selectedValues.length ? new Set() : new Set(["News"]))}>
           {hasError ? "Select News" : "Clear selection"}
         </Button>
         <span className="text-xs text-muted-foreground" aria-live="polite">
@@ -76,7 +75,7 @@ function RequiredProjectExample() {
       </ListBox>
       {hasError && <ErrorMessage id={errorId}>Select a project to continue.</ErrorMessage>}
       <div className="flex items-center gap-3">
-        <Button size="sm" onPress={() => setSubmitted(true)}>
+        <Button size="sm" onClick={() => setSubmitted(true)}>
           Continue
         </Button>
         <span className="text-xs text-muted-foreground" aria-live="polite">

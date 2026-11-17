@@ -2,10 +2,9 @@
 
 import { useState } from "react";
 
-import { type Color, parseColor } from "react-aria-components";
-
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { ColorWheel } from "@/components/ui/color-wheel";
+import { ColorWheel } from "@/components/roseui/color-wheel";
+import { type Color, parseColor } from "@/lib/color";
 
 export function ColorThumbExamples() {
   const [color, setColor] = useState<Color>(() => parseColor("#2563eb"));
@@ -19,7 +18,7 @@ export function ColorThumbExamples() {
         </div>
       </ComponentPreview>
       <ComponentPreview title="Disabled thumb" layout="panel">
-        <ColorWheel aria-label="Disabled color wheel" defaultValue="#e11d48" isDisabled />
+        <ColorWheel aria-label="Disabled color wheel" defaultValue="#e11d48" disabled />
       </ComponentPreview>
     </div>
   );

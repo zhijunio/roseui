@@ -2,8 +2,8 @@
 import * as React from "react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
-import { InputPhone } from "@/components/ui/input-phone";
+import { Field, FieldDescription, FieldLabel } from "@/components/roseui/field";
+import { InputPhone } from "@/components/roseui/input-phone";
 
 const examples = [
   "Basic phone input",

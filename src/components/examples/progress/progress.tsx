@@ -3,8 +3,8 @@
 import { useState } from "react";
 
 import { ComponentPreview, type ComponentPreviewLayout } from "@/components/docs/component-preview";
-import { Progress, ProgressHeader, ProgressTrack, ProgressValue } from "@/components/ui/progress";
-import { Slider } from "@/components/ui/slider";
+import { Progress, ProgressHeader, ProgressTrack, ProgressValue } from "@/components/roseui/progress";
+import { Slider } from "@/components/roseui/slider";
 
 const sizeLabels: Record<number, string> = {
   1: "Small · 40%",

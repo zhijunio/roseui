@@ -2,11 +2,10 @@
 
 import { useState } from "react";
 
-import { type Color, parseColor } from "react-aria-components";
-
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { ColorSwatch } from "@/components/ui/color-swatch";
-import { ColorSwatchPicker, ColorSwatchPickerItem } from "@/components/ui/color-swatch-picker";
+import { ColorSwatch } from "@/components/roseui/color-swatch";
+import { ColorSwatchPicker, ColorSwatchPickerItem } from "@/components/roseui/color-swatch-picker";
+import { type Color, parseColor } from "@/lib/color";
 
 const palette = [
   { name: "Blue", value: "#2563eb" },
@@ -21,7 +20,7 @@ const palette = [
 
 function PaletteItems({ disabled = false }: { disabled?: boolean }) {
   return palette.map(({ name, value }) => (
-    <ColorSwatchPickerItem key={name} color={value} aria-label={name} isDisabled={disabled}>
+    <ColorSwatchPickerItem key={name} color={value} aria-label={name} disabled={disabled}>
       <ColorSwatch color={value} aria-label={name} size="sm" />
     </ColorSwatchPickerItem>
   ));

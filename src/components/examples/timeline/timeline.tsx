@@ -10,7 +10,6 @@ import {
 } from "lucide-react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Timeline,
   TimelineContent,
@@ -20,7 +19,8 @@ import {
   TimelineItem,
   TimelineSeparator,
   TimelineTitle,
-} from "@/components/ui/timeline";
+} from "@/components/roseui/timeline";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn, demoAvatarUrl } from "@/lib/utils";
 
 const timelineShowcase = [

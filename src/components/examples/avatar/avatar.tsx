@@ -11,9 +11,9 @@ import {
 } from "lucide-react";
 
 import { ComponentPreview, type ComponentPreviewLayout } from "@/components/docs/component-preview";
-import { Avatar, AvatarBadge, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarBadge, AvatarFallback, AvatarImage } from "@/components/roseui/avatar";
+import { Menu, MenuHeader, MenuItem, MenuSeparator, MenuTrigger } from "@/components/roseui/menu";
 import { Button } from "@/components/ui/button";
-import { Menu, MenuHeader, MenuItem, MenuSeparator, MenuTrigger } from "@/components/ui/menu";
 import { cn, demoAvatarUrl, getInitials } from "@/lib/utils";
 
 const users = [
@@ -252,7 +252,7 @@ export function AvatarExample({ example }: { example: number }) {
         variant={example === 27 ? "default" : "outline"}
         size="sm"
         className={example === 19 ? undefined : "rounded-full"}
-        onPress={() => setAction(users[0].name)}
+        onClick={() => setAction(users[0].name)}
       >
         <PersonAvatar size="xs" />
         {action || users[0].name}
@@ -282,7 +282,7 @@ export function AvatarExample({ example }: { example: number }) {
             </span>
           )}
         </div>
-        <Button variant="outline" size="sm" onPress={() => setLoading(!loading)}>
+        <Button variant="outline" size="sm" onClick={() => setLoading(!loading)}>
           {loading ? "Finish loading" : "Load avatar"}
         </Button>
       </div>
@@ -329,7 +329,7 @@ export function AvatarExample({ example }: { example: number }) {
             <IconSelector aria-hidden />
           </Button>
 
-          <Menu placement="bottom start">
+          <Menu side="bottom" align="end">
             <MenuHeader>{"Management"}</MenuHeader>
             {[
               { id: "profile", label: "Profile" },
@@ -337,12 +337,12 @@ export function AvatarExample({ example }: { example: number }) {
               { id: "team", label: "Project team" },
               { id: "invite", label: "Invite teammate" },
             ].map(({ id, label }) => (
-              <MenuItem key={id} onAction={() => setAction(label)}>
+              <MenuItem key={id} onSelect={() => setAction(label)}>
                 {label}
               </MenuItem>
             ))}
             <MenuSeparator />
-            <MenuItem intent="danger" onAction={() => setAction("Log out")}>
+            <MenuItem intent="danger" onSelect={() => setAction("Log out")}>
               {"Log out"}
             </MenuItem>
           </Menu>

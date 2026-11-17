@@ -1,4 +1,4 @@
-import { CheckboxButton, CheckboxField } from "@/components/ui/checkbox";
+import { CheckboxButton, CheckboxField } from "@/components/roseui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 

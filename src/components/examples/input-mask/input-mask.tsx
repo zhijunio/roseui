@@ -1,8 +1,8 @@
 "use client";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
+import { InputMask } from "@/components/roseui/input-mask";
 import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
-import { InputMask } from "@/components/ui/input-mask";
 
 export function InputMaskExamples() {
   return (

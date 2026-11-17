@@ -6,9 +6,9 @@ import Link from "next/link";
 
 import { ArrowLeft as IconArrowLeft, Lock as IconLock } from "lucide-react";
 
+import { PasswordField } from "@/components/roseui/password-field";
+import { PasswordStrength, type PasswordStrengthResult } from "@/components/roseui/password-strength";
 import { buttonVariants } from "@/components/ui/button";
-import { PasswordField } from "@/components/ui/password-field";
-import { PasswordStrength, type PasswordStrengthResult } from "@/components/ui/password-strength";
 import { cn } from "@/lib/utils";
 
 export function ResetPasswordForm() {

@@ -5,10 +5,10 @@ import { useState } from "react";
 import { Archive as IconArchive, Check as IconCheck, Trash as IconTrash } from "lucide-react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { ActionBar, ActionBarContent, ActionBarPrefix, ActionBarSeparator } from "@/components/ui/action-bar";
+import { ActionBar, ActionBarContent, ActionBarPrefix, ActionBarSeparator } from "@/components/roseui/action-bar";
+import { CheckboxButton, CheckboxField } from "@/components/roseui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { CheckboxButton, CheckboxField } from "@/components/ui/checkbox";
 
 export function ActionBarExamples() {
   const [isOpen, setIsOpen] = useState(true);
@@ -27,10 +27,10 @@ export function ActionBarExamples() {
     <>
       <ComponentPreview title="Visible Actions" layout="panel">
         <div className="relative grid min-h-52 w-full place-items-center pb-16">
-          <Button variant="outline" size="sm" onPress={() => setIsOpen((open) => !open)}>
+          <Button variant="outline" size="sm" onClick={() => setIsOpen((open) => !open)}>
             {isOpen ? "Hide action bar" : "Show action bar"}
           </Button>
-          <ActionBar aria-label="Selected item actions" isOpen={isOpen} className="absolute inset-x-0 bottom-0">
+          <ActionBar aria-label="Selected item actions" open={isOpen} className="absolute inset-x-0 bottom-0">
             <ActionBarPrefix>
               <Badge variant="secondary">3 selected</Badge>
             </ActionBarPrefix>
@@ -69,7 +69,7 @@ export function ActionBarExamples() {
           </div>
           <ActionBar
             aria-label="Selected task actions"
-            isOpen={selectedTasks.length > 0}
+            open={selectedTasks.length > 0}
             className="absolute inset-x-0 bottom-0"
           >
             <ActionBarPrefix>
@@ -77,7 +77,7 @@ export function ActionBarExamples() {
             </ActionBarPrefix>
             <ActionBarSeparator />
             <ActionBarContent>
-              <Button size="sm" variant="ghost" onPress={() => setSelectedTasks([])}>
+              <Button size="sm" variant="ghost" onClick={() => setSelectedTasks([])}>
                 <IconArchive aria-hidden="true" />
                 Archive
               </Button>
@@ -85,7 +85,7 @@ export function ActionBarExamples() {
                 size="sm"
                 variant="ghost"
                 className="text-destructive hover:text-destructive"
-                onPress={() => setSelectedTasks([])}
+                onClick={() => setSelectedTasks([])}
               >
                 <IconTrash aria-hidden="true" />
                 Delete

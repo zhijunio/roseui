@@ -5,9 +5,6 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Sheet,
   SheetClose,
@@ -17,7 +14,10 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet";
+} from "@/components/roseui/sheet";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export function SheetExamples() {
   const [controlledOpen, setControlledOpen] = useState(false);
@@ -221,7 +221,7 @@ export function SheetExamples() {
       </ComponentPreview>
       <ComponentPreview title="Controlled">
         <div className="flex flex-wrap items-center gap-2">
-          <Button variant="outline" onPress={() => setControlledOpen((open) => !open)}>
+          <Button variant="outline" onClick={() => setControlledOpen((open) => !open)}>
             {controlledOpen ? "Close" : "Toggle"} panel
           </Button>
           <span role="status" className="text-sm text-muted-foreground">
@@ -281,7 +281,7 @@ export function SheetExamples() {
               <SheetClose asChild>
                 <Button variant="outline">Close activity</Button>
               </SheetClose>
-              <Button onPress={() => toast.success("Activity report exported")}>Export report</Button>
+              <Button onClick={() => toast.success("Activity report exported")}>Export report</Button>
             </SheetFooter>
           </SheetContent>
         </Sheet>

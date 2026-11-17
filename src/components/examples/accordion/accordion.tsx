@@ -243,10 +243,10 @@ export function ControlledAccordionExample() {
   return (
     <div className="w-full space-y-4">
       <div className="flex flex-wrap gap-2">
-        <Button variant="outline" size="sm" onPress={() => setOpenItems(controlledItems.map(({ value }) => value))}>
+        <Button variant="outline" size="sm" onClick={() => setOpenItems(controlledItems.map(({ value }) => value))}>
           Expand all
         </Button>
-        <Button variant="outline" size="sm" onPress={() => setOpenItems([])}>
+        <Button variant="outline" size="sm" onClick={() => setOpenItems([])}>
           Collapse all
         </Button>
       </div>
@@ -289,25 +289,18 @@ export function RenderFunctionAccordionExample() {
   return (
     <Accordion type="single" collapsible defaultValue="plan" className="w-full max-w-lg">
       <AccordionItem value="plan">
-        <AccordionTrigger
-          render={(props) => (
-            <button
-              {...props}
-              className={cn(props.className, "items-center gap-3 rounded-md bg-muted/40 px-3 py-2 hover:no-underline")}
-            >
-              <span className="min-w-0 flex-1">
-                <span className="mb-0.5 block text-xs font-medium text-muted-foreground">Workspace plan</span>
-                <span className="font-medium">{props.children}</span>
-              </span>
-              <IconChevronDown
-                data-slot="accordion-trigger-icon"
-                aria-hidden="true"
-                className="size-4 shrink-0 text-muted-foreground transition-transform group-aria-expanded/accordion-trigger:rotate-180"
-              />
-            </button>
-          )}
-        >
-          Review plan details
+        <AccordionTrigger asChild className="items-center gap-3 rounded-md bg-muted/40 px-3 py-2 hover:no-underline">
+          <button type="button">
+            <span className="min-w-0 flex-1">
+              <span className="mb-0.5 block text-xs font-medium text-muted-foreground">Workspace plan</span>
+              <span className="font-medium">Review plan details</span>
+            </span>
+            <IconChevronDown
+              data-slot="accordion-trigger-icon"
+              aria-hidden="true"
+              className="size-4 shrink-0 text-muted-foreground transition-transform group-aria-expanded/accordion-trigger:rotate-180"
+            />
+          </button>
         </AccordionTrigger>
         <AccordionContent className="text-muted-foreground">
           Compare plan features and review your next renewal date.

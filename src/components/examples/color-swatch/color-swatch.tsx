@@ -1,9 +1,8 @@
 "use client";
 
-import { parseColor } from "react-aria-components";
-
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { ColorSwatch } from "@/components/ui/color-swatch";
+import { ColorSwatch } from "@/components/roseui/color-swatch";
+import { parseColor } from "@/lib/color";
 
 const samples = [
   { name: "Blue", color: "#2563eb" },

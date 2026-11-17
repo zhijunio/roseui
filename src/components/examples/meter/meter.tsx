@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { Meter, MeterHeader, type MeterTone, MeterTrack, MeterValue } from "@/components/ui/meter";
-import { Slider } from "@/components/ui/slider";
+import { Meter, MeterHeader, type MeterTone, MeterTrack, MeterValue } from "@/components/roseui/meter";
+import { Slider } from "@/components/roseui/slider";
 
 function toneFor(value: number): MeterTone {
   if (value >= 90) return "error";

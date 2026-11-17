@@ -3,7 +3,7 @@
 import * as React from "react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { PasswordField } from "@/components/ui/password-field";
+import { PasswordField } from "@/components/roseui/password-field";
 
 function PasswordFieldExamplesContent() {
   const [password, setPassword] = React.useState("");

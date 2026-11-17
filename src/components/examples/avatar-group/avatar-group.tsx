@@ -3,13 +3,12 @@
 import { useState } from "react";
 
 import { Check as IconCheck, Plus as IconPlus } from "lucide-react";
-import { Focusable } from "react-aria-components/Focusable";
 
 import { ComponentPreview, type ComponentPreviewLayout } from "@/components/docs/component-preview";
-import { Avatar, AvatarBadge, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { AvatarGroup, AvatarGroupCount } from "@/components/ui/avatar-group";
+import { Avatar, AvatarBadge, AvatarFallback, AvatarImage } from "@/components/roseui/avatar";
+import { AvatarGroup, AvatarGroupCount } from "@/components/roseui/avatar-group";
+import { Tooltip, TooltipTrigger } from "@/components/roseui/tooltip";
 import { Button } from "@/components/ui/button";
-import { Tooltip, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn, demoAvatarUrl, getInitials } from "@/lib/utils";
 
 const users = [
@@ -140,16 +139,15 @@ function PeopleGroup({ example }: { example: number }) {
         );
 
         return interactive ? (
-          <TooltipTrigger delay={0} key={person.id}>
-            <Focusable>
-              <button
-                type="button"
-                aria-label={person.name}
-                className="relative rounded-full focus-visible:outline-2 focus-visible:outline-ring hover:z-10 focus-visible:z-10 motion-safe:transition-transform motion-safe:hover:-translate-y-1 motion-safe:focus-visible:-translate-y-1"
-              >
-                {avatar}
-              </button>
-            </Focusable>
+          <TooltipTrigger delayDuration={0} key={person.id}>
+            <button
+              type="button"
+              aria-label={person.name}
+              className="relative rounded-full focus-visible:outline-2 focus-visible:outline-ring hover:z-10 focus-visible:z-10 motion-safe:transition-transform motion-safe:hover:-translate-y-1 motion-safe:focus-visible:-translate-y-1"
+            >
+              {avatar}
+            </button>
+
             {example !== 23 && <Tooltip>{person.name}</Tooltip>}
           </TooltipTrigger>
         ) : (
@@ -215,8 +213,8 @@ export function AvatarGroupExample({ example }: { example: number }) {
           variant="outline"
           size={example === 29 ? "icon" : "sm"}
           aria-label="Invite teammate"
-          isDisabled={invited}
-          onPress={() => setInvited(true)}
+          disabled={invited}
+          onClick={() => setInvited(true)}
         >
           {invited ? <IconCheck aria-hidden /> : <IconPlus aria-hidden />}
           {example === 28 && (invited ? "Invitation sent" : "Invite teammate")}

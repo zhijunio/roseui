@@ -2,8 +2,8 @@
 import { useState } from "react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { Item, ItemContent, ItemDescription, ItemGroup, ItemTitle } from "@/components/ui/item";
-import { RangeSlider, Slider } from "@/components/ui/slider";
+import { Item, ItemContent, ItemDescription, ItemGroup, ItemTitle } from "@/components/roseui/item";
+import { RangeSlider, Slider } from "@/components/roseui/slider";
 
 function SliderDemoContent() {
   const [volume, setVolume] = useState(42);

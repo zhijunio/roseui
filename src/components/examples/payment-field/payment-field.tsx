@@ -5,8 +5,8 @@ import { useState } from "react";
 import { RefreshCw as IconRefresh } from "lucide-react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
+import { PaymentField, type PaymentValues } from "@/components/roseui/payment-field";
 import { Button } from "@/components/ui/button";
-import { PaymentField, type PaymentValues } from "@/components/ui/payment-field";
 
 const emptyValues: PaymentValues = {
   cardNumber: "",
@@ -34,7 +34,7 @@ export function PaymentFieldExamples() {
                 variant="ghost"
                 size="sm"
                 className="gap-1.5"
-                onPress={() => setValues(emptyValues)}
+                onClick={() => setValues(emptyValues)}
               >
                 <IconRefresh />
                 Reset display

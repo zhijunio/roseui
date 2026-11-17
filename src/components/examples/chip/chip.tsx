@@ -5,9 +5,9 @@ import { useState } from "react";
 import { ArrowUpRight as IconArrowUpRight, Check as IconCheck, Clock as IconClock, X as IconX } from "lucide-react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { Chip, type ChipColor, type ChipSize, type ChipTextStyle, type ChipVariant } from "@/components/ui/chip";
+import { Chip, type ChipColor, type ChipSize, type ChipTextStyle, type ChipVariant } from "@/components/roseui/chip";
+import { StatusDot, type StatusDotColor } from "@/components/roseui/status-dot";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { StatusDot, type StatusDotColor } from "@/components/ui/status-dot";
 
 const colors: ChipColor[] = ["lime", "rose", "yellow", "cyan", "neutral", "gray", "soft"];
 

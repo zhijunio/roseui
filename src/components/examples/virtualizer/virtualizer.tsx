@@ -1,9 +1,9 @@
 "use client";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { GridList, GridListItem } from "@/components/ui/grid-list";
-import { ListBox, ListBoxItem } from "@/components/ui/list-box";
-import { ListLayout, Virtualizer } from "@/components/ui/virtualizer";
+import { GridList, GridListItem } from "@/components/roseui/grid-list";
+import { ListBox, ListBoxItem } from "@/components/roseui/list-box";
+import { ListLayout, Virtualizer } from "@/components/roseui/virtualizer";
 
 const records = Array.from({ length: 5000 }, (_, index) => ({
   id: String(index + 1),

@@ -15,14 +15,14 @@ import {
   ShieldLock as IconShieldLock,
 } from "lucide-react";
 
+import { InputOTP } from "@/components/roseui/input-otp";
+import { LogoMark } from "@/components/roseui/logo-mark";
+import { PasswordField } from "@/components/roseui/password-field";
+import { SocialButton, type SocialProvider } from "@/components/roseui/social-button";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
-import { InputOTP } from "@/components/ui/input-otp";
 import { Label } from "@/components/ui/label";
-import { LogoMark } from "@/components/ui/logo-mark";
-import { PasswordField } from "@/components/ui/password-field";
-import { SocialButton, type SocialProvider } from "@/components/ui/social-button";
 
 const socialProviders = ["google", "apple", "github", "microsoft"] as const satisfies readonly SocialProvider[];
 
@@ -125,7 +125,7 @@ export function MagicLinkExample({ preview = false }: { preview?: boolean }) {
           <p className="text-muted-foreground text-sm">
             Check <span className="text-foreground font-medium">{email}</span> for your sign-in link.
           </p>
-          <Button type="button" variant="outline" className="w-full" onPress={() => setSent(false)}>
+          <Button type="button" variant="outline" className="w-full" onClick={() => setSent(false)}>
             Use a different email
           </Button>
           <button
@@ -197,7 +197,7 @@ export function CenteredLoginExample() {
               type="button"
               variant="outline"
               className="w-full"
-              onPress={() => {
+              onClick={() => {
                 setStep({ kind: "complete" });
                 setNotice("Passkey sign-in completed for this demo.");
               }}
@@ -244,7 +244,7 @@ export function CenteredLoginExample() {
               className="justify-center"
               groupEvery={3}
             />
-            <Button type="submit" className="w-full" isDisabled={code.length !== 6}>
+            <Button type="submit" className="w-full" disabled={code.length !== 6}>
               Verify <IconArrowRight aria-hidden="true" />
             </Button>
             <button
@@ -329,7 +329,7 @@ export function MethodPickerExample({ example, preview = false }: { example: Met
             type="button"
             variant="outline"
             className="justify-start gap-3"
-            onPress={() => setSelectedMethod("Passkey")}
+            onClick={() => setSelectedMethod("Passkey")}
           >
             <IconKey aria-hidden="true" /> Use a passkey
           </Button>
@@ -337,23 +337,23 @@ export function MethodPickerExample({ example, preview = false }: { example: Met
             type="button"
             variant="outline"
             className="justify-start gap-3"
-            onPress={() => setSelectedMethod("SSO")}
+            onClick={() => setSelectedMethod("SSO")}
           >
             <IconLock aria-hidden="true" /> Continue with SSO
           </Button>
-          <Button type="button" variant="outline" onPress={() => setSelectedMethod("Email")}>
+          <Button type="button" variant="outline" onClick={() => setSelectedMethod("Email")}>
             Continue with email
           </Button>
         </div>
       ) : selectedMethod !== "Email" ? (
         <div className="grid gap-3 text-center">
-          <Button type="button" onPress={() => setNotice(`${selectedMethod} sign-in is a demo action.`)}>
+          <Button type="button" onClick={() => setNotice(`${selectedMethod} sign-in is a demo action.`)}>
             Continue with {selectedMethod}
           </Button>
           <Button
             type="button"
             variant="ghost"
-            onPress={() => {
+            onClick={() => {
               setSelectedMethod(null);
               setNotice("");
             }}

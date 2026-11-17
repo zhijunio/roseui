@@ -15,16 +15,15 @@ import {
   User as IconUser,
   Users as IconUsers,
 } from "lucide-react";
-import { Focusable } from "react-aria-components/Focusable";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
+import { CheckboxButton, CheckboxField } from "@/components/roseui/checkbox";
+import { HintText } from "@/components/roseui/hint-text";
+import { LabeledCheckbox } from "@/components/roseui/labeled-checkbox";
+import { Tooltip, TooltipTrigger } from "@/components/roseui/tooltip";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { CheckboxButton, CheckboxField } from "@/components/ui/checkbox";
-import { HintText } from "@/components/ui/hint-text";
-import { LabeledCheckbox } from "@/components/ui/labeled-checkbox";
-import { Tooltip, TooltipTrigger } from "@/components/ui/tooltip";
 
 export function CheckboxExamples() {
   return (
@@ -44,10 +43,10 @@ export function CheckboxLayoutExamples() {
     <>
       <ComponentPreview title="Shape Variants" layout="stack" exampleLabels={["Color and shape", "Task list"]}>
         <div className="flex flex-wrap gap-5">
-          <CheckboxField defaultSelected>
+          <CheckboxField defaultChecked>
             <CheckboxButton className="items-center gap-2 text-sm">Primary selection</CheckboxButton>
           </CheckboxField>
-          <CheckboxField defaultSelected>
+          <CheckboxField defaultChecked>
             <CheckboxButton
               className="items-center gap-2 text-sm"
               boxClassName="group-data-[selected]/checkbox-button:border-success group-data-[selected]/checkbox-button:bg-success"
@@ -55,12 +54,12 @@ export function CheckboxLayoutExamples() {
               Approved
             </CheckboxButton>
           </CheckboxField>
-          <CheckboxField defaultSelected>
+          <CheckboxField defaultChecked>
             <CheckboxButton className="items-center gap-2 text-sm" boxClassName="rounded-full">
               Circular selection
             </CheckboxButton>
           </CheckboxField>
-          <CheckboxField defaultSelected>
+          <CheckboxField defaultChecked>
             <CheckboxButton className="items-center gap-2 text-sm" indicator={<IconStarFilled fill="currentColor" />}>
               Custom indicator
             </CheckboxButton>
@@ -68,7 +67,7 @@ export function CheckboxLayoutExamples() {
         </div>
         <div className="grid w-full max-w-sm gap-3">
           {["Prepare release notes", "Review open issues", "Notify project owners"].map((label, index) => (
-            <CheckboxField key={label} defaultSelected={index === 0}>
+            <CheckboxField key={label} defaultChecked={index === 0}>
               <CheckboxButton className="items-center gap-3 text-sm" boxClassName="rounded-full">
                 <span className={index === 0 ? "text-muted-foreground line-through" : ""}>{label}</span>
               </CheckboxButton>
@@ -79,7 +78,7 @@ export function CheckboxLayoutExamples() {
 
       <ComponentPreview title="Label Layouts" layout="stack" exampleLabels={["Description and help", "Inline label"]}>
         <div className="grid w-full max-w-md gap-4">
-          <CheckboxField defaultSelected>
+          <CheckboxField defaultChecked>
             <CheckboxButton className="items-start gap-3 rounded-lg border p-4">
               <span className="grid gap-1">
                 <span className="text-sm font-medium">Security notifications</span>
@@ -92,23 +91,22 @@ export function CheckboxLayoutExamples() {
               <CheckboxField id={`${id}-retention`}>
                 <CheckboxButton className="items-center gap-2 text-sm">Enable extended retention</CheckboxButton>
               </CheckboxField>
-              <TooltipTrigger delay={0}>
-                <Focusable>
-                  <button
-                    type="button"
-                    aria-label="About extended retention"
-                    className="text-muted-foreground hover:text-foreground"
-                  >
-                    <IconInfoCircle className="size-4" />
-                  </button>
-                </Focusable>
+              <TooltipTrigger delayDuration={0}>
+                <button
+                  type="button"
+                  aria-label="About extended retention"
+                  className="text-muted-foreground hover:text-foreground"
+                >
+                  <IconInfoCircle className="size-4" />
+                </button>
+
                 <Tooltip>Retained data follows your organization policy.</Tooltip>
               </TooltipTrigger>
             </div>
           </>
         </div>
         <div className="grid w-full max-w-sm gap-3">
-          <CheckboxField defaultSelected>
+          <CheckboxField defaultChecked>
             <CheckboxButton className="items-center gap-2 text-sm">
               Include archived records
               <span
@@ -168,7 +166,7 @@ export function CheckboxLayoutExamples() {
         </div>
         <div className="w-full max-w-md divide-y rounded-xl border px-4">
           {["Email notifications", "Desktop notifications", "Weekly digest"].map((label, index) => (
-            <CheckboxField key={label} defaultSelected={index === 0}>
+            <CheckboxField key={label} defaultChecked={index === 0}>
               <CheckboxButton className="w-full flex-row-reverse items-center justify-between gap-4 py-3 text-sm">
                 {label}
               </CheckboxButton>
@@ -198,7 +196,7 @@ export function CheckboxLayoutExamples() {
         </div>
         <div className="grid w-full max-w-md grid-cols-2 gap-3">
           {["Product", "Engineering", "Operations", "Design"].map((label, index) => (
-            <CheckboxField key={label} defaultSelected={index === 0}>
+            <CheckboxField key={label} defaultChecked={index === 0}>
               <CheckboxButton
                 className="relative min-h-24 place-items-center rounded-xl border p-3 text-sm data-[selected]:bg-primary/[0.04]"
                 boxClassName="absolute top-3 right-3"
@@ -232,7 +230,7 @@ export function CheckboxLayoutExamples() {
 
       <ComponentPreview title="Checkbox Content">
         <div className="grid w-full max-w-xl gap-3 sm:grid-cols-2">
-          <CheckboxField defaultSelected>
+          <CheckboxField defaultChecked>
             <CheckboxButton
               className="relative min-h-24 items-end rounded-xl border bg-muted/40 p-4"
               boxClassName="absolute top-3 right-3"
@@ -314,7 +312,7 @@ export function CheckboxLayoutExamples() {
             />
           </div>
           <div className="flex flex-wrap items-center gap-5">
-            <CheckboxField defaultSelected>
+            <CheckboxField defaultChecked>
               <CheckboxButton className="items-center gap-2 text-sm">
                 Email receipts <Badge variant="secondary">Recommended</Badge>
               </CheckboxButton>
@@ -330,7 +328,7 @@ export function CheckboxLayoutExamples() {
         <fieldset className="grid w-full max-w-md gap-3 rounded-xl border bg-muted/20 p-4">
           <legend className="px-1 text-sm font-medium">Access permissions</legend>
           {["View reports", "Export data", "Manage members"].map((label, index) => (
-            <CheckboxField key={label} defaultSelected={index === 0}>
+            <CheckboxField key={label} defaultChecked={index === 0}>
               <CheckboxButton className="items-center gap-3 text-sm">{label}</CheckboxButton>
             </CheckboxField>
           ))}
@@ -354,7 +352,7 @@ export function CheckboxLayoutExamples() {
             { label: "Billing alerts", badge: "REQUIRED" },
             { label: "Product updates", badge: "OPTIONAL" },
           ].map(({ label, badge }) => (
-            <CheckboxField key={label} defaultSelected={badge === "REQUIRED"}>
+            <CheckboxField key={label} defaultChecked={badge === "REQUIRED"}>
               <CheckboxButton className="w-full items-center justify-between gap-4 text-sm">
                 <span>{label}</span>
                 <span className="rounded bg-muted px-1.5 py-0.5 text-[9px] font-semibold tracking-wide text-muted-foreground">
@@ -398,7 +396,7 @@ export function CheckboxUsageExamples() {
           <CheckboxField>
             <CheckboxButton className="items-center gap-3 text-sm">Remember this device</CheckboxButton>
           </CheckboxField>
-          <CheckboxField defaultSelected>
+          <CheckboxField defaultChecked>
             <CheckboxButton className="items-center gap-3 text-sm">Receive product updates</CheckboxButton>
           </CheckboxField>
         </div>
@@ -432,7 +430,7 @@ export function CheckboxUsageExamples() {
         </CheckboxField>
 
         <div className="grid w-full max-w-sm gap-2">
-          <CheckboxField id={`${id}-terms`} isInvalid>
+          <CheckboxField id={`${id}-terms`} invalid>
             <CheckboxButton className="items-center gap-3 text-sm">Accept the terms</CheckboxButton>
           </CheckboxField>
           <HintText variant="error">You must accept the terms to continue.</HintText>
@@ -441,14 +439,14 @@ export function CheckboxUsageExamples() {
         <fieldset className="grid w-full max-w-sm gap-3">
           <legend className="text-sm font-medium">Notification preferences</legend>
           {["Product updates", "Security alerts", "Weekly summary"].map((label, index) => (
-            <CheckboxField key={label} defaultSelected={index === 1}>
+            <CheckboxField key={label} defaultChecked={index === 1}>
               <CheckboxButton className="items-center gap-3 text-sm">{label}</CheckboxButton>
             </CheckboxField>
           ))}
         </fieldset>
       </ComponentPreview>
       <ComponentPreview title="Read Only" layout="stack">
-        <CheckboxField readOnly defaultSelected>
+        <CheckboxField readOnly defaultChecked>
           <CheckboxButton className="items-start gap-3 text-sm data-[disabled]:cursor-not-allowed data-[readonly]:cursor-default">
             <span className="grid gap-1">
               <span className="font-medium">Verified workspace policy</span>

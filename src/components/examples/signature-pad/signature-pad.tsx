@@ -7,9 +7,6 @@ import Image from "next/image";
 import { Download as IconDownload, Play as IconPlayerPlay } from "lucide-react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
@@ -17,12 +14,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Frame, FramePanel } from "@/components/ui/frame";
-import { Input } from "@/components/ui/input";
-import { Kbd, KbdGroup } from "@/components/ui/kbd";
-import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
+} from "@/components/roseui/dialog";
 import {
   SignaturePad,
   type SignaturePadApi,
@@ -38,7 +30,14 @@ import {
   SignaturePadSave,
   type SignaturePadStroke,
   SignaturePadUndo,
-} from "@/components/ui/signature-pad";
+} from "@/components/roseui/signature-pad";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { Kbd, KbdGroup } from "@/components/ui/kbd";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -229,8 +228,8 @@ export function SigningWorkspaceExample() {
 
   const locked = signed || replay !== null;
   return (
-    <Frame className="mx-auto w-full max-w-xl">
-      <FramePanel className="space-y-3">
+    <div className="mx-auto w-full max-w-xl rounded-xl border bg-card p-4">
+      <div className="space-y-3">
         <div className="flex items-start justify-between gap-3">
           <div>
             <h3 className="text-sm font-semibold">Statement of work</h3>
@@ -241,7 +240,7 @@ export function SigningWorkspaceExample() {
               <Button
                 variant="ghost"
                 size="sm"
-                onPress={() => {
+                onClick={() => {
                   setSigned(false);
                   requestAnimationFrame(() => padRef.current?.focus());
                 }}
@@ -279,8 +278,8 @@ export function SigningWorkspaceExample() {
                 key={option.label}
                 size="xs"
                 variant={weight.label === option.label ? "secondary" : "ghost"}
-                isDisabled={locked}
-                onPress={() => setWeight(option)}
+                disabled={locked}
+                onClick={() => setWeight(option)}
               >
                 {option.label}
               </Button>
@@ -292,18 +291,18 @@ export function SigningWorkspaceExample() {
               variant="ghost"
               size="icon-sm"
               aria-label="Replay signature"
-              isDisabled={!strokes.length || locked}
-              onPress={playBack}
+              disabled={!strokes.length || locked}
+              onClick={playBack}
             >
               <IconPlayerPlay />
             </Button>
             <SignaturePadClear variant="ghost" />
             <div className="ms-auto flex gap-1">
-              <Button variant="ghost" size="sm" isDisabled={!strokes.length || locked} onPress={() => download("png")}>
+              <Button variant="ghost" size="sm" disabled={!strokes.length || locked} onClick={() => download("png")}>
                 <IconDownload data-icon="inline-start" />
                 PNG
               </Button>
-              <Button variant="ghost" size="sm" isDisabled={!strokes.length || locked} onPress={() => download("svg")}>
+              <Button variant="ghost" size="sm" disabled={!strokes.length || locked} onClick={() => download("svg")}>
                 <IconDownload data-icon="inline-start" />
                 SVG
               </Button>
@@ -314,11 +313,11 @@ export function SigningWorkspaceExample() {
           <span role="status">{downloadReady}</span>
           <span>{signed ? "Signed" : "Awaiting signature"}</span>
         </div>
-        <Button className="w-full" isDisabled={!strokes.length || signed} onPress={() => setSigned(true)}>
+        <Button className="w-full" disabled={!strokes.length || signed} onClick={() => setSigned(true)}>
           Sign statement
         </Button>
-      </FramePanel>
-    </Frame>
+      </div>
+    </div>
   );
 }
 
@@ -349,8 +348,8 @@ export function ExportFormatsExample() {
         </div>
       </SignaturePad>
       {result && (
-        <Frame spacing="sm">
-          <FramePanel className="space-y-2">
+        <div className="rounded-xl border bg-card p-3">
+          <div className="space-y-2">
             <div className="flex items-center gap-2 text-sm">
               <span className="font-medium">{result.format.toUpperCase()}</span>
               <span className="text-xs text-muted-foreground">{(result.size / 1024).toFixed(1)} KB</span>
@@ -378,8 +377,8 @@ export function ExportFormatsExample() {
                 className="h-28 w-auto"
               />
             )}
-          </FramePanel>
-        </Frame>
+          </div>
+        </div>
       )}
       <p className="sr-only" role="status">
         {result ? `${result.format.toUpperCase()} export ready` : ""}
@@ -452,7 +451,7 @@ export function DrawOrTypeExample() {
         </TabsContent>
       </Tabs>
       <div className="flex items-center gap-3">
-        <Button isDisabled={!ready} onPress={() => setAdopted(mode)}>
+        <Button disabled={!ready} onClick={() => setAdopted(mode)}>
           Adopt and sign
         </Button>
         <p role="status" className="text-sm text-primary">
@@ -471,8 +470,8 @@ export function AgreementSigningExample() {
   const [signedAt, setSignedAt] = useState<string | null>(null);
 
   return (
-    <Frame className="mx-auto w-full max-w-md">
-      <FramePanel className="space-y-4">
+    <div className="mx-auto w-full max-w-md rounded-xl border bg-card p-4">
+      <div className="space-y-4">
         <div className="flex items-start justify-between gap-3">
           <div>
             <h3 className="text-sm font-semibold">Service agreement</h3>
@@ -483,7 +482,7 @@ export function AgreementSigningExample() {
               <Button
                 variant="ghost"
                 size="xs"
-                onPress={() => {
+                onClick={() => {
                   setSignedAt(null);
                   setStrokes([]);
                   setAgreed(false);
@@ -530,14 +529,14 @@ export function AgreementSigningExample() {
         ) : (
           <Button
             className="w-full"
-            isDisabled={!agreed || strokes.length === 0}
-            onPress={() => setSignedAt(new Intl.DateTimeFormat("en-US", { dateStyle: "medium" }).format(new Date()))}
+            disabled={!agreed || strokes.length === 0}
+            onClick={() => setSignedAt(new Intl.DateTimeFormat("en-US", { dateStyle: "medium" }).format(new Date()))}
           >
             Sign agreement
           </Button>
         )}
-      </FramePanel>
-    </Frame>
+      </div>
+    </div>
   );
 }
 
@@ -549,8 +548,8 @@ export function ProfileSignatureDialogExample() {
 
   return (
     <div className="mx-auto w-full max-w-lg space-y-3">
-      <Frame>
-        <FramePanel className="flex items-center justify-between gap-3">
+      <div className="rounded-xl border bg-card p-4">
+        <div className="flex items-center justify-between gap-3">
           <div>
             <h3 className="text-sm font-medium">Authorized signature</h3>
           </div>
@@ -558,7 +557,7 @@ export function ProfileSignatureDialogExample() {
             ref={editRef}
             variant="outline"
             size="sm"
-            onPress={() => {
+            onClick={() => {
               editRef.current?.focus();
               setDraft(signature);
               setOpen(true);
@@ -572,7 +571,7 @@ export function ProfileSignatureDialogExample() {
               <Button
                 variant="ghost"
                 size="sm"
-                onPress={() => {
+                onClick={() => {
                   setSignature([]);
                   editRef.current?.focus();
                 }}
@@ -581,8 +580,8 @@ export function ProfileSignatureDialogExample() {
               </Button>
             </div>
           )}
-        </FramePanel>
-      </Frame>
+        </div>
+      </div>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent size="md">
           <DialogHeader>
@@ -600,12 +599,12 @@ export function ProfileSignatureDialogExample() {
             </SignaturePadArea>
           </SignaturePad>
           <DialogFooter>
-            <Button variant="outline" onPress={() => setOpen(false)}>
+            <Button variant="outline" onClick={() => setOpen(false)}>
               Cancel
             </Button>
             <Button
-              isDisabled={!draft.length}
-              onPress={() => {
+              disabled={!draft.length}
+              onClick={() => {
                 setSignature(draft);
                 setOpen(false);
               }}
@@ -705,7 +704,7 @@ export function ClauseInitialsExample() {
           Initials submitted
         </p>
       ) : (
-        <Button isDisabled={!complete} className="ms-auto block" onPress={() => setSubmitted(true)}>
+        <Button disabled={!complete} className="ms-auto block" onClick={() => setSubmitted(true)}>
           Submit initials
         </Button>
       )}
@@ -720,8 +719,8 @@ export function ProofOfDeliveryExample() {
   const [confirmed, setConfirmed] = useState(false);
 
   return (
-    <Frame className="mx-auto w-full max-w-sm">
-      <FramePanel className="space-y-4">
+    <div className="mx-auto w-full max-w-sm rounded-xl border bg-card p-4">
+      <div className="space-y-4">
         <div className="flex items-start justify-between gap-3">
           <div>
             <h3 className="text-sm font-semibold">Proof of delivery</h3>
@@ -761,14 +760,14 @@ export function ProofOfDeliveryExample() {
         ) : (
           <Button
             className="w-full"
-            isDisabled={!recipient.trim() || strokes.length === 0}
-            onPress={() => setConfirmed(true)}
+            disabled={!recipient.trim() || strokes.length === 0}
+            onClick={() => setConfirmed(true)}
           >
             Confirm delivery
           </Button>
         )}
-      </FramePanel>
-    </Frame>
+      </div>
+    </div>
   );
 }
 
@@ -799,14 +798,14 @@ export function ApiRefUploadExample() {
         </SignaturePadArea>
       </SignaturePad>
       <div className="flex items-center gap-2">
-        <Button isDisabled={empty} onPress={prepareUpload}>
+        <Button disabled={empty} onClick={prepareUpload}>
           <IconDownload data-icon="inline-start" />
           Attach as PNG
         </Button>
         <Button
           variant="ghost"
-          isDisabled={empty}
-          onPress={() => {
+          disabled={empty}
+          onClick={() => {
             padRef.current?.clear();
             padRef.current?.focus();
           }}

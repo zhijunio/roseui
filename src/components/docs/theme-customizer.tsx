@@ -137,7 +137,7 @@ export function ThemeCustomizer() {
               }}
             />
 
-            <Button type="button" size="sm" variant="outline" className="w-full text-xs" onPress={resetPreferences}>
+            <Button type="button" size="sm" variant="outline" className="w-full text-xs" onClick={resetPreferences}>
               Restore defaults
             </Button>
           </div>
@@ -164,16 +164,16 @@ function PreferenceToggle<T extends string>({
     <div className="space-y-1.5">
       <Label className="text-xs font-medium">{label}</Label>
       <ToggleGroup
-        selectionMode="single"
+        type="single"
         size="sm"
         spacing={layout === "grid" ? 1 : 0}
         variant="outline"
-        selectedKeys={[value]}
-        onSelectionChange={(keys) => onValueChange(String(Array.from(keys)[0] ?? ""))}
+        value={value}
+        onValueChange={onValueChange}
         className={cn(layout === "grid" && "grid grid-cols-2 gap-1")}
       >
         {options.map((option) => (
-          <ToggleGroupItem key={option.value} id={option.value} aria-label={`${label}: ${option.label}`}>
+          <ToggleGroupItem key={option.value} value={option.value} aria-label={`${label}: ${option.label}`}>
             {option.label}
           </ToggleGroupItem>
         ))}

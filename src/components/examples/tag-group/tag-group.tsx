@@ -2,10 +2,9 @@
 
 import { useState } from "react";
 
-import type { Key, Selection } from "react-aria-components/TagGroup";
-
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { Tag, TagGroup, TagList } from "@/components/ui/tag-group";
+import type { Key, Selection } from "@/components/roseui/tag-group";
+import { Tag, TagGroup, TagList } from "@/components/roseui/tag-group";
 
 const tagItems = (values: string[]) => values.map((name) => ({ id: name, name }));
 

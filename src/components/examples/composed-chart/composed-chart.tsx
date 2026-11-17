@@ -12,8 +12,8 @@ import {
   ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart";
-import { ComposedChart as ConfigComposedChart } from "@/components/ui/composed-chart";
+} from "@/components/roseui/chart";
+import { ComposedChart as ConfigComposedChart } from "@/components/roseui/composed-chart";
 
 const axisProps = { tickLine: false, axisLine: false, tickMargin: 8 } as const;
 const chartClass = "!aspect-auto h-[260px] w-full sm:h-[360px]";

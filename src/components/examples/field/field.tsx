@@ -2,8 +2,7 @@
 import * as React from "react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { Button } from "@/components/ui/button";
-import { Checkbox, CheckboxButton, CheckboxField } from "@/components/ui/checkbox";
+import { Checkbox, CheckboxButton, CheckboxField } from "@/components/roseui/checkbox";
 import {
   Field,
   FieldContent,
@@ -15,15 +14,16 @@ import {
   FieldSeparator,
   FieldSet,
   FieldTitle,
-} from "@/components/ui/field";
+} from "@/components/roseui/field";
+import { InputOTP } from "@/components/roseui/input-otp";
+import { Slider } from "@/components/roseui/slider";
+import { Surface } from "@/components/roseui/surface";
+import { TextArea } from "@/components/roseui/text-area";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "@/components/ui/input-group";
-import { InputOTP } from "@/components/ui/input-otp";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Slider } from "@/components/ui/slider";
-import { Surface } from "@/components/ui/surface";
 import { Switch } from "@/components/ui/switch";
-import { TextArea } from "@/components/ui/text-area";
 
 const examples = [
   "Fields with input groups",
@@ -299,7 +299,7 @@ function FieldDemo({ index }: { index: number }) {
             type="button"
             size="sm"
             variant="outline"
-            onPress={() => {
+            onClick={() => {
               setSaved(false);
               setErrors(false);
               setSlug("northwind");
@@ -317,7 +317,7 @@ function FieldDemo({ index }: { index: number }) {
             variant="ghost"
             size="sm"
             className="ml-auto"
-            onPress={() => {
+            onClick={() => {
               setSlug("bad slug");
               setErrors(true);
               setSaved(false);
@@ -450,7 +450,7 @@ function FieldDemo({ index }: { index: number }) {
             />
           )}
         </Field>
-        <CheckboxField defaultSelected>
+        <CheckboxField defaultChecked>
           <CheckboxButton className="items-center gap-2 text-sm">I agree to the acceptable use policy</CheckboxButton>
         </CheckboxField>
       </FieldGroup>
@@ -528,7 +528,7 @@ function ProfileFieldsetExample({ inSurface = false }: { inSurface?: boolean }) 
           <Button
             type="button"
             variant="outline"
-            onPress={() => {
+            onClick={() => {
               setName("Jordan Lee");
               setEmail("jordan@northwind.dev");
               setBio("Product operations lead");

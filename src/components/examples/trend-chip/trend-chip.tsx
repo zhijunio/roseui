@@ -1,7 +1,7 @@
 import { Activity as IconActivity, ArrowRight as IconArrowRight, DollarSign as IconCurrencyDollar } from "lucide-react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { TrendChip } from "@/components/ui/trend-chip";
+import { TrendChip } from "@/components/roseui/trend-chip";
 
 export function TrendChipExamples() {
   return (

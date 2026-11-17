@@ -40,13 +40,13 @@ function ConsentBanner() {
               Choose which optional services can help improve this workspace.
             </p>
             <div className="mt-4 flex flex-wrap gap-2">
-              <Button size="sm" onPress={() => setOpen(false)}>
+              <Button size="sm" onClick={() => setOpen(false)}>
                 Allow optional
               </Button>
-              <Button size="sm" variant="outline" onPress={() => setOpen(false)}>
+              <Button size="sm" variant="outline" onClick={() => setOpen(false)}>
                 Only required
               </Button>
-              <Button size="sm" variant="ghost" onPress={() => setSettings(true)}>
+              <Button size="sm" variant="ghost" onClick={() => setSettings(true)}>
                 <IconAdjustments />
                 Manage
               </Button>
@@ -78,7 +78,7 @@ function ConsentBanner() {
           </div>
           <DialogFooter>
             <Button
-              onPress={() => {
+              onClick={() => {
                 setSettings(false);
                 setOpen(false);
               }}

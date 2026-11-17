@@ -7,12 +7,12 @@ import { Copy as IconCopy, EllipsisVertical as IconDotsVertical, Trash as IconTr
 import { toast } from "sonner";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
+import { DataTable, SortableHeader } from "@/components/roseui/data-table";
+import { Menu, MenuHeader, MenuItem, MenuSeparator, MenuTrigger } from "@/components/roseui/menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { DataTable, SortableHeader } from "@/components/ui/data-table";
-import { Menu, MenuHeader, MenuItem, MenuSeparator, MenuTrigger } from "@/components/ui/menu";
 import { demoAvatarUrl, getInitials } from "@/lib/utils";
 
 type Customer = {
@@ -238,11 +238,11 @@ function makeColumns(onDelete: (customer: Customer) => void): ColumnDef<Customer
                 <span className="sr-only">Open menu</span>
               </Button>
 
-              <Menu placement="bottom end" className="w-40">
+              <Menu side="bottom" align="end" className="w-40">
                 <MenuHeader>Actions</MenuHeader>
                 <MenuSeparator />
                 <MenuItem
-                  onAction={() => {
+                  onSelect={() => {
                     navigator.clipboard?.writeText(c.id);
                     toast.success("Customer ID copied", { description: c.id });
                   }}
@@ -252,7 +252,7 @@ function makeColumns(onDelete: (customer: Customer) => void): ColumnDef<Customer
                 <MenuSeparator />
                 <MenuItem
                   intent="danger"
-                  onAction={() => {
+                  onSelect={() => {
                     onDelete(c);
                     toast.success("Customer deleted", {
                       description: `${c.name} was removed.`,
@@ -309,7 +309,7 @@ export function DataTableExamples() {
                   key={state}
                   size="sm"
                   variant={tableState === state ? "secondary" : "outline"}
-                  onPress={() => setTableState(state)}
+                  onClick={() => setTableState(state)}
                 >
                   {state}
                 </Button>

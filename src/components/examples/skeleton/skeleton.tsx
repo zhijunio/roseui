@@ -3,9 +3,9 @@
 import { type ReactNode, useState } from "react";
 
 import { ComponentPreview, type ComponentPreviewLayout } from "@/components/docs/component-preview";
+import { Skeleton } from "@/components/roseui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Skeleton } from "@/components/ui/skeleton";
 
 type ExampleSection = {
   title: string;
@@ -102,7 +102,7 @@ export function LoadingExample() {
           </div>
         </Skeleton>
       </div>
-      <Button type="button" variant="outline" size="sm" onPress={() => setLoading((current) => !current)}>
+      <Button type="button" variant="outline" size="sm" onClick={() => setLoading((current) => !current)}>
         {loading ? "Show loaded content" : "Show loading state"}
       </Button>
     </div>

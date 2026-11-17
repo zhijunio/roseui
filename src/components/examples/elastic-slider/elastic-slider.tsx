@@ -5,7 +5,7 @@ import * as React from "react";
 import { Volume as IconVolume, VolumeOff as IconVolumeOff } from "lucide-react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { ElasticSlider } from "@/components/ui/elastic-slider";
+import { ElasticSlider } from "@/components/roseui/elastic-slider";
 
 export function ElasticSliderExamples() {
   const [volume, setVolume] = React.useState(62);

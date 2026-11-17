@@ -3,7 +3,7 @@
 import * as React from "react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { InputMention, type MentionValue } from "@/components/ui/input-mention";
+import { InputMention, type MentionValue } from "@/components/roseui/input-mention";
 
 const people = [
   { id: "member-ava", name: "Ava Chen", description: "Account manager" },

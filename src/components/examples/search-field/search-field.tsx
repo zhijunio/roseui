@@ -4,10 +4,10 @@ import { useId, useState } from "react";
 import { Filter as IconFilter, X as IconX } from "lucide-react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
+import { SearchField } from "@/components/roseui/search-field";
 import { Button } from "@/components/ui/button";
 import { Kbd, KbdGroup } from "@/components/ui/kbd";
 import { Label } from "@/components/ui/label";
-import { SearchField } from "@/components/ui/search-field";
 
 const teammates = [
   { name: "Amir Haddad", team: "Design" },
@@ -107,7 +107,7 @@ function SearchFieldDemoContent() {
             <Label htmlFor="search-help-center">Help center</Label>
             <SearchField id="search-help-center" placeholder="Search articles" loading={isLoading} />
           </div>
-          <Button type="button" variant="outline" size="sm" onPress={() => setIsLoading((loading) => !loading)}>
+          <Button type="button" variant="outline" size="sm" onClick={() => setIsLoading((loading) => !loading)}>
             {isLoading ? "Stop loading" : "Loading"}
           </Button>
         </div>

@@ -1,5 +1,6 @@
 "use client";
 
+import type * as React from "react";
 import { useEffect, useRef, useState } from "react";
 
 import Link from "next/link";
@@ -7,10 +8,13 @@ import Link from "next/link";
 import { ArrowRight, Check, LoaderCircle, Plus } from "lucide-react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { Button, type ButtonProps, buttonVariants } from "@/components/ui/button";
+import { RoseButton } from "@/components/roseui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 
-const textSizes = ["xs", "sm", "default", "lg"] satisfies ButtonProps["size"][];
-const iconSizes = ["icon-xs", "icon-sm", "icon", "icon-lg"] satisfies ButtonProps["size"][];
+const textSizes = ["xs", "sm", "default", "lg"] satisfies NonNullable<React.ComponentProps<typeof Button>["size"]>[];
+const iconSizes = ["icon-xs", "icon-sm", "icon", "icon-lg"] satisfies NonNullable<
+  React.ComponentProps<typeof Button>["size"]
+>[];
 
 export function ButtonVariantExample() {
   return (
@@ -81,11 +85,11 @@ export function ButtonIconExample() {
 function ButtonDisabledExample() {
   return (
     <>
-      <Button isDisabled>Unavailable</Button>
-      <Button variant="outline" isDisabled>
+      <Button disabled>Unavailable</Button>
+      <Button variant="outline" disabled>
         Unavailable
       </Button>
-      <Button variant="outline" size="icon" isDisabled aria-label="Add item">
+      <Button variant="outline" size="icon" disabled aria-label="Add item">
         <Plus />
       </Button>
     </>
@@ -104,9 +108,9 @@ function ButtonPendingExample({ withLoader = false }: { withLoader?: boolean }) 
 
   return (
     <div className="flex flex-wrap items-center gap-3">
-      <Button
+      <RoseButton
         isPending={status === "pending"}
-        onPress={() => {
+        onClick={() => {
           setStatus("pending");
           timer.current = setTimeout(() => setStatus("saved"), 1500);
         }}
@@ -124,7 +128,7 @@ function ButtonPendingExample({ withLoader = false }: { withLoader?: boolean }) 
             {isPending ? "Saving…" : status === "saved" ? "Save again" : "Save changes"}
           </>
         )}
-      </Button>
+      </RoseButton>
       <span role="status" className="text-muted-foreground text-sm">
         {status === "saved" ? "Changes saved." : ""}
       </span>
@@ -148,7 +152,7 @@ function ButtonLinkExample() {
 
 function ButtonRenderExample() {
   return (
-    <Button
+    <RoseButton
       render={(domProps, { isPressed }) => (
         <button
           {...domProps}
@@ -158,7 +162,7 @@ function ButtonRenderExample() {
       )}
     >
       Press me
-    </Button>
+    </RoseButton>
   );
 }
 

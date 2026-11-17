@@ -5,7 +5,7 @@ import * as React from "react";
 import { Archive as IconArchive, Trash as IconTrash } from "lucide-react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { HoldToConfirm } from "@/components/ui/hold-to-confirm";
+import { HoldToConfirm } from "@/components/roseui/hold-to-confirm";
 
 function ArchiveExample() {
   const [status, setStatus] = React.useState("");
@@ -64,7 +64,7 @@ export function HoldToConfirmExamples() {
             </>
           }
           onConfirm={() => undefined}
-          isDisabled
+          disabled
         />
       </ComponentPreview>
     </>

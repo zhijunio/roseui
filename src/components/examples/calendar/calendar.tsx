@@ -5,7 +5,7 @@ import { useState } from "react";
 import { type CalendarDate, getLocalTimeZone, today } from "@internationalized/date";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { Calendar } from "@/components/ui/calendar";
+import { Calendar } from "@/components/roseui/calendar";
 
 export function CalendarExamples() {
   const [date, setDate] = useState<CalendarDate | null>(null);

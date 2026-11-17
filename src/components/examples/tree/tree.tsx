@@ -3,11 +3,11 @@
 import { useState } from "react";
 
 import { File as IconFile, Folder as IconFolder, FolderOpen as IconFolderOpen } from "lucide-react";
-import { Collection } from "react-aria-components/Collection";
-import type { Key, Selection } from "react-aria-components/Tree";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { Tree, TreeContent, TreeItem } from "@/components/ui/tree";
+import { Tree, TreeContent, TreeItem, type TreeSelection } from "@/components/roseui/tree";
+
+type Key = string | number;
 
 type FileNode = { id: string; name: string; children?: FileNode[] };
 
@@ -15,7 +15,9 @@ function FileTreeItem({ item }: { item: FileNode }) {
   return (
     <TreeItem id={item.id} textValue={item.name}>
       <TreeContent>{item.name}</TreeContent>
-      {item.children ? <Collection items={item.children}>{(child) => <FileTreeItem item={child} />}</Collection> : null}
+      {item.children?.map((child) => (
+        <FileTreeItem key={child.id} item={child} />
+      ))}
     </TreeItem>
   );
 }
@@ -79,13 +81,13 @@ function findNode(nodes: FileNode[], id: string): FileNode | undefined {
   }
 }
 
-function selectedKeys(selection: Selection) {
+function selectedKeys(selection: TreeSelection) {
   return selection === "all" ? [] : [...selection].map(String);
 }
 
 export function TreeExamples() {
   const [expandedKeys, setExpandedKeys] = useState<Set<Key>>(new Set(["departments", "sales", "reports"]));
-  const [selection, setSelection] = useState<Selection>(new Set(["q1"]));
+  const [selection, setSelection] = useState<TreeSelection>(new Set(["q1"]));
   const [moveMessage, setMoveMessage] = useState("Drag a file to move it.");
   const [movableItems, setMovableItems] = useState<FileNode[]>([
     { id: "design", name: "Design", children: [{ id: "brief", name: "Brief.pdf" }] },

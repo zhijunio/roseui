@@ -3,8 +3,8 @@
 import { useState } from "react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
+import { CodeBlock } from "@/components/roseui/code-block";
 import { Button } from "@/components/ui/button";
-import { CodeBlock } from "@/components/ui/code-block";
 
 const snippet = `export async function getProject(id: string) {\n  const project = await db.project.findUnique({ where: { id } })\n  if (!project) throw new Error("Project not found")\n  return project\n}`;
 const longSnippet = Array.from(
@@ -180,7 +180,7 @@ export function CodeBlockExamples() {
           <Button
             size="sm"
             className="w-fit"
-            onPress={() => setNotice("Suggested fix: add 0 as the initial accumulator.")}
+            onClick={() => setNotice("Suggested fix: add 0 as the initial accumulator.")}
           >
             Suggest fix
           </Button>

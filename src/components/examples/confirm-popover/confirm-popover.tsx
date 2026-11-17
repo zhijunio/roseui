@@ -24,7 +24,7 @@ function ConfirmAction() {
     <div className="flex flex-wrap items-center gap-3">
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          <Button variant="outline" isDisabled={deleted}>
+          <Button variant="outline" disabled={deleted}>
             <IconTrash />
             {deleted ? "Removed" : "Remove item"}
           </Button>
@@ -41,11 +41,11 @@ function ConfirmAction() {
               </div>
             </div>
             <div className="flex justify-end gap-2">
-              <Button size="sm" variant="ghost" onPress={() => setOpen(false)}>
+              <Button size="sm" variant="ghost" onClick={() => setOpen(false)}>
                 <IconX />
                 Cancel
               </Button>
-              <Button size="sm" variant="destructive" onPress={confirm} isDisabled={busy}>
+              <Button size="sm" variant="destructive" onClick={confirm} disabled={busy}>
                 {busy ? "Removing…" : "Remove"}
               </Button>
             </div>
@@ -65,7 +65,7 @@ function InlineConfirmation() {
   const [confirmed, setConfirmed] = useState(false);
   return (
     <div className="flex flex-wrap items-center gap-3">
-      <Button variant="ghost" size="sm" onPress={() => setConfirmed(true)} isDisabled={confirmed}>
+      <Button variant="ghost" size="sm" onClick={() => setConfirmed(true)} disabled={confirmed}>
         {confirmed ? "Action confirmed" : "Confirm action"}
       </Button>
       {confirmed && (

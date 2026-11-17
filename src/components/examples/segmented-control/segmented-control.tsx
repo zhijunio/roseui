@@ -5,7 +5,11 @@ import { useState } from "react";
 import { LayoutGrid as IconLayoutGrid, List as IconList } from "lucide-react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { SegmentedControl, SegmentedControlItem, SegmentedControlSeparator } from "@/components/ui/segmented-control";
+import {
+  SegmentedControl,
+  SegmentedControlItem,
+  SegmentedControlSeparator,
+} from "@/components/roseui/segmented-control";
 
 export function SegmentedControlExamples() {
   const [period, setPeriod] = useState("month");

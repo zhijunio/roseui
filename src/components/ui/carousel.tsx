@@ -1,339 +1,157 @@
 "use client";
 
-import {
-  Children,
-  type ComponentProps,
-  type KeyboardEvent,
-  type ReactNode,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import * as React from "react";
 
+import useEmblaCarousel, { type UseEmblaCarouselType } from "embla-carousel-react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-export type CarouselApi = {
-  getActiveIndex: () => number;
-  getSlideCount: () => number;
-  scrollNext: () => void;
-  scrollPrevious: () => void;
-  scrollTo: (index: number) => void;
+type CarouselApi = UseEmblaCarouselType[1];
+type CarouselOptions = Parameters<typeof useEmblaCarousel>[0];
+type CarouselPlugin = Parameters<typeof useEmblaCarousel>[1];
+
+type CarouselProps = {
+  opts?: CarouselOptions;
+  plugins?: CarouselPlugin;
+  orientation?: "horizontal" | "vertical";
+  setApi?: (api: CarouselApi) => void;
 };
 
-export function Carousel({
-  children,
-  "aria-label": ariaLabel,
-  align = "start",
-  orientation = "horizontal",
-  gap = 16,
-  loop = false,
-  showArrows = true,
-  showDots = true,
-  autoPlay = true,
-  autoPlayInterval = 5000,
-  itemClassName,
-  thumbnails,
-  thumbnailPosition = "below",
-  navigationPlacement = "inside",
-  onApiReady,
-  onActiveIndexChange,
-  className,
-  ...props
-}: Omit<ComponentProps<"div">, "children"> & {
-  children: ReactNode;
-  "aria-label": string;
-  align?: "start" | "center";
-  orientation?: "horizontal" | "vertical";
-  gap?: number;
-  loop?: boolean;
-  showArrows?: boolean;
-  showDots?: boolean;
-  autoPlay?: boolean;
-  autoPlayInterval?: number;
-  itemClassName?: string;
-  thumbnails?: ReactNode[];
-  thumbnailPosition?: "below" | "overlay";
-  navigationPlacement?: "inside" | "outside";
-  onApiReady?: (api: CarouselApi | null) => void;
-  onActiveIndexChange?: (index: number) => void;
-}) {
-  const slides = Children.toArray(children);
-  const trackRef = useRef<HTMLDivElement>(null);
-  const animationFrameRef = useRef<number | null>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [paused, setPaused] = useState(false);
-  const activeIndexRef = useRef(activeIndex);
+type CarouselContextValue = {
+  carouselRef: ReturnType<typeof useEmblaCarousel>[0];
+  api: CarouselApi;
+  scrollPrev: () => void;
+  scrollNext: () => void;
+  canScrollPrev: boolean;
+  canScrollNext: boolean;
+} & CarouselProps;
 
-  const updateActiveIndex = useCallback(() => {
-    const track = trackRef.current;
-    if (!track) return;
-    const itemNodes = Array.from(track.querySelectorAll<HTMLElement>("[data-carousel-item]"));
-    const vertical = orientation === "vertical";
-    const center = vertical ? track.scrollTop + track.clientHeight / 2 : track.scrollLeft + track.clientWidth / 2;
-    const nextIndex = itemNodes.reduce((closest, item, index) => {
-      const itemCenter = vertical ? item.offsetTop + item.offsetHeight / 2 : item.offsetLeft + item.offsetWidth / 2;
-      const closestItem = itemNodes[closest];
-      const closestCenter = vertical
-        ? closestItem.offsetTop + closestItem.offsetHeight / 2
-        : closestItem.offsetLeft + closestItem.offsetWidth / 2;
-      return Math.abs(itemCenter - center) < Math.abs(closestCenter - center) ? index : closest;
-    }, 0);
+const CarouselContext = React.createContext<CarouselContextValue | null>(null);
 
-    activeIndexRef.current = nextIndex;
-    setActiveIndex((current) => {
-      if (current === nextIndex) return current;
-      return nextIndex;
-    });
-  }, [orientation]);
+function useCarousel() {
+  const context = React.useContext(CarouselContext);
+  if (!context) throw new Error("useCarousel must be used within a <Carousel />");
+  return context;
+}
 
-  useEffect(() => {
-    const track = trackRef.current;
-    if (!track) return;
-    const handleScroll = () => {
-      if (animationFrameRef.current !== null) {
-        window.cancelAnimationFrame(animationFrameRef.current);
+function Carousel({ orientation = "horizontal", opts, setApi, plugins, className, children, ...props }: React.ComponentProps<"div"> & CarouselProps) {
+  const [carouselRef, api] = useEmblaCarousel({ ...opts, axis: orientation === "horizontal" ? "x" : "y" }, plugins);
+  const [canScrollPrev, setCanScrollPrev] = React.useState(false);
+  const [canScrollNext, setCanScrollNext] = React.useState(false);
+
+  const onSelect = React.useCallback((carouselApi: CarouselApi) => {
+    if (!carouselApi) return;
+    setCanScrollPrev(carouselApi.canScrollPrev());
+    setCanScrollNext(carouselApi.canScrollNext());
+  }, []);
+
+  const scrollPrev = React.useCallback(() => api?.scrollPrev(), [api]);
+  const scrollNext = React.useCallback(() => api?.scrollNext(), [api]);
+
+  const handleKeyDown = React.useCallback(
+    (event: React.KeyboardEvent<HTMLDivElement>) => {
+      const previousKey = orientation === "horizontal" ? "ArrowLeft" : "ArrowUp";
+      const nextKey = orientation === "horizontal" ? "ArrowRight" : "ArrowDown";
+      if (event.key === previousKey) {
+        event.preventDefault();
+        scrollPrev();
+      } else if (event.key === nextKey) {
+        event.preventDefault();
+        scrollNext();
       }
-      animationFrameRef.current = window.requestAnimationFrame(updateActiveIndex);
-    };
-    track.addEventListener("scroll", handleScroll, { passive: true });
-    return () => {
-      track.removeEventListener("scroll", handleScroll);
-      if (animationFrameRef.current !== null) {
-        window.cancelAnimationFrame(animationFrameRef.current);
-      }
-    };
-  }, [updateActiveIndex]);
-
-  const scrollToIndex = useCallback(
-    (index: number) => {
-      const track = trackRef.current;
-      const item = track?.querySelectorAll<HTMLElement>("[data-carousel-item]")[index];
-      if (!track || !item) return;
-      const vertical = orientation === "vertical";
-      const centerOffset =
-        align === "center"
-          ? vertical
-            ? (track.clientHeight - item.clientHeight) / 2
-            : (track.clientWidth - item.clientWidth) / 2
-          : 0;
-      const behavior = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
-      track.scrollTo(
-        vertical
-          ? { top: item.offsetTop - centerOffset, behavior }
-          : { left: item.offsetLeft - centerOffset, behavior },
-      );
     },
-    [align, orientation],
+    [orientation, scrollPrev, scrollNext],
   );
 
-  const api = useMemo<CarouselApi>(
-    () => ({
-      getActiveIndex: () => activeIndexRef.current,
-      getSlideCount: () => slides.length,
-      scrollNext: () => {
-        const current = activeIndexRef.current;
-        scrollToIndex(current === slides.length - 1 && loop ? 0 : Math.min(current + 1, slides.length - 1));
-      },
-      scrollPrevious: () => {
-        const current = activeIndexRef.current;
-        scrollToIndex(current === 0 && loop ? slides.length - 1 : Math.max(current - 1, 0));
-      },
-      scrollTo: scrollToIndex,
-    }),
-    [loop, scrollToIndex, slides.length],
-  );
+  React.useEffect(() => {
+    if (api && setApi) setApi(api);
+  }, [api, setApi]);
 
-  useEffect(() => {
-    onApiReady?.(api);
-    return () => onApiReady?.(null);
-  }, [api, onApiReady]);
-
-  useEffect(() => {
-    onActiveIndexChange?.(activeIndex);
-  }, [activeIndex, onActiveIndexChange]);
-
-  useEffect(() => {
-    if (!autoPlay || paused || slides.length < 2 || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      return;
-    }
-    const timeout = window.setTimeout(() => {
-      if (activeIndex < slides.length - 1) scrollToIndex(activeIndex + 1);
-      else if (loop) scrollToIndex(0);
-    }, autoPlayInterval);
-    return () => window.clearTimeout(timeout);
-  }, [activeIndex, autoPlay, autoPlayInterval, loop, paused, scrollToIndex, slides.length]);
-
-  function handleKeyDown(event: KeyboardEvent<HTMLDivElement>) {
-    const nextKey = orientation === "vertical" ? "ArrowDown" : "ArrowRight";
-    const previousKey = orientation === "vertical" ? "ArrowUp" : "ArrowLeft";
-    if (event.key === nextKey) {
-      event.preventDefault();
-      scrollToIndex(activeIndex === slides.length - 1 && loop ? 0 : Math.min(activeIndex + 1, slides.length - 1));
-    } else if (event.key === previousKey) {
-      event.preventDefault();
-      scrollToIndex(activeIndex === 0 && loop ? slides.length - 1 : Math.max(activeIndex - 1, 0));
-    } else if (event.key === "Home") {
-      event.preventDefault();
-      scrollToIndex(0);
-    } else if (event.key === "End") {
-      event.preventDefault();
-      scrollToIndex(slides.length - 1);
-    }
-  }
-
-  const vertical = orientation === "vertical";
-  const previousIndex = activeIndex === 0 && loop ? slides.length - 1 : activeIndex - 1;
-  const nextIndex = activeIndex === slides.length - 1 && loop ? 0 : activeIndex + 1;
+  React.useEffect(() => {
+    if (!api) return;
+    onSelect(api);
+    api.on("reInit", onSelect);
+    api.on("select", onSelect);
+    return () => {
+      api.off("reInit", onSelect);
+      api.off("select", onSelect);
+    };
+  }, [api, onSelect]);
 
   return (
-    <div
-      {...props}
-      className={cn(
-        "relative w-full min-w-0 rounded-lg border border-border",
-        navigationPlacement === "outside" && "px-10",
-        className,
-      )}
-      onMouseEnter={(event) => {
-        props.onMouseEnter?.(event);
-        setPaused(true);
-      }}
-      onMouseLeave={(event) => {
-        props.onMouseLeave?.(event);
-        setPaused(false);
-      }}
-      onFocus={(event) => {
-        props.onFocus?.(event);
-        setPaused(true);
-      }}
-      onBlur={(event) => {
-        props.onBlur?.(event);
-        if (!event.currentTarget.contains(event.relatedTarget)) setPaused(false);
-      }}
-    >
+    <CarouselContext.Provider value={{ carouselRef, api, opts, plugins, orientation, setApi, scrollPrev, scrollNext, canScrollPrev, canScrollNext }}>
       <div
-        ref={trackRef}
+        onKeyDownCapture={handleKeyDown}
         role="region"
         aria-roledescription="carousel"
-        aria-label={ariaLabel}
-        tabIndex={0}
-        onKeyDown={handleKeyDown}
-        className={cn(
-          "relative flex w-full snap-mandatory gap-4 overflow-auto overscroll-contain scroll-smooth rounded-lg outline-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden focus-visible:ring-2 focus-visible:ring-ring/50 motion-reduce:!scroll-auto",
-          vertical ? "h-[22rem] snap-y flex-col" : "snap-x",
-        )}
-        style={{ gap }}
+        data-slot="carousel"
+        className={cn("relative", className)}
+        {...props}
       >
-        {slides.map((slide, index) => (
-          <div
-            key={index}
-            data-carousel-item
-            role="group"
-            aria-roledescription="slide"
-            aria-label={`${index + 1} of ${slides.length}`}
-            className={cn("min-w-0 shrink-0 snap-start", align === "center" && "snap-center", itemClassName)}
-            style={vertical ? undefined : { width: itemClassName ? undefined : "100%" }}
-          >
-            {slide}
-          </div>
-        ))}
+        {children}
       </div>
+    </CarouselContext.Provider>
+  );
+}
 
-      {showArrows && slides.length > 1 && (
-        <>
-          <Button
-            type="button"
-            variant="secondary"
-            size="icon-lg"
-            aria-label="Previous slide"
-            isDisabled={!loop && activeIndex === 0}
-            onPress={() => scrollToIndex(previousIndex)}
-            className={cn(
-              "!size-10 absolute z-10 rounded-full border border-border bg-background/90 text-foreground shadow-md hover:bg-background disabled:opacity-50",
-              vertical
-                ? "top-3 left-1/2 -translate-x-1/2 rotate-90"
-                : navigationPlacement === "outside"
-                  ? "top-1/2 left-0 -translate-x-1/2 -translate-y-1/2"
-                  : "top-1/2 left-3 -translate-y-1/2 sm:left-4",
-            )}
-          >
-            <ChevronLeft aria-hidden="true" />
-          </Button>
-          <Button
-            type="button"
-            variant="secondary"
-            size="icon-lg"
-            aria-label="Next slide"
-            isDisabled={!loop && activeIndex === slides.length - 1}
-            onPress={() => scrollToIndex(nextIndex)}
-            className={cn(
-              "!size-10 absolute z-10 rounded-full border border-border bg-background/90 text-foreground shadow-md hover:bg-background disabled:opacity-50",
-              vertical
-                ? "bottom-3 left-1/2 -translate-x-1/2 rotate-90"
-                : navigationPlacement === "outside"
-                  ? "top-1/2 right-0 translate-x-1/2 -translate-y-1/2"
-                  : "top-1/2 right-3 -translate-y-1/2 sm:right-4",
-            )}
-          >
-            <ChevronRight aria-hidden="true" />
-          </Button>
-        </>
-      )}
-
-      {showDots && slides.length > 1 && (
-        <div
-          role="group"
-          className="absolute bottom-3 left-1/2 inline-flex -translate-x-1/2 items-center gap-1.5 rounded-full border border-border bg-background/90 px-2 py-1.5 shadow-md sm:bottom-5"
-          aria-label="Slide selection"
-        >
-          {slides.map((_, index) => (
-            <button
-              key={index}
-              type="button"
-              aria-label={`Go to slide ${index + 1}`}
-              aria-current={activeIndex === index ? "true" : undefined}
-              onClick={() => scrollToIndex(index)}
-              className={cn(
-                "size-2.5 cursor-pointer rounded-full bg-muted opacity-100 shadow-sm motion-safe:transition-[opacity,background-color,box-shadow,transform] duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50",
-                activeIndex === index ? "w-6 rounded-xl" : "hover:opacity-80",
-              )}
-            />
-          ))}
-        </div>
-      )}
-
-      {thumbnails && thumbnails.length === slides.length && (
-        <div
-          role="group"
-          aria-label="Slide thumbnails"
-          className={cn(
-            "flex gap-2 p-2",
-            thumbnailPosition === "overlay" &&
-              "absolute right-2 bottom-2 left-2 z-10 justify-center rounded-lg bg-background/75 backdrop-blur",
-            vertical ? "flex-col" : "flex-row",
-          )}
-        >
-          {thumbnails.map((thumbnail, index) => (
-            <button
-              key={index}
-              type="button"
-              aria-label={`Show slide ${index + 1}`}
-              aria-current={activeIndex === index ? "true" : undefined}
-              onClick={() => scrollToIndex(index)}
-              className={cn(
-                "overflow-hidden rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                activeIndex === index ? "opacity-100" : "opacity-70 hover:opacity-100",
-              )}
-            >
-              {thumbnail}
-            </button>
-          ))}
-        </div>
-      )}
+function CarouselContent({ className, ...props }: React.ComponentProps<"div">) {
+  const { carouselRef, orientation } = useCarousel();
+  return (
+    <div ref={carouselRef} className="overflow-hidden" data-slot="carousel-content">
+      <div className={cn("flex", orientation === "horizontal" ? "-ml-4" : "-mt-4 flex-col", className)} {...props} />
     </div>
   );
 }
+
+function CarouselItem({ className, ...props }: React.ComponentProps<"div">) {
+  const { orientation } = useCarousel();
+  return (
+    <div
+      role="group"
+      aria-roledescription="slide"
+      data-slot="carousel-item"
+      className={cn("min-w-0 shrink-0 grow-0 basis-full", orientation === "horizontal" ? "pl-4" : "pt-4", className)}
+      {...props}
+    />
+  );
+}
+
+function CarouselPrevious({ className, variant = "outline", size = "icon-sm", ...props }: React.ComponentProps<typeof Button>) {
+  const { orientation, scrollPrev, canScrollPrev } = useCarousel();
+  return (
+    <Button
+      data-slot="carousel-previous"
+      variant={variant}
+      size={size}
+      className={cn("absolute touch-manipulation rounded-full", orientation === "horizontal" ? "inset-y-0 -left-12 my-auto" : "-top-12 left-1/2 -translate-x-1/2 rotate-90", className)}
+      disabled={!canScrollPrev}
+      onClick={scrollPrev}
+      {...props}
+    >
+      <ChevronLeft className="cn-rtl-flip" />
+      <span className="sr-only">Previous slide</span>
+    </Button>
+  );
+}
+
+function CarouselNext({ className, variant = "outline", size = "icon-sm", ...props }: React.ComponentProps<typeof Button>) {
+  const { orientation, scrollNext, canScrollNext } = useCarousel();
+  return (
+    <Button
+      data-slot="carousel-next"
+      variant={variant}
+      size={size}
+      className={cn("absolute touch-manipulation rounded-full", orientation === "horizontal" ? "inset-y-0 -right-12 my-auto" : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90", className)}
+      disabled={!canScrollNext}
+      onClick={scrollNext}
+      {...props}
+    >
+      <ChevronRight className="cn-rtl-flip" />
+      <span className="sr-only">Next slide</span>
+    </Button>
+  );
+}
+
+export { type CarouselApi, Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, useCarousel };

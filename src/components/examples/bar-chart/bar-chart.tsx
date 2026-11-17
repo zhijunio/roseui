@@ -6,7 +6,7 @@ import { Bar, BarChart, CartesianGrid, Cell, Rectangle, ReferenceLine, XAxis, YA
 import { ComponentPreview } from "@/components/docs/component-preview";
 import { ChartExample, monthlyData } from "@/components/examples/chart/chart-example";
 import { ChartSeriesControls } from "@/components/examples/chart/chart-series-controls";
-import { BarChart as ConfigBarChart } from "@/components/ui/bar-chart";
+import { BarChart as ConfigBarChart } from "@/components/roseui/bar-chart";
 import {
   type ChartConfig,
   ChartContainer,
@@ -14,8 +14,8 @@ import {
   ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart";
-import { SegmentedControl, SegmentedControlItem } from "@/components/ui/segmented-control";
+} from "@/components/roseui/chart";
+import { SegmentedControl, SegmentedControlItem } from "@/components/roseui/segmented-control";
 
 function DepthBar({ x, y, width, height, fill, ...props }: ComponentProps<typeof Rectangle>) {
   const left = Number(x),

@@ -10,7 +10,6 @@ import {
 } from "lucide-react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { Button } from "@/components/ui/button";
 import {
   Pagination,
   PaginationContent,
@@ -19,7 +18,8 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/pagination";
+} from "@/components/roseui/pagination";
+import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 type PaginationRowProps = {
@@ -74,9 +74,9 @@ function PaginationRow({
             href="#"
             text={previous === "icon" ? "" : "Previous"}
             showIcon={previous !== "text"}
-            isDisabled={currentPage <= 1}
+            disabled={currentPage <= 1}
             className={previous === "text" ? "h-10" : "h-10 max-sm:size-8 max-sm:justify-center max-sm:px-0"}
-            onPress={() => {
+            onClick={() => {
               setCurrentPage(Math.max(1, currentPage - 1));
             }}
           />
@@ -90,7 +90,7 @@ function PaginationRow({
                 isActive={currentPage === item}
                 aria-label={`Go to page ${item}`}
                 className={`size-10 max-sm:size-8 ${joined ? "rounded-none border-r" : circle ? "rounded-full" : "rounded-[var(--radius)]"} ${currentPage === item ? "bg-primary font-medium text-primary-foreground hover:bg-primary/90" : variant === "outlined" ? "border border-input text-foreground hover:bg-muted" : "border border-transparent text-muted-foreground hover:bg-muted/60"}`}
-                onPress={() => {
+                onClick={() => {
                   setCurrentPage(item);
                 }}
               >
@@ -106,9 +106,9 @@ function PaginationRow({
             href="#"
             text={next === "icon" ? "" : "Next"}
             showIcon={next !== "text"}
-            isDisabled={currentPage >= maxPage}
+            disabled={currentPage >= maxPage}
             className={next === "text" ? "h-10" : "h-10 max-sm:size-8 max-sm:justify-center max-sm:px-0"}
-            onPress={() => {
+            onClick={() => {
               setCurrentPage(Math.min(maxPage, currentPage + 1));
             }}
           />
@@ -126,8 +126,8 @@ function TextPagination() {
       <Button
         variant="outline"
         size="sm"
-        isDisabled={page === 1}
-        onPress={() => setPage((value) => Math.max(1, value - 1))}
+        disabled={page === 1}
+        onClick={() => setPage((value) => Math.max(1, value - 1))}
       >
         Previous
       </Button>
@@ -137,8 +137,8 @@ function TextPagination() {
       <Button
         variant="outline"
         size="sm"
-        isDisabled={page === total}
-        onPress={() => setPage((value) => Math.min(total, value + 1))}
+        disabled={page === total}
+        onClick={() => setPage((value) => Math.min(total, value + 1))}
       >
         Next
       </Button>
@@ -157,7 +157,7 @@ function PageSelectPagination() {
           <PaginationLink
             href="#"
             aria-label="Go to first page"
-            onPress={() => {
+            onClick={() => {
               goTo(1);
             }}
           >
@@ -168,7 +168,7 @@ function PageSelectPagination() {
           <PaginationLink
             href="#"
             aria-label="Go to previous page"
-            onPress={() => {
+            onClick={() => {
               goTo(page - 1);
             }}
           >
@@ -193,7 +193,7 @@ function PageSelectPagination() {
           <PaginationLink
             href="#"
             aria-label="Go to next page"
-            onPress={() => {
+            onClick={() => {
               goTo(page + 1);
             }}
           >
@@ -204,7 +204,7 @@ function PageSelectPagination() {
           <PaginationLink
             href="#"
             aria-label="Go to last page"
-            onPress={() => {
+            onClick={() => {
               goTo(total);
             }}
           >
@@ -234,17 +234,17 @@ function PaginationSizes() {
           <Pagination aria-label={`${label} pagination`} className="mx-0 w-auto">
             <PaginationContent className="gap-0.5">
               <PaginationItem>
-                <PaginationPrevious href="#" size={size} onPress={() => {}} />
+                <PaginationPrevious href="#" size={size} onClick={() => {}} />
               </PaginationItem>
               {[1, 2, 3].map((page) => (
                 <PaginationItem key={page}>
-                  <PaginationLink href="#" size={size} isActive={page === 1} onPress={() => {}}>
+                  <PaginationLink href="#" size={size} isActive={page === 1} onClick={() => {}}>
                     {page}
                   </PaginationLink>
                 </PaginationItem>
               ))}
               <PaginationItem>
-                <PaginationNext href="#" size={size} onPress={() => {}} />
+                <PaginationNext href="#" size={size} onClick={() => {}} />
               </PaginationItem>
             </PaginationContent>
           </Pagination>
@@ -260,7 +260,7 @@ function DisabledPagination() {
       <Pagination className="mx-0 w-auto">
         <PaginationContent>
           <PaginationItem>
-            <PaginationLink href="#" isDisabled>
+            <PaginationLink href="#" disabled>
               1
             </PaginationLink>
           </PaginationItem>
@@ -277,7 +277,7 @@ function DisabledPagination() {
       <Pagination className="mx-0 w-auto">
         <PaginationContent>
           <PaginationItem>
-            <PaginationPrevious href="#" isDisabled />
+            <PaginationPrevious href="#" disabled />
           </PaginationItem>
           <PaginationItem>
             <PaginationLink href="#" isActive>
@@ -285,7 +285,7 @@ function DisabledPagination() {
             </PaginationLink>
           </PaginationItem>
           <PaginationItem>
-            <PaginationNext href="#" isDisabled />
+            <PaginationNext href="#" disabled />
           </PaginationItem>
         </PaginationContent>
       </Pagination>
@@ -302,7 +302,7 @@ function CustomIconPagination() {
             href="#"
             text=""
             icon={<IconChevronsLeft aria-hidden="true" className="size-4" />}
-            onPress={() => {}}
+            onClick={() => {}}
           />
         </PaginationItem>
         <PaginationItem>
@@ -311,7 +311,7 @@ function CustomIconPagination() {
           </PaginationLink>
         </PaginationItem>
         <PaginationItem>
-          <PaginationLink href="#" onPress={() => {}}>
+          <PaginationLink href="#" onClick={() => {}}>
             2
           </PaginationLink>
         </PaginationItem>
@@ -320,7 +320,7 @@ function CustomIconPagination() {
             href="#"
             text=""
             icon={<IconChevronsRight aria-hidden="true" className="size-4" />}
-            onPress={() => {}}
+            onClick={() => {}}
           />
         </PaginationItem>
       </PaginationContent>
@@ -353,7 +353,7 @@ export function PaginationExamples() {
             onChange={(event) => setGoToPage(Math.min(10, Math.max(1, Number(event.currentTarget.value))))}
             className="h-9 w-20 rounded-md border bg-background px-2 text-sm"
           />
-          <Button size="sm" variant="outline" onPress={() => setFourth(goToPage)}>
+          <Button size="sm" variant="outline" onClick={() => setFourth(goToPage)}>
             Go
           </Button>
         </div>

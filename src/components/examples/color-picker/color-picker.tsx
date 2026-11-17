@@ -2,16 +2,15 @@
 
 import { useState } from "react";
 
-import { type Color, parseColor } from "react-aria-components";
-
 import { ComponentPreview } from "@/components/docs/component-preview";
+import { ColorArea, ColorAreaThumb } from "@/components/roseui/color-area";
+import { ColorField, ColorFieldInput, ColorFieldLabel } from "@/components/roseui/color-field";
+import { ColorInput, ColorPicker, ColorWell } from "@/components/roseui/color-picker";
+import { ColorSlider, ColorSliderThumb, ColorSliderTrack } from "@/components/roseui/color-slider";
+import { ColorSwatch } from "@/components/roseui/color-swatch";
+import { ColorSwatchPicker, ColorSwatchPickerItem } from "@/components/roseui/color-swatch-picker";
 import { Button } from "@/components/ui/button";
-import { ColorArea, ColorAreaThumb } from "@/components/ui/color-area";
-import { ColorField, ColorFieldInput, ColorFieldLabel } from "@/components/ui/color-field";
-import { ColorInput, ColorPicker, ColorWell } from "@/components/ui/color-picker";
-import { ColorSlider, ColorSliderThumb, ColorSliderTrack } from "@/components/ui/color-slider";
-import { ColorSwatch } from "@/components/ui/color-swatch";
-import { ColorSwatchPicker, ColorSwatchPickerItem } from "@/components/ui/color-swatch-picker";
+import { type Color, parseColor } from "@/lib/color";
 
 const palette = ["#2563eb", "#7c3aed", "#059669", "#d97706", "#dc2626", "#0f766e", "#db2777", "#475569"];
 
@@ -284,7 +283,7 @@ export function ColorPickerExamples() {
             <Button
               type="button"
               size="sm"
-              onPress={() =>
+              onClick={() =>
                 void navigator.clipboard?.writeText(
                   `--primary: oklch(${(lightness / 100).toFixed(2)} ${(chroma / 100).toFixed(2)} ${hue});`,
                 )

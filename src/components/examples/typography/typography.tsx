@@ -1,6 +1,6 @@
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { Heading } from "@/components/ui/heading";
-import { Code, Strong, Text, TextLink } from "@/components/ui/text";
+import { Heading } from "@/components/roseui/heading";
+import { Code, Strong, Text, TextLink } from "@/components/roseui/text";
 
 export function TypographyExamples() {
   return (

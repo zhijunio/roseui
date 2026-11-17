@@ -1,21 +1,16 @@
 import type * as React from "react";
-import { FieldError as FieldErrorPrimitive } from "react-aria-components/FieldError";
-import { Text as TextPrimitive } from "react-aria-components/Text";
 
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 
-export type FieldOrientation = "vertical" | "horizontal" | "responsive";
-
-export const fieldLabelStyles = cn(
+const fieldLabelStyles = cn(
   "w-fit text-sm font-medium",
   "group-data-[required=true]/field:after:ml-1 group-data-[required=true]/field:after:text-destructive group-data-[required=true]/field:after:content-['*'] forced-colors:group-data-[required=true]/field:after:text-[Mark]",
 );
-export const fieldTitleStyles = cn(fieldLabelStyles, "flex items-center");
-export const fieldDescriptionStyles = cn("text-sm leading-normal text-muted-foreground");
-export const fieldErrorStyles = cn("text-sm font-medium text-destructive forced-colors:text-[Mark]");
-export const fieldStyles = () => cn("flex min-h-9 w-full min-w-0 items-center rounded-lg border border-input bg-background px-3 text-sm shadow-sm outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive");
+const fieldTitleStyles = cn(fieldLabelStyles, "flex items-center");
+const fieldDescriptionStyles = cn("text-sm leading-normal text-muted-foreground");
+const fieldErrorStyles = cn("text-sm font-medium text-destructive forced-colors:text-[Mark]");
 
 export function FieldSet(props: React.ComponentProps<"fieldset">) {
   const { className, ...rest } = props;
@@ -50,32 +45,20 @@ export function FieldGroup({ className, ...props }: React.ComponentProps<"div">)
 export function Field({
   className,
   orientation = "vertical",
-  invalid,
-  disabled,
-  required,
   ...props
-}: React.ComponentProps<"div"> & {
-  orientation?: FieldOrientation;
-  invalid?: boolean;
-  disabled?: boolean;
-  required?: boolean;
-}) {
+}: React.ComponentProps<"div"> & { orientation?: "vertical" | "horizontal" | "responsive" }) {
   return (
     <div
       role="group"
       data-slot="field"
       data-orientation={orientation}
-      data-invalid={invalid || undefined}
-      data-disabled={disabled || undefined}
-      data-required={required || undefined}
       className={cn(
         "group/field flex min-w-0 gap-1.5",
         orientation === "vertical" && "w-full flex-col",
         orientation === "horizontal" && "w-full flex-row items-center gap-4",
         orientation === "responsive" &&
           "w-full flex-col @md/field-group:flex-row @md/field-group:items-center @md/field-group:gap-4",
-        invalid && "text-destructive",
-        disabled && "opacity-60",
+        "data-[invalid=true]:text-destructive",
         className,
       )}
       {...props}
@@ -99,8 +82,7 @@ export function FieldTitle({ className, ...props }: React.ComponentProps<"div">)
 
 export function FieldDescription({ className, ...props }: React.ComponentProps<"p">) {
   return (
-    <TextPrimitive
-      slot="description"
+    <p
       data-slot="field-description"
       className={cn(fieldDescriptionStyles, className)}
       {...props}
@@ -134,7 +116,7 @@ export function FieldError({
     ].map((message) => message);
   if (!content || (Array.isArray(content) && content.length === 0)) return null;
   return (
-    <FieldErrorPrimitive
+    <div
       role="alert"
       data-slot="field-error"
       className={cn(fieldErrorStyles, className)}
@@ -149,6 +131,6 @@ export function FieldError({
       ) : (
         content
       )}
-    </FieldErrorPrimitive>
+    </div>
   );
 }

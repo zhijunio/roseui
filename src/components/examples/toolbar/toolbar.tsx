@@ -17,9 +17,9 @@ import {
 } from "lucide-react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
+import { ButtonGroup, ButtonGroupItem, ButtonGroupSeparator } from "@/components/roseui/button-group";
+import { Toolbar } from "@/components/roseui/toolbar";
 import { Button } from "@/components/ui/button";
-import { ButtonGroup, ButtonGroupItem, ButtonGroupSeparator } from "@/components/ui/button-group";
-import { Toolbar } from "@/components/ui/toolbar";
 
 function FormatActions() {
   return (
@@ -102,7 +102,7 @@ export function ToolbarExamples() {
               variant="ghost"
               size="sm"
               aria-label="Refresh report"
-              onPress={() => setReportStatus("Report refreshed.")}
+              onClick={() => setReportStatus("Report refreshed.")}
             >
               <IconRefresh aria-hidden="true" />
               <span>Refresh</span>
@@ -111,7 +111,7 @@ export function ToolbarExamples() {
               variant="ghost"
               size="sm"
               aria-label="Download report"
-              onPress={() => setReportStatus("Report download started.")}
+              onClick={() => setReportStatus("Report download started.")}
             >
               <IconDownload aria-hidden="true" />
               <span>Download</span>
@@ -120,7 +120,7 @@ export function ToolbarExamples() {
               variant="ghost"
               size="sm"
               aria-label="Open report settings"
-              onPress={() => setReportStatus("Report settings opened.")}
+              onClick={() => setReportStatus("Report settings opened.")}
             >
               <IconSettings aria-hidden="true" />
               <span>Settings</span>

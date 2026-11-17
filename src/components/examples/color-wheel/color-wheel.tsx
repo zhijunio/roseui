@@ -2,10 +2,9 @@
 
 import { useState } from "react";
 
-import { type ColorFormat, parseColor } from "react-aria-components";
-
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { ColorWheel } from "@/components/ui/color-wheel";
+import { ColorWheel } from "@/components/roseui/color-wheel";
+import { type ColorFormat, parseColor } from "@/lib/color";
 
 const formats: ColorFormat[] = ["hex", "rgb", "hsl", "hsb"];
 
@@ -35,7 +34,7 @@ export function ColorWheelExamples() {
         </div>
       </ComponentPreview>
       <ComponentPreview title="Disabled">
-        <ColorWheel aria-label="Disabled color selector" isDisabled />
+        <ColorWheel aria-label="Disabled color selector" disabled />
       </ComponentPreview>
     </>
   );

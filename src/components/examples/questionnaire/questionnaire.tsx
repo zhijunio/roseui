@@ -3,8 +3,12 @@
 import * as React from "react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
+import {
+  Questionnaire,
+  type QuestionnaireAnswers,
+  type QuestionnaireQuestion,
+} from "@/components/roseui/questionnaire";
 import { Badge } from "@/components/ui/badge";
-import { Questionnaire, type QuestionnaireAnswers, type QuestionnaireQuestion } from "@/components/ui/questionnaire";
 
 const usageOptions = [
   {

@@ -10,8 +10,8 @@ import {
 } from "lucide-react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
+import { RadioButton, RadioField, RadioGroup } from "@/components/roseui/radio-group";
 import { FieldError } from "@/components/ui/field";
-import { RadioButton, RadioField, RadioGroup } from "@/components/ui/radio-group";
 
 export function RadioExamples() {
   const [delivery, setDelivery] = useState("email");
@@ -92,7 +92,7 @@ export function RadioExamples() {
           <RadioGroup
             aria-labelledby="export-label"
             aria-describedby={exportFormatInvalid ? "export-error" : undefined}
-            isInvalid={exportFormatInvalid}
+            invalid={exportFormatInvalid}
             required
             value={exportFormat}
             onValueChange={setExportFormat}

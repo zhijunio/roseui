@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { SwipeActions } from "@/components/ui/swipe-actions";
+import { SwipeActions } from "@/components/roseui/swipe-actions";
 
 function InboxExample() {
   const [status, setStatus] = React.useState("Swipe a row or use its actions button.");

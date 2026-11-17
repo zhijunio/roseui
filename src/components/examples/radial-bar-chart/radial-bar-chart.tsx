@@ -4,8 +4,8 @@ import { PolarAngleAxis, RadialBar, RadialBarChart } from "recharts";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
 import { ChartExample } from "@/components/examples/chart/chart-example";
-import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-import { RadialBarChart as ConfigRadialBarChart } from "@/components/ui/radial-bar-chart";
+import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/roseui/chart";
+import { RadialBarChart as ConfigRadialBarChart } from "@/components/roseui/radial-bar-chart";
 
 const chartClass = "!aspect-auto h-[260px] w-full sm:h-[360px]";
 

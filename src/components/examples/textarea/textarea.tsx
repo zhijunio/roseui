@@ -4,9 +4,9 @@ import { type FormEvent, useState } from "react";
 import { Lightbulb as IconBulb, Pencil as IconPencil } from "lucide-react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
+import { TextArea } from "@/components/roseui/text-area";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { TextArea } from "@/components/ui/text-area";
 
 export function TextareaExamples() {
   const [reply, setReply] = useState("");
@@ -219,7 +219,7 @@ export function TextareaExamples() {
             <p id="textarea-reply-hint" className="text-xs text-muted-foreground">
               Up to 500 characters.
             </p>
-            <Button type="submit" size="sm" isDisabled={!reply.trim()}>
+            <Button type="submit" size="sm" disabled={!reply.trim()}>
               Post reply
             </Button>
           </div>

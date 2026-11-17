@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { LabeledRadio, LabeledRadioGroup } from "@/components/ui/labeled-radio";
+import { LabeledRadio, LabeledRadioGroup } from "@/components/roseui/labeled-radio";
 
 export function LabeledRadioExamples() {
   const [value, setValue] = useState("standard");
@@ -25,7 +25,7 @@ export function LabeledRadioExamples() {
       <ComponentPreview title="Disabled and validation states" layout="panel">
         <LabeledRadioGroup aria-label="Plan" defaultValue="basic" className="w-full max-w-md">
           <LabeledRadio value="basic" label="Basic" description="Included with your account." />
-          <LabeledRadio value="pro" label="Pro" description="Requires an administrator." isDisabled />
+          <LabeledRadio value="pro" label="Pro" description="Requires an administrator." disabled />
           <LabeledRadio
             value="required"
             label="Required choice"

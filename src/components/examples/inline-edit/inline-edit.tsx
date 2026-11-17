@@ -3,7 +3,7 @@
 import * as React from "react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { InlineEdit } from "@/components/ui/inline-edit";
+import { InlineEdit } from "@/components/roseui/inline-edit";
 
 function InlineEditExamplesContent() {
   const [workspaceName, setWorkspaceName] = React.useState("Operations Hub");

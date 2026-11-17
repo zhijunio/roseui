@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
+import { Spinner } from "@/components/roseui/spinner";
 import {
   Attachment,
   AttachmentAction,
@@ -29,13 +30,13 @@ import {
   AttachmentDescription,
   AttachmentGroup,
   AttachmentMedia,
-  type AttachmentState,
   AttachmentTitle,
   AttachmentTrigger,
 } from "@/components/ui/attachment";
 import { buttonVariants } from "@/components/ui/button";
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupTextarea } from "@/components/ui/input-group";
-import { Spinner } from "@/components/ui/spinner";
+
+type AttachmentState = "idle" | "uploading" | "processing" | "error" | "done";
 
 const filePool = [
   { id: "report", name: "Quarterly summary.pdf", type: "PDF", size: "1.9 MB", icon: IconFileText },
@@ -165,7 +166,7 @@ export function ComposerTrayExample() {
                         <AttachmentAction
                           type="button"
                           aria-label={`Remove ${file.name}`}
-                          onPress={() => setAttachedIds((current) => current.filter((value) => value !== file.id))}
+                          onClick={() => setAttachedIds((current) => current.filter((value) => value !== file.id))}
                         >
                           <IconX />
                         </AttachmentAction>
@@ -186,8 +187,8 @@ export function ComposerTrayExample() {
               type="button"
               size="icon-sm"
               aria-label="Attach a file"
-              isDisabled={!next}
-              onPress={() => next && setAttachedIds((current) => [...current, next.id])}
+              disabled={!next}
+              onClick={() => next && setAttachedIds((current) => [...current, next.id])}
             >
               <IconPaperclip />
             </InputGroupButton>
@@ -336,7 +337,7 @@ export function UploadQueueExample() {
               <AttachmentAction
                 type="button"
                 aria-label={`Retry ${row.name}`}
-                onPress={() =>
+                onClick={() =>
                   setRows((current) =>
                     current.map((item) =>
                       item.id === row.id ? { ...item, state: "done", note: "Uploaded", detail: "640 KB" } : item,
@@ -352,7 +353,7 @@ export function UploadQueueExample() {
               aria-label={
                 row.state === "uploading" || row.state === "processing" ? `Cancel ${row.name}` : `Remove ${row.name}`
               }
-              onPress={() => setRows((current) => current.filter((item) => item.id !== row.id))}
+              onClick={() => setRows((current) => current.filter((item) => item.id !== row.id))}
             >
               <IconX />
             </AttachmentAction>
@@ -439,7 +440,7 @@ export function FilePickerExample() {
                 <AttachmentAction
                   type="button"
                   aria-label={`Remove ${file.name}`}
-                  onPress={() => setFiles((current) => current.filter((item) => item !== file))}
+                  onClick={() => setFiles((current) => current.filter((item) => item !== file))}
                 >
                   <IconX />
                 </AttachmentAction>

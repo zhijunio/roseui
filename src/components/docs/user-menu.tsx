@@ -7,10 +7,9 @@ import { useRouter } from "next/navigation";
 import { CreditCard, LogOut, type LucideIcon, MessageSquareDot, Moon, Sun, UserCircle } from "lucide-react";
 import { useTheme } from "next-themes";
 
+import { Menu, MenuHeader, MenuItem, MenuSection, MenuSeparator, MenuTrigger } from "@/components/roseui/menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Menu, MenuHeader, MenuItem, MenuSection, MenuSeparator, MenuTrigger } from "@/components/ui/menu";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Spinner } from "@/components/ui/spinner";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 
@@ -66,24 +65,13 @@ export function UserMenu({
   const isMobile = useIsMobile();
   const { resolvedTheme, setTheme } = useTheme();
   const [open, setOpen] = React.useState(false);
-  const [signingOut, setSigningOut] = React.useState(false);
-  const [signOutFailed, setSignOutFailed] = React.useState(false);
   const nextTheme = resolvedTheme === "dark" ? "light" : "dark";
   const themeLabel = nextTheme === "dark" ? "Switch to dark theme" : "Switch to light theme";
   const ThemeIcon = nextTheme === "dark" ? Moon : Sun;
 
-  const handleSignOut = async () => {
-    setSigningOut(true);
-    setSignOutFailed(false);
-
-    try {
-      router.push("/docs/components/navigation/accordion");
-      setOpen(false);
-    } catch {
-      setSignOutFailed(true);
-    } finally {
-      setSigningOut(false);
-    }
+  const handleSignOut = () => {
+    setOpen(false);
+    router.push("/pre-blocks/auth/sign-in");
   };
 
   const identity = (
@@ -132,47 +120,32 @@ export function UserMenu({
         {content}
       </button>
     ) : (
-      <MenuItem onAction={() => setTheme(nextTheme)}>{content}</MenuItem>
+      <MenuItem onSelect={() => setTheme(nextTheme)}>{content}</MenuItem>
     );
   };
 
   const signOutAction = (mobile: boolean) => {
     const content = (
       <>
-        {signingOut ? <Spinner className="size-4" /> : <LogOut className="size-4" />}
-        <span>{signingOut ? "Signing out..." : "Sign out"}</span>
+        <LogOut className="size-4" />
+        <span>Sign out</span>
       </>
     );
 
     return mobile ? (
       <button
         type="button"
-        className="text-destructive hover:bg-destructive/10 focus-visible:ring-ring flex min-h-11 w-full items-center gap-3 rounded-md px-3 text-left text-sm outline-none focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50"
-        onClick={() => void handleSignOut()}
-        disabled={signingOut}
-        aria-busy={signingOut}
+        className="text-destructive hover:bg-destructive/10 focus-visible:ring-ring flex min-h-11 w-full items-center gap-3 rounded-md px-3 text-left text-sm outline-none focus-visible:ring-2"
+        onClick={handleSignOut}
       >
         {content}
       </button>
     ) : (
-      <MenuItem
-        intent="danger"
-        onAction={() => {
-          void handleSignOut();
-        }}
-        isDisabled={signingOut}
-        aria-busy={signingOut}
-      >
+      <MenuItem intent="danger" onSelect={handleSignOut}>
         {content}
       </MenuItem>
     );
   };
-
-  const failureMessage = signOutFailed ? (
-    <p role="status" className="text-destructive px-3 py-2 text-xs">
-      Could not sign out. Try again.
-    </p>
-  ) : null;
 
   if (isMobile) {
     return (
@@ -186,7 +159,6 @@ export function UserMenu({
           <div className="grid gap-1 py-3">{accountMenu(true)}</div>
           <div className="grid gap-1 border-t pt-3">
             {themeAction(true)}
-            {failureMessage}
             {signOutAction(true)}
           </div>
         </SheetContent>
@@ -195,19 +167,14 @@ export function UserMenu({
   }
 
   return (
-    <MenuTrigger isOpen={open} onOpenChange={setOpen}>
+    <MenuTrigger open={open} onOpenChange={setOpen}>
       {children}
-      <Menu
-        className={cn("min-w-56 rounded-lg", contentClassName)}
-        placement={`${side} end` as React.ComponentProps<typeof Menu>["placement"]}
-        popover={{ offset: 4 }}
-      >
+      <Menu className={cn("min-w-56 rounded-lg", contentClassName)} side={side} align="end" sideOffset={4}>
         <MenuHeader className="p-0 font-normal">{identity}</MenuHeader>
         <MenuSeparator />
         <MenuSection>{accountMenu(false)}</MenuSection>
         <MenuSeparator />
         {themeAction(false)}
-        {failureMessage}
         {signOutAction(false)}
       </Menu>
     </MenuTrigger>

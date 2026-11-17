@@ -6,9 +6,9 @@ import { Time } from "@internationalized/date";
 import { Clock as IconClock, Info as IconInfoCircle } from "lucide-react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
+import { TimeField } from "@/components/roseui/time-field";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { TimeField } from "@/components/ui/time-field";
 
 export function TimeFieldExamples() {
   const [time, setTime] = useState<Time | null>(new Time(9, 30));
@@ -44,20 +44,20 @@ export function TimeFieldExamples() {
       </ComponentPreview>
 
       <ComponentPreview title="Description and Required" layout="field">
-        <TimeField label="Start time" isRequired defaultValue={new Time(9)} description="This field is required." />
+        <TimeField label="Start time" required defaultValue={new Time(9)} description="This field is required." />
       </ComponentPreview>
 
       <ComponentPreview title="Disabled and Read-only" layout="field">
         <div className="grid w-full gap-3">
           <TimeField
             label="Disabled time"
-            isDisabled
+            disabled
             defaultValue={new Time(9, 30)}
             description="This time field is disabled."
           />
           <TimeField
             label="Published time"
-            isReadOnly
+            readOnly
             defaultValue={new Time(16, 45)}
             description="This time cannot be changed."
           />
@@ -71,7 +71,7 @@ export function TimeFieldExamples() {
       <ComponentPreview title="Invalid" layout="field">
         <TimeField
           label="Start time"
-          isInvalid
+          invalid
           errorMessage="Choose a time within the available hours."
           minValue={new Time(8)}
           maxValue={new Time(18)}
@@ -82,10 +82,10 @@ export function TimeFieldExamples() {
         <div className="grid w-full gap-3">
           <TimeField label="Time" value={time} onChange={setTime} minValue={new Time(8)} maxValue={new Time(18)} />
           <div className="flex flex-wrap gap-2">
-            <Button type="button" variant="outline" size="sm" onPress={() => setTime(new Time(12))}>
+            <Button type="button" variant="outline" size="sm" onClick={() => setTime(new Time(12))}>
               Set noon
             </Button>
-            <Button type="button" variant="outline" size="sm" onPress={() => setTime(null)}>
+            <Button type="button" variant="outline" size="sm" onClick={() => setTime(null)}>
               Clear
             </Button>
           </div>
@@ -114,7 +114,7 @@ export function TimeFieldExamples() {
           <TimeField
             label="Appointment time"
             name="appointment-time"
-            isRequired
+            required
             minValue={new Time(8)}
             maxValue={new Time(18)}
             description="Choose a time between 08:00 and 18:00."

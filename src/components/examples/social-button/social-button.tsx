@@ -5,8 +5,8 @@ import { useState } from "react";
 import { Building as IconBuilding } from "lucide-react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { SocialButton } from "@/components/ui/social-button";
-import { SOCIAL_PROVIDERS, type SocialProvider } from "@/components/ui/social-providers";
+import { SocialButton } from "@/components/roseui/social-button";
+import { SOCIAL_PROVIDERS, type SocialProvider } from "@/components/roseui/social-providers";
 
 const providers = Object.keys(SOCIAL_PROVIDERS) as SocialProvider[];
 

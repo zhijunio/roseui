@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { FileTrigger, type FileTriggerProps } from "@/components/ui/file-trigger";
+import { FileTrigger, type FileTriggerProps } from "@/components/roseui/file-trigger";
 
 type FileExampleProps = {
   triggerLabel: string;
@@ -11,7 +11,7 @@ type FileExampleProps = {
   allowsMultiple?: boolean;
   acceptDirectory?: boolean;
   acceptedFileTypes?: readonly string[];
-  isDisabled?: boolean;
+  disabled?: boolean;
   variant?: FileTriggerProps["variant"];
 };
 
@@ -27,7 +27,7 @@ function FileExample({
   allowsMultiple,
   acceptDirectory,
   acceptedFileTypes,
-  isDisabled,
+  disabled,
   variant,
 }: FileExampleProps) {
   const [files, setFiles] = useState<File[]>([]);
@@ -38,7 +38,7 @@ function FileExample({
         allowsMultiple={allowsMultiple}
         acceptDirectory={acceptDirectory}
         acceptedFileTypes={acceptedFileTypes}
-        isDisabled={isDisabled}
+        disabled={disabled}
         variant={variant}
         onSelect={(selectedFiles) => setFiles(selectedFiles ? Array.from(selectedFiles) : [])}
       >
@@ -46,7 +46,7 @@ function FileExample({
       </FileTrigger>
       <div aria-live="polite" className="bg-muted/30 rounded-lg border p-3 text-sm">
         {files.length === 0 ? (
-          <p className="text-muted-foreground">{isDisabled ? "File selection is unavailable." : emptyLabel}</p>
+          <p className="text-muted-foreground">{disabled ? "File selection is unavailable." : emptyLabel}</p>
         ) : (
           <ul className="grid gap-2">
             {files.map((file) => (
@@ -91,7 +91,7 @@ export function FileTriggerExamples() {
         <FileExample triggerLabel="Choose a folder" acceptDirectory />
       </ComponentPreview>
       <ComponentPreview title="Disabled">
-        <FileExample triggerLabel="Upload unavailable" isDisabled />
+        <FileExample triggerLabel="Upload unavailable" disabled />
       </ComponentPreview>
     </>
   );

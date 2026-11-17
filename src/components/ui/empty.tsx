@@ -10,8 +10,8 @@ function EmptyHeader({ className, ...props }: ComponentProps<"div">) {
 function EmptyMedia({ className, variant = "default", ...props }: ComponentProps<"div"> & { variant?: "default" | "icon" }) {
   return <div data-slot="empty-media" data-variant={variant} className={cn("flex shrink-0 items-center justify-center", variant === "icon" && "mb-1 size-14 rounded-full bg-primary/10 text-primary [&_svg]:size-7", className)} {...props} />
 }
-function EmptyTitle({ className, ...props }: ComponentProps<"h3">) {
-  return <h3 data-slot="empty-title" className={cn("text-base font-semibold tracking-tight", className)} {...props} />
+function EmptyTitle({ className, ...props }: ComponentProps<"div">) {
+  return <div data-slot="empty-title" className={cn("text-base font-semibold tracking-tight", className)} {...props} />
 }
 function EmptyDescription({ className, ...props }: ComponentProps<"p">) {
   return <p data-slot="empty-description" className={cn("text-sm leading-relaxed text-muted-foreground [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary", className)} {...props} />

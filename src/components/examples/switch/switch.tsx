@@ -5,10 +5,10 @@ import { useState } from "react";
 import { Moon as IconMoon, Sun as IconSun } from "lucide-react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
+import { LabeledSwitch } from "@/components/roseui/labeled-switch";
+import { Switch, SwitchButton, SwitchField } from "@/components/roseui/switch";
 import { Button } from "@/components/ui/button";
 import { FieldLegend, FieldSet } from "@/components/ui/field";
-import { LabeledSwitch } from "@/components/ui/labeled-switch";
-import { Switch, SwitchButton, SwitchField } from "@/components/ui/switch";
 
 function IconStateSwitch() {
   const [darkMode, setDarkMode] = useState(false);
@@ -42,7 +42,7 @@ export function SwitchExamples() {
           <SwitchField id="notifications-off">
             <SwitchButton className="flex-row-reverse items-center gap-3 text-sm">Notifications off</SwitchButton>
           </SwitchField>
-          <SwitchField id="notifications-on" defaultSelected>
+          <SwitchField id="notifications-on" defaultChecked>
             <SwitchButton className="flex-row-reverse items-center gap-3 text-sm">Notifications on</SwitchButton>
           </SwitchField>
         </div>
@@ -50,15 +50,15 @@ export function SwitchExamples() {
 
       <ComponentPreview title="Size">
         <div className="flex flex-wrap items-center gap-6">
-          <SwitchField id="compact-switch" defaultSelected>
+          <SwitchField id="compact-switch" defaultChecked>
             <SwitchButton size="sm" className="flex-row-reverse items-center gap-3 text-sm">
               Compact
             </SwitchButton>
           </SwitchField>
-          <SwitchField id="default-switch" defaultSelected>
+          <SwitchField id="default-switch" defaultChecked>
             <SwitchButton className="flex-row-reverse items-center gap-3 text-sm">Default</SwitchButton>
           </SwitchField>
-          <SwitchField id="large-switch" defaultSelected>
+          <SwitchField id="large-switch" defaultChecked>
             <SwitchButton size="lg" className="flex-row-reverse items-center gap-3 text-sm">
               Large
             </SwitchButton>

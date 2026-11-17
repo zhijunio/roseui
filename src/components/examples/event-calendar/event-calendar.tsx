@@ -3,6 +3,14 @@
 import { useState } from "react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
+import {
+  type CalendarEvent,
+  type CalendarResource,
+  type CalendarView,
+  EventCalendar,
+} from "@/components/roseui/event-calendar";
+import { SwitchButton, SwitchField } from "@/components/roseui/switch";
+import { TextArea } from "@/components/roseui/text-area";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -12,16 +20,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import {
-  type CalendarEvent,
-  type CalendarResource,
-  type CalendarView,
-  EventCalendar,
-} from "@/components/ui/event-calendar";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { SwitchButton, SwitchField } from "@/components/ui/switch";
-import { TextArea } from "@/components/ui/text-area";
 
 const today = new Date();
 const at = (dayOffset: number, hour: number) => {
@@ -181,7 +181,7 @@ export function EventCalendarExamples() {
 
       <ComponentPreview title="Agenda and Dialog" layout="panel">
         <div className="grid w-full gap-3">
-          <Button className="w-fit" onPress={() => editEvent(null)}>
+          <Button className="w-fit" onClick={() => editEvent(null)}>
             Create event
           </Button>
           <EventCalendar events={events} view="agenda" onEventSelect={editEvent} />
@@ -210,10 +210,10 @@ export function EventCalendarExamples() {
                 </Label>
               </div>
               <DialogFooter>
-                <Button variant="outline" onPress={() => setDialogOpen(false)}>
+                <Button variant="outline" onClick={() => setDialogOpen(false)}>
                   Cancel
                 </Button>
-                <Button onPress={saveEvent}>Save event</Button>
+                <Button onClick={saveEvent}>Save event</Button>
               </DialogFooter>
             </DialogContent>
           </Dialog>

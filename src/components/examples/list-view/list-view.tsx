@@ -13,7 +13,6 @@ import {
   Trash as IconTrash,
   X as IconX,
 } from "lucide-react";
-import type { Key, Selection } from "react-aria-components";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
 import {
@@ -23,9 +22,8 @@ import {
   ActionBarPrefix,
   ActionBarSeparator,
   ActionBarSuffix,
-} from "@/components/ui/action-bar";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+} from "@/components/roseui/action-bar";
+import type { Selection } from "@/components/roseui/list-box";
 import {
   ListView,
   ListViewDescription,
@@ -33,7 +31,9 @@ import {
   ListViewItemAction,
   ListViewItemContent,
   ListViewTitle,
-} from "@/components/ui/list-view";
+} from "@/components/roseui/list-view";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 type FileItem = { id: string; name: string; detail: string; kind: "folder" | "file" };
 
@@ -81,7 +81,7 @@ function FileRows({
                 variant="ghost"
                 size="icon-sm"
                 aria-label={`More actions for ${item.name}`}
-                onPress={() => onAction?.(item.name)}
+                onClick={() => onAction?.(item.name)}
               >
                 <IconDots aria-hidden="true" />
               </Button>
@@ -94,7 +94,7 @@ function FileRows({
 }
 
 function MultiSelectExample() {
-  const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set<Key>());
+  const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set<string | number>());
   const [visibleFiles, setVisibleFiles] = useState(files);
   const listRef = useRef<HTMLDivElement>(null);
   const actionBarWasOpen = useRef(false);
@@ -129,13 +129,13 @@ function MultiSelectExample() {
       <output aria-live="polite" className="block min-h-5 text-xs text-muted-foreground">
         {selectedCount ? `${selectedCount} selected: ${selectedNames.join(", ")}` : "No files selected"}
       </output>
-      <ActionBar aria-label="Selected file actions" isOpen={selectedCount > 0}>
+      <ActionBar aria-label="Selected file actions" open={selectedCount > 0}>
         <ActionBarPrefix>
           <Badge variant="secondary">{selectedCount} selected</Badge>
         </ActionBarPrefix>
         <ActionBarSeparator />
         <ActionBarContent>
-          <Button size="sm" variant="ghost" onPress={deleteSelected}>
+          <Button size="sm" variant="ghost" onClick={deleteSelected}>
             <IconTrash aria-hidden="true" />
             <ActionBarLabel>Delete</ActionBarLabel>
           </Button>
@@ -145,7 +145,7 @@ function MultiSelectExample() {
             size="icon-sm"
             variant="ghost"
             aria-label="Clear selection"
-            onPress={() => setSelectedKeys(new Set())}
+            onClick={() => setSelectedKeys(new Set())}
           >
             <IconX aria-hidden="true" />
           </Button>

@@ -11,8 +11,8 @@ import {
   ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart";
-import { RadarChart as ConfigRadarChart } from "@/components/ui/radar-chart";
+} from "@/components/roseui/chart";
+import { RadarChart as ConfigRadarChart } from "@/components/roseui/radar-chart";
 
 const chartClass = "!aspect-auto h-[260px] w-full sm:h-[360px]";
 

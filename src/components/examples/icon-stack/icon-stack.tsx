@@ -9,8 +9,8 @@ import {
 } from "lucide-react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
+import { IconStack } from "@/components/roseui/icon-stack";
 import { Button } from "@/components/ui/button";
-import { IconStack } from "@/components/ui/icon-stack";
 
 const sizes = [
   { label: "Small", className: "h-12 w-11", iconClassName: "size-3" },

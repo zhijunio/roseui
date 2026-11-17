@@ -3,7 +3,7 @@
 import * as React from "react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { InputMoney } from "@/components/ui/input-money";
+import { InputMoney } from "@/components/roseui/input-money";
 
 function InputMoneyExamplesContent() {
   const [amount, setAmount] = React.useState<number | null>(6499);

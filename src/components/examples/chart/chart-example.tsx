@@ -26,8 +26,7 @@ import {
   YAxis,
 } from "recharts";
 
-import { AreaChart as ConfigAreaChart } from "@/components/ui/area-chart";
-import { Button } from "@/components/ui/button";
+import { AreaChart as ConfigAreaChart } from "@/components/roseui/area-chart";
 import {
   type ChartConfig,
   ChartContainer,
@@ -35,7 +34,8 @@ import {
   ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart";
+} from "@/components/roseui/chart";
+import { Button } from "@/components/ui/button";
 
 const chartClass = "h-[360px] w-full !aspect-auto";
 
@@ -372,7 +372,7 @@ export function ChartExample({ variant }: { variant: ChartExampleVariant }) {
                 size="sm"
                 variant={active === index ? "default" : "outline"}
                 aria-pressed={active === index}
-                onPress={() => setActive(index)}
+                onClick={() => setActive(index)}
               >
                 {config[item.name].label}
               </Button>

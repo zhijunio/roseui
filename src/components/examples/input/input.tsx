@@ -5,11 +5,11 @@ import { useId, useState } from "react";
 import { Eye as IconEye, EyeOff as IconEyeOff, Info as IconInfoCircle, Link as IconLink } from "lucide-react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
+import { InputPhone } from "@/components/roseui/input-phone";
+import { Label } from "@/components/roseui/label";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { InputPhone } from "@/components/ui/input-phone";
-import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
 
 export function InputExamples() {
@@ -114,7 +114,7 @@ export function InputReferenceExamples() {
           {preview(
             13,
             <div className="grid w-full max-w-sm gap-2">
-              <Label htmlFor={`${id}-required`} isRequired>
+              <Label htmlFor={`${id}-required`} required>
                 {"Full name"}
               </Label>
               <Input id={`${id}-required`} required aria-required="true" placeholder={"Enter your name"} />
@@ -158,7 +158,7 @@ export function InputReferenceExamples() {
                 variant="ghost"
                 size="icon"
                 aria-label={"Toggle password visibility"}
-                onPress={() => setVisible(!visible)}
+                onClick={() => setVisible(!visible)}
                 className="absolute right-1 top-1/2 size-7 -translate-y-1/2"
               >
                 {visible ? <IconEyeOff /> : <IconEye />}
@@ -259,7 +259,7 @@ export function InputReferenceExamples() {
                   variant="outline"
                   size="icon"
                   aria-label={"Toggle password visibility"}
-                  onPress={() => setVisible(!visible)}
+                  onClick={() => setVisible(!visible)}
                 >
                   {visible ? <IconEyeOff /> : <IconEye />}
                 </Button>

@@ -10,18 +10,34 @@ import {
   Settings as IconSettings,
   Users as IconUsers,
 } from "lucide-react";
-import type { Selection } from "react-aria-components";
-import { ListBox } from "react-aria-components/ListBox";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
+import { DropdownDescription, DropdownItem, DropdownLabel, DropdownSection } from "@/components/roseui/dropdown";
+import { ListBox } from "@/components/roseui/list-box";
+import {
+  Menu,
+  MenuCheckboxItem,
+  MenuHeader,
+  MenuItem,
+  MenuRadioGroup,
+  MenuRadioItem,
+  MenuSeparator,
+  MenuSubMenu,
+  MenuTrigger,
+} from "@/components/roseui/menu";
 import { Button } from "@/components/ui/button";
-import { DropdownDescription, DropdownItem, DropdownLabel, DropdownSection } from "@/components/ui/dropdown";
-import { Menu, MenuHeader, MenuItem, MenuSeparator, MenuSubMenu, MenuTrigger } from "@/components/ui/menu";
 
 export function DropdownExamples() {
-  const [visibleColumns, setVisibleColumns] = useState<Selection>(new Set(["owners", "status"]));
-  const [theme, setTheme] = useState<Selection>(new Set(["system"]));
-  const selectedTheme = Array.from(theme)[0] ?? "system";
+  const [visibleColumns, setVisibleColumns] = useState(() => new Set(["owners", "status"]));
+  const [theme, setTheme] = useState("system");
+  const updateColumn = (column: string, checked: boolean) => {
+    setVisibleColumns((current) => {
+      const next = new Set(current);
+      if (checked) next.add(column);
+      else next.delete(column);
+      return next;
+    });
+  };
 
   return (
     <div className="grid gap-5 xl:grid-cols-2">
@@ -55,7 +71,7 @@ export function DropdownExamples() {
               <DropdownLabel>Billing</DropdownLabel>
               <DropdownDescription>Review plans and invoices</DropdownDescription>
             </DropdownItem>
-            <DropdownItem id="archive" textValue="Archive" isDisabled>
+            <DropdownItem id="archive" textValue="Archive" disabled>
               <IconArchive aria-hidden="true" />
               <DropdownLabel>Archive unavailable</DropdownLabel>
               <DropdownDescription>Ask an owner to enable this action</DropdownDescription>
@@ -70,37 +86,42 @@ export function DropdownExamples() {
             <Button variant="outline">
               Visible columns <IconChevronDown aria-hidden="true" className="size-4" />
             </Button>
-            <Menu
-              aria-label="Visible columns"
-              className="min-w-48"
-              selectionMode="multiple"
-              selectedKeys={visibleColumns}
-              onSelectionChange={setVisibleColumns}
-            >
+            <Menu aria-label="Visible columns" className="min-w-48">
               <MenuHeader>Show columns</MenuHeader>
               <MenuSeparator />
-              <MenuItem id="owners">Owners</MenuItem>
-              <MenuItem id="status">Status</MenuItem>
-              <MenuItem id="updated">Last updated</MenuItem>
+              <MenuCheckboxItem
+                checked={visibleColumns.has("owners")}
+                onCheckedChange={(checked) => updateColumn("owners", checked)}
+              >
+                Owners
+              </MenuCheckboxItem>
+              <MenuCheckboxItem
+                checked={visibleColumns.has("status")}
+                onCheckedChange={(checked) => updateColumn("status", checked)}
+              >
+                Status
+              </MenuCheckboxItem>
+              <MenuCheckboxItem
+                checked={visibleColumns.has("updated")}
+                onCheckedChange={(checked) => updateColumn("updated", checked)}
+              >
+                Last updated
+              </MenuCheckboxItem>
             </Menu>
           </MenuTrigger>
 
           <MenuTrigger>
             <Button variant="outline">
-              Theme: {selectedTheme} <IconChevronDown aria-hidden="true" className="size-4" />
+              Theme: {theme} <IconChevronDown aria-hidden="true" className="size-4" />
             </Button>
-            <Menu
-              aria-label="Theme"
-              className="min-w-48"
-              selectionMode="single"
-              selectedKeys={theme}
-              onSelectionChange={setTheme}
-            >
+            <Menu aria-label="Theme" className="min-w-48">
               <MenuHeader>Appearance</MenuHeader>
               <MenuSeparator />
-              <MenuItem id="light">Light</MenuItem>
-              <MenuItem id="dark">Dark</MenuItem>
-              <MenuItem id="system">System</MenuItem>
+              <MenuRadioGroup value={theme} onValueChange={setTheme}>
+                <MenuRadioItem value="light">Light</MenuRadioItem>
+                <MenuRadioItem value="dark">Dark</MenuRadioItem>
+                <MenuRadioItem value="system">System</MenuRadioItem>
+              </MenuRadioGroup>
             </Menu>
           </MenuTrigger>
         </div>
@@ -112,16 +133,16 @@ export function DropdownExamples() {
             Project options <IconChevronDown aria-hidden="true" className="size-4" />
           </Button>
           <Menu aria-label="Project options" className="min-w-52">
-            <MenuItem onAction={() => undefined}>Open project</MenuItem>
+            <MenuItem onSelect={() => undefined}>Open project</MenuItem>
             <MenuSubMenu>
               <MenuItem>Export project</MenuItem>
               <Menu aria-label="Export project">
-                <MenuItem onAction={() => undefined}>Download CSV</MenuItem>
-                <MenuItem onAction={() => undefined}>Download PDF</MenuItem>
+                <MenuItem onSelect={() => undefined}>Download CSV</MenuItem>
+                <MenuItem onSelect={() => undefined}>Download PDF</MenuItem>
               </Menu>
             </MenuSubMenu>
             <MenuSeparator />
-            <MenuItem isDisabled>Archive unavailable</MenuItem>
+            <MenuItem disabled>Archive unavailable</MenuItem>
           </Menu>
         </MenuTrigger>
       </ComponentPreview>

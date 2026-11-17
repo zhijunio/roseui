@@ -10,16 +10,16 @@ import {
 } from "lucide-react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { Button } from "@/components/ui/button";
 import {
   type EmojiOption,
   EmojiPicker,
   EmojiPickerPanel,
   EmojiShortcodeSuggestions,
   emojiOptions,
-} from "@/components/ui/emoji-picker";
+} from "@/components/roseui/emoji-picker";
+import { TextArea } from "@/components/roseui/text-area";
+import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { TextArea } from "@/components/ui/text-area";
 
 const teamEmojis: EmojiOption[] = [
   {
@@ -97,7 +97,7 @@ export function EmojiPickerExamples() {
               className="min-w-0 flex-1 resize-none bg-transparent py-2 text-sm outline-none"
             />
             <EmojiPicker triggerLabel="Insert emoji" onValueChange={insertEmoji} />
-            <Button size="icon" aria-label="Send message" onPress={sendMessage} isDisabled={!message.trim()}>
+            <Button size="icon" aria-label="Send message" onClick={sendMessage} disabled={!message.trim()}>
               <IconSend />
             </Button>
           </div>
@@ -194,10 +194,10 @@ export function EmojiPickerExamples() {
       <ComponentPreview title="Localized Emoji Data and Labels">
         <div className="grid w-full gap-3">
           <div className="flex gap-2">
-            <Button size="sm" variant={locale === "en" ? "default" : "outline"} onPress={() => setLocale("en")}>
+            <Button size="sm" variant={locale === "en" ? "default" : "outline"} onClick={() => setLocale("en")}>
               English
             </Button>
-            <Button size="sm" variant={locale === "zh" ? "default" : "outline"} onPress={() => setLocale("zh")}>
+            <Button size="sm" variant={locale === "zh" ? "default" : "outline"} onClick={() => setLocale("zh")}>
               简体中文
             </Button>
           </div>

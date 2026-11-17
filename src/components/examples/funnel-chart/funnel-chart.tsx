@@ -5,8 +5,8 @@ import { useState } from "react";
 import { Funnel, FunnelChart, LabelList } from "recharts";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-import { SegmentedControl, SegmentedControlItem } from "@/components/ui/segmented-control";
+import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/roseui/chart";
+import { SegmentedControl, SegmentedControlItem } from "@/components/roseui/segmented-control";
 
 type FunnelStage = {
   stage: string;

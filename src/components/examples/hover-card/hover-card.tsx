@@ -12,11 +12,11 @@ import {
 } from "lucide-react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/roseui/hover-card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { Separator } from "@/components/ui/separator";
 import { demoAvatarUrl } from "@/lib/utils";
 
@@ -287,8 +287,8 @@ export function HoverCardExamples() {
                     variant="ghost"
                     size="icon-sm"
                     aria-label="Previous release"
-                    isDisabled={releaseIndex === 0}
-                    onPress={() => setReleaseIndex((index) => Math.max(0, index - 1))}
+                    disabled={releaseIndex === 0}
+                    onClick={() => setReleaseIndex((index) => Math.max(0, index - 1))}
                   >
                     <IconArrowLeft className="size-4" />
                   </Button>
@@ -296,8 +296,8 @@ export function HoverCardExamples() {
                     variant="ghost"
                     size="icon-sm"
                     aria-label="Next release"
-                    isDisabled={releaseIndex === releases.length - 1}
-                    onPress={() => setReleaseIndex((index) => Math.min(releases.length - 1, index + 1))}
+                    disabled={releaseIndex === releases.length - 1}
+                    onClick={() => setReleaseIndex((index) => Math.min(releases.length - 1, index + 1))}
                   >
                     <IconArrowRight className="size-4" />
                   </Button>
@@ -346,7 +346,7 @@ function ControlledHoverCardExample() {
 
   return (
     <div className="flex min-h-32 flex-wrap items-center justify-center gap-3">
-      <Button variant="outline" onPress={() => setOpen((value) => !value)}>
+      <Button variant="outline" onClick={() => setOpen((value) => !value)}>
         {open ? "Hide preview" : "Show preview"}
       </Button>
       <HoverCard open={open} onOpenChange={setOpen}>

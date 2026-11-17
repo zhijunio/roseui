@@ -21,9 +21,9 @@ function Kbd({ className, ...props }: React.ComponentProps<"kbd">) {
 }
 
 /** A row of keycaps with consistent spacing. */
-function KbdGroup({ className, ...props }: React.ComponentProps<"span">) {
+function KbdGroup({ className, ...props }: React.ComponentProps<"div">) {
   return (
-    <span
+    <kbd
       data-slot="kbd-group"
       className={cn("inline-flex items-center gap-1", className)}
       {...props}

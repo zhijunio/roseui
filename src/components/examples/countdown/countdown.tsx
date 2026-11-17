@@ -3,9 +3,9 @@
 import { useState } from "react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
+import { Countdown } from "@/components/roseui/countdown";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
-import { Countdown } from "@/components/ui/countdown";
 
 const after = (milliseconds: number) => new Date(Date.now() + milliseconds);
 const hour = 60 * 60 * 1_000;
@@ -36,10 +36,10 @@ function RestartableCountdown() {
         </p>
       </div>
       <ButtonGroup aria-label="Restart timer">
-        <Button variant="outline" size="sm" onPress={() => restart(10_000)}>
+        <Button variant="outline" size="sm" onClick={() => restart(10_000)}>
           10 seconds
         </Button>
-        <Button variant="outline" size="sm" onPress={() => restart(60_000)}>
+        <Button variant="outline" size="sm" onClick={() => restart(60_000)}>
           1 minute
         </Button>
       </ButtonGroup>

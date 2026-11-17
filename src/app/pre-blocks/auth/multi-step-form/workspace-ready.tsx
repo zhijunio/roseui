@@ -9,7 +9,7 @@ export function WorkspaceReady({ onStartAgain }: { onStartAgain: () => void }) {
         <IconCheck aria-hidden="true" className="size-5" />
       </span>
       <h2 className="text-lg font-semibold tracking-tight">Workspace ready</h2>
-      <Button type="button" variant="outline" onPress={onStartAgain}>
+      <Button type="button" variant="outline" onClick={onStartAgain}>
         Start again
       </Button>
     </div>

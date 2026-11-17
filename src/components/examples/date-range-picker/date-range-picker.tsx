@@ -6,8 +6,8 @@ import { getLocalTimeZone, today } from "@internationalized/date";
 import { MapPin as IconMapPin } from "lucide-react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
+import { DateRangePicker, type DateRangeValue } from "@/components/roseui/date-range-picker";
 import { Button } from "@/components/ui/button";
-import { DateRangePicker, type DateRangeValue } from "@/components/ui/date-range-picker";
 
 export function DateRangePickerExamples() {
   const [range, setRange] = useState<DateRangeValue | null>(null);
@@ -90,7 +90,7 @@ export function DateRangePickerAdditionalExamples() {
               setFormDates(nextRange);
               if (nextRange) setSubmitted(false);
             }}
-            isInvalid={submitted && !formDates}
+            invalid={submitted && !formDates}
             errorMessage="Select your check-in and check-out dates."
             description="Choose both the start and end dates."
           />

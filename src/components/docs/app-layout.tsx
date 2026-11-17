@@ -2,11 +2,11 @@ import type { ReactNode } from "react";
 
 import { cookies } from "next/headers";
 
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { cn, demoAvatarUrl } from "@/lib/utils";
 
 import { AppHeader } from "./app-header";
 import { AppSidebar } from "./app-sidebar";
+import { SidebarInset, SidebarProvider } from "./sidebar-shell";
 import type { AccountUser } from "./user-menu";
 
 const shellUser: AccountUser = {

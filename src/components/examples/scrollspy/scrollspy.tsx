@@ -3,9 +3,9 @@
 import { useRef } from "react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
+import { Scrollspy } from "@/components/roseui/scrollspy";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Scrollspy } from "@/components/ui/scrollspy";
 
 const sectionContent = [
   {

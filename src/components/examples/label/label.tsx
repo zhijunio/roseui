@@ -2,16 +2,15 @@
 import * as React from "react";
 
 import { Check as IconCheck, Info as IconInfoCircle, Pencil as IconPencil, X as IconX } from "lucide-react";
-import { Button as TooltipButton } from "react-aria-components/Button";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
+import { CheckboxButton, CheckboxField } from "@/components/roseui/checkbox";
+import { Label } from "@/components/roseui/label";
+import { TextArea } from "@/components/roseui/text-area";
+import { Tooltip, TooltipTrigger } from "@/components/roseui/tooltip";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { CheckboxButton, CheckboxField } from "@/components/ui/checkbox";
+import { Button, Button as TooltipButton } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { TextArea } from "@/components/ui/text-area";
-import { Tooltip, TooltipTrigger } from "@/components/ui/tooltip";
 
 const examples = [
   "Basic label",
@@ -58,7 +57,7 @@ function LabelDemo({ index }: { index: number }) {
   if (index === 3)
     return (
       <div className="grid w-full max-w-sm gap-2">
-        <Label htmlFor="label-locked" isDisabled>
+        <Label htmlFor="label-locked" disabled>
           Workspace ID
         </Label>
         <Input id="label-locked" disabled defaultValue="ws_84f2c1" />
@@ -73,7 +72,7 @@ function LabelDemo({ index }: { index: number }) {
           event.currentTarget.reportValidity();
         }}
       >
-        <Label htmlFor="label-required" isRequired>
+        <Label htmlFor="label-required" required>
           Work email
         </Label>
         <Input id="label-required" type="email" required placeholder="name@company.com" />
@@ -97,7 +96,7 @@ function LabelDemo({ index }: { index: number }) {
         <div className="grid w-full max-w-sm gap-2">
           <div className="flex items-center gap-1.5">
             <Label htmlFor="label-api-key">API key</Label>
-            <TooltipTrigger delay={0}>
+            <TooltipTrigger delayDuration={0}>
               <TooltipButton
                 type="button"
                 aria-label="Where to find the API key"
@@ -150,7 +149,7 @@ function LabelDemo({ index }: { index: number }) {
   if (index === 10)
     return (
       <div className="grid w-full max-w-sm gap-2">
-        <Label htmlFor="label-error" isInvalid={invalid}>
+        <Label htmlFor="label-error" invalid={invalid}>
           Work email
         </Label>
         <Input id="label-error" type="email" aria-invalid={invalid} defaultValue="alex@" />
@@ -159,7 +158,7 @@ function LabelDemo({ index }: { index: number }) {
             Enter a complete work email address.
           </p>
         )}
-        <Button size="sm" variant="outline" className="w-fit" onPress={() => setInvalid((value) => !value)}>
+        <Button size="sm" variant="outline" className="w-fit" onClick={() => setInvalid((value) => !value)}>
           Toggle error state
         </Button>
       </div>
@@ -171,14 +170,14 @@ function LabelDemo({ index }: { index: number }) {
           <Label htmlFor="label-project-name">Project name</Label>
           {editing ? (
             <div className="flex gap-1">
-              <Button size="icon-xs" variant="ghost" aria-label="Save project name" onPress={() => setEditing(false)}>
+              <Button size="icon-xs" variant="ghost" aria-label="Save project name" onClick={() => setEditing(false)}>
                 <IconCheck />
               </Button>
               <Button
                 size="icon-xs"
                 variant="ghost"
                 aria-label="Cancel editing"
-                onPress={() => {
+                onClick={() => {
                   setName("Platform refresh");
                   setEditing(false);
                 }}
@@ -187,7 +186,7 @@ function LabelDemo({ index }: { index: number }) {
               </Button>
             </div>
           ) : (
-            <Button size="icon-xs" variant="ghost" aria-label="Edit project name" onPress={() => setEditing(true)}>
+            <Button size="icon-xs" variant="ghost" aria-label="Edit project name" onClick={() => setEditing(true)}>
               <IconPencil />
             </Button>
           )}

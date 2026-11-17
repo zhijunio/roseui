@@ -5,8 +5,8 @@ import { useMemo, useState } from "react";
 import { Building as IconBuilding, Check as IconCheck, User as IconUser } from "lucide-react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
+import { Cascader, type CascaderNode, CascaderPanel } from "@/components/roseui/cascader";
 import { Button } from "@/components/ui/button";
-import { Cascader, type CascaderNode, CascaderPanel } from "@/components/ui/cascader";
 
 export function CascaderExamples() {
   const [selected, setSelected] = useState<string[][]>([]);
@@ -178,10 +178,10 @@ export function CascaderExamples() {
       <ComponentPreview title="Localized Labels" layout="panel">
         <div className="grid gap-2">
           <div className="flex gap-2">
-            <Button size="sm" variant={locale === "en" ? "default" : "outline"} onPress={() => setLocale("en")}>
+            <Button size="sm" variant={locale === "en" ? "default" : "outline"} onClick={() => setLocale("en")}>
               English
             </Button>
-            <Button size="sm" variant={locale === "zh" ? "default" : "outline"} onPress={() => setLocale("zh")}>
+            <Button size="sm" variant={locale === "zh" ? "default" : "outline"} onClick={() => setLocale("zh")}>
               简体中文
             </Button>
           </div>

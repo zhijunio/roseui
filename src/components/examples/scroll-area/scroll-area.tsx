@@ -1,5 +1,5 @@
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { ScrollArea } from "@/components/roseui/scroll-area";
 
 const rows = Array.from({ length: 18 }, (_, index) => ({
   id: index + 1,

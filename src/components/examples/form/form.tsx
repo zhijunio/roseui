@@ -3,9 +3,9 @@
 import * as React from "react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
+import { Field, FieldError, FieldLabel, FieldLegend, FieldSet } from "@/components/roseui/field";
+import { Form } from "@/components/roseui/form";
 import { Button } from "@/components/ui/button";
-import { Field, FieldError, FieldLabel, FieldLegend, FieldSet } from "@/components/ui/field";
-import { Form } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
 function NativeValidationExample() {
@@ -50,7 +50,6 @@ function AriaValidationExample() {
   return (
     <Form
       className="grid w-full max-w-sm gap-3"
-      validationBehavior="aria"
       onSubmit={(event) => {
         event.preventDefault();
         setSubmitted(true);
@@ -148,8 +147,6 @@ function ServerValidationExample() {
     <Form
       aria-label="Create workspace account"
       className="grid w-full max-w-sm gap-3"
-      validationBehavior="aria"
-      validationErrors={errors}
       onSubmit={(event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);

@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { SegmentedControl, SegmentedControlItem } from "@/components/ui/segmented-control";
+import { SegmentedControl, SegmentedControlItem } from "@/components/roseui/segmented-control";
 
 const weekVisitors = [
   { label: "Mon", desktop: 32, mobile: 20 },

@@ -8,12 +8,12 @@ import { EllipsisVertical, Search, X } from "lucide-react";
 
 import { NavMain } from "@/components/docs/nav-main";
 import { type AccountUser, UserAvatar, UserMenu } from "@/components/docs/user-menu";
+import { LogoMark } from "@/components/roseui/logo-mark";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { LogoMark } from "@/components/ui/logo-mark";
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, useSidebar } from "@/components/ui/sidebar";
 import { NAV_DATA } from "@/lib/nav";
 
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, useSidebar } from "./sidebar-shell";
 import { useThemePreferences } from "./theme-preferences";
 
 export function AppSidebar({ user, ...props }: React.ComponentProps<typeof Sidebar> & { user: AccountUser }) {

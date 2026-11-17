@@ -9,14 +9,14 @@ import {
 } from "lucide-react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/roseui/avatar";
+import { Card, CardAction, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/roseui/card";
+import { Menu, MenuItem, MenuTrigger } from "@/components/roseui/menu";
+import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@/components/roseui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardAction, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Menu, MenuItem, MenuTrigger } from "@/components/ui/menu";
-import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@/components/ui/table";
 import { demoAvatarUrl } from "@/lib/utils";
 
 const styleOne = [
@@ -278,7 +278,7 @@ export function CardInteractiveExamples() {
                   <IconDotsVertical />
                 </Button>
 
-                <Menu placement="bottom end">
+                <Menu side="bottom" align="end">
                   <MenuItem>Edit details</MenuItem>
                   <MenuItem>Copy deployment link</MenuItem>
                   <MenuItem intent="danger">Archive deployment</MenuItem>
@@ -324,7 +324,7 @@ export function CardInteractiveExamples() {
             )}
           </CardContent>
           <CardFooter>
-            <Button variant="outline" size="sm" aria-expanded={expanded} onPress={() => setExpanded((value) => !value)}>
+            <Button variant="outline" size="sm" aria-expanded={expanded} onClick={() => setExpanded((value) => !value)}>
               {expanded ? "Show less" : "Show usage details"}
               <IconChevronDown className={expanded ? "rotate-180" : ""} />
             </Button>

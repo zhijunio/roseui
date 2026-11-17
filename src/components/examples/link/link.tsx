@@ -5,7 +5,7 @@ import {
 } from "lucide-react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { Link } from "@/components/ui/link";
+import { Link } from "@/components/roseui/link";
 
 const variants = [
   { label: "Primary", className: "text-primary" },
@@ -125,7 +125,7 @@ export function LinkExamples() {
 
       <ComponentPreview title="Disabled Link">
         <div className="grid justify-items-start gap-2">
-          <Link href="/docs/components/buttons/button" isDisabled>
+          <Link href="/docs/components/buttons/button" disabled>
             Unavailable destination
           </Link>
           <p className="text-xs text-muted-foreground">This destination is currently unavailable.</p>

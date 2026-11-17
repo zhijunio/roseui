@@ -6,12 +6,10 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
 import { ChevronRight, Search } from "lucide-react";
-import { Focusable } from "react-aria-components/Focusable";
 
 import { ThemeCustomizer } from "@/components/docs/theme-customizer";
 import { ThemeToggle } from "@/components/docs/theme-toggle";
 import { type AccountUser, UserAvatar, UserMenu } from "@/components/docs/user-menu";
-import { Button } from "@/components/ui/button";
 import {
   CommandMenu,
   CommandMenuItem,
@@ -19,16 +17,19 @@ import {
   CommandMenuList,
   CommandMenuSearch,
   CommandMenuSection,
-} from "@/components/ui/command-menu";
-import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
-import { Tooltip, TooltipTrigger } from "@/components/ui/tooltip";
+} from "@/components/roseui/command-menu";
+import { Tooltip, TooltipTrigger } from "@/components/roseui/tooltip";
+import { Button } from "@/components/ui/button";
 import { useIsMac } from "@/hooks/use-platform";
 import { NAV_DATA, type NavItem } from "@/lib/nav";
 import { getBreadcrumbItems } from "@/lib/navigation";
+
+import { SidebarTrigger, useSidebar } from "./sidebar-shell";
+
 export function AppHeader({ user }: { user: AccountUser }) {
   const pathname = usePathname();
   const router = useRouter();
-  const { setOpen: setSidebarOpen } = useSidebar();
+  const { isMobile, setIsOpenOnMobile, setOpen: setSidebarOpen } = useSidebar();
   const breadcrumbs = getBreadcrumbItems(pathname);
   const isMac = useIsMac();
   const [open, setOpen] = React.useState(false);
@@ -36,10 +37,14 @@ export function AppHeader({ user }: { user: AccountUser }) {
   const go = React.useCallback(
     (url: string) => {
       setOpen(false);
-      setSidebarOpen(true);
+      if (isMobile) {
+        setIsOpenOnMobile(false);
+      } else {
+        setSidebarOpen(true);
+      }
       router.push(url);
     },
-    [router, setSidebarOpen],
+    [isMobile, router, setIsOpenOnMobile, setSidebarOpen],
   );
 
   return (
@@ -77,19 +82,17 @@ export function AppHeader({ user }: { user: AccountUser }) {
           </ol>
         </nav>
         <div className="ml-auto flex shrink-0 items-center gap-1.5">
-          <TooltipTrigger delay={0}>
-            <Focusable>
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                aria-label="Search pages"
-                aria-haspopup="dialog"
-                aria-expanded={open}
-                onPress={() => setOpen(true)}
-              >
-                <Search aria-hidden="true" />
-              </Button>
-            </Focusable>
+          <TooltipTrigger delayDuration={0}>
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              aria-label="Search pages"
+              aria-haspopup="dialog"
+              aria-expanded={open}
+              onClick={() => setOpen(true)}
+            >
+              <Search aria-hidden="true" />
+            </Button>
             <Tooltip>Search pages ({isMac ? "⌘" : "Ctrl"}+K)</Tooltip>
           </TooltipTrigger>
           <ThemeCustomizer />
@@ -99,7 +102,7 @@ export function AppHeader({ user }: { user: AccountUser }) {
               <UserAvatar user={user} className="size-7" />
             </Button>
           </UserMenu>
-          <CommandMenu isOpen={open} onOpenChange={setOpen} shortcut="k" aria-label="Search pages">
+          <CommandMenu open={open} onOpenChange={setOpen} shortcut="k" aria-label="Search pages">
             <CommandMenuSearch placeholder="Type to search pages..." />
             <CommandMenuList aria-label="Pages">
               {NAV_DATA.map((section) => (
@@ -112,7 +115,7 @@ export function AppHeader({ user }: { user: AccountUser }) {
                         <CommandMenuItem
                           key={`${section.label}-${subItem.url}`}
                           textValue={`${item.title} ${subItem.title}`}
-                          onAction={() => go(subItem.url)}
+                          onSelect={() => go(subItem.url)}
                         >
                           {ItemIcon ? <ItemIcon className="size-4" aria-hidden="true" /> : null}
                           <CommandMenuLabel>{subItem.title}</CommandMenuLabel>
@@ -127,7 +130,7 @@ export function AppHeader({ user }: { user: AccountUser }) {
                       <CommandMenuItem
                         key={`${section.label}-${itemUrl}`}
                         textValue={item.title}
-                        onAction={() => go(itemUrl)}
+                        onSelect={() => go(itemUrl)}
                       >
                         {ItemIcon ? <ItemIcon className="size-4" aria-hidden="true" /> : null}
                         <CommandMenuLabel>{item.title}</CommandMenuLabel>

@@ -3,10 +3,10 @@
 import { useState } from "react";
 
 import { Star as IconStar } from "lucide-react";
-import { ListLayout, type Selection, Virtualizer } from "react-aria-components";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { ListBox, ListBoxHeader, ListBoxItem, ListBoxSection } from "@/components/ui/list-box";
+import { ListBox, ListBoxHeader, ListBoxItem, ListBoxSection, type Selection } from "@/components/roseui/list-box";
+import { ListLayout, Virtualizer } from "@/components/roseui/virtualizer";
 
 const projects = [
   { id: "website", label: "Website refresh" },
@@ -55,7 +55,7 @@ export function ListBoxExamples() {
         <ListBox aria-label="Workspace actions" selectionMode="single">
           <ListBoxItem id="rename">Rename workspace</ListBoxItem>
           <ListBoxItem id="duplicate">Duplicate workspace</ListBoxItem>
-          <ListBoxItem id="billing" isDisabled>
+          <ListBoxItem id="billing" disabled>
             Manage billing
           </ListBoxItem>
           <ListBoxItem id="delete" variant="danger">

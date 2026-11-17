@@ -2,13 +2,13 @@ import Link from "next/link";
 
 import { ArrowRight as IconArrowRight } from "lucide-react";
 
-import { buttonVariants } from "@/components/ui/button-variants";
+import { LogoMark } from "@/components/roseui/logo-mark";
+import { PasswordField } from "@/components/roseui/password-field";
+import { SocialButton } from "@/components/roseui/social-button";
+import { buttonVariants } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { LogoMark } from "@/components/ui/logo-mark";
-import { PasswordField } from "@/components/ui/password-field";
-import { SocialButton } from "@/components/ui/social-button";
 
 const socialProviders = ["google", "apple", "github", "microsoft"] as const;
 

@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { SplitButton, type SplitButtonOption } from "@/components/ui/split-button";
+import { SplitButton, type SplitButtonOption } from "@/components/roseui/split-button";
 
 const publishOptions: readonly SplitButtonOption[] = [
   { id: "schedule", label: "Schedule…" },

@@ -2,10 +2,9 @@
 
 import { useState } from "react";
 
-import { type Color, parseColor } from "react-aria-components";
-
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { ColorArea, ColorAreaThumb } from "@/components/ui/color-area";
+import { ColorArea, ColorAreaThumb } from "@/components/roseui/color-area";
+import { type Color, parseColor } from "@/lib/color";
 
 function colorPlane(color: Color) {
   return {
@@ -74,7 +73,7 @@ export function ColorAreaExamples() {
         <ColorArea
           aria-label="Disabled color area"
           defaultValue="#dc2626"
-          isDisabled
+          disabled
           colorSpace="hsb"
           xChannel="saturation"
           yChannel="brightness"

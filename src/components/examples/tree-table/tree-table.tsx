@@ -3,8 +3,8 @@
 import { useRef, useState } from "react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
+import { TreeTable, type TreeTableColumn, type TreeTableNode } from "@/components/roseui/tree-table";
 import { Badge } from "@/components/ui/badge";
-import { TreeTable, type TreeTableColumn, type TreeTableNode } from "@/components/ui/tree-table";
 
 type TeamRow = { name: string; owner: string; members: number; status: "Active" | "Review" };
 

@@ -5,7 +5,7 @@ import * as React from "react";
 import { Building as IconBuilding, Rocket as IconRocket, Users as IconUsers } from "lucide-react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { RadioCard } from "@/components/ui/radio-card";
+import { RadioCard } from "@/components/roseui/radio-card";
 
 function WorkspacePlanExample() {
   const [plan, setPlan] = React.useState("team");

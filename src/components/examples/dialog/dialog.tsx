@@ -11,7 +11,6 @@ import {
 import { toast } from "sonner";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogClose,
@@ -23,7 +22,8 @@ import {
   ModalBody,
   ModalFooter,
   ModalHeader,
-} from "@/components/ui/dialog";
+} from "@/components/roseui/dialog";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Kbd } from "@/components/ui/kbd";
 import { Label } from "@/components/ui/label";
@@ -123,7 +123,7 @@ export function DialogModalExamples() {
                 key={option.size}
                 variant="secondary"
                 size="sm"
-                onPress={() => {
+                onClick={() => {
                   setSize(option.size);
                   setSizeOpen(true);
                 }}
@@ -140,7 +140,7 @@ export function DialogModalExamples() {
                   </p>
                 </ModalBody>
                 <ModalFooter>
-                  <Button variant="secondary" onPress={() => setSizeOpen(false)}>
+                  <Button variant="secondary" onClick={() => setSizeOpen(false)}>
                     Close
                   </Button>
                 </ModalFooter>
@@ -176,7 +176,7 @@ export function DialogModalExamples() {
                     <Button variant="secondary">Cancel</Button>
                   </DialogClose>
                   <DialogClose asChild>
-                    <Button onPress={() => toast.success("Invitation sent")}>Send invitation</Button>
+                    <Button onClick={() => toast.success("Invitation sent")}>Send invitation</Button>
                   </DialogClose>
                 </ModalFooter>
               </Modal>
@@ -222,7 +222,7 @@ export function DialogModalExamples() {
             <Button
               variant="secondary"
               className="justify-self-start"
-              onPress={() => {
+              onClick={() => {
                 setDraftName(projectName);
                 setRenameOpen(true);
               }}
@@ -250,7 +250,7 @@ export function DialogModalExamples() {
                   </form>
                 </ModalBody>
                 <ModalFooter>
-                  <Button variant="secondary" onPress={() => setRenameOpen(false)}>
+                  <Button variant="secondary" onClick={() => setRenameOpen(false)}>
                     Cancel
                   </Button>
                   <Button type="submit" form="rename-project-form">
@@ -274,7 +274,7 @@ export function DialogModalExamples() {
             >
               <ModalHeader title="Review required" description="Use the button below to close this dialog." />
               <ModalFooter>
-                <Button onPress={() => setRequiredOpen(false)}>Continue</Button>
+                <Button onClick={() => setRequiredOpen(false)}>Continue</Button>
               </ModalFooter>
             </Modal>
           </Dialog>
@@ -352,7 +352,7 @@ export function DialogVariantExamples() {
                     <Button variant="secondary">Cancel</Button>
                   </DialogClose>
                   <DialogClose asChild>
-                    <Button onPress={() => navigator.clipboard?.writeText("https://example.com/projects/acme")}>
+                    <Button onClick={() => navigator.clipboard?.writeText("https://example.com/projects/acme")}>
                       Copy link
                     </Button>
                   </DialogClose>
@@ -410,7 +410,7 @@ export function DialogVariantExamples() {
                 />
                 <ModalFooter className="w-full">
                   <DialogClose asChild>
-                    <Button className="w-full" onPress={() => toast.success("Sign-in flow started")}>
+                    <Button className="w-full" onClick={() => toast.success("Sign-in flow started")}>
                       Sign in again
                     </Button>
                   </DialogClose>
@@ -457,16 +457,16 @@ export function DialogVariantExamples() {
       <ComponentPreview title="Grid Content Layout" layout="grid2">
         <div className="min-w-0">
           <div className="flex w-full flex-wrap justify-center gap-2">
-            <Button variant="secondary" onPress={() => setAlert("success")}>
+            <Button variant="secondary" onClick={() => setAlert("success")}>
               Success
             </Button>
-            <Button variant="secondary" onPress={() => setAlert("info")}>
+            <Button variant="secondary" onClick={() => setAlert("info")}>
               Information
             </Button>
-            <Button variant="secondary" onPress={() => setAlert("warning")}>
+            <Button variant="secondary" onClick={() => setAlert("warning")}>
               Warning
             </Button>
-            <Button variant="destructive" onPress={() => setAlert("danger")}>
+            <Button variant="destructive" onClick={() => setAlert("danger")}>
               Error
             </Button>
             <Dialog open={alert !== null} onOpenChange={(open) => !open && setAlert(null)}>
@@ -507,7 +507,7 @@ export function DialogVariantExamples() {
                     <Button variant="outline">Cancel</Button>
                   </DialogClose>
                   <DialogClose asChild>
-                    <Button variant="destructive" onPress={() => toast.error("Workspace deleted")}>
+                    <Button variant="destructive" onClick={() => toast.error("Workspace deleted")}>
                       Delete workspace
                     </Button>
                   </DialogClose>
@@ -548,7 +548,7 @@ export function DialogVariantExamples() {
                     <Button variant="outline">Cancel</Button>
                   </DialogClose>
                   <DialogClose asChild>
-                    <Button onPress={() => toast.success("Cookie preferences saved")}>Save preferences</Button>
+                    <Button onClick={() => toast.success("Cookie preferences saved")}>Save preferences</Button>
                   </DialogClose>
                 </ModalFooter>
               </Modal>

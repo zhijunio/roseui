@@ -3,7 +3,7 @@
 import * as React from "react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { RangeHistogramSlider } from "@/components/ui/range-histogram-slider";
+import { RangeHistogramSlider } from "@/components/roseui/range-histogram-slider";
 
 const orderTotals = [
   18, 23, 27, 29, 31, 34, 36, 38, 41, 43, 45, 48, 49, 52, 54, 57, 60, 62, 65, 68, 72, 75, 78, 82, 85, 90, 96, 102, 110,

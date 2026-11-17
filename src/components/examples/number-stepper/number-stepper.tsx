@@ -5,8 +5,8 @@ import { useState } from "react";
 import { Minus as IconMinus, Plus as IconPlus, Users as IconUsers } from "lucide-react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
+import { NumberStepper } from "@/components/roseui/number-stepper";
 import { Button } from "@/components/ui/button";
-import { NumberStepper } from "@/components/ui/number-stepper";
 
 export function NumberStepperExamples() {
   const [guests, setGuests] = useState(2);
@@ -44,10 +44,10 @@ export function NumberStepperExamples() {
             Quantity: {quantity}
           </output>
           <div className="flex gap-2">
-            <Button type="button" variant="link" size="xs" onPress={() => setQuantity(0)}>
+            <Button type="button" variant="link" size="xs" onClick={() => setQuantity(0)}>
               Reset
             </Button>
-            <Button type="button" variant="link" size="xs" onPress={() => setQuantity(10)}>
+            <Button type="button" variant="link" size="xs" onClick={() => setQuantity(10)}>
               Set to 10
             </Button>
           </div>
@@ -98,7 +98,7 @@ export function NumberStepperExamples() {
       </ComponentPreview>
       <ComponentPreview title="Disabled" layout="panel">
         <div className="grid gap-3">
-          <NumberStepper aria-label="Unavailable seats" value={12} isDisabled />
+          <NumberStepper aria-label="Unavailable seats" value={12} disabled />
         </div>
       </ComponentPreview>
       <ComponentPreview title="Custom Button Icons" layout="panel">

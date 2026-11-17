@@ -5,7 +5,7 @@ import { useState } from "react";
 import { BriefcaseBusiness, Code, Palette } from "lucide-react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { SearchSelect, type SearchSelectOption } from "@/components/ui/search-select";
+import { SearchSelect, type SearchSelectOption } from "@/components/roseui/search-select";
 
 const tools: SearchSelectOption[] = [
   { value: "figma", label: "Figma", group: "Design", icon: <Palette aria-hidden="true" /> },

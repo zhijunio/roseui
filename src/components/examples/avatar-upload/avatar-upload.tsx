@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { AvatarUpload } from "@/components/ui/avatar-upload";
+import { AvatarUpload } from "@/components/roseui/avatar-upload";
 
 const wait = (duration: number) => new Promise((resolve) => window.setTimeout(resolve, duration));
 

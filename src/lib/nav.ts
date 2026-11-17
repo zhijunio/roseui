@@ -147,16 +147,6 @@ const componentGroups = [
     ],
   },
   {
-    title: "Layouts",
-    items: [
-      { title: "Frame", url: "/docs/components/layouts/frame" },
-      { title: "Navbar", url: "/docs/components/layouts/navbar" },
-      { title: "Sidebar", url: "/docs/components/layouts/sidebar" },
-      { title: "Team Switcher", url: "/docs/components/layouts/team-switcher" },
-      { title: "User Menu", url: "/docs/components/layouts/user-menu" },
-    ],
-  },
-  {
     title: "Media",
     items: [
       { title: "Avatar", url: "/docs/components/media/avatar" },

@@ -6,7 +6,7 @@ import { ArrowUpRight as IconArrowUpRight, Check as IconCheck, Sparkles as IconS
 import { toast } from "sonner";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { Announcement } from "@/components/ui/announcement";
+import { Announcement } from "@/components/roseui/announcement";
 import { Button } from "@/components/ui/button";
 
 export function AnnouncementExamples() {
@@ -56,7 +56,7 @@ export function AnnouncementExamples() {
               onDismiss={() => setShowDismissible(false)}
             />
           ) : (
-            <Button variant="outline" size="sm" onPress={() => setShowDismissible(true)}>
+            <Button variant="outline" size="sm" onClick={() => setShowDismissible(true)}>
               Show announcement again
             </Button>
           )}

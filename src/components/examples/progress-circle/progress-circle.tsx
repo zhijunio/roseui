@@ -1,6 +1,6 @@
 import { ComponentPreview, type ComponentPreviewLayout } from "@/components/docs/component-preview";
+import { ProgressCircle } from "@/components/roseui/progress-circle";
 import { Label } from "@/components/ui/label";
-import { ProgressCircle } from "@/components/ui/progress-circle";
 
 const sizeLabels: Record<number, string> = {
   1: "Small · 40%",

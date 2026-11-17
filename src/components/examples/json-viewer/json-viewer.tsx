@@ -1,5 +1,5 @@
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { JsonViewer } from "@/components/ui/json-viewer";
+import { JsonViewer } from "@/components/roseui/json-viewer";
 
 const auditPayload = {
   event: "access.policy.updated",

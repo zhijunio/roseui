@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import { ComponentPreview } from "@/components/docs/component-preview";
-import { EmojiReactionButton } from "@/components/ui/emoji-reaction-button";
+import { EmojiReactionButton } from "@/components/roseui/emoji-reaction-button";
 
 export function EmojiReactionButtonExamples() {
   const [pressed, setPressed] = useState(false);
